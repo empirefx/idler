@@ -1,10 +1,26 @@
 import React from 'react';
+import { useGameState } from '../hooks/useGameState';
 
 const PlaceCard = ({ place }) => {
+  const { moveToPlace } = useGameState();
+
+  const handleMove = () => {
+    moveToPlace(place.id);
+  };
+
   return (
     <div className="place-card">
-      <h3>{place.name}</h3>
-      <p className="place-description">{place.description}</p>
+      <div className="place-top">
+
+        <div className="place-top-left">
+          <h3>{place.name}</h3>
+          <p className="place-description">{place.description}</p>
+        </div>
+
+        <div className="place-top-right">
+          <button className="action-btn" onClick={handleMove}>Move</button>
+        </div>
+      </div>
       
       <div className="place-details">
         <div className="place-type">
