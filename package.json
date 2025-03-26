@@ -1,6 +1,6 @@
 {
   "name": "idler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "RPG-idler game",
   "source": "src/index.html",
   "scripts": {
