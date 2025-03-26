@@ -80,7 +80,8 @@ export const useGameState = () => {
   // Update game state
   useEffect(() => {
     const updateInterval = setInterval(() => {
-      setGameState(gameEngine.getState());
+      const newState = gameEngine.getState();
+      setGameState(newState);
     }, 1000); // Update UI every second
 
     return () => clearInterval(updateInterval);
@@ -88,8 +89,7 @@ export const useGameState = () => {
 
   // Navigation functions
   const getCurrentPlace = useCallback(() => {
-    const currentPlaceId = gameEngine.navigation.getCurrentPlace();
-    return gameEngine.places.get(currentPlaceId);
+    return gameEngine.navigation.getCurrentPlace();
   }, [gameEngine]);
 
   const getAvailablePlaces = useCallback(() => {
@@ -98,25 +98,12 @@ export const useGameState = () => {
 
   const moveToPlace = useCallback((placeId) => {
     try {
-      const newPlace = gameEngine.navigation.moveToPlace(placeId);
-      setGameState(prev => ({
-        ...prev,
-        currentPlace: newPlace,
-        availablePlaces: gameEngine.navigation.getAvailableConnections()
-      }));
+      gameEngine.navigation.moveToPlace(placeId);
+      setGameState(gameEngine.getState());
     } catch (err) {
       setError(err.message);
     }
   }, [gameEngine]);
-
-  // Update game state to include navigation info
-  useEffect(() => {
-    setGameState(prev => ({
-      ...prev,
-      currentPlace: getCurrentPlace(),
-      availablePlaces: getAvailablePlaces()
-    }));
-  }, [getCurrentPlace, getAvailablePlaces]);
 
   const assignWorker = useCallback((workerId, buildingId) => {
     gameEngine.assignWorkerToBuilding(workerId, buildingId);

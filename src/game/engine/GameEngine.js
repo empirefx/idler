@@ -106,6 +106,8 @@ class GameEngine {
       buildings: Array.from(this.buildings.values()),
       workers: Array.from(this.player.workers.values()),
       places: Array.from(this.places.values()),
+      currentPlace: this.navigation.getCurrentPlace(),
+      availablePlaces: this.navigation.getAvailableConnections(),
       player: this.player
     };
   }
