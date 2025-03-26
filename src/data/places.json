@@ -89,6 +89,48 @@
         "food": 3,
         "herbs": 1
       }
+    },
+    "hunter_camp": {
+      "id": "hunter_camp",
+      "name": "Hunter's Camp",
+      "description": "A rustic outpost where hunters gather and prepare for their expeditions.",
+      "type": "outpost",
+      "connections": ["forest_edge"],
+      "features": {
+        "tanning_rack": {
+          "name": "Tanning Rack",
+          "description": "Used to process animal hides and prepare leather"
+        },
+        "campfire": {
+          "name": "Campfire",
+          "description": "A place to cook and preserve meat from the hunt"
+        }
+      },
+      "resources": {
+        "meat": 2,
+        "leather": 1
+      }
+    },
+    "fishing_spot": {
+      "id": "fishing_spot",
+      "name": "Fishing Spot",
+      "description": "A peaceful location by the water where fish are plentiful.",
+      "type": "gathering",
+      "connections": ["river_crossing"],
+      "features": {
+        "dock": {
+          "name": "Wooden Dock",
+          "description": "A simple platform extending into the water"
+        },
+        "fish_cleaning": {
+          "name": "Fish Cleaning Station",
+          "description": "A designated area to clean and prepare caught fish"
+        }
+      },
+      "resources": {
+        "fish": 3,
+        "water": 1
+      }
     }
   },
   "metadata": {
