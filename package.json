@@ -1,0 +1,22 @@
+{
+  "name": "idler",
+  "version": "0.1.0",
+  "description": "RPG-idler game",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-react": "^7.23.3",
+    "parcel": "^2.11.0",
+    "process": "^0.11.10"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
+} 
