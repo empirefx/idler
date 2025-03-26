@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import GameEngine from '../../game/engine/GameEngine';
 import buildingsData from '../../data/buildings.json';
 
@@ -18,10 +19,15 @@ export const useGameState = () => {
     places: Object.values(placesData.places) // Add places for debugging
   });
   const [error, setError] = useState(null);
+  const isInitialized = useRef(false);
 
   // Initialize game
   useEffect(() => {
     const initializeGame = async () => {
+      // Prevent double initialization
+      if (isInitialized.current) return;
+      isInitialized.current = true;
+
       try {
         console.log('Starting game initialization...');
         console.log('Buildings data:', buildingsData);
