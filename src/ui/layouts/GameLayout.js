@@ -2,6 +2,7 @@ import React from 'react';
 import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
+import PlaceCard from '../components/PlaceCard';
 
 const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
   return (
@@ -38,6 +39,18 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
                 key={building.id}
                 building={building}
                 quantity={building.quantity}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="places-section">
+          <h2>Places</h2>
+          <div className="places-grid">
+            {gameState.places && gameState.places.map(place => (
+              <PlaceCard
+                key={place.id}
+                place={place}
               />
             ))}
           </div>

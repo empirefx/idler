@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import GameEngine from '../../game/engine/GameEngine';
 import buildingsData from '../../data/buildings.json';
+import placesData from '../../data/places.json';
 
 export const useGameState = () => {
   const [gameEngine] = useState(() => new GameEngine());
@@ -10,7 +11,8 @@ export const useGameState = () => {
       resources: 0
     },
     buildings: [],
-    workers: []
+    workers: [],
+    places: Object.values(placesData.places) // Add places for debugging
   });
   const [error, setError] = useState(null);
 
@@ -97,7 +99,8 @@ export const useGameState = () => {
       gameState: {
         resources: { food: 0, resources: 0 },
         buildings: [],
-        workers: []
+        workers: [],
+        places: []
       },
       assignWorker: () => {},
       unassignWorker: () => {},

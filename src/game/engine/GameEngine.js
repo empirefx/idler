@@ -1,5 +1,6 @@
 import Building from '../models/Building';
 import Player from '../models/Player';
+import placesData from '../../data/places.json';
 
 class GameEngine {
   constructor() {
@@ -10,6 +11,9 @@ class GameEngine {
       food: 0,
       resources: 0
     };
+    this.places = new Map(
+      Object.entries(placesData.places)
+    );
     this.lastUpdate = Date.now();
     this.isRunning = false;
     this.tickInterval = null;
@@ -107,16 +111,9 @@ class GameEngine {
   getState() {
     return {
       resources: { ...this.resources },
-      buildings: Array.from(this.buildings.entries()).map(([id, building]) => ({
-        id,
-        quantity: building.quantity,
-        name: building.name,
-        description: building.description,
-        productionType: building.productionType,
-        assignedWorkerId: building.getAssignedWorkerId()
-      })),
-      workers: this.player.getAllWorkers(),
-      player: this.player
+      buildings: Array.from(this.buildings.values()),
+      workers: Array.from(this.player.workers.values()),
+      places: Array.from(this.places.values())
     };
   }
 

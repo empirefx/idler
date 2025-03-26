@@ -1,0 +1,98 @@
+{
+  "places": {
+    "village_center": {
+      "id": "village_center",
+      "name": "Village Center",
+      "description": "The heart of your small settlement. A humble gathering place where villagers meet.",
+      "type": "settlement",
+      "connections": ["forest_edge", "river_crossing", "farmlands"],
+      "features": {
+        "marketplace": {
+          "name": "Marketplace",
+          "description": "A small trading post where resources can be exchanged"
+        },
+        "well": {
+          "name": "Village Well",
+          "description": "A source of fresh water for the village"
+        }
+      },
+      "resources": {
+        "water": 1,
+        "food": 1
+      }
+    },
+    "forest_edge": {
+      "id": "forest_edge",
+      "name": "Forest Edge",
+      "description": "The boundary between civilization and wilderness. Ancient trees loom ahead.",
+      "type": "wilderness",
+      "connections": ["village_center", "deep_woods", "hunter_camp"],
+      "features": {
+        "gathering_spot": {
+          "name": "Gathering Spot",
+          "description": "A good place to collect berries and herbs"
+        }
+      },
+      "resources": {
+        "wood": 2,
+        "herbs": 1
+      }
+    },
+    "deep_woods": {
+      "id": "deep_woods",
+      "name": "Deep Woods",
+      "description": "Dense forest where valuable resources can be found, but dangers lurk in the shadows.",
+      "type": "wilderness",
+      "connections": ["forest_edge", "ancient_ruins"],
+      "features": {
+        "old_mine": {
+          "name": "Abandoned Mine",
+          "description": "A mysterious mine entrance, partially overgrown"
+        }
+      },
+      "resources": {
+        "wood": 3,
+        "stone": 2,
+        "herbs": 2
+      }
+    },
+    "river_crossing": {
+      "id": "river_crossing",
+      "name": "River Crossing",
+      "description": "A shallow part of the river where traders often rest.",
+      "type": "landmark",
+      "connections": ["village_center", "farmlands", "fishing_spot"],
+      "features": {
+        "dock": {
+          "name": "Small Dock",
+          "description": "A wooden platform for fishing and loading goods"
+        }
+      },
+      "resources": {
+        "fish": 2,
+        "water": 3
+      }
+    },
+    "farmlands": {
+      "id": "farmlands",
+      "name": "Fertile Farmlands",
+      "description": "Rich soil and open fields perfect for cultivation.",
+      "type": "settlement",
+      "connections": ["village_center", "river_crossing"],
+      "features": {
+        "granary": {
+          "name": "Community Granary",
+          "description": "Storage for harvested crops"
+        }
+      },
+      "resources": {
+        "food": 3,
+        "herbs": 1
+      }
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-03-26"
+  }
+}

@@ -149,14 +149,16 @@
 }
 
 .workers-section,
-.buildings-section {
+.buildings-section,
+.places-section {
   background: var(--color-light);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
 }
 
 .workers-section h2,
-.buildings-section h2 {
+.buildings-section h2,
+.places-section h2 {
   margin: 0 0 var(--spacing-md) 0;
   color: var(--color-dark);
 }
@@ -186,4 +188,76 @@
 
 .clear-cache-btn:hover {
   background-color: #cc0000;
-} 
+}
+
+/* Places section */
+
+.places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.place-card {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.place-card h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-dark);
+}
+
+.place-description {
+  color: var(--color-secondary);
+  font-size: 0.9em;
+  margin-bottom: var(--spacing-md);
+}
+
+.place-details {
+  font-size: 0.9em;
+}
+
+.place-type {
+  display: flex;
+  justify-content: space-between;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm);
+  background: var(--color-light);
+  border-radius: var(--border-radius-sm);
+  text-transform: capitalize;
+}
+
+.place-features,
+.place-resources,
+.place-connections {
+  margin-top: var(--spacing-md);
+}
+
+.place-details .label {
+  font-weight: bold;
+  color: var(--color-dark);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.place-details ul {
+  list-style: none;
+  padding: var(--spacing-sm);
+  margin: 0;
+  background: var(--color-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.place-details li {
+  margin: var(--spacing-xs) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.place-resources li {
+  color: var(--color-dark);
+}
