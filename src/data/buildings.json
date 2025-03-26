@@ -10,7 +10,7 @@
       "id": "mine",
       "name": "Mine",
       "description": "Extracts valuable resources from the earth",
-      "productionType": "resources"
+      "productionType": "materials"
     }
   },
   "metadata": {

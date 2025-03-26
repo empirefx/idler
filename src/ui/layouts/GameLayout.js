@@ -5,7 +5,6 @@ import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
 
 const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
-  console.log(gameState.availablePlaces);
   return (
     <div className="game-layout">
       <header className="game-header">
