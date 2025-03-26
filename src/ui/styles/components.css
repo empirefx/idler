@@ -1,0 +1,93 @@
+@import '../../styles/variables.css';
+
+.game-layout {
+  max-width: var(--breakpoint-xl);
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.resource-display {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.resource-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm);
+  background: var(--color-light);
+  border-radius: var(--border-radius-md);
+  min-width: 100px;
+}
+
+.resource-name {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.resource-amount {
+  font-size: 1.2em;
+  color: var(--color-dark);
+}
+
+.buildings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.building-card {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.building-card h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-dark);
+}
+
+.building-stats {
+  display: flex;
+  justify-content: space-between;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm);
+  background: var(--color-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.building-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.building-actions button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.building-actions button:first-child {
+  background: var(--color-success);
+  color: white;
+}
+
+.building-actions button:last-child {
+  background: var(--color-danger);
+  color: white;
+}
+
+.building-actions button:hover {
+  opacity: 0.9;
+} 

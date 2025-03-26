@@ -1,0 +1,22 @@
+{
+  "resources": {
+    "worker": 0,
+    "food": 0,
+    "resources": 0
+  },
+  "buildings": {
+    "house": 0,
+    "farm": 0,
+    "mine": 0
+  },
+  "stats": {
+    "lastUpdate": 0,
+    "totalWorker": 0,
+    "totalFood": 0,
+    "totalResources": 0
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-03-26"
+  }
+} 
