@@ -73,23 +73,6 @@ export const useGameState = () => {
     return () => clearInterval(updateInterval);
   }, [gameEngine]);
 
-  // Actions
-  const addBuilding = useCallback((buildingId) => {
-    const building = gameEngine.buildings.get(buildingId);
-    if (building) {
-      building.add();
-      gameEngine.save(); // Save after each action
-    }
-  }, [gameEngine]);
-
-  const removeBuilding = useCallback((buildingId) => {
-    const building = gameEngine.buildings.get(buildingId);
-    if (building) {
-      building.remove();
-      gameEngine.save(); // Save after each action
-    }
-  }, [gameEngine]);
-
   const assignWorker = useCallback((workerId, buildingId) => {
     gameEngine.assignWorkerToBuilding(workerId, buildingId);
   }, [gameEngine]);
@@ -98,19 +81,15 @@ export const useGameState = () => {
     gameEngine.unassignWorker(workerId);
   }, [gameEngine]);
 
-  const saveGame = useCallback(() => {
-    gameEngine.save();
-  }, [gameEngine]);
-
-  const loadGame = useCallback(() => {
-    gameEngine.load();
-  }, [gameEngine]);
-
   const clearCache = useCallback(() => {
-    gameEngine.clearCache();
-    // Reload the game after clearing cache
-    window.location.reload();
-  }, [gameEngine]);
+    try {
+      localStorage.clear();
+      window.location.reload();
+    } catch (err) {
+      console.error('Failed to clear cache:', err);
+      setError('Failed to clear cache');
+    }
+  }, []);
 
   if (error) {
     return {
@@ -120,24 +99,17 @@ export const useGameState = () => {
         buildings: [],
         workers: []
       },
-      addBuilding: () => {},
-      removeBuilding: () => {},
       assignWorker: () => {},
       unassignWorker: () => {},
-      saveGame: () => {},
-      loadGame: () => {},
       clearCache: () => {}
     };
   }
 
   return {
     gameState,
-    addBuilding,
-    removeBuilding,
+    error,
     assignWorker,
     unassignWorker,
-    saveGame,
-    loadGame,
     clearCache
   };
-}; 
+};

@@ -14,16 +14,6 @@ class Building {
     return this.quantity;
   }
 
-  // Add a building
-  add(amount = 1) {
-    this.quantity += amount;
-  }
-
-  // Remove a building
-  remove(amount = 1) {
-    this.quantity = Math.max(0, this.quantity - amount);
-  }
-
   // Assign a worker to this building
   assignWorker(workerId) {
     if (this.assignedWorkerId) {
