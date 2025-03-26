@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import GameEngine from '../../game/engine/GameEngine';
 import buildingsData from '../../data/buildings.json';
-import placesData from '../../data/places.json';
+
+// Create a single instance of GameEngine outside the component
+const gameEngineInstance = new GameEngine();
 
 export const useGameState = () => {
-  const [gameEngine] = useState(() => new GameEngine());
+  // Use the singleton instance instead of creating a new one
+  const [gameEngine] = useState(() => gameEngineInstance);
   const [gameState, setGameState] = useState({
     resources: {
       food: 0,
