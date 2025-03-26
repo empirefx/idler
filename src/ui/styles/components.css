@@ -194,11 +194,11 @@
 
 .places-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: var(--spacing-md);
 }
 
 .place-card {
+  display: grid;
   background: white;
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
@@ -218,14 +218,16 @@
 
 .place-details {
   font-size: 0.9em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 .place-type {
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
   margin: var(--spacing-md) 0;
   padding: var(--spacing-sm);
-  background: var(--color-light);
+  /* background: var(--color-light); */
   border-radius: var(--border-radius-sm);
   text-transform: capitalize;
 }
@@ -233,7 +235,7 @@
 .place-features,
 .place-resources,
 .place-connections {
-  margin-top: var(--spacing-md);
+  /* margin-top: var(--spacing-md); */
 }
 
 .place-details .label {
@@ -253,7 +255,7 @@
 
 .place-details li {
   margin: var(--spacing-xs) 0;
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
   align-items: center;
 }
