@@ -3,7 +3,7 @@ import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 
-const GameLayout = ({ gameState, addBuilding, removeBuilding, assignWorker, unassignWorker, clearCache }) => {
+const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
   return (
     <div className="game-layout">
       <header className="game-header">
@@ -38,8 +38,6 @@ const GameLayout = ({ gameState, addBuilding, removeBuilding, assignWorker, unas
                 key={building.id}
                 building={building}
                 quantity={building.quantity}
-                onAdd={() => addBuilding(building.id)}
-                onRemove={() => removeBuilding(building.id)}
               />
             ))}
           </div>
@@ -49,4 +47,4 @@ const GameLayout = ({ gameState, addBuilding, removeBuilding, assignWorker, unas
   );
 };
 
-export default GameLayout; 
+export default GameLayout;

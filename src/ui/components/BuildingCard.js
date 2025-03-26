@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BuildingCard = ({ building, quantity, onAdd, onRemove }) => {
+const BuildingCard = ({ building, quantity }) => {
   return (
     <div className="building-card">
       <h3>{building.name}</h3>
@@ -9,12 +9,8 @@ const BuildingCard = ({ building, quantity, onAdd, onRemove }) => {
         <span>Production: {building.productionType}</span>
         <span>Worker: {building.assignedWorkerId ? 'Assigned' : 'Unassigned'}</span>
       </div>
-      <div className="building-actions">
-        <button onClick={onAdd}>Add</button>
-        <button onClick={onRemove}>Remove</button>
-      </div>
     </div>
   );
 };
 
-export default BuildingCard; 
+export default BuildingCard;
