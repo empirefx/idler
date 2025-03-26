@@ -47,7 +47,7 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
         <section className="places-section">
           <h2>Places</h2>
           <div className="places-grid">
-            {gameState.places && gameState.places.map(place => (
+            {gameState.availablePlaces && gameState.availablePlaces.map(place => (
               <PlaceCard
                 key={place.id}
                 place={place}

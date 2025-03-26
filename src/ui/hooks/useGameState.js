@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from 'react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import GameEngine from '../../game/engine/GameEngine';
 import buildingsData from '../../data/buildings.json';
@@ -12,11 +11,12 @@ export const useGameState = () => {
   const [gameState, setGameState] = useState({
     resources: {
       food: 0,
-      resources: 0
+      materials: 0
     },
     buildings: [],
     workers: [],
-    places: Object.values(placesData.places) // Add places for debugging
+    currentPlace: null,
+    availablePlaces: []
   });
   const [error, setError] = useState(null);
   const isInitialized = useRef(false);
@@ -29,9 +29,6 @@ export const useGameState = () => {
       isInitialized.current = true;
 
       try {
-        console.log('Starting game initialization...');
-        console.log('Buildings data:', buildingsData);
-
         if (!buildingsData) {
           throw new Error('Buildings data is missing');
         }
@@ -41,20 +38,16 @@ export const useGameState = () => {
         }
 
         // Initialize buildings and workers
-        console.log('Initializing buildings...');
         gameEngine.initializeBuildings(buildingsData);
         
         // Load saved game state if exists
         try {
-          console.log('Loading saved game state...');
           gameEngine.load();
         } catch (loadError) {
-          console.warn('Failed to load saved game state:', loadError);
           // Continue without loading saved state
         }
 
         // Start the game loop
-        console.log('Starting game loop...');
         gameEngine.start();
       } catch (err) {
         console.error('Error initializing game:', err);
@@ -84,6 +77,38 @@ export const useGameState = () => {
     return () => clearInterval(updateInterval);
   }, [gameEngine]);
 
+  // Navigation functions
+  const getCurrentPlace = useCallback(() => {
+    const currentPlaceId = gameEngine.navigation.getCurrentPlace();
+    return gameEngine.places.get(currentPlaceId);
+  }, [gameEngine]);
+
+  const getAvailablePlaces = useCallback(() => {
+    return gameEngine.navigation.getAvailableConnections();
+  }, [gameEngine]);
+
+  const moveToPlace = useCallback((placeId) => {
+    try {
+      const newPlace = gameEngine.navigation.moveToPlace(placeId);
+      setGameState(prev => ({
+        ...prev,
+        currentPlace: newPlace,
+        availablePlaces: gameEngine.navigation.getAvailableConnections()
+      }));
+    } catch (err) {
+      setError(err.message);
+    }
+  }, [gameEngine]);
+
+  // Update game state to include navigation info
+  useEffect(() => {
+    setGameState(prev => ({
+      ...prev,
+      currentPlace: getCurrentPlace(),
+      availablePlaces: getAvailablePlaces()
+    }));
+  }, [getCurrentPlace, getAvailablePlaces]);
+
   const assignWorker = useCallback((workerId, buildingId) => {
     gameEngine.assignWorkerToBuilding(workerId, buildingId);
   }, [gameEngine]);
@@ -106,14 +131,18 @@ export const useGameState = () => {
     return {
       error,
       gameState: {
-        resources: { food: 0, resources: 0 },
+        resources: { food: 0, materials: 0 },
         buildings: [],
         workers: [],
-        places: []
+        currentPlace: null,
+        availablePlaces: []
       },
       assignWorker: () => {},
       unassignWorker: () => {},
-      clearCache: () => {}
+      clearCache: () => {},
+      moveToPlace: () => {},
+      getCurrentPlace: () => {},
+      getAvailablePlaces: () => {}
     };
   }
 
@@ -122,6 +151,9 @@ export const useGameState = () => {
     error,
     assignWorker,
     unassignWorker,
-    clearCache
+    clearCache,
+    moveToPlace,
+    getCurrentPlace,
+    getAvailablePlaces
   };
 };

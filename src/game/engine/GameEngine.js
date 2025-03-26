@@ -1,19 +1,20 @@
 import Building from '../models/Building';
 import Player from '../models/Player';
 import placesData from '../../data/places.json';
+import NavigationSystem from '../systems/NavigationSystem';
 
 class GameEngine {
   constructor() {
-    console.log('Creating new GameEngine instance');
     this.buildings = new Map();
     this.player = new Player();
     this.resources = {
       food: 0,
-      resources: 0
+      materials: 0
     };
     this.places = new Map(
       Object.entries(placesData.places)
     );
+    this.navigation = new NavigationSystem(this);
     this.lastUpdate = Date.now();
     this.isRunning = false;
     this.tickInterval = null;
@@ -22,8 +23,6 @@ class GameEngine {
   // Initialize the game with building data and workers
   initializeBuildings(buildingData) {
     try {
-      console.log('Starting building initialization with data:', buildingData);
-      
       if (!buildingData || !buildingData.buildings) {
         throw new Error('Invalid building data format');
       }
@@ -33,7 +32,6 @@ class GameEngine {
 
       // Initialize buildings
       Object.entries(buildingData.buildings).forEach(([id, data]) => {
-        console.log(`Initializing building: ${id}`, data);
         if (!id || !data.name || !data.description || !data.productionType) {
           throw new Error(`Invalid building data for building ${id}`);
         }
@@ -45,27 +43,18 @@ class GameEngine {
         ));
       });
 
-      console.log('Buildings initialized successfully:', Array.from(this.buildings.keys()));
-
-      // Initialize workers only after buildings are set up
-      console.log('Initializing workers...');
+      // Initialize workers
       try {
         // Clear any existing workers first
         this.player.workers.clear();
         
         // Add initial workers (exactly two)
-        const worker1 = this.player.addWorker('John');
-        console.log('Added worker 1:', worker1);
-        const worker2 = this.player.addWorker('Sarah');
-        console.log('Added worker 2:', worker2);
+        this.player.addWorker('John');
+        this.player.addWorker('Sarah');
       } catch (error) {
-        console.error('Failed to initialize workers:', error);
-        // Log the error but don't throw it
-        // This allows the game to continue even if worker initialization fails
-        return;
+        throw error;
       }
     } catch (error) {
-      console.error('Failed to initialize buildings:', error);
       throw error;
     }
   }
@@ -125,7 +114,6 @@ class GameEngine {
         id,
         quantity: building.quantity
       }))
-      // Don't save workers to maintain exactly two workers
     };
     localStorage.setItem('gameState', JSON.stringify(state));
   }
@@ -191,7 +179,6 @@ class GameEngine {
       this.player.addWorker(name);
       this.save();
     } catch (error) {
-      console.error('Failed to add worker:', error);
       throw error;
     }
   }
@@ -204,7 +191,6 @@ class GameEngine {
   // Clear game cache
   clearCache() {
     localStorage.removeItem('gameState');
-    console.log('Game cache cleared');
   }
 }
 
