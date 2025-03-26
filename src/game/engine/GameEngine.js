@@ -102,7 +102,8 @@ class GameEngine {
       resources: { ...this.resources },
       buildings: Array.from(this.buildings.values()),
       workers: Array.from(this.player.workers.values()),
-      places: Array.from(this.places.values())
+      places: Array.from(this.places.values()),
+      player: this.player
     };
   }
 
@@ -194,4 +195,4 @@ class GameEngine {
   }
 }
 
-export default GameEngine; 
+export default GameEngine;

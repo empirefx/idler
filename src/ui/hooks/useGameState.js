@@ -16,7 +16,8 @@ export const useGameState = () => {
     buildings: [],
     workers: [],
     currentPlace: null,
-    availablePlaces: []
+    availablePlaces: [],
+    player: gameEngine.player
   });
   const [error, setError] = useState(null);
   const isInitialized = useRef(false);
@@ -37,9 +38,17 @@ export const useGameState = () => {
           throw new Error('Buildings data format is invalid');
         }
 
-        // Initialize buildings and workers
-        gameEngine.initializeBuildings(buildingsData);
+        await gameEngine.initializeBuildings(buildingsData);
         
+        // Update game state with initialized data including player
+        setGameState(prevState => ({
+          ...prevState,
+          buildings: Array.from(gameEngine.buildings.values()),
+          workers: Array.from(gameEngine.player.workers.values()),
+          player: gameEngine.player,
+          availablePlaces: Array.from(gameEngine.places.values())
+        }));
+
         // Load saved game state if exists
         try {
           gameEngine.load();
@@ -135,7 +144,8 @@ export const useGameState = () => {
         buildings: [],
         workers: [],
         currentPlace: null,
-        availablePlaces: []
+        availablePlaces: [],
+        player: gameEngine.player
       },
       assignWorker: () => {},
       unassignWorker: () => {},
