@@ -3,15 +3,16 @@ on:
   push:
     branches:
       - main
-
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    outputs:
-      release_created: ${{ steps.release_please.outputs.release_created }}
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release_please
         with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
           release-type: node
-          token: ${{ secrets.GITHUB_TOKEN }} 
