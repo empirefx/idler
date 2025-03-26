@@ -6,8 +6,8 @@ const BuildingCard = ({ building, quantity, onAdd, onRemove }) => {
       <h3>{building.name}</h3>
       <p>{building.description}</p>
       <div className="building-stats">
-        <span>Quantity: {quantity}</span>
         <span>Production: {building.productionType}</span>
+        <span>Worker: {building.assignedWorkerId ? 'Assigned' : 'Unassigned'}</span>
       </div>
       <div className="building-actions">
         <button onClick={onAdd}>Add</button>

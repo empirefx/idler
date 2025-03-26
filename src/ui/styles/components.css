@@ -90,4 +90,100 @@
 
 .building-actions button:hover {
   opacity: 0.9;
+}
+
+.worker-card {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.worker-card h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-dark);
+}
+
+.worker-status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm);
+  background: var(--color-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.worker-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.worker-actions select {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background: white;
+  cursor: pointer;
+}
+
+.worker-actions button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: var(--color-danger);
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.worker-actions button:hover {
+  opacity: 0.9;
+}
+
+.game-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.workers-section,
+.buildings-section {
+  background: var(--color-light);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+}
+
+.workers-section h2,
+.buildings-section h2 {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-dark);
+}
+
+.workers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.clear-cache-btn {
+  padding: 0.5rem 1rem;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.clear-cache-btn:hover {
+  background-color: #cc0000;
 } 

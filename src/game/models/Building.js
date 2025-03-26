@@ -5,6 +5,7 @@ class Building {
     this.description = description;
     this.productionType = productionType;
     this.quantity = 0;
+    this.assignedWorkerId = null;
   }
 
   // Calculate production for this building
@@ -21,6 +22,33 @@ class Building {
   // Remove a building
   remove(amount = 1) {
     this.quantity = Math.max(0, this.quantity - amount);
+  }
+
+  // Assign a worker to this building
+  assignWorker(workerId) {
+    if (this.assignedWorkerId) {
+      throw new Error('Building already has an assigned worker');
+    }
+    this.assignedWorkerId = workerId;
+    this.quantity += 1;
+  }
+
+  // Unassign a worker from this building
+  unassignWorker(workerId) {
+    if (this.assignedWorkerId === workerId) {
+      this.assignedWorkerId = null;
+      this.quantity = Math.max(0, this.quantity - 1);
+    }
+  }
+
+  // Check if building has an assigned worker
+  hasAssignedWorker() {
+    return this.assignedWorkerId !== null;
+  }
+
+  // Get the assigned worker ID
+  getAssignedWorkerId() {
+    return this.assignedWorkerId;
   }
 }
 

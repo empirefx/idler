@@ -6,11 +6,11 @@ export const useGameState = () => {
   const [gameEngine] = useState(() => new GameEngine());
   const [gameState, setGameState] = useState({
     resources: {
-      worker: 0,
       food: 0,
       resources: 0
     },
-    buildings: []
+    buildings: [],
+    workers: []
   });
   const [error, setError] = useState(null);
 
@@ -18,16 +18,37 @@ export const useGameState = () => {
   useEffect(() => {
     const initializeGame = async () => {
       try {
-        if (!buildingsData || !buildingsData.buildings) {
-          throw new Error('Invalid building data format');
+        console.log('Starting game initialization...');
+        console.log('Buildings data:', buildingsData);
+
+        if (!buildingsData) {
+          throw new Error('Buildings data is missing');
         }
 
+        if (!buildingsData.buildings) {
+          throw new Error('Buildings data format is invalid');
+        }
+
+        // Initialize buildings and workers
+        console.log('Initializing buildings...');
         gameEngine.initializeBuildings(buildingsData);
-        gameEngine.load(); // Load saved game state if exists
+        
+        // Load saved game state if exists
+        try {
+          console.log('Loading saved game state...');
+          gameEngine.load();
+        } catch (loadError) {
+          console.warn('Failed to load saved game state:', loadError);
+          // Continue without loading saved state
+        }
+
+        // Start the game loop
+        console.log('Starting game loop...');
         gameEngine.start();
       } catch (err) {
         console.error('Error initializing game:', err);
-        setError(err.message);
+        console.error('Error stack:', err.stack);
+        setError(`Game initialization failed: ${err.message}`);
       }
     };
 
@@ -35,7 +56,11 @@ export const useGameState = () => {
 
     return () => {
       gameEngine.stop();
-      gameEngine.save(); // Save game state when component unmounts
+      try {
+        gameEngine.save();
+      } catch (saveError) {
+        console.error('Failed to save game state:', saveError);
+      }
     };
   }, [gameEngine]);
 
@@ -65,6 +90,14 @@ export const useGameState = () => {
     }
   }, [gameEngine]);
 
+  const assignWorker = useCallback((workerId, buildingId) => {
+    gameEngine.assignWorkerToBuilding(workerId, buildingId);
+  }, [gameEngine]);
+
+  const unassignWorker = useCallback((workerId) => {
+    gameEngine.unassignWorker(workerId);
+  }, [gameEngine]);
+
   const saveGame = useCallback(() => {
     gameEngine.save();
   }, [gameEngine]);
@@ -73,17 +106,27 @@ export const useGameState = () => {
     gameEngine.load();
   }, [gameEngine]);
 
+  const clearCache = useCallback(() => {
+    gameEngine.clearCache();
+    // Reload the game after clearing cache
+    window.location.reload();
+  }, [gameEngine]);
+
   if (error) {
     return {
       error,
       gameState: {
-        resources: { worker: 0, food: 0, resources: 0 },
-        buildings: []
+        resources: { food: 0, resources: 0 },
+        buildings: [],
+        workers: []
       },
       addBuilding: () => {},
       removeBuilding: () => {},
+      assignWorker: () => {},
+      unassignWorker: () => {},
       saveGame: () => {},
-      loadGame: () => {}
+      loadGame: () => {},
+      clearCache: () => {}
     };
   }
 
@@ -91,7 +134,10 @@ export const useGameState = () => {
     gameState,
     addBuilding,
     removeBuilding,
+    assignWorker,
+    unassignWorker,
     saveGame,
-    loadGame
+    loadGame,
+    clearCache
   };
 }; 
