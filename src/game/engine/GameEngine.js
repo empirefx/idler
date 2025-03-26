@@ -99,7 +99,10 @@ class GameEngine {
   // Get current game state
   getState() {
     return {
-      resources: { ...this.resources },
+      resources: {
+        food: this.resources.food,
+        materials: this.resources.materials
+      },
       buildings: Array.from(this.buildings.values()),
       workers: Array.from(this.player.workers.values()),
       places: Array.from(this.places.values()),

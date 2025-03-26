@@ -2,12 +2,11 @@ import React from 'react';
 
 const ResourceDisplay = ({ resources, gameState }) => {
   const player = gameState?.player;
-  console.log('ResourceDisplay - player:', player);
-  console.log('ResourceDisplay - resources:', resources);
   
   // Safely get worker count and max workers
   const workerCount = player?.workers?.size ?? 0;
   const maxWorkers = player?.MAX_WORKERS ?? 0;
+  console.log('ResourceDisplay - resources:', resources);
   
   return (
     <div className="resource-display">
@@ -17,12 +16,14 @@ const ResourceDisplay = ({ resources, gameState }) => {
           <span className="resource-amount">{`${workerCount}/${maxWorkers}`}</span>
         </div>
       )}
-      {Object.entries(resources || {}).map(([resource, amount]) => (
-        <div key={resource} className="resource-item">
-          <span className="resource-name">{resource}</span>
-          <span className="resource-amount">{`${Math.floor(amount) || 0}`}</span>
-        </div>
-      ))}
+      <div className="resource-item">
+        <span className="resource-name">Food</span>
+        <span className="resource-amount">{Math.floor(resources?.food ?? 0)}</span>
+      </div>
+      <div className="resource-item">
+        <span className="resource-name">Materials</span>
+        <span className="resource-amount">{Math.floor(resources?.materials ?? 0)}</span>
+      </div>
     </div>
   );
 };
