@@ -6,7 +6,6 @@ const ResourceDisplay = ({ resources, gameState }) => {
   // Safely get worker count and max workers
   const workerCount = player?.workers?.size ?? 0;
   const maxWorkers = player?.MAX_WORKERS ?? 0;
-  console.log('ResourceDisplay - resources:', resources);
   
   return (
     <div className="resource-display">
