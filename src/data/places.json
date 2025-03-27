@@ -131,10 +131,32 @@
         "fish": 3,
         "water": 1
       }
+    },
+    "ancient_ruins": {
+      "id": "ancient_ruins",
+      "name": "Ancient Ruins",
+      "description": "The remains of an ancient civilization, filled with mysterious artifacts and valuable resources.",
+      "type": "ruins",
+      "connections": ["deep_woods"],
+      "features": {
+        "temple": {
+          "name": "Crumbling Temple",
+          "description": "A once-grand temple now in ruins, hiding valuable treasures"
+        },
+        "workshop": {
+          "name": "Ancient Workshop",
+          "description": "A workshop containing remnants of advanced crafting techniques"
+        }
+      },
+      "resources": {
+        "stone": 3,
+        "artifacts": 2,
+        "knowledge": 1
+      }
     }
   },
   "metadata": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "lastUpdated": "2025-03-26"
   }
 }
