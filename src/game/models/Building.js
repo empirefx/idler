@@ -4,14 +4,14 @@ class Building {
     this.name = name;
     this.description = description;
     this.productionType = productionType;
-    this.quantity = 0;
     this.assignedWorkerId = null;
+    this.baseProductionRate = 1; // Base production rate per second
   }
 
   // Calculate production for this building
   calculateProduction() {
-    // Base production logic will go here
-    return this.quantity;
+    // Only produce if there's an assigned worker
+    return this.hasAssignedWorker() ? this.baseProductionRate : 0;
   }
 
   // Assign a worker to this building
@@ -20,14 +20,12 @@ class Building {
       throw new Error('Building already has an assigned worker');
     }
     this.assignedWorkerId = workerId;
-    this.quantity += 1;
   }
 
   // Unassign a worker from this building
   unassignWorker(workerId) {
     if (this.assignedWorkerId === workerId) {
       this.assignedWorkerId = null;
-      this.quantity = Math.max(0, this.quantity - 1);
     }
   }
 
@@ -42,4 +40,4 @@ class Building {
   }
 }
 
-export default Building; 
+export default Building;

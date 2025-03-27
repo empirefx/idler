@@ -40,15 +40,6 @@ export const useGameState = () => {
 
         await gameEngine.initializeBuildings(buildingsData);
         
-        // Update game state with initialized data including player
-        setGameState(prevState => ({
-          ...prevState,
-          buildings: Array.from(gameEngine.buildings.values()),
-          workers: Array.from(gameEngine.player.workers.values()),
-          player: gameEngine.player,
-          availablePlaces: Array.from(gameEngine.places.values())
-        }));
-
         // Load saved game state if exists
         try {
           gameEngine.load();
@@ -58,6 +49,9 @@ export const useGameState = () => {
 
         // Start the game loop
         gameEngine.start();
+        
+        // Update game state with initialized data including player
+        setGameState(gameEngine.getState());
       } catch (err) {
         console.error('Error initializing game:', err);
         console.error('Error stack:', err.stack);
@@ -82,7 +76,7 @@ export const useGameState = () => {
     const updateInterval = setInterval(() => {
       const newState = gameEngine.getState();
       setGameState(newState);
-    }, 1000); // Update UI every second
+    }, 100); // Update UI every 100ms to match game engine
 
     return () => clearInterval(updateInterval);
   }, [gameEngine]);

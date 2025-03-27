@@ -27,6 +27,17 @@ class GameEngine {
         throw new Error('Invalid building data format');
       }
 
+      // Store existing worker assignments
+      const workerAssignments = new Map();
+      if (this.buildings.size > 0) {
+        this.buildings.forEach((building, buildingId) => {
+          const workerId = building.getAssignedWorkerId();
+          if (workerId) {
+            workerAssignments.set(buildingId, workerId);
+          }
+        });
+      }
+
       // Clear existing buildings
       this.buildings.clear();
 
@@ -43,17 +54,20 @@ class GameEngine {
         ));
       });
 
-      // Initialize workers
-      try {
-        // Clear any existing workers first
-        this.player.workers.clear();
-        
-        // Add initial workers (exactly two)
+      // Only initialize workers if they don't exist
+      if (this.player.workers.size === 0) {
         this.player.addWorker('John');
         this.player.addWorker('Sarah');
-      } catch (error) {
-        throw error;
       }
+
+      // Restore worker assignments
+      workerAssignments.forEach((workerId, buildingId) => {
+        try {
+          this.assignWorkerToBuilding(workerId, buildingId);
+        } catch (error) {
+          console.error(`Failed to restore worker ${workerId} to building ${buildingId}:`, error);
+        }
+      });
     } catch (error) {
       throw error;
     }
@@ -62,9 +76,10 @@ class GameEngine {
   // Start the game loop
   start() {
     if (this.isRunning) return;
+    
     this.isRunning = true;
     this.lastUpdate = Date.now();
-    this.tickInterval = setInterval(() => this.tick(), 1000); // Update every second
+    this.tickInterval = setInterval(() => this.tick(), 100); // Update every 100ms for smoother updates
   }
 
   // Stop the game loop
@@ -92,7 +107,12 @@ class GameEngine {
     // Update resources based on building production
     this.buildings.forEach(building => {
       const production = building.calculateProduction();
-      this.resources[building.productionType] += production * deltaTime;
+      if (production > 0) {
+        const resourceType = building.productionType;
+        if (this.resources.hasOwnProperty(resourceType)) {
+          this.resources[resourceType] += production * deltaTime;
+        }
+      }
     });
   }
 
