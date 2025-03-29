@@ -1,8 +1,4 @@
 {
-  "resources": {
-    "food": 0,
-    "resources": 0
-  },
   "workers": [
     {
       "id": 1,
