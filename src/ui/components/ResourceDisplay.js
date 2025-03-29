@@ -23,6 +23,10 @@ const ResourceDisplay = ({ resources, gameState }) => {
         <span className="resource-name">Materials</span>
         <span className="resource-amount">{Math.floor(resources?.materials ?? 0)}</span>
       </div>
+      <div className="resource-item">
+        <span className="resource-name">Gold</span>
+        <span className="resource-amount">{Math.floor(resources?.gold ?? 0)}</span>
+      </div>
     </div>
   );
 };

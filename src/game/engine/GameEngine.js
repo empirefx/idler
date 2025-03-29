@@ -9,10 +9,7 @@ class GameEngine {
     this.buildings = new Map();
     this.player = new Player();
     this.player.loadFromData(playerData);
-    this.resources = {
-      food: 0,
-      materials: 0
-    };
+    this.resources = this.player.getAvailableResources();
     this.places = new Map(
       Object.entries(placesData.places)
     );
@@ -117,7 +114,8 @@ class GameEngine {
     return {
       resources: {
         food: this.resources.food,
-        materials: this.resources.materials
+        materials: this.resources.materials,
+        gold: this.resources.gold
       },
       buildings: Array.from(this.buildings.values()),
       workers: Array.from(this.player.workers.values()),

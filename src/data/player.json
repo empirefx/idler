@@ -1,4 +1,22 @@
 {
+  "id": 1,
+  "name": "John Doe",
+  "MAX_WORKERS": 5,
+  "currentLocation": "village_center",
+  "resources": [
+    {
+      "name": "gold",
+      "amount": 0
+    },
+    {
+      "name": "food",
+      "amount": 0
+    },
+    {
+      "name": "materials",
+      "amount": 0
+    }
+  ],
   "workers": [
     {
       "id": 1,
@@ -16,9 +34,8 @@
       "assignedBuildingId": null
     }
   ],
-  "currentLocation": "village_center",
   "metadata": {
-    "version": "1.0.4",
+    "version": "1.0.5",
     "lastUpdated": "2025-03-29"
   }
 }

@@ -5,6 +5,29 @@ class Player {
     this.workers = new Map();
     this.MAX_WORKERS = 5;
     this.currentLocation = 'village_center';
+    this.resources = {
+      gold: 0,
+      food: 0,
+      materials: 0
+    };
+  }
+
+  addResource(resource, amount) {
+    if (this.resources[resource] === undefined) {
+      this.resources[resource] = 0;
+    }
+    this.resources[resource] += amount;
+  }
+
+  removeResource(resource, amount) {
+    if (this.resources[resource] === undefined) {
+      this.resources[resource] = 0;
+    }
+    this.resources[resource] -= amount;
+  }
+
+  getAvailableResources() {
+    return this.resources;
   }
 
   addWorker(name) {
@@ -36,6 +59,10 @@ class Player {
 
     data.workers.forEach(worker => {
       this.addWorker(worker.name);
+    });
+
+    data.resources.forEach(resource => {
+      this.addResource(resource.name, resource.amount);
     });
   }
 

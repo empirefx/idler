@@ -9,14 +9,11 @@ export const useGameState = () => {
   // Use the singleton instance instead of creating a new one
   const [gameEngine] = useState(() => gameEngineInstance);
   const [gameState, setGameState] = useState({
-    resources: {
-      food: 0,
-      materials: 0
-    },
+    resources: gameEngine.player.getAvailableResources(),
     buildings: [],
-    workers: [],
-    currentPlace: null,
-    availablePlaces: [],
+    workers: gameEngine.player.getAllWorkers(),
+    currentPlace: gameEngine.navigation.getCurrentPlace(),
+    availablePlaces: gameEngine.navigation.getAvailableConnections(),
     player: gameEngine.player
   });
   const [error, setError] = useState(null);
@@ -126,7 +123,7 @@ export const useGameState = () => {
     return {
       error,
       gameState: {
-        resources: { food: 0, materials: 0 },
+        resources: { food: 0, materials: 0, gold: 0 },
         buildings: [],
         workers: [],
         currentPlace: null,
