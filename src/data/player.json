@@ -13,11 +13,16 @@
       "id": 2,
       "name": "Tessa",
       "assignedBuildingId": null
+    },
+    {
+      "id": 3,
+      "name": "Rokus",
+      "assignedBuildingId": null
     }
   ],
   "currentLocation": "village_center",
   "metadata": {
-    "version": "1.0.3",
+    "version": "1.0.4",
     "lastUpdated": "2025-03-29"
   }
 }
