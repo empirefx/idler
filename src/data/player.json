@@ -3,19 +3,21 @@
     "food": 0,
     "resources": 0
   },
+  "workers": [
+    {
+      "id": 1,
+      "name": "John",
+      "assignedBuildingId": null
+    },
+    {
+      "id": 2,
+      "name": "Tessa",
+      "assignedBuildingId": null
+    }
+  ],
   "currentLocation": "village_center",
-  "buildings": {
-    "house": 0,
-    "farm": 0,
-    "mine": 0
-  },
-  "stats": {
-    "lastUpdate": 0,
-    "totalFood": 0,
-    "totalResources": 0
-  },
   "metadata": {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "lastUpdated": "2025-03-29"
   }
 }

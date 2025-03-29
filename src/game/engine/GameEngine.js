@@ -1,5 +1,6 @@
 import Building from '../models/Building';
 import Player from '../models/Player';
+import playerData from '../../data/player.json';
 import placesData from '../../data/places.json';
 import NavigationSystem from '../systems/NavigationSystem';
 
@@ -7,6 +8,7 @@ class GameEngine {
   constructor() {
     this.buildings = new Map();
     this.player = new Player();
+    this.player.loadFromData(playerData);
     this.resources = {
       food: 0,
       materials: 0
@@ -55,10 +57,10 @@ class GameEngine {
       });
 
       // Only initialize workers if they don't exist
-      if (this.player.workers.size === 0) {
-        this.player.addWorker('John');
-        this.player.addWorker('Sarah');
-      }
+      // if (this.player.workers.size === 0) {
+      //   this.player.addWorker('John');
+      //   this.player.addWorker('Sarah');
+      // }
 
       // Restore worker assignments
       workerAssignments.forEach((workerId, buildingId) => {

@@ -30,6 +30,15 @@ class Player {
     return this.workers.get(workerId);
   }
 
+  loadFromData(data) {
+    this.MAX_WORKERS = data.MAX_WORKERS;
+    this.currentLocation = data.currentLocation;
+
+    data.workers.forEach(worker => {
+      this.addWorker(worker.name);
+    });
+  }
+
   getAllWorkers() {
     return Array.from(this.workers.values());
   }
