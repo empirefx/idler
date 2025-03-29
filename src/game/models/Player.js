@@ -1,29 +1,27 @@
 import Worker from './Worker';
 
 class Player {
-  constructor() {
+  constructor(id, name, MAX_WORKERS, currentLocation) {
+    this.id = id;
+    this.name = name;
     this.workers = new Map();
-    this.MAX_WORKERS = 5;
-    this.currentLocation = 'village_center';
-    this.resources = {
-      gold: 0,
-      food: 0,
-      materials: 0
-    };
+    this.MAX_WORKERS = MAX_WORKERS;
+    this.currentLocation = currentLocation;
+    this.resources = new Map();
   }
 
   addResource(resource, amount) {
-    if (this.resources[resource] === undefined) {
-      this.resources[resource] = 0;
+    if (!this.resources.has(resource)) {
+      this.resources.set(resource, 0);
     }
-    this.resources[resource] += amount;
+    this.resources.set(resource, this.resources.get(resource) + amount);
   }
 
   removeResource(resource, amount) {
-    if (this.resources[resource] === undefined) {
-      this.resources[resource] = 0;
+    if (!this.resources.has(resource)) {
+      this.resources.set(resource, 0);
     }
-    this.resources[resource] -= amount;
+    this.resources.set(resource, this.resources.get(resource) - amount);
   }
 
   getAvailableResources() {
@@ -56,6 +54,8 @@ class Player {
   loadFromData(data) {
     this.MAX_WORKERS = data.MAX_WORKERS;
     this.currentLocation = data.currentLocation;
+    this.id = data.id;
+    this.name = data.name;
 
     data.workers.forEach(worker => {
       this.addWorker(worker.name);

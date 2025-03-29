@@ -102,8 +102,8 @@ class GameEngine {
       const production = building.calculateProduction();
       if (production > 0) {
         const resourceType = building.productionType;
-        if (this.resources.hasOwnProperty(resourceType)) {
-          this.resources[resourceType] += production * deltaTime;
+        if (this.resources.has(resourceType)) {
+          this.resources.set(resourceType, this.resources.get(resourceType) + production * deltaTime);
         }
       }
     });
@@ -112,11 +112,7 @@ class GameEngine {
   // Get current game state
   getState() {
     return {
-      resources: {
-        food: this.resources.food,
-        materials: this.resources.materials,
-        gold: this.resources.gold
-      },
+      resources: Object.fromEntries(this.resources.entries()),
       buildings: Array.from(this.buildings.values()),
       workers: Array.from(this.player.workers.values()),
       places: Array.from(this.places.values()),
@@ -129,7 +125,7 @@ class GameEngine {
   // Save game state
   save() {
     const state = {
-      resources: { ...this.resources },
+      resources: Object.fromEntries(this.resources.entries()),
       buildings: Array.from(this.buildings.entries()).map(([id, building]) => ({
         id,
         quantity: building.quantity
@@ -143,7 +139,7 @@ class GameEngine {
     const savedState = localStorage.getItem('gameState');
     if (savedState) {
       const state = JSON.parse(savedState);
-      this.resources = state.resources;
+      this.resources = new Map(Object.entries(state.resources));
       
       // Load buildings
       state.buildings.forEach(({ id, quantity }) => {
