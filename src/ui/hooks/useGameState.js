@@ -86,6 +86,11 @@ export const useGameState = () => {
     return gameEngine.navigation.getCurrentPlace();
   }, [gameEngine]);
 
+  const getCurrentPlaceData = useCallback(() => {
+    const currentPlaceId = getCurrentPlace();
+    return gameEngine.places.get(currentPlaceId);
+  }, [gameEngine, getCurrentPlace]);
+
   const getAvailablePlaces = useCallback(() => {
     return gameEngine.navigation.getAvailableConnections();
   }, [gameEngine]);
@@ -133,6 +138,7 @@ export const useGameState = () => {
       clearCache: () => {},
       moveToPlace: () => {},
       getCurrentPlace: () => {},
+      getCurrentPlaceData: () => {},
       getAvailablePlaces: () => {}
     };
   }
@@ -145,6 +151,7 @@ export const useGameState = () => {
     clearCache,
     moveToPlace,
     getCurrentPlace,
+    getCurrentPlaceData,
     getAvailablePlaces
   };
 };

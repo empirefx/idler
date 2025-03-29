@@ -4,6 +4,7 @@ class Player {
   constructor() {
     this.workers = new Map();
     this.MAX_WORKERS = 5;
+    this.currentLocation = 'village_center';
   }
 
   addWorker(name) {
@@ -50,6 +51,14 @@ class Player {
   getAssignedWorkers(buildingId) {
     return this.getAllWorkers().filter(worker => worker.assignedBuildingId === buildingId);
   }
+
+  getCurrentLocation() {
+    return this.currentLocation;
+  }
+
+  setCurrentLocation(locationId) {
+    this.currentLocation = locationId;
+  }
 }
 
-export default Player; 
+export default Player;

@@ -25,6 +25,8 @@ class NavigationSystem {
       throw new Error('Cannot move to disconnected place');
     }
     this.currentPlace = placeId;
+    // Update player's current location
+    this.gameEngine.player.currentLocation = placeId;
     return this.gameEngine.places.get(placeId);
   }
 }

@@ -3,6 +3,7 @@ import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
+import CurrentPlaceDisplay from '../components/CurrentPlaceDisplay';
 
 const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
   return (
@@ -16,6 +17,7 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
       </header>
       
       <main className="game-main">
+        <CurrentPlaceDisplay />
         <section className="workers-section">
           <h2>Workers</h2>
           <div className="workers-grid">
