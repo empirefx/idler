@@ -7,17 +7,8 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  color: var(--color-dark);
-  background-color: var(--color-light);
+.App {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-
-/* Common utility classes */
-.container {
-  max-width: var(--breakpoint-xl);
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-} 
