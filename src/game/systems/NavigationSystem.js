@@ -1,15 +1,14 @@
 class NavigationSystem {
   constructor(gameEngine) {
     this.gameEngine = gameEngine;
-    this.currentPlace = 'village_center'; // Default starting location
   }
 
   getCurrentPlace() {
-    return this.currentPlace;
+    return this.gameEngine.player.currentLocation;
   }
 
   getAvailableConnections() {
-    const currentPlaceData = this.gameEngine.places.get(this.currentPlace);
+    const currentPlaceData = this.gameEngine.places.get(this.getCurrentPlace());
     if (!currentPlaceData || !currentPlaceData.connections) {
       return [];
     }
@@ -20,11 +19,10 @@ class NavigationSystem {
   }
 
   moveToPlace(placeId) {
-    const currentPlaceData = this.gameEngine.places.get(this.currentPlace);
+    const currentPlaceData = this.gameEngine.places.get(this.getCurrentPlace());
     if (!currentPlaceData || !currentPlaceData.connections.includes(placeId)) {
       throw new Error('Cannot move to disconnected place');
     }
-    this.currentPlace = placeId;
     // Update player's current location
     this.gameEngine.player.currentLocation = placeId;
     return this.gameEngine.places.get(placeId);
