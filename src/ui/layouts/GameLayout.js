@@ -4,8 +4,13 @@ import ResourceDisplay from '../components/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
 import CurrentPlaceDisplay from '../components/CurrentPlaceDisplay';
+import places from '../../data/places.json';
+import buildings from '../../data/buildings.json';
 
 const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
+  const currentPlace = places.places[gameState.player.currentLocation];
+  const currentBuildings = currentPlace?.buildings || [];
+  
   return (
     <div className="game-layout">
       <header className="game-header">
@@ -34,15 +39,17 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
         </section>
 
         <section className="buildings-section">
-          <h2>Buildings</h2>
+          <h2>Buildings in {currentPlace?.name || 'Current Location'}</h2>
           <div className="buildings-grid">
-            {gameState.buildings.map(building => (
-              <BuildingCard
-                key={building.id}
-                building={building}
-                quantity={building.quantity}
-              />
-            ))}
+            {currentBuildings.map(buildingId => {
+              const building = buildings.buildings[buildingId];
+              return building ? (
+                <BuildingCard
+                  key={buildingId}
+                  building={building}
+                />
+              ) : null;
+            })}
           </div>
         </section>
 
