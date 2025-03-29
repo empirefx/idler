@@ -11,7 +11,7 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
         )}
       </div>
       <div className="worker-actions">
-        {!worker.isAssigned() ? (
+        {!worker.isAssigned() && buildings && buildings.length > 0 ? (
           <select 
             onChange={(e) => onAssign(worker.id, e.target.value)}
             value=""
@@ -23,9 +23,9 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
               </option>
             ))}
           </select>
-        ) : (
+        ) : worker.isAssigned() ?(
           <button onClick={() => onUnassign(worker.id)}>Unassign</button>
-        )}
+        ) : null }
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
               <WorkerCard
                 key={worker.id}
                 worker={worker}
-                buildings={gameState.buildings}
+                buildings={currentBuildings.map(buildingId => buildings.buildings[buildingId])}
                 onAssign={assignWorker}
                 onUnassign={unassignWorker}
               />
