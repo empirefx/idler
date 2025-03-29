@@ -56,12 +56,6 @@ class GameEngine {
         ));
       });
 
-      // Only initialize workers if they don't exist
-      // if (this.player.workers.size === 0) {
-      //   this.player.addWorker('John');
-      //   this.player.addWorker('Sarah');
-      // }
-
       // Restore worker assignments
       workerAssignments.forEach((workerId, buildingId) => {
         try {
