@@ -9,12 +9,16 @@ const PlaceCard = ({ place }) => {
   };
 
   return (
-    <div className="place-card">
+    <div className="place-card" style={{ 
+      backgroundImage: `url('assets/background/${place["background-image"]}')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'bottom',
+      backgroundRepeat: 'no-repeat'
+    }}>
       <div className="place-top">
-
         <div className="place-top-left">
           <h3>{place.name}</h3>
-          <p className="place-description">{place.description}</p>
+          {/* <p className="place-description">{place.description}</p> */}
         </div>
 
         <div className="place-top-right">
@@ -22,7 +26,7 @@ const PlaceCard = ({ place }) => {
         </div>
       </div>
       
-      <div className="place-details">
+      {/* <div className="place-details">
         <div className="place-type">
           <span className="label">Type:</span> {place.type}
         </div>
@@ -63,7 +67,7 @@ const PlaceCard = ({ place }) => {
             </ul>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

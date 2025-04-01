@@ -1,8 +1,43 @@
 @import './variables.css';
 
 /* Reset and base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 * {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+  font-weight: normal;
+  font-style: normal;
+}
+
+#root,
+.App,
+.game-layout {
+  height: inherit;
+  width: inherit;
+  font-family: var(--font-family-base);
+}
+
+.bg-green {
+  border: var(--border-radius-xs) solid var(--color-success);
+}
+
+.bg-red {
+  border: var(--border-radius-xs) solid var(--color-danger);
 }

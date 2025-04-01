@@ -17,6 +17,7 @@ class GameEngine {
     this.lastUpdate = Date.now();
     this.isRunning = false;
     this.tickInterval = null;
+    this.currentPlaceBackgroundImage = null;
   }
 
   // Initialize the game with building data and workers
@@ -117,6 +118,7 @@ class GameEngine {
       workers: Array.from(this.player.workers.values()),
       places: Array.from(this.places.values()),
       currentPlace: this.navigation.getCurrentPlace(),
+      currentPlaceBackgroundImage: this.navigation.getBackgroundImage(),
       availablePlaces: this.navigation.getAvailableConnections(),
       player: this.player
     };

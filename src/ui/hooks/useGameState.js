@@ -13,6 +13,7 @@ export const useGameState = () => {
     buildings: [],
     workers: gameEngine.player.getAllWorkers(),
     currentPlace: gameEngine.navigation.getCurrentPlace(),
+    currentPlaceBackgroundImage: gameEngine.navigation.getBackgroundImage(),
     availablePlaces: gameEngine.navigation.getAvailableConnections(),
     player: gameEngine.player
   });

@@ -28,13 +28,13 @@ class Player {
     return this.resources;
   }
 
-  addWorker(name) {
+  addWorker(name, avatar, assignedBuildingId = null) {
     if (this.workers.size >= this.MAX_WORKERS) {
       throw new Error('Maximum number of workers reached (5)');
     }
 
     const id = `worker_${this.workers.size + 1}`;
-    const worker = new Worker(id, name);
+    const worker = new Worker(id, name, avatar, assignedBuildingId);
     this.workers.set(id, worker);
     return worker;
   }
@@ -58,7 +58,7 @@ class Player {
     this.name = data.name;
 
     data.workers.forEach(worker => {
-      this.addWorker(worker.name);
+      this.addWorker(worker.name, worker.avatar, worker.assignedBuildingId);
     });
 
     data.resources.forEach(resource => {

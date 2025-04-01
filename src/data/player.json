@@ -20,22 +20,25 @@
   "workers": [
     {
       "id": 1,
-      "name": "John",
+      "name": "Milo Bladovan",
+      "avatar": "worker_m.jpg",
       "assignedBuildingId": null
     },
     {
       "id": 2,
-      "name": "Tessa",
+      "name": "Silik Ludorin",
+      "avatar": "worker_f.jpg",
       "assignedBuildingId": null
     },
     {
       "id": 3,
-      "name": "Rokus",
+      "name": "Kresibrin Dobronimir",
+      "avatar": "worker_m.jpg",
       "assignedBuildingId": null
     }
   ],
   "metadata": {
-    "version": "1.0.5",
-    "lastUpdated": "2025-03-29"
+    "version": "1.0.7",
+    "lastUpdated": "2025-04-01"
   }
 }

@@ -1,8 +1,9 @@
 class Worker {
-  constructor(id, name) {
+  constructor(id, name, avatar) {
     this.id = id;
     this.name = name;
     this.assignedBuildingId = null;
+    this.avatar = avatar;
   }
 
   assignToBuilding(buildingId) {

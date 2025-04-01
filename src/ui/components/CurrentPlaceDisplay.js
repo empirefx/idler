@@ -8,11 +8,11 @@ const CurrentPlaceDisplay = () => {
 
   return (
     <div className="current-place">
-      <h2>Current Location</h2>
+      {/* <h2>Current Location</h2> */}
       <div className="place-info">
-        <h3>{currentPlace.name}</h3>
-        <p className="place-description">{currentPlace.description}</p>
-        <div className="place-id">Location ID: {currentPlace.id}</div>
+        <h3 data-text={currentPlace.name}>{currentPlace.name}</h3>
+        {/* <p className="place-description">{currentPlace.description}</p> */}
+        {/* <div className="place-id">Location ID: {currentPlace.id}</div> */}
       </div>
     </div>
   );

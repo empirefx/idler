@@ -7,6 +7,11 @@ class NavigationSystem {
     return this.gameEngine.player.currentLocation;
   }
 
+  getBackgroundImage() {
+    const currentPlaceData = this.gameEngine.places.get(this.getCurrentPlace());
+    return currentPlaceData?.['background-image'] || '';
+  }
+
   getAvailableConnections() {
     const currentPlaceData = this.gameEngine.places.get(this.getCurrentPlace());
     if (!currentPlaceData || !currentPlaceData.connections) {
