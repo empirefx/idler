@@ -4,16 +4,16 @@ import Building from '../models/Building';
 import placesData from '../../data/places.json';
 import NavigationSystem from '../systems/NavigationSystem';
 import { store } from '../../../store';
+import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/playerSlice';
 
 class GameEngine {
-  constructor() {
+  constructor(dispatch) {
+    this.dispatch = dispatch;
     this.buildings = new Map();
 
     const state = store.getState();
     this.player = state.player;
     this.resources = this.player.resources;
-
-    console.log(this.resources);
 
     this.places = new Map(
       Object.entries(placesData.places)
@@ -171,12 +171,12 @@ class GameEngine {
     // If building already has a worker, unassign it first
     if (building.hasAssignedWorker()) {
       const currentWorkerId = building.getAssignedWorkerId();
-      this.player.unassignWorker(currentWorkerId);
+      this.dispatch(unassignWorker(currentWorkerId));
     }
 
     // Assign the new worker
     building.assignWorker(workerId);
-    this.player.assignWorkerToBuilding(workerId, buildingId);
+    this.dispatch(assignWorkerToBuilding(workerId, buildingId));
     this.save();
   }
 

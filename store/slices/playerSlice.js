@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import playerData from '../../src/data/player.json';
 
 const initialState = {
@@ -33,17 +33,12 @@ export const playerSlice = createSlice({
     setCurrentLocation: (state, action) => {
       state.currentLocation = action.payload;
     },
-    getWorker: (state, action) => {
-      const { workerId } = action.payload;
-      return state.workers.find(worker => worker.id === workerId);
-    },
-    getAssignedWorkers: (state, action) => {
-      const { buildingId } = action.payload;
-      return state.workers.filter(worker => worker.assignedBuildingId === buildingId);
-    },
     unassignWorker: (state, action) => {
       const { workerId } = action.payload;
-      state.workers = state.workers.filter(worker => worker.id !== workerId);
+      const worker = state.workers.find(worker => worker.id === workerId);
+      if (worker) {
+        worker.assignedBuildingId = null; // Set to null rather than removing the worker
+      }
     },
     assignWorkerToBuilding: (state, action) => {
       const { workerId, buildingId } = action.payload;
@@ -52,14 +47,30 @@ export const playerSlice = createSlice({
         worker.assignedBuildingId = buildingId;
       }
     },
-    getAvailableWorkers: (state) => {
-      return state.workers.filter(worker => !worker.assignedBuildingId);
-    },
-    getAvailableResources: (state) => {
-      return state.resources;
-    },
   },
 });
 
-export const { addResource, removeResource, addWorker, removeWorker, setCurrentLocation, getWorker, getAssignedWorkers, unassignWorker, assignWorkerToBuilding, getAvailableWorkers, getAvailableResources } = playerSlice.actions;
+// Action creators
+export const { 
+  addResource, 
+  removeResource, 
+  addWorker, 
+  removeWorker, 
+  setCurrentLocation, 
+  unassignWorker, 
+  assignWorkerToBuilding 
+} = playerSlice.actions;
+
+// Selectors
+export const selectWorkers = state => state.player.workers;
+export const selectWorker = workerId => state => 
+  state.player.workers.find(worker => worker.id === workerId);
+export const selectAssignedWorkers = buildingId => state => 
+  state.player.workers.filter(worker => worker.assignedBuildingId === buildingId);
+export const selectUnassignedWorkers = createSelector(
+  [selectWorkers],
+  workers => workers.filter(worker => !worker.assignedBuildingId)
+);
+export const selectResources = state => state.player.resources;
+
 export default playerSlice.reducer;

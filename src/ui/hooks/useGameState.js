@@ -1,13 +1,20 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+
 import GameEngine from '../../game/engine/GameEngine';
 import buildingsData from '../../data/buildings.json';
 
-// Create a single instance of GameEngine outside the component
-const gameEngineInstance = new GameEngine();
 
 export const useGameState = () => {
-  // Use the singleton instance instead of creating a new one
-  const [gameEngine] = useState(() => gameEngineInstance);
+  const dispatch = useDispatch(); // Get dispatch function from Redux and pass it to GameEngine
+
+  // Create GameEngine instance with a ref to ensure it's created only once
+  const gameEngineRef = useRef(null);
+  if (!gameEngineRef.current) {
+    gameEngineRef.current = new GameEngine(dispatch);
+  }
+  const gameEngine = gameEngineRef.current;
+
   const [gameState, setGameState] = useState({
     resources: gameEngine.player.resources,
     buildings: [],
@@ -67,7 +74,7 @@ export const useGameState = () => {
         console.error('Failed to save game state:', saveError);
       }
     };
-  }, [gameEngine]);
+  }, [gameEngine, dispatch]);
 
   // Update game state
   useEffect(() => {
