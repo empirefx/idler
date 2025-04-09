@@ -9,9 +9,9 @@ export const useGameState = () => {
   // Use the singleton instance instead of creating a new one
   const [gameEngine] = useState(() => gameEngineInstance);
   const [gameState, setGameState] = useState({
-    resources: gameEngine.player.getAvailableResources(),
+    resources: gameEngine.player.resources,
     buildings: [],
-    workers: gameEngine.player.getAllWorkers(),
+    workers: gameEngine.player.workers,
     currentPlace: gameEngine.navigation.getCurrentPlace(),
     currentPlaceBackgroundImage: gameEngine.navigation.getBackgroundImage(),
     availablePlaces: gameEngine.navigation.getAvailableConnections(),

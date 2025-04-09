@@ -1,15 +1,20 @@
 import Building from '../models/Building';
-import Player from '../models/Player';
-import playerData from '../../data/player.json';
+// import Player from '../models/Player';
+// import playerData from '../../data/player.json';
 import placesData from '../../data/places.json';
 import NavigationSystem from '../systems/NavigationSystem';
+import { store } from '../../../store';
 
 class GameEngine {
   constructor() {
     this.buildings = new Map();
-    this.player = new Player();
-    this.player.loadFromData(playerData);
-    this.resources = this.player.getAvailableResources();
+
+    const state = store.getState();
+    this.player = state.player;
+    this.resources = this.player.resources;
+
+    console.log(this.resources);
+
     this.places = new Map(
       Object.entries(placesData.places)
     );

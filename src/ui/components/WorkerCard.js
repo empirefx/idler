@@ -7,7 +7,7 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
         <img 
           src={`assets/avatars/${worker.avatar}`} 
           alt={worker.name} 
-          className={worker.isAssigned() ? 'bg-red' : 'bg-green'}
+          className={worker.assignedBuildingId ? 'bg-red' : 'bg-green'}
           width={45}
           height={45}
         />
@@ -16,7 +16,7 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
         <p>{worker.name}</p>
       </div>
       <div className="worker-actions">
-        {!worker.isAssigned() && buildings && buildings.length > 0 ? (
+        {!worker.assignedBuildingId && buildings && buildings.length > 0 ? (
           <select 
             onChange={(e) => onAssign(worker.id, e.target.value)}
             value=""
@@ -28,11 +28,11 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
               </option>
             ))}
           </select>
-        ) : worker.isAssigned() ?(
+        ) : worker.assignedBuildingId ?(
           <button onClick={() => onUnassign(worker.id)}>Unassign</button>
         ) : null }
       </div>
-      {worker.isAssigned() && (
+      {worker.assignedBuildingId && (
         <div className="worker-status">
           <span>Working in: {worker.assignedBuildingId}</span>
         </div>
