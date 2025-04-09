@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
 
 import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/ResourceDisplay';
@@ -9,12 +10,24 @@ import CurrentPlaceDisplay from '../components/CurrentPlaceDisplay';
 import places from '../../data/places.json';
 import buildings from '../../data/buildings.json';
 
+const selectWorkers = state => state.player.workers;
+
+const selectUnassignedWorkers = createSelector(
+  [selectWorkers],
+  (workers) => workers.filter(worker => !worker.assignedBuildingId)
+);
+
+const selectAssignedWorkers = createSelector(
+  [selectWorkers],
+  (workers) => workers.filter(worker => worker.assignedBuildingId)
+);
+
 const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
   const currentPlace = places.places[gameState.currentPlace];
   const currentBuildings = currentPlace?.buildings || [];
   const currentPlaceBackgroundImage = gameState.currentPlaceBackgroundImage;
-  const unassignedWorkers = useSelector(state => state.player.workers.filter(worker => !worker.assignedBuildingId));
-  const assignedWorkers = useSelector(state => state.player.workers.filter(worker => worker.assignedBuildingId));
+  const unassignedWorkers = useSelector(selectUnassignedWorkers);
+  const assignedWorkers = useSelector(selectAssignedWorkers);
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
       radial-gradient(circle, rgba(0,0,0,0.053) 64%, rgba(0,0,0,0.7) 93%),
