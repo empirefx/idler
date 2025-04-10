@@ -1,6 +1,4 @@
 import Building from '../models/Building';
-// import Player from '../models/Player';
-// import playerData from '../../data/player.json';
 import placesData from '../../data/places.json';
 import NavigationSystem from '../systems/NavigationSystem';
 import { store } from '../../../store';
@@ -9,11 +7,11 @@ import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/pl
 class GameEngine {
   constructor(dispatch) {
     this.dispatch = dispatch;
-    this.buildings = new Map();
 
     const state = store.getState();
     this.player = state.player;
     this.resources = this.player.resources;
+    this.buildings = new Map();
 
     this.places = new Map(
       Object.entries(placesData.places)
@@ -109,7 +107,7 @@ class GameEngine {
       if (production > 0) {
         const resourceType = building.productionType;
         if (this.resources.has(resourceType)) {
-          this.resources.set(resourceType, this.resources.get(resourceType) + production * deltaTime);
+          this.dispatch({ type: 'player/addResource', payload: { resource: resourceType, amount: production * deltaTime } });
         }
       }
     });
@@ -118,9 +116,9 @@ class GameEngine {
   // Get current game state
   getState() {
     return {
-      resources: Object.fromEntries(this.resources.entries()),
+      resources: this.resources,
       buildings: Array.from(this.buildings.values()),
-      workers: Array.from(this.player.workers.values()),
+      workers: this.player.workers,
       places: Array.from(this.places.values()),
       currentPlace: this.navigation.getCurrentPlace(),
       currentPlaceBackgroundImage: this.navigation.getBackgroundImage(),
@@ -131,8 +129,10 @@ class GameEngine {
 
   // Save game state
   save() {
+    // Get fresh state from Redux
+    const currentState = store.getState();
     const state = {
-      resources: Object.fromEntries(this.resources.entries()),
+      resources: currentState.player.resources,
       buildings: Array.from(this.buildings.entries()).map(([id, building]) => ({
         id,
         quantity: building.quantity
@@ -146,7 +146,9 @@ class GameEngine {
     const savedState = localStorage.getItem('gameState');
     if (savedState) {
       const state = JSON.parse(savedState);
-      this.resources = new Map(Object.entries(state.resources));
+      
+      // Update Redux with saved resources
+      this.dispatch({ type: 'player/addResource', payload: state.resources });
       
       // Load buildings
       state.buildings.forEach(({ id, quantity }) => {
@@ -155,9 +157,6 @@ class GameEngine {
           building.quantity = quantity;
         }
       });
-
-      // Don't load workers from saved state to maintain exactly two workers
-      // Workers will be reinitialized with the default two workers
     }
   }
 
@@ -171,43 +170,31 @@ class GameEngine {
     // If building already has a worker, unassign it first
     if (building.hasAssignedWorker()) {
       const currentWorkerId = building.getAssignedWorkerId();
-      this.dispatch(unassignWorker(currentWorkerId));
+      this.dispatch(unassignWorker({ workerId: currentWorkerId }));
     }
 
     // Assign the new worker
     building.assignWorker(workerId);
-    this.dispatch(assignWorkerToBuilding(workerId, buildingId));
+    this.dispatch(assignWorkerToBuilding({ workerId, buildingId }));
     this.save();
   }
 
   unassignWorker(workerId) {
-    const worker = this.player.getWorker(workerId);
+    const currentState = store.getState();
+    const worker = currentState.player.workers.find(w => w.id === workerId);
+    
     if (!worker) {
       throw new Error('Worker not found');
     }
 
-    if (worker.isAssigned()) {
+    if (worker.assignedBuildingId) {
       const building = this.buildings.get(worker.assignedBuildingId);
       if (building) {
         building.unassignWorker(workerId);
       }
     }
 
-    this.player.unassignWorker(workerId);
-    this.save();
-  }
-
-  addWorker(name) {
-    try {
-      this.player.addWorker(name);
-      this.save();
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  removeWorker(workerId) {
-    this.player.removeWorker(workerId);
+    this.dispatch(unassignWorker({ workerId }));
     this.save();
   }
 

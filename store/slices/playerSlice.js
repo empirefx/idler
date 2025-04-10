@@ -5,7 +5,7 @@ const initialState = {
   id: playerData.id,
   name: playerData.name,
   MAX_WORKERS: playerData.MAX_WORKERS,
-  currentLocation: playerData.currentLocation,
+  // currentLocation: playerData.currentLocation,
   resources: playerData.resources,
   workers: playerData.workers,
 };
@@ -30,9 +30,9 @@ export const playerSlice = createSlice({
       const { workerId } = action.payload;
       state.workers = state.workers.filter(worker => worker.id !== workerId);
     },
-    setCurrentLocation: (state, action) => {
-      state.currentLocation = action.payload;
-    },
+    // setCurrentLocation: (state, action) => {
+    //   state.currentLocation = action.payload;
+    // },
     unassignWorker: (state, action) => {
       const { workerId } = action.payload;
       const worker = state.workers.find(worker => worker.id === workerId);
@@ -56,17 +56,20 @@ export const {
   removeResource, 
   addWorker, 
   removeWorker, 
-  setCurrentLocation, 
+  // setCurrentLocation, 
   unassignWorker, 
   assignWorkerToBuilding 
 } = playerSlice.actions;
 
 // Selectors
+// export const selectCurrentLocation = state => state.player.currentLocation;
 export const selectWorkers = state => state.player.workers;
 export const selectWorker = workerId => state => 
   state.player.workers.find(worker => worker.id === workerId);
-export const selectAssignedWorkers = buildingId => state => 
-  state.player.workers.filter(worker => worker.assignedBuildingId === buildingId);
+export const selectAssignedWorkers = createSelector(
+  [selectWorkers],
+  (workers) => workers.filter(worker => worker.assignedBuildingId)
+);
 export const selectUnassignedWorkers = createSelector(
   [selectWorkers],
   workers => workers.filter(worker => !worker.assignedBuildingId)

@@ -1,12 +1,24 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/playerSlice';
 
-const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
+const WorkerCard = ({ worker, buildings }) => {
+  const dispatch = useDispatch();
+
+  const handleAssign = (workerId, buildingId) => {
+    dispatch(assignWorkerToBuilding({ workerId, buildingId }));
+  };
+
+  const handleUnassign = (workerId) => {
+    dispatch(unassignWorker({ workerId }));
+  };
+
   return (
     <div className="worker-card">
       <div className="worker-avatar">
-        <img 
-          src={`assets/avatars/${worker.avatar}`} 
-          alt={worker.name} 
+        <img
+          src={`assets/avatars/${worker.avatar}`}
+          alt={worker.name}
           className={worker.assignedBuildingId ? 'bg-red' : 'bg-green'}
           width={45}
           height={45}
@@ -17,8 +29,8 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
       </div>
       <div className="worker-actions">
         {!worker.assignedBuildingId && buildings && buildings.length > 0 ? (
-          <select 
-            onChange={(e) => onAssign(worker.id, e.target.value)}
+          <select
+            onChange={(e) => handleAssign(worker.id, e.target.value)}
             value=""
           >
             <option value="" disabled>Assign</option>
@@ -28,9 +40,9 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
               </option>
             ))}
           </select>
-        ) : worker.assignedBuildingId ?(
-          <button onClick={() => onUnassign(worker.id)}>Unassign</button>
-        ) : null }
+        ) : worker.assignedBuildingId ? (
+          <button onClick={() => handleUnassign(worker.id)}>Unassign</button>
+        ) : null}
       </div>
       {worker.assignedBuildingId && (
         <div className="worker-status">
@@ -41,4 +53,4 @@ const WorkerCard = ({ worker, buildings, onAssign, onUnassign }) => {
   );
 };
 
-export default WorkerCard; 
+export default WorkerCard;
