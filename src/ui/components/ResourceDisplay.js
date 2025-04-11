@@ -2,9 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 
+import { selectResources, selectWorkers } from '../../../store/slices/playerSlice';
+
 // selectors
-const selectResources = state => state.player.resources || {};
-const selectWorkers = state => state.player.workers || [];
 const selectMaxWorkers = state => state.player.MAX_WORKERS || 0;
 
 // Memoized selector
@@ -19,6 +19,10 @@ const ResourceDisplay = () => {
   const workerCount = useSelector(selectWorkerCount);
   const maxWorkers = useSelector(selectMaxWorkers);
 
+  const food = resources.find(r => r.name === 'food').amount;
+  const materials = resources.find(r => r.name === 'materials').amount;
+  const gold = resources.find(r => r.name === 'gold').amount;
+
   return (
     <div className="resource-display">
       <div className="resource-item">
@@ -27,15 +31,15 @@ const ResourceDisplay = () => {
       </div>
       <div className="resource-item">
         <span className="resource-name">Food</span>
-        <span className="resource-amount">{Math.floor(resources.food || 0)}</span>
+        <span className="resource-amount">{food}</span>
       </div>
       <div className="resource-item">
         <span className="resource-name">Materials</span>
-        <span className="resource-amount">{Math.floor(resources.materials || 0)}</span>
+        <span className="resource-amount">{materials}</span>
       </div>
       <div className="resource-item">
         <span className="resource-name">Gold</span>
-        <span className="resource-amount">{Math.floor(resources.gold || 0)}</span>
+        <span className="resource-amount">{gold}</span>
       </div>
     </div>
   );

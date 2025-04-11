@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { store } from '../../../store';
 
 import GameEngine from '../../game/engine/GameEngine';
-import buildingsData from '../../data/buildings.json';
-
 
 export const useGameState = () => {
   const dispatch = useDispatch(); // Get dispatch function from Redux and pass it to GameEngine
@@ -11,19 +10,9 @@ export const useGameState = () => {
   // Create GameEngine instance with a ref to ensure it's created only once
   const gameEngineRef = useRef(null);
   if (!gameEngineRef.current) {
-    gameEngineRef.current = new GameEngine(dispatch);
+    gameEngineRef.current = new GameEngine(dispatch, store);
   }
   const gameEngine = gameEngineRef.current;
-
-  const [gameState, setGameState] = useState({
-    resources: gameEngine.player.resources,
-    buildings: [],
-    workers: gameEngine.player.workers,
-    currentPlace: gameEngine.navigation.getCurrentPlace(),
-    currentPlaceBackgroundImage: gameEngine.navigation.getBackgroundImage(),
-    availablePlaces: gameEngine.navigation.getAvailableConnections(),
-    player: gameEngine.player
-  });
   const [error, setError] = useState(null);
   const isInitialized = useRef(false);
 
@@ -31,95 +20,56 @@ export const useGameState = () => {
   useEffect(() => {
     const initializeGame = async () => {
       // Prevent double initialization
-      if (isInitialized.current) return;
+      if (isInitialized.current) {
+        console.log('Game already initialized, skipping');
+        return;
+      }
+      
+      console.log('Initializing game...');
       isInitialized.current = true;
-
+      
       try {
-        if (!buildingsData) {
-          throw new Error('Buildings data is missing');
-        }
-
-        if (!buildingsData.buildings) {
-          throw new Error('Buildings data format is invalid');
-        }
-
-        await gameEngine.initializeBuildings(buildingsData);
+        // Use the ref directly
+        const gameEngine = gameEngineRef.current;
+        console.log('GameEngine instance:', gameEngine);
         
         // Load saved game state if exists
         try {
           gameEngine.load();
+          console.log('Game state loaded');
         } catch (loadError) {
-          // Continue without loading saved state
+          console.error('Error loading game state:', loadError);
         }
-
-        // Start the game loop
-        gameEngine.start();
         
-        // Update game state with initialized data including player
-        setGameState(gameEngine.getState());
+        // Start the game loop
+        console.log('Starting game loop');
+        gameEngine.start();
+        console.log('Game loop started');
       } catch (err) {
         console.error('Error initializing game:', err);
         console.error('Error stack:', err.stack);
         setError(`Game initialization failed: ${err.message}`);
       }
     };
-
+    
     initializeGame();
-
+    
     return () => {
+      console.log('Cleanup function called');
+      const gameEngine = gameEngineRef.current;
       gameEngine.stop();
       try {
         gameEngine.save();
+        console.log('Game state saved');
       } catch (saveError) {
         console.error('Failed to save game state:', saveError);
       }
     };
-  }, [gameEngine, dispatch]);
-
-  // Update game state
-  useEffect(() => {
-    const updateInterval = setInterval(() => {
-      const newState = gameEngine.getState();
-      setGameState(newState);
-    }, 100); // Update UI every 100ms to match game engine
-
-    return () => clearInterval(updateInterval);
-  }, [gameEngine]);
-
-  // Navigation functions
-  const getCurrentPlace = useCallback(() => {
-    return gameEngine.navigation.getCurrentPlace();
-  }, [gameEngine]);
-
-  const getCurrentPlaceData = useCallback(() => {
-    const currentPlaceId = getCurrentPlace();
-    return gameEngine.places.get(currentPlaceId);
-  }, [gameEngine, getCurrentPlace]);
-
-  const getAvailablePlaces = useCallback(() => {
-    return gameEngine.navigation.getAvailableConnections();
-  }, [gameEngine]);
-
-  const moveToPlace = useCallback((placeId) => {
-    try {
-      gameEngine.navigation.moveToPlace(placeId);
-      setGameState(gameEngine.getState());
-    } catch (err) {
-      setError(err.message);
-    }
-  }, [gameEngine]);
-
-  const assignWorker = useCallback((workerId, buildingId) => {
-    gameEngine.assignWorkerToBuilding(workerId, buildingId);
-  }, [gameEngine]);
-
-  const unassignWorker = useCallback((workerId) => {
-    gameEngine.unassignWorker(workerId);
-  }, [gameEngine]);
+  }, []);
 
   const clearCache = useCallback(() => {
     try {
-      localStorage.clear();
+      localStorage.removeItem('gameState');
       window.location.reload();
     } catch (err) {
       console.error('Failed to clear cache:', err);
@@ -130,33 +80,12 @@ export const useGameState = () => {
   if (error) {
     return {
       error,
-      gameState: {
-        resources: { food: 0, materials: 0, gold: 0 },
-        buildings: [],
-        workers: [],
-        currentPlace: null,
-        availablePlaces: [],
-        player: gameEngine.player
-      },
-      assignWorker: () => {},
-      unassignWorker: () => {},
-      clearCache: () => {},
-      moveToPlace: () => {},
-      getCurrentPlace: () => {},
-      getCurrentPlaceData: () => {},
-      getAvailablePlaces: () => {}
+      clearCache: () => {}
     };
   }
 
   return {
-    gameState,
     error,
-    assignWorker,
-    unassignWorker,
-    clearCache,
-    moveToPlace,
-    getCurrentPlace,
-    getCurrentPlaceData,
-    getAvailablePlaces
+    clearCache
   };
 };

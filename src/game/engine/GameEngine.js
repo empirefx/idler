@@ -1,82 +1,28 @@
-import Building from '../models/Building';
-import placesData from '../../data/places.json';
-import NavigationSystem from '../systems/NavigationSystem';
-import { store } from '../../../store';
-import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/playerSlice';
+import Logger from './Logger';
+
+import { listBuildingsWithAssignedWorkers } from '../../../store/slices/playerSlice';
 
 class GameEngine {
-  constructor(dispatch) {
+  constructor(dispatch, store) {
+    this.store = store;
+    this.lastState = store.getState();
     this.dispatch = dispatch;
-
-    const state = store.getState();
-    this.player = state.player;
-    this.resources = this.player.resources;
-    this.buildings = new Map();
-
-    this.places = new Map(
-      Object.entries(placesData.places)
-    );
-    this.navigation = new NavigationSystem(this);
     this.lastUpdate = Date.now();
     this.isRunning = false;
     this.tickInterval = null;
-    this.currentPlaceBackgroundImage = null;
-  }
-
-  // Initialize the game with building data and workers
-  initializeBuildings(buildingData) {
-    try {
-      if (!buildingData || !buildingData.buildings) {
-        throw new Error('Invalid building data format');
-      }
-
-      // Store existing worker assignments
-      const workerAssignments = new Map();
-      if (this.buildings.size > 0) {
-        this.buildings.forEach((building, buildingId) => {
-          const workerId = building.getAssignedWorkerId();
-          if (workerId) {
-            workerAssignments.set(buildingId, workerId);
-          }
-        });
-      }
-
-      // Clear existing buildings
-      this.buildings.clear();
-
-      // Initialize buildings
-      Object.entries(buildingData.buildings).forEach(([id, data]) => {
-        if (!id || !data.name || !data.description || !data.productionType) {
-          throw new Error(`Invalid building data for building ${id}`);
-        }
-        this.buildings.set(id, new Building(
-          id,
-          data.name,
-          data.description,
-          data.productionType
-        ));
-      });
-
-      // Restore worker assignments
-      workerAssignments.forEach((workerId, buildingId) => {
-        try {
-          this.assignWorkerToBuilding(workerId, buildingId);
-        } catch (error) {
-          console.error(`Failed to restore worker ${workerId} to building ${buildingId}:`, error);
-        }
-      });
-    } catch (error) {
-      throw error;
-    }
   }
 
   // Start the game loop
   start() {
     if (this.isRunning) return;
     
+    console.log('Game engine starting');
     this.isRunning = true;
     this.lastUpdate = Date.now();
-    this.tickInterval = setInterval(() => this.tick(), 100); // Update every 100ms for smoother updates
+    this.tickInterval = setInterval(() => {
+      Logger.log('Tick interval called', 0, 'game-loop');
+      this.tick();
+    }, 1000); // Update every 100ms for smoother updates
   }
 
   // Stop the game loop
@@ -92,6 +38,7 @@ class GameEngine {
   tick() {
     if (!this.isRunning) return;
 
+    Logger.log('Tick method called', 0, 'game-loop');
     const now = Date.now();
     const deltaTime = (now - this.lastUpdate) / 1000; // Convert to seconds
     this.lastUpdate = now;
@@ -101,43 +48,52 @@ class GameEngine {
 
   // Update game state
   update(deltaTime) {
+    Logger.log(`Update called with deltaTime: ${deltaTime.toFixed(3)}`, 0, 'game-loop');
+
+    if (!localStorage.getItem('gameState')) {
+      console.log('No saved game state found');
+      this.save();
+      console.log('Saved current state');
+    }
+
+    const state = this.store.getState();
+    const buildingsWithAssignedWorkers = listBuildingsWithAssignedWorkers(state);
+    
     // Update resources based on building production
-    this.buildings.forEach(building => {
-      const production = building.calculateProduction();
-      if (production > 0) {
+    Object.entries(state.buildings).forEach(([buildingId, building]) => {
+      const production = building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0;
+      
+      if (
+        buildingsWithAssignedWorkers.includes(buildingId) 
+        && production > 0
+      ) {
         const resourceType = building.productionType;
-        if (this.resources.has(resourceType)) {
-          this.dispatch({ type: 'player/addResource', payload: { resource: resourceType, amount: production * deltaTime } });
+        
+        // Check if resource exists before adding
+        if (resourceType) {
+          // Dispatch to Redux store instead of internal dispatch
+          this.store.dispatch({ 
+            type: 'player/addResource', 
+            payload: { 
+              resource: resourceType, 
+              amount: Math.floor(production * deltaTime) 
+            } 
+          });
         }
       }
     });
-  }
 
-  // Get current game state
-  getState() {
-    return {
-      resources: this.resources,
-      buildings: Array.from(this.buildings.values()),
-      workers: this.player.workers,
-      places: Array.from(this.places.values()),
-      currentPlace: this.navigation.getCurrentPlace(),
-      currentPlaceBackgroundImage: this.navigation.getBackgroundImage(),
-      availablePlaces: this.navigation.getAvailableConnections(),
-      player: this.player
-    };
   }
 
   // Save game state
   save() {
-    // Get fresh state from Redux
-    const currentState = store.getState();
+    const currentState = this.store.getState(); // Get fresh state from Redux
     const state = {
-      resources: currentState.player.resources,
-      buildings: Array.from(this.buildings.entries()).map(([id, building]) => ({
-        id,
-        quantity: building.quantity
-      }))
+      player: currentState.player,
+      buildings: currentState.buildings,
+      place: currentState.places
     };
+
     localStorage.setItem('gameState', JSON.stringify(state));
   }
 
@@ -145,63 +101,43 @@ class GameEngine {
   load() {
     const savedState = localStorage.getItem('gameState');
     if (savedState) {
-      const state = JSON.parse(savedState);
-      
-      // Update Redux with saved resources
-      this.dispatch({ type: 'player/addResource', payload: state.resources });
-      
-      // Load buildings
-      state.buildings.forEach(({ id, quantity }) => {
-        const building = this.buildings.get(id);
-        if (building) {
-          building.quantity = quantity;
+      try {
+        const state = JSON.parse(savedState);
+        
+        // Dispatch the correct actions with the right payload format
+        if (state.player) {
+          this.dispatch({ 
+            type: 'player/setPlayerState',
+            payload: state.player 
+          });
         }
-      });
-    }
-  }
-
-  // Worker management methods
-  assignWorkerToBuilding(workerId, buildingId) {
-    const building = this.buildings.get(buildingId);
-    if (!building) {
-      throw new Error('Building not found');
-    }
-
-    // If building already has a worker, unassign it first
-    if (building.hasAssignedWorker()) {
-      const currentWorkerId = building.getAssignedWorkerId();
-      this.dispatch(unassignWorker({ workerId: currentWorkerId }));
-    }
-
-    // Assign the new worker
-    building.assignWorker(workerId);
-    this.dispatch(assignWorkerToBuilding({ workerId, buildingId }));
-    this.save();
-  }
-
-  unassignWorker(workerId) {
-    const currentState = store.getState();
-    const worker = currentState.player.workers.find(w => w.id === workerId);
-    
-    if (!worker) {
-      throw new Error('Worker not found');
-    }
-
-    if (worker.assignedBuildingId) {
-      const building = this.buildings.get(worker.assignedBuildingId);
-      if (building) {
-        building.unassignWorker(workerId);
+        
+        if (state.buildings) {
+          this.dispatch({ 
+            type: 'buildings/setBuildings', 
+            payload: state.buildings 
+          });
+        }
+        
+        if (state.place) {
+          this.dispatch({ 
+            type: 'places/setPlaces', 
+            payload: state.place 
+          });
+        }
+        
+        console.log('Game state loaded successfully');
+      } catch (error) {
+        console.error('Error parsing saved game state:', error);
+        // Clear corrupted state to prevent further errors
+        localStorage.removeItem('gameState');
       }
+    } else {
+      console.log('No saved game state found');
     }
-
-    this.dispatch(unassignWorker({ workerId }));
-    this.save();
   }
 
-  // Clear game cache
-  clearCache() {
-    localStorage.removeItem('gameState');
-  }
+
 }
 
 export default GameEngine;

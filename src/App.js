@@ -4,7 +4,7 @@ import GameLayout from './ui/layouts/GameLayout';
 import './ui/styles/components.css';
 
 const App = () => {
-  const { gameState, addBuilding, removeBuilding, assignWorker, unassignWorker, clearCache, error } = useGameState();
+  const { gameState, clearCache, error } = useGameState();
 
   if (error) {
     return (
@@ -20,10 +20,6 @@ const App = () => {
     <div className="App">
       <GameLayout
         gameState={gameState}
-        addBuilding={addBuilding}
-        removeBuilding={removeBuilding}
-        assignWorker={assignWorker}
-        unassignWorker={unassignWorker}
         clearCache={clearCache}
       />
     </div>
