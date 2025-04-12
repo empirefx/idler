@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectCurrentPlace } from '../../../store/slices/placesSlice';
+import { selectCurrentPlace } from '../../store/slices/placesSlice';
 
 const CurrentPlaceDisplay = () => {
   const currentPlace = useSelector(selectCurrentPlace);

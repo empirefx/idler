@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 
-import { selectResources, selectWorkers } from '../../../store/slices/playerSlice';
+import { selectResources, selectWorkers } from '../../store/slices/playerSlice';
 
 // selectors
 const selectMaxWorkers = state => state.player.MAX_WORKERS || 0;

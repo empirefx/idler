@@ -11,13 +11,13 @@ import {
   selectUnassignedWorkers,
   selectAssignedWorkers,
   selectResources
-} from '../../../store/slices/playerSlice';
-import { selectAllBuildings } from '../../../store/slices/buildingsSlice';
+} from '../../store/slices/playerSlice';
+import { selectAllBuildings } from '../../store/slices/buildingsSlice';
 import {
   selectCurrentPlaceBuildings,
   selectBackgroundImage,
   selectAvailableConnections,
-} from '../../../store/slices/placesSlice';
+} from '../../store/slices/placesSlice';
 
 const GameLayout = ({ clearCache }) => {
   // Use selectors to get state from Redux

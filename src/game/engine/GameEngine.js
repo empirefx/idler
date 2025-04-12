@@ -1,6 +1,6 @@
 import Logger from './Logger';
 
-import { listBuildingsWithAssignedWorkers } from '../../../store/slices/playerSlice';
+import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice';
 
 class GameEngine {
   constructor(dispatch, store) {
@@ -16,13 +16,13 @@ class GameEngine {
   start() {
     if (this.isRunning) return;
     
-    console.log('Game engine starting');
+    Logger.log('Game engine starting', 0, 'game-loop');
     this.isRunning = true;
     this.lastUpdate = Date.now();
     this.tickInterval = setInterval(() => {
       Logger.log('Tick interval called', 0, 'game-loop');
       this.tick();
-    }, 1000); // Update every 100ms for smoother updates
+    }, 1000); // Update every 1000ms for smoother updates
   }
 
   // Stop the game loop
@@ -51,9 +51,9 @@ class GameEngine {
     Logger.log(`Update called with deltaTime: ${deltaTime.toFixed(3)}`, 0, 'game-loop');
 
     if (!localStorage.getItem('gameState')) {
-      console.log('No saved game state found');
+      Logger.log('No saved game state found', 0, 'game-loop');
       this.save();
-      console.log('Saved current state');
+      Logger.log('Saved current state', 0, 'game-loop');
     }
 
     const state = this.store.getState();
@@ -125,15 +125,14 @@ class GameEngine {
             payload: state.place 
           });
         }
-        
-        console.log('Game state loaded successfully');
+        Logger.log('Game state loaded successfully', 0, 'game-loop');
       } catch (error) {
-        console.error('Error parsing saved game state:', error);
+        Logger.error('Error parsing saved game state:', 0, 'game-loop', error);
         // Clear corrupted state to prevent further errors
         localStorage.removeItem('gameState');
       }
     } else {
-      console.log('No saved game state found');
+      Logger.log('No saved game state found', 0, 'game-loop');
     }
   }
 

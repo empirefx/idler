@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import placesData from '../../src/data/places.json';
+import placesData from '../../data/places.json';
 
 const initialPlacesMap = Object.entries(placesData.places).reduce((acc, [id, place]) => {
   acc[id] = {

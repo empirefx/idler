@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import playerData from '../../src/data/player.json';
+import playerData from '../../data/player.json';
 
 const initialState = {
   id: playerData.id,

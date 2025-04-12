@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import buildingsData from '../../src/data/buildings.json';
+import buildingsData from '../../data/buildings.json';
 
 // Create a flattened object structure for the initial state
 const initialStateBuildings = Object.entries(buildingsData.buildings).reduce((acc, [id, building]) => {
