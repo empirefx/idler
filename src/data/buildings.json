@@ -6,7 +6,6 @@
       "description": "Produces food for your population",
       "icon": "farm.jpg",
       "productionType": "food",
-      "assignedWorkerId": null,
       "baseProductionRate": 1
     },
     "mine": {
@@ -15,12 +14,11 @@
       "description": "Extracts valuable resources from the earth",
       "icon": "mine.jpg",
       "productionType": "materials",
-      "assignedWorkerId": null,
       "baseProductionRate": 1
     }
   },
   "metadata": {
-    "version": "1.0.4",
-    "lastUpdated": "2025-04-01"
+    "version": "1.0.7",
+    "lastUpdated": "2025-04-11"
   }
 }

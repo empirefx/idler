@@ -1,18 +1,33 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
 import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
 import CurrentPlaceDisplay from '../components/CurrentPlaceDisplay';
-import places from '../../data/places.json';
-import buildings from '../../data/buildings.json';
 
-const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => {
-  const currentPlace = places.places[gameState.currentPlace];
-  const currentBuildings = currentPlace?.buildings || [];
-  const currentPlaceBackgroundImage = gameState.currentPlaceBackgroundImage;
-  const unassignedWorkers = gameState.workers.filter(worker => !worker.isAssigned());
-  const assignedWorkers = gameState.workers.filter(worker => worker.isAssigned());
+import {
+  selectUnassignedWorkers,
+  selectAssignedWorkers,
+  selectResources
+} from '../../store/slices/playerSlice';
+import { selectAllBuildings } from '../../store/slices/buildingsSlice';
+import {
+  selectCurrentPlaceBuildings,
+  selectBackgroundImage,
+  selectAvailableConnections,
+} from '../../store/slices/placesSlice';
+
+const GameLayout = ({ clearCache }) => {
+  // Use selectors to get state from Redux
+  const buildings = useSelector(selectAllBuildings);
+  const currentBuildings = useSelector(selectCurrentPlaceBuildings);
+  const currentPlaceBackgroundImage = useSelector(selectBackgroundImage);
+  const resources = useSelector(selectResources);
+  const unassignedWorkers = useSelector(selectUnassignedWorkers);
+  const assignedWorkers = useSelector(selectAssignedWorkers);
+  const availableConnections = useSelector(selectAvailableConnections);
 
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
@@ -27,10 +42,9 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
 
   return (
     <div className="game-layout" style={styles}>
-    <header className="game-header">
-        {/* <h1>Idler Game</h1> */}
+      <header className="game-header">
         <div className="header-controls">
-          <ResourceDisplay resources={gameState.resources} gameState={gameState} />
+          <ResourceDisplay resources={resources} />
           <button onClick={clearCache} className="clear-cache-btn">Clear Cache</button>
         </div>
       </header>
@@ -42,37 +56,31 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
           <div className="workers-grid">
             <div className="workers-list">
               {unassignedWorkers.length > 0 ? (
-                unassignedWorkers
-                  .map(worker => (
-                    <WorkerCard
-                      key={worker.id}
-                      worker={worker}
-                      buildings={currentBuildings.map(buildingId => buildings.buildings[buildingId])}
-                      onAssign={assignWorker}
-                      onUnassign={unassignWorker}
-                    />
-                  ))
-                ) : (
-                  <div className="no-workers-message">No unassigned workers available</div>
-                )}
+                unassignedWorkers.map(worker => (
+                  <WorkerCard
+                    key={worker.id}
+                    worker={worker}
+                    buildings={currentBuildings.map(buildingId => buildings[buildingId])}
+                  />
+                ))
+              ) : (
+                <div className="no-workers-message">No unassigned workers available</div>
+              )}
             </div>
             
             <h3>Assigned</h3>
             <div className="workers-list">
               {assignedWorkers.length > 0 ? (
-                assignedWorkers
-                  .map(worker => (
-                    <WorkerCard
-                      key={worker.id}
-                      worker={worker}
-                      buildings={currentBuildings.map(buildingId => buildings.buildings[buildingId])}
-                      onAssign={assignWorker}
-                      onUnassign={unassignWorker}
-                    />
-                  ))
-                ) : (
-                  <div className="no-workers-message">Currently no workers</div>
-                )}
+                assignedWorkers.map(worker => (
+                  <WorkerCard
+                    key={worker.id}
+                    worker={worker}
+                    buildings={currentBuildings.map(buildingId => buildings[buildingId])}
+                  />
+                ))
+              ) : (
+                <div className="no-workers-message">Currently no workers</div>
+              )}
             </div>
           </div>
         </section>
@@ -80,7 +88,7 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
         <section className="buildings-section">
           <div className="buildings-grid">
             {currentBuildings.map(buildingId => {
-              const building = buildings.buildings[buildingId];
+              const building = buildings[buildingId];
               return building ? (
                 <BuildingCard
                   key={buildingId}
@@ -94,7 +102,7 @@ const GameLayout = ({ gameState, assignWorker, unassignWorker, clearCache }) => 
         <section className="places-section">
           <h2>Locations</h2>
           <div className="places-grid">
-            {gameState.availablePlaces && gameState.availablePlaces.map(place => (
+            {availableConnections && availableConnections.map(place => (
               <PlaceCard
                 key={place.id}
                 place={place}

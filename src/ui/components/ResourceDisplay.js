@@ -1,31 +1,45 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
 
-const ResourceDisplay = ({ resources, gameState }) => {
-  const player = gameState?.player;
-  
-  // Safely get worker count and max workers
-  const workerCount = player?.workers?.size ?? 0;
-  const maxWorkers = player?.MAX_WORKERS ?? 0;
-  
+import { selectResources, selectWorkers } from '../../store/slices/playerSlice';
+
+// selectors
+const selectMaxWorkers = state => state.player.MAX_WORKERS || 0;
+
+// Memoized selector
+const selectWorkerCount = createSelector(
+  [selectWorkers],
+  (workers) => workers.length
+);
+
+const ResourceDisplay = () => {
+  // Use selectors to get data directly from Redux store
+  const resources = useSelector(selectResources);
+  const workerCount = useSelector(selectWorkerCount);
+  const maxWorkers = useSelector(selectMaxWorkers);
+
+  const food = resources.find(r => r.name === 'food').amount;
+  const materials = resources.find(r => r.name === 'materials').amount;
+  const gold = resources.find(r => r.name === 'gold').amount;
+
   return (
     <div className="resource-display">
-      {player && (
-        <div className="resource-item">
-          <span className="resource-name">Workers</span>
-          <span className="resource-amount">{`${workerCount}/${maxWorkers}`}</span>
-        </div>
-      )}
+      <div className="resource-item">
+        <span className="resource-name">Workers</span>
+        <span className="resource-amount">{`${workerCount}/${maxWorkers}`}</span>
+      </div>
       <div className="resource-item">
         <span className="resource-name">Food</span>
-        <span className="resource-amount">{Math.floor(resources?.food ?? 0)}</span>
+        <span className="resource-amount">{food}</span>
       </div>
       <div className="resource-item">
         <span className="resource-name">Materials</span>
-        <span className="resource-amount">{Math.floor(resources?.materials ?? 0)}</span>
+        <span className="resource-amount">{materials}</span>
       </div>
       <div className="resource-item">
         <span className="resource-name">Gold</span>
-        <span className="resource-amount">{Math.floor(resources?.gold ?? 0)}</span>
+        <span className="resource-amount">{gold}</span>
       </div>
     </div>
   );
