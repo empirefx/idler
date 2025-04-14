@@ -42,4 +42,6 @@ export const { updateBuilding } = buildingsSlice.actions;
 export const selectAllBuildings = (state) => state.buildings;
 export const selectBuildingById = (state, buildingId) => state.buildings[buildingId];
 
+// Memoized selectors
+
 export default buildingsSlice.reducer;

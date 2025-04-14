@@ -1,8 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+
 import { navigateToPlace } from '../../store/slices/placesSlice';
 
+
 const PlaceCard = ({ place }) => {
+  if (!place) return null;
+  
   const dispatch = useDispatch();
 
   const handleMove = () => {

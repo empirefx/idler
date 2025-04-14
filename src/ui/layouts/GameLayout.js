@@ -5,19 +5,24 @@ import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
+import PlayerCard from '../components/PlayerCard';
 import CurrentPlaceDisplay from '../components/CurrentPlaceDisplay';
+import InventoryDisplay from '../components/InventoryDisplay';
 
 import {
   selectUnassignedWorkers,
   selectAssignedWorkers,
-  selectResources
+  selectResources,
+  selectPlayer
 } from '../../store/slices/playerSlice';
 import { selectAllBuildings } from '../../store/slices/buildingsSlice';
 import {
+  selectCurrentPlace,
   selectCurrentPlaceBuildings,
   selectBackgroundImage,
   selectAvailableConnections,
 } from '../../store/slices/placesSlice';
+import { selectVaultByPlaceId } from '../../store/slices/inventorySlice';
 
 const GameLayout = ({ clearCache }) => {
   // Use selectors to get state from Redux
@@ -28,6 +33,9 @@ const GameLayout = ({ clearCache }) => {
   const unassignedWorkers = useSelector(selectUnassignedWorkers);
   const assignedWorkers = useSelector(selectAssignedWorkers);
   const availableConnections = useSelector(selectAvailableConnections);
+  const playerInfo = useSelector(selectPlayer);
+  const currentPlace = useSelector(selectCurrentPlace);
+  const vault = useSelector(state => selectVaultByPlaceId(state, currentPlace.id));
 
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
@@ -51,6 +59,11 @@ const GameLayout = ({ clearCache }) => {
       
       <main className="game-main">
         <CurrentPlaceDisplay />
+
+        <section className="player-section">
+          <PlayerCard player={playerInfo} />
+        </section>
+        
         <section className="workers-section">
           <h2>Workers</h2>
           <div className="workers-grid">
@@ -100,6 +113,12 @@ const GameLayout = ({ clearCache }) => {
         </section>
 
         <section className="places-section">
+          {currentPlace && vault && (
+            <div className="place-vault">
+              <h3>Vault</h3>
+              <InventoryDisplay inventory={vault} />
+            </div>
+          )}
           <h2>Locations</h2>
           <div className="places-grid">
             {availableConnections && availableConnections.map(place => (

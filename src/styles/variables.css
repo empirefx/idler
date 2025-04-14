@@ -9,8 +9,10 @@
   --color-warning: #ffc107;
   --color-info: #17a2b8;
   --color-light: #f8f9fa;
-  --color-dark: #343a40;
-  --color-gray: #c7c7c7;
+  --color-dark: #2D2D2D;
+  --color-gray: #AAAAAA;
+  --color-gray-light: #c7c7c7;
+  --color-gray-dark: #585858;
   
   /* Typography */
   --font-family-base: 'Liberation Sans Narrow', sans-serif;
