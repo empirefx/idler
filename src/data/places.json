@@ -5,6 +5,7 @@
       "name": "Village Center",
       "description": "The heart of your small settlement. A humble gathering place where villagers meet.",
       "type": "settlement",
+      "hasInventory": true,
       "connections": ["forest_edge", "river_crossing", "farmlands"],
       "background-image": "village_center.jpg",
       "features": {

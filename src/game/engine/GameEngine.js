@@ -50,6 +50,7 @@ class GameEngine {
   update(deltaTime) {
     Logger.log(`Update called with deltaTime: ${deltaTime.toFixed(3)}`, 0, 'game-loop');
 
+
     if (!localStorage.getItem('gameState')) {
       Logger.log('No saved game state found', 0, 'game-loop');
       this.save();
@@ -58,8 +59,9 @@ class GameEngine {
 
     const state = this.store.getState();
     const buildingsWithAssignedWorkers = listBuildingsWithAssignedWorkers(state);
-    
+
     // Update resources based on building production
+    // Produce items and store in nearest Place with hasInventory:true
     Object.entries(state.buildings).forEach(([buildingId, building]) => {
       const production = building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0;
       
@@ -67,22 +69,35 @@ class GameEngine {
         buildingsWithAssignedWorkers.includes(buildingId) 
         && production > 0
       ) {
-        const resourceType = building.productionType;
-        
-        // Check if resource exists before adding
-        if (resourceType) {
-          // Dispatch to Redux store instead of internal dispatch
-          this.store.dispatch({ 
-            type: 'player/addResource', 
-            payload: { 
-              resource: resourceType, 
-              amount: Math.floor(production * deltaTime) 
-            } 
-          });
+        // Determine item to produce
+        let producedItem = null;
+        if (building.productionType === 'apple') {
+          producedItem = { id: 'apple', type: 'apple', name: 'Apple', weight: 1, quantity: Math.floor(production * deltaTime) };
+        } else if (building.productionType === 'ore') {
+          producedItem = { id: 'ore', type: 'ore', name: 'Ore', weight: 2, quantity: Math.floor(production * deltaTime) };
+        }
+        if (producedItem && producedItem.quantity > 0) {
+          // Find nearest Place with hasInventory:true (for now, just village_center)
+          const places = Object.values(state.places || {});
+          const targetPlace = places.find(p => p.hasInventory);
+          const inventories = state.inventory && state.inventory.inventories;
+          const vaultInventory = inventories && targetPlace ? inventories[targetPlace.id] : undefined;
+
+          if (targetPlace && vaultInventory) {
+            // Add produced item to the place's inventory
+            this.store.dispatch({
+              type: 'inventory/addItem',
+              payload: {
+                inventoryId: targetPlace.id,
+                item: producedItem
+              }
+            });
+          } else if (targetPlace && !vaultInventory) {
+            Logger.error('No inventory found for target place:', 0, 'inventory', targetPlace);
+          }
         }
       }
     });
-
   }
 
   // Save game state
