@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import BuildingCard from '../components/BuildingCard';
-import ResourceDisplay from '../components/ResourceDisplay';
+import ResourceDisplay from '../components/display/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
 import PlayerCard from '../components/PlayerCard';
-import CurrentPlaceDisplay from '../components/CurrentPlaceDisplay';
-import InventoryDisplay from '../components/InventoryDisplay';
+import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
+import InventoryDisplay from '../components/display/InventoryDisplay';
 
 import {
   selectUnassignedWorkers,

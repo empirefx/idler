@@ -1,14 +1,14 @@
 import React,{ useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { moveItem } from '../../store/slices/inventorySlice';
-import MoveItemDialog from './common/MoveItemDialog';
-import ToolTip from './common/ToolTip';
+import { moveItem } from '../../../store/slices/inventorySlice';
+import MoveItemDialog from '../common/MoveItemDialog';
+import ToolTip from '../common/ToolTip';
 
 import { useSelector } from 'react-redux';
-import { selectInventoryById } from '../../store/slices/inventorySlice';
+import { selectInventoryById } from '../../../store/slices/inventorySlice';
 
-const InventoryDisplay = ({ inventoryId, otherInventoryId, isVault }) => {
+const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
   const inventory = useSelector(state => selectInventoryById(state, inventoryId));
   const otherInventory = useSelector(state => selectInventoryById(state, otherInventoryId));
   const [dialogOpen, setDialogOpen] = useState(false);

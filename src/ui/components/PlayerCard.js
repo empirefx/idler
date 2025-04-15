@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectPlayerInventory } from '../../store/slices/inventorySlice';
-import InventoryDisplay from './InventoryDisplay';
+import InventoryDisplay from './display/InventoryDisplay';
 
 const PlayerCard = ({ player, vaultId }) => {
   if (!player) return null;
