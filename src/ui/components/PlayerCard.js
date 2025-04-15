@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectPlayerInventory } from '../../store/slices/inventorySlice';
 import InventoryDisplay from './InventoryDisplay';
 
-const PlayerCard = ({ player }) => {
+const PlayerCard = ({ player, vaultId }) => {
   if (!player) return null;
 
   const inventory = useSelector(selectPlayerInventory);
@@ -28,7 +28,11 @@ const PlayerCard = ({ player }) => {
 
         <div className="player-inventory">
           <h3>Inventory</h3>
-          <InventoryDisplay inventory={inventory} />
+          <InventoryDisplay 
+            inventoryId="player"
+            otherInventoryId={vaultId}
+            isVault={false}
+          />
         </div>
       </div>
     </div>
