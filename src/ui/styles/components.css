@@ -522,6 +522,11 @@
   color: white;
 }
 
+.player-inventory,
+.place-vault {
+  position: relative;
+}
+
 .player-inventory h3,
 .place-vault h3 {
   margin-top: var(--spacing-md);
@@ -539,8 +544,8 @@
 }
 
 .inventory-flex > div {
-  display: flex;
   position: relative;
+  display: flex;
   width: 50px;
   height: 50px;
   border-radius: var(--border-radius-sm);
@@ -558,4 +563,18 @@
   bottom:0;
   right: 5px;
   font-weight: bold;
+}
+
+.inventory-info {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+}
+
+.inventory-info span {
+  font-weight:normal;
+}
+
+.inventory-info b {
+  color: var(--color-gray-light);
 }

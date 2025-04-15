@@ -22,7 +22,7 @@ import {
   selectBackgroundImage,
   selectAvailableConnections,
 } from '../../store/slices/placesSlice';
-import { selectVaultByPlaceId, selectPlayerInventory } from '../../store/slices/inventorySlice';
+import { selectVaultByPlaceId } from '../../store/slices/inventorySlice';
 
 const GameLayout = ({ clearCache }) => {
   // Use selectors to get state from Redux
@@ -36,7 +36,6 @@ const GameLayout = ({ clearCache }) => {
   const playerInfo = useSelector(selectPlayer);
   const currentPlace = useSelector(selectCurrentPlace);
   const vault = useSelector(state => selectVaultByPlaceId(state, currentPlace.id));
-  const playerInventory = useSelector(selectPlayerInventory);
 
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `

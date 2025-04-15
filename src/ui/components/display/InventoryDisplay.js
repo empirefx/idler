@@ -41,8 +41,26 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
     setSelectedItem(null);
   };
 
+  // Calculate total items and weight if available
+  const totalItems = inventory.items.length;
+  const maxSlots = inventory.maxSlots;
+  const hasWeightLimit = typeof inventory.maxWeight !== 'undefined';
+  const currentWeight = inventory.items.reduce(
+    (sum, item) => sum + ((item.weight || 0) * (item.quantity || 1)),
+    0
+  );
+  const maxWeight = inventory.maxWeight;
+
   return (
     <>
+      <div className="inventory-info" style={{ marginBottom: '8px', fontWeight: 'bold' }}>
+        <span>{totalItems} / <b>{maxSlots} slots</b></span>
+        {hasWeightLimit && (
+          <span style={{ marginLeft: '16px' }}>
+            {currentWeight} / <b>{maxWeight} lt</b>
+          </span>
+        )}
+      </div>
       <div className="inventory-flex">
         {Array.from({ length: inventory.maxSlots }, (_, i) => {
           const item = inventory.items[i];
@@ -64,7 +82,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
           );
         })}
       </div>
-      {dialogOpen && selectedItem && (
+      {dialogOpen && selectedItem && ( // Open dialog if an item is selected
         <MoveItemDialog
           item={selectedItem}
           onConfirm={handleConfirmMove}
