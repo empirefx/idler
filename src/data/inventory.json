@@ -7,9 +7,9 @@
       "maxSlots": 20,
       "maxWeight": 100,
       "items": [
-        { "id": "apple1", "name": "apple", "description": "A fresh apple", "type": "apple", "quantity": 5, "weight": 0.5 },
+        { "id": 1, "name": "apple", "description": "A fresh apple", "type": "apple", "quantity": 5, "weight": 0.5 },
         { "id": "armor1", "name": "armor", "description": "A sturdy piece of armor", "type": "armor", "quantity": 1, "stats": { "defense": 10 }, "weight": 15 },
-        { "id": "banana1", "name": "banana", "description": "A ripe banana", "type": "banana", "quantity": 3, "weight": 0.5 }
+        { "id": 2, "name": "banana", "description": "A ripe banana", "type": "banana", "quantity": 3, "weight": 0.5 }
       ]
     },
     "village_center": {
@@ -18,7 +18,7 @@
       "type": "place",
       "maxSlots": 40,
       "items": [
-        { "id": "apple3", "name": "apple", "description": "A fresh apple", "type": "apple", "quantity": 10, "weight": 0.5 },
+        { "id": 1, "name": "apple", "description": "A fresh apple", "type": "apple", "quantity": 10, "weight": 0.5 },
         { "id": "armor2", "name": "armor", "description": "A sturdy piece of armor", "type": "armor", "quantity": 1,"stats": { "defense": 12 }, "weight": 18 }
       ]
     }
