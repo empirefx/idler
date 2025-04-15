@@ -1,6 +1,7 @@
 import Logger from './Logger';
 
 import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice';
+import { itemCatalog } from '../../data/itemCatalog';
 
 class GameEngine {
   constructor(dispatch, store) {
@@ -10,6 +11,39 @@ class GameEngine {
     this.lastUpdate = Date.now();
     this.isRunning = false;
     this.tickInterval = null;
+  }
+
+  // Create an item object for production, using the itemCatalog.
+  getProducedItem(productionType, quantity) {
+    const itemDef = itemCatalog[productionType];
+    if (!itemDef) return null;
+    return {
+      ...itemDef,
+      quantity
+    };
+  }
+
+  // Get the inventory object for a given place
+  getVaultInventory(state, targetPlace) {
+    const inventories = state.inventory && state.inventory.inventories;
+    return inventories && targetPlace ? inventories[targetPlace.id] : undefined;
+  }
+
+  // Add an item to a place's inventory
+  addItemToInventory(targetPlaceId, item) {
+    this.store.dispatch({
+      type: 'inventory/addItem',
+      payload: {
+        inventoryId: targetPlaceId,
+        item
+      }
+    });
+  }
+
+  // Find the nearest Place with hasInventory:true (for now, just village_center)
+  findTargetPlaceWithInventory(state) {
+    const places = Object.values(state.places || {});
+    return places.find(p => p.hasInventory);
   }
 
   // Start the game loop
@@ -50,7 +84,7 @@ class GameEngine {
   update(deltaTime) {
     Logger.log(`Update called with deltaTime: ${deltaTime.toFixed(3)}`, 0, 'game-loop');
 
-
+    // Load game state if not already loaded
     if (!localStorage.getItem('gameState')) {
       Logger.log('No saved game state found', 0, 'game-loop');
       this.save();
@@ -69,29 +103,19 @@ class GameEngine {
         buildingsWithAssignedWorkers.includes(buildingId) 
         && production > 0
       ) {
-        // Determine item to produce
-        let producedItem = null;
-        if (building.productionType === 'apple') {
-          producedItem = { id: 'apple', type: 'apple', name: 'Apple', weight: 1, quantity: Math.floor(production * deltaTime) };
-        } else if (building.productionType === 'ore') {
-          producedItem = { id: 'ore', type: 'ore', name: 'Ore', weight: 2, quantity: Math.floor(production * deltaTime) };
-        }
+        // Determine item to produce using getProducedItem method
+        const producedItem = this.getProducedItem(
+          building.productionType,
+          Math.floor(production * deltaTime)
+        );
         if (producedItem && producedItem.quantity > 0) {
           // Find nearest Place with hasInventory:true (for now, just village_center)
-          const places = Object.values(state.places || {});
-          const targetPlace = places.find(p => p.hasInventory);
-          const inventories = state.inventory && state.inventory.inventories;
-          const vaultInventory = inventories && targetPlace ? inventories[targetPlace.id] : undefined;
+          const targetPlace = this.findTargetPlaceWithInventory(state);
+          const vaultInventory = this.getVaultInventory(state, targetPlace);
 
           if (targetPlace && vaultInventory) {
             // Add produced item to the place's inventory
-            this.store.dispatch({
-              type: 'inventory/addItem',
-              payload: {
-                inventoryId: targetPlace.id,
-                item: producedItem
-              }
-            });
+            this.addItemToInventory(targetPlace.id, producedItem);
           } else if (targetPlace && !vaultInventory) {
             Logger.error('No inventory found for target place:', 0, 'inventory', targetPlace);
           }
