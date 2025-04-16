@@ -613,6 +613,11 @@
   cursor: default;
 }
 
+.player-stats > p {
+  color: var(--color-gray-dark);
+  text-transform: uppercase;
+}
+
 .player-stats ul {
   list-style: none;
   padding: 0;
@@ -629,4 +634,8 @@
 .player-stats ul li span {
   text-transform: capitalize;
   color: var(--color-gray);
+}
+
+.player-stats .bonus {
+  color: var(--color-green);
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 import InventoryDisplay from './display/InventoryDisplay';
 import EquipmentDisplay from './display/EquipmentDisplay';
+import StatList from './list/StatList';
 
 const PlayerCard = ({ player, vaultId }) => {
   if (!player) return null;
@@ -22,11 +23,7 @@ const PlayerCard = ({ player, vaultId }) => {
         <div className="player-stats">
           <p>Base stats</p>
           {player.stats && (
-            <ul>
-              {Object.entries(player.stats).map(([key, value]) => (
-                <li key={key}><span>{key}</span> <b>{value}</b></li>
-              ))}
-            </ul>
+            <StatList baseStats={player.stats} />
           )}
         </div>
 
