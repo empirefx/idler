@@ -605,9 +605,28 @@
   left: -4px;
   width: 55px;
   text-align: center;
+  font-size: var(--font-size-sm);
 }
 
 .equipment-flex .main-weapon span,
 .equipment-flex .second-weapon span {
   cursor: default;
+}
+
+.player-stats ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 150px;
+}
+
+.player-stats ul li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.player-stats ul li span {
+  text-transform: capitalize;
+  color: var(--color-gray);
 }

@@ -20,7 +20,14 @@ const PlayerCard = ({ player, vaultId }) => {
         </div>
 
         <div className="player-stats">
-          <p>Stats</p>
+          <p>Base stats</p>
+          {player.stats && (
+            <ul>
+              {Object.entries(player.stats).map(([key, value]) => (
+                <li key={key}><span>{key}</span> <b>{value}</b></li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className="player-inventory">
