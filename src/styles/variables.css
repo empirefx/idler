@@ -13,6 +13,8 @@
   --color-gray: #AAAAAA;
   --color-gray-light: #c7c7c7;
   --color-gray-dark: #585858;
+  --color-red: #C65447;
+  --color-red-dark: #300D09;
   
   /* Typography */
   --font-family-base: 'Liberation Sans Narrow', sans-serif;
