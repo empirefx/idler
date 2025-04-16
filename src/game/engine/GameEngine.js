@@ -1,15 +1,60 @@
 import Logger from './Logger';
 
 import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice';
+import { InventoryService } from '../services/inventoryService';
+import { PlaceSelector } from '../services/placeSelector';
+import { ItemFactory } from '../factory/itemFactory';
 
 class GameEngine {
-  constructor(dispatch, store) {
+  constructor(dispatch, store, {
+    inventoryService = InventoryService,
+    placeSelector = PlaceSelector,
+    itemFactory = ItemFactory
+  } = {}) {
     this.store = store;
     this.lastState = store.getState();
     this.dispatch = dispatch;
     this.lastUpdate = Date.now();
     this.isRunning = false;
     this.tickInterval = null;
+    
+    // Dependency injection for testability/modularity
+    this.inventoryService = inventoryService;
+    this.placeSelector = placeSelector;
+    this.itemFactory = itemFactory;
+  }
+
+  // Get the inventory object for a given place
+  getVaultInventory(state, targetPlace) {
+    const inventories = state.inventory && state.inventory.inventories;
+    return inventories && targetPlace ? inventories[targetPlace.id] : undefined;
+  }
+
+  // Add an item to a place's inventory handled by InventoryService
+  addItemToInventory(targetPlaceId, item) {
+    this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
+  }
+
+  // Process production for a single building
+  processBuildingProduction(buildingId, building, state, deltaTime) {
+    const production = building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0;
+    const producedItem = this.itemFactory.create(
+      building.productionType,
+      Math.floor(production * deltaTime)
+    );
+
+    if (producedItem && producedItem.quantity > 0) {
+      // Find nearest Place with hasInventory:true (for now, just village_center)
+      const targetPlace = this.placeSelector.findFirstWithInventory(state);
+      const vaultInventory = this.inventoryService.getInventoryForPlace(state, targetPlace && targetPlace.id);
+
+      if (targetPlace && vaultInventory) {
+        // Add produced item to the place's inventory
+        this.addItemToInventory(targetPlace.id, producedItem);
+      } else if (targetPlace && !vaultInventory) {
+        Logger.error('No inventory found for target place:', 0, 'inventory', targetPlace);
+      }
+    }
   }
 
   // Start the game loop
@@ -50,6 +95,7 @@ class GameEngine {
   update(deltaTime) {
     Logger.log(`Update called with deltaTime: ${deltaTime.toFixed(3)}`, 0, 'game-loop');
 
+    // Load game state if not already loaded
     if (!localStorage.getItem('gameState')) {
       Logger.log('No saved game state found', 0, 'game-loop');
       this.save();
@@ -58,31 +104,17 @@ class GameEngine {
 
     const state = this.store.getState();
     const buildingsWithAssignedWorkers = listBuildingsWithAssignedWorkers(state);
-    
+
     // Update resources based on building production
+    // Produce items and store in nearest Place with hasInventory:true
     Object.entries(state.buildings).forEach(([buildingId, building]) => {
-      const production = building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0;
-      
       if (
-        buildingsWithAssignedWorkers.includes(buildingId) 
-        && production > 0
+        buildingsWithAssignedWorkers.includes(buildingId)
+        && (building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0) > 0
       ) {
-        const resourceType = building.productionType;
-        
-        // Check if resource exists before adding
-        if (resourceType) {
-          // Dispatch to Redux store instead of internal dispatch
-          this.store.dispatch({ 
-            type: 'player/addResource', 
-            payload: { 
-              resource: resourceType, 
-              amount: Math.floor(production * deltaTime) 
-            } 
-          });
-        }
+        this.processBuildingProduction(buildingId, building, state, deltaTime);
       }
     });
-
   }
 
   // Save game state

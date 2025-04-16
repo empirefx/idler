@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 
-import { selectResources, selectWorkers } from '../../store/slices/playerSlice';
+import { selectResources, selectWorkers } from '../../../store/slices/playerSlice';
 
 // selectors
 const selectMaxWorkers = state => state.player.MAX_WORKERS || 0;
@@ -19,8 +19,6 @@ const ResourceDisplay = () => {
   const workerCount = useSelector(selectWorkerCount);
   const maxWorkers = useSelector(selectMaxWorkers);
 
-  const food = resources.find(r => r.name === 'food').amount;
-  const materials = resources.find(r => r.name === 'materials').amount;
   const gold = resources.find(r => r.name === 'gold').amount;
 
   return (
@@ -28,14 +26,6 @@ const ResourceDisplay = () => {
       <div className="resource-item">
         <span className="resource-name">Workers</span>
         <span className="resource-amount">{`${workerCount}/${maxWorkers}`}</span>
-      </div>
-      <div className="resource-item">
-        <span className="resource-name">Food</span>
-        <span className="resource-amount">{food}</span>
-      </div>
-      <div className="resource-item">
-        <span className="resource-name">Materials</span>
-        <span className="resource-amount">{materials}</span>
       </div>
       <div className="resource-item">
         <span className="resource-name">Gold</span>

@@ -74,6 +74,13 @@ export const {
 
 // Selectors
 export const selectWorkers = state => state.player.workers;
+export const selectResources = state => state.player.resources;
+
+// Memoized selectors
+export const selectPlayer = createSelector(
+  state => state.player,
+  player => ({ id: player.id, name: player.name })
+);
 export const listBuildingsWithAssignedWorkers = createSelector(
   [selectWorkers],
   (workers) => workers.filter(worker => worker.assignedBuildingId).map(worker => worker.assignedBuildingId)
@@ -86,6 +93,5 @@ export const selectUnassignedWorkers = createSelector(
   [selectWorkers],
   workers => workers.filter(worker => !worker.assignedBuildingId)
 );
-export const selectResources = state => state.player.resources;
 
 export default playerSlice.reducer;

@@ -175,11 +175,15 @@ export const selectAllPlaces = (state) => {
   const { currentPlaceId, previousPlaceId, availableConnections, discoveredPlaces, metadata, ...places } = state.places;
   return places;
 };
+
+// Selectors
 export const selectCurrentPlace = (state) => state.places[state.places.currentPlaceId];
 export const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 export const selectAvailableConnections = (state) => state.places.availableConnections;
 export const selectDiscoveredPlaces = (state) => state.places.discoveredPlaces;
 export const selectPlaceById = (state, placeId) => state.places[placeId];
+
+// Memoized selectors
 export const selectBackgroundImage = (state) => {
   const currentPlace = state.places[state.places.currentPlaceId];
   return currentPlace ? currentPlace['background-image'] : null;

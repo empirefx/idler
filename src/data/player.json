@@ -7,14 +7,6 @@
     {
       "name": "gold",
       "amount": 0
-    },
-    {
-      "name": "food",
-      "amount": 0
-    },
-    {
-      "name": "materials",
-      "amount": 0
     }
   ],
   "workers": [

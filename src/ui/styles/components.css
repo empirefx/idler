@@ -202,7 +202,8 @@
 
 .workers-section,
 .buildings-section,
-.places-section {
+.places-section,
+.player-section {
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
 }
@@ -220,6 +221,7 @@
   bottom: 20px;
   left: 20px;
   background: transparent;
+  max-width: 680px;
 }
 
 .workers-section{
@@ -230,6 +232,20 @@
   border-radius: 0;
   background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%); 
 }
+
+.player-section {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  max-height: 480px;
+  max-width: 970px;
+  background: var(--color-dark);
+  color: white;
+  z-index: 11;
+  /* visibility: hidden; */
+}
+
+/* Workers section */
 
 .workers-section h2 {
   color: var(--color-secondary);
@@ -428,4 +444,137 @@
   font-size: 0.8rem;
   color: #95a5a6;
   margin-top: 0.5rem;
+}
+
+/* Player section */
+
+.player-card {
+  height: 100%;
+  width: 100%;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 8px;
+  grid-template-areas: 
+    "display equipment stats"
+    "display inventory inventory";
+  width: 100%;
+  height: 100%;
+}
+
+.player-display {
+  position: relative;
+  grid-area: display;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-image: url(../../assets/ui/player_frame.png);
+  background-size:contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.player-display h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-transform:initial;
+  text-align: center;
+  z-index: 1;
+}
+
+.player-display h1:last-child {
+  margin-bottom: 20px;
+}
+
+.player-avatar {
+  position: absolute;
+  background-image: url(../../assets/avatars/player/1.png);
+  background-size:contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  mask-image: linear-gradient(to top, transparent 11%, black 35%);
+  width: 300px;
+  height: 380px;
+  margin-top: 40px;
+}
+
+.player-Equipment {
+  grid-area: equipment;
+}
+
+.player-stats {
+  grid-area: stats;
+}
+
+.player-inventory,
+.place-vault {
+  padding: var(--spacing-md) var(--spacing-sm);
+  grid-area: inventory;
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-gray-dark);
+}
+
+.place-vault {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.player-inventory,
+.place-vault {
+  position: relative;
+}
+
+.player-inventory h3,
+.place-vault h3 {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  text-indent: var(--spacing-sm);
+  text-transform:initial;
+}
+
+.inventory-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  align-items: center;
+}
+
+.inventory-flex > div {
+  position: relative;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-gray);
+  text-shadow: 0px 0px 3px black;
+}
+
+.inventory-flex > div:hover {
+  cursor: pointer;
+  border: outset 3px var(--color-gray-light);
+}
+
+.inventory-flex > div span {
+  position: absolute;
+  bottom:0;
+  right: 5px;
+  font-weight: bold;
+}
+
+.inventory-info {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+}
+
+.inventory-info span {
+  font-weight:normal;
+}
+
+.inventory-info b {
+  color: var(--color-gray-light);
 }
