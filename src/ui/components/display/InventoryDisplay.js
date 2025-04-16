@@ -1,12 +1,12 @@
 import React,{ useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { moveItem, equipItem } from '../../../store/slices/inventorySlice';
 import MoveItemDialog from '../common/MoveItemDialog';
 import ToolTip from '../common/ToolTip';
 
-import { useSelector } from 'react-redux';
 import { selectInventoryById } from '../../../store/slices/inventorySlice';
+import { calculateTotalPlayerWeight } from '../../../store/slices/inventorySlice';
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
   const inventory = useSelector(state => selectInventoryById(state, inventoryId));
@@ -45,10 +45,15 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
   const totalItems = inventory.items.length;
   const maxSlots = inventory.maxSlots;
   const hasWeightLimit = typeof inventory.maxWeight !== 'undefined';
-  const currentWeight = inventory.items.reduce(
-    (sum, item) => sum + ((item.weight || 0) * (item.quantity || 1)),
-    0
-  );
+  let currentWeight = 0;
+  if (inventory.type === 'player') {
+    currentWeight = calculateTotalPlayerWeight(inventory);
+  } else {
+    currentWeight = inventory.items.reduce(
+      (sum, item) => sum + ((item.weight || 0) * (item.quantity || 1)),
+      0
+    );
+  }
   const maxWeight = inventory.maxWeight;
 
   return (

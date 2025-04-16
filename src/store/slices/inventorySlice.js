@@ -41,9 +41,24 @@ const canItemsStack = (item1, item2) => {
   return !item1.stats && !item2.stats;
 };
 
-// Helper function to calculate total weight
+// Helper function to calculate total weight (inventory only)
 const calculateWeight = (items) => {
   return items.reduce((total, item) => total + item.weight * (item.quantity || 1), 0);
+};
+
+// Helper to calculate total carried weight (inventory + equipped)
+export const calculateTotalPlayerWeight = (playerInventory) => {
+  if (!playerInventory) return 0;
+  let total = calculateWeight(playerInventory.items || []);
+  if (playerInventory.equipment) {
+    for (const slot of Object.keys(playerInventory.equipment)) {
+      const eq = playerInventory.equipment[slot];
+      if (eq && eq.weight) {
+        total += eq.weight;
+      }
+    }
+  }
+  return total;
 };
 
 // Helper function to count slots (each item/stack takes one slot)
@@ -226,4 +241,5 @@ export const selectVaultByPlaceId = createSelector(
   [selectInventory, (state, placeId) => placeId],
   (inventory, placeId) => (inventory && inventory.inventories ? inventory.inventories[placeId] : undefined)
 );
+
 export default inventorySlice.reducer;
