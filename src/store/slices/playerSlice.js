@@ -5,8 +5,9 @@ const initialState = {
   id: playerData.id,
   name: playerData.name,
   MAX_WORKERS: playerData.MAX_WORKERS,
+  stats: playerData.stats,
   resources: playerData.resources,
-  workers: playerData.workers,
+  workers: playerData.workers
 };
 
 export const playerSlice = createSlice({
@@ -79,7 +80,7 @@ export const selectResources = state => state.player.resources;
 // Memoized selectors
 export const selectPlayer = createSelector(
   state => state.player,
-  player => ({ id: player.id, name: player.name })
+  player => ({ id: player.id, name: player.name, stats: player.stats })
 );
 export const listBuildingsWithAssignedWorkers = createSelector(
   [selectWorkers],

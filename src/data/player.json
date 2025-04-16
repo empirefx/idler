@@ -2,6 +2,12 @@
   "id": 1,
   "name": "John Doe",
   "MAX_WORKERS": 5,
+  "stats": {
+    "strength": 10,
+    "defense": 5,
+    "agility": 7,
+    "vitality": 12
+  },
   "currentLocation": "village_center",
   "resources": [
     {
@@ -30,7 +36,7 @@
     }
   ],
   "metadata": {
-    "version": "1.0.7",
-    "lastUpdated": "2025-04-01"
+    "version": "1.0.8",
+    "lastUpdated": "2025-04-16"
   }
 }

@@ -3,10 +3,24 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 import inventoryData from '../../data/inventory.json';
 
 // Create a flattened object structure for the initial state
+const EQUIPMENT_SLOTS = ['head', 'body', 'pants', 'main-weapon', 'second-weapon'];
+
 const initialStateInventories = Object.entries(inventoryData.inventory).reduce((acc, [id, inventory]) => {
   acc[id] = {
     ...inventory,
-    id
+    id,
+    // Ensure equipment object exists for player inventory
+    ...(inventory.type === 'player' && !inventory.equipment
+      ? {
+          equipment: {
+            head: null,
+            body: null,
+            pants: null,
+            'main-weapon': null,
+            'second-weapon': null,
+          },
+        }
+      : {})
   };
   return acc;
 }, {});
@@ -27,9 +41,24 @@ const canItemsStack = (item1, item2) => {
   return !item1.stats && !item2.stats;
 };
 
-// Helper function to calculate total weight
+// Helper function to calculate total weight (inventory only)
 const calculateWeight = (items) => {
   return items.reduce((total, item) => total + item.weight * (item.quantity || 1), 0);
+};
+
+// Helper to calculate total carried weight (inventory + equipped)
+export const calculateTotalPlayerWeight = (playerInventory) => {
+  if (!playerInventory) return 0;
+  let total = calculateWeight(playerInventory.items || []);
+  if (playerInventory.equipment) {
+    for (const slot of Object.keys(playerInventory.equipment)) {
+      const eq = playerInventory.equipment[slot];
+      if (eq && eq.weight) {
+        total += eq.weight;
+      }
+    }
+  }
+  return total;
 };
 
 // Helper function to count slots (each item/stack takes one slot)
@@ -159,10 +188,46 @@ const inventorySlice = createSlice({
     updateInventory(state, action) {
       state.inventory = action.payload;
     },
+
+    // Equip item from inventory to equipment slot
+    equipItem(state, action) {
+      const { inventoryId, itemId } = action.payload;
+      const inventory = state.inventories[inventoryId];
+      if (!inventory || inventory.type !== 'player') return;
+      const itemIdx = inventory.items.findIndex((i) => i.id === itemId);
+      if (itemIdx === -1) return;
+      const item = inventory.items[itemIdx];
+      if (item.type !== 'equipment' || !item.piece || !EQUIPMENT_SLOTS.includes(item.piece)) return;
+      const slot = item.piece;
+      // If slot already has an item, swap it back to inventory
+      const equipped = inventory.equipment[slot];
+      if (equipped) {
+        // Add old equipped item to inventory
+        inventory.items.push(equipped);
+      }
+      // Equip new item
+      inventory.equipment[slot] = item;
+      // Remove from inventory
+      inventory.items.splice(itemIdx, 1);
+    },
+
+    // Unequip item from equipment slot back to inventory
+    unequipItem(state, action) {
+      const { inventoryId, slot } = action.payload;
+      const inventory = state.inventories[inventoryId];
+      if (!inventory || inventory.type !== 'player') return;
+      if (!EQUIPMENT_SLOTS.includes(slot)) return;
+      const equipped = inventory.equipment[slot];
+      if (!equipped) return;
+      // Add equipped item back to inventory
+      inventory.items.push(equipped);
+      // Remove from equipment slot
+      inventory.equipment[slot] = null;
+    },
   },
 });
 
-export const { updateInventory, addItem, moveItem, removeItem } = inventorySlice.actions;
+export const { updateInventory, addItem, moveItem, removeItem, equipItem, unequipItem } = inventorySlice.actions;
 
 // Selectors
 export const selectInventory = (state) => state.inventory;
@@ -176,4 +241,5 @@ export const selectVaultByPlaceId = createSelector(
   [selectInventory, (state, placeId) => placeId],
   (inventory, placeId) => (inventory && inventory.inventories ? inventory.inventories[placeId] : undefined)
 );
+
 export default inventorySlice.reducer;

@@ -13,12 +13,16 @@
   --color-gray: #AAAAAA;
   --color-gray-light: #c7c7c7;
   --color-gray-dark: #585858;
+  --color-red: #C65447;
+  --color-red-dark: #300D09;
+  --color-green: #28a745;
   
   /* Typography */
   --font-family-base: 'Liberation Sans Narrow', sans-serif;
   --font-family-secondary: 'League Spartan', sans-serif;
   --font-family-tertiary: 'Lekton', monospace;
   --font-size-base: 16px;
+  --font-size-sm: 14px;
   --line-height-base: 1.6;
   
   /* Spacing */
