@@ -601,13 +601,13 @@
 
 .equipment-flex > div span {
   position: absolute;
-  bottom:-30px;
-  width:50px;
+  top: 55px;
+  left: -4px;
+  width: 55px;
   text-align: center;
 }
 
 .equipment-flex .main-weapon span,
 .equipment-flex .second-weapon span {
-  bottom: -50px;
   cursor: default;
 }

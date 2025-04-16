@@ -8,7 +8,7 @@
       "maxWeight": 100,
       "items": [
         { "id": 1, "name": "apple", "description": "A fresh apple", "type": "apple", "quantity": 5, "weight": 0.5 },
-        { "id": "armor1", "name": "armor", "description": "A sturdy piece of armor", "type": "equipment", "piece": "body", "quantity": 1, "stats": { "defense": 10 }, "weight": 15 },
+        { "id": "armor1", "name": "Rusty Armor", "description": "A sturdy piece of armor", "type": "equipment", "piece": "body", "quantity": 1, "stats": { "defense": 10 }, "weight": 15 },
         { "id": 2, "name": "banana", "description": "A ripe banana", "type": "banana", "quantity": 3, "weight": 0.5 }
       ]
     },
@@ -19,12 +19,12 @@
       "maxSlots": 40,
       "items": [
         { "id": 1, "name": "apple", "description": "A fresh apple", "type": "apple", "quantity": 10, "weight": 0.5 },
-        { "id": "armor2", "name": "armor", "description": "A sturdy piece of armor", "type": "equipment", "piece": "body", "quantity": 1,"stats": { "defense": 12 }, "weight": 18 }
+        { "id": "armor2", "name": "Rusty Armor", "description": "A sturdy piece of armor", "type": "equipment", "piece": "body", "quantity": 1,"stats": { "defense": 12 }, "weight": 18 }
       ]
     }
   },
   "metadata": {
-    "version": "1.0.3",
+    "version": "1.0.4",
     "lastUpdated": "2025-04-16"
   }
 }

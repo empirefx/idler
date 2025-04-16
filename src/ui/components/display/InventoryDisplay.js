@@ -1,7 +1,7 @@
 import React,{ useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { moveItem } from '../../../store/slices/inventorySlice';
+import { moveItem, equipItem } from '../../../store/slices/inventorySlice';
 import MoveItemDialog from '../common/MoveItemDialog';
 import ToolTip from '../common/ToolTip';
 
@@ -70,11 +70,13 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
               className="inventory-slot"
               key={i}
               onContextMenu={item && otherInventory ? (e) => handleContextMenu(e, item) : undefined}
+              onClick={item && item.type === 'equipment' ? () => dispatch(equipItem({ inventoryId: inventory.id, itemId: item.id })) : undefined}
+              style={{ cursor: item && item.type === 'equipment' ? 'pointer' : 'default' }}
             >
               {item && (
                 <ToolTip item={item}>
                   <p>
-                    <span>{item.quantity || ''}</span>
+                    <span>{item.type === 'equipment' ? '' : (item.quantity || '')}</span>
                   </p>
                 </ToolTip>
               )}
