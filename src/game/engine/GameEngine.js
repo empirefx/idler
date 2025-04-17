@@ -25,6 +25,12 @@ class GameEngine {
     this.itemFactory = itemFactory;
     this.eventBus = new EventBus();
     this.spawnService = new SpawnService(this.eventBus);
+    // Initialize lastPlaceId to detect actual place changes
+    this.lastPlaceId = this.store.getState().places.currentPlaceId;
+    // Register spawnEnemy handler once
+    this.eventBus.on('spawnEnemy', ({ placeId, enemy }) => {
+      this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
+    });
   }
 
   // Get the inventory object for a given place
@@ -75,8 +81,11 @@ class GameEngine {
     // Hook navigation to spawn logic
     this.unsubscribeNav = this.store.subscribe(() => {
       const state = this.store.getState();
-      const placeId = state.places.currentPlaceId;
-      this.eventBus.emit('enterPlace', placeId);
+      const newPlaceId = state.places.currentPlaceId;
+      if (newPlaceId !== this.lastPlaceId) {
+        this.lastPlaceId = newPlaceId;
+        this.eventBus.emit('enterPlace', newPlaceId);
+      }
     });
   }
 
@@ -100,11 +109,6 @@ class GameEngine {
     this.lastUpdate = now;
 
     this.update(deltaTime);
-
-    // Listen for spawned enemies
-    this.eventBus.on('spawnEnemy', ({ placeId, enemy }) => {
-      this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
-    });
   }
 
   // Update game state

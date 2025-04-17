@@ -9,6 +9,7 @@ import PlaceCard from '../components/PlaceCard';
 import PlayerCard from '../components/PlayerCard';
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import InventoryDisplay from '../components/display/InventoryDisplay';
+import EnemyCard from '../components/EnemyCard';
 
 import {
   selectUnassignedWorkers,
@@ -24,6 +25,7 @@ import {
   selectAvailableConnections,
 } from '../../store/slices/placesSlice';
 import { selectVaultByPlaceId } from '../../store/slices/inventorySlice';
+import { selectEnemiesForCurrentPlace } from '../../store/slices/enemiesSlice';
 
 const GameLayout = ({ clearCache }) => {
   const { playerCard, workerCard } = useUIVisibility();
@@ -38,6 +40,7 @@ const GameLayout = ({ clearCache }) => {
   const playerInfo = useSelector(selectPlayer);
   const currentPlace = useSelector(selectCurrentPlace);
   const vault = useSelector(state => selectVaultByPlaceId(state, currentPlace.id));
+  const enemies = useSelector(selectEnemiesForCurrentPlace);
 
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
@@ -114,6 +117,17 @@ const GameLayout = ({ clearCache }) => {
                 />
               ) : null;
             })}
+          </div>
+        </section>
+
+        <section className="enemies-section">
+          <h2>Enemies</h2>
+          <div className="enemies-list">
+            {enemies.length > 0 ? (
+              enemies.map(enemy => <EnemyCard key={enemy.id} enemy={enemy} />)
+            ) : (
+              <p>No enemies here.</p>
+            )}
           </div>
         </section>
 

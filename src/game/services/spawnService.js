@@ -23,8 +23,10 @@ class BaseSpawner {
     this.eventBus = eventBus;
   }
   createEnemy() {
+    // Unique ID: pool + timestamp + random suffix
+    const suffix = Math.random().toString(36).substring(2, 8);
     return {
-      id: `${this.config.pool}-${Date.now()}`,
+      id: `${this.config.pool}-${Date.now()}-${suffix}`,
       type: this.config.pool
     };
   }
