@@ -1,4 +1,5 @@
 import Logger from '../engine/Logger';
+import EnemyFactory from '../factory/enemyFactory';
 import placesData from '../../data/places.json';
 
 // Handles events for spawn service
@@ -25,10 +26,10 @@ class BaseSpawner {
   createEnemy() {
     // Unique ID: pool + timestamp + random suffix
     const suffix = Math.random().toString(36).substring(2, 8);
-    return {
-      id: `${this.config.pool}-${Date.now()}-${suffix}`,
-      type: this.config.pool
-    };
+    const id = `${this.config.pool}-${Date.now()}-${suffix}`;
+    // Build stats from EnemyFactory, fallback to minimal if missing
+    const baseStats = EnemyFactory.create(this.config.pool) || { type: this.config.pool };
+    return { ...baseStats, id };
   }
 }
 
