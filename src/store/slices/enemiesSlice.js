@@ -27,7 +27,7 @@ const enemiesSlice = createSlice({
 
 export const { addEnemy, removeEnemy } = enemiesSlice.actions;
 
-// Basic state selectors
+// Selectors
 const selectEnemiesState = (state) => state.enemies;
 const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 
