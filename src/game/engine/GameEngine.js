@@ -5,6 +5,7 @@ import { InventoryService } from '../services/inventoryService';
 import { PlaceSelector } from '../services/placeSelector';
 import { ItemFactory } from '../factory/itemFactory';
 import SpawnService, { EventBus } from '../services/spawnService';
+import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
 
 class GameEngine {
   constructor(dispatch, store, {
@@ -82,8 +83,11 @@ class GameEngine {
     this.unsubscribeNav = this.store.subscribe(() => {
       const state = this.store.getState();
       const newPlaceId = state.places.currentPlaceId;
-      if (newPlaceId !== this.lastPlaceId) {
+      const oldPlaceId = this.lastPlaceId;
+      if (newPlaceId !== oldPlaceId) {
         this.lastPlaceId = newPlaceId;
+        // Despawn enemies from the previous place
+        this.dispatch(removeEnemiesByPlace(oldPlaceId));
         this.eventBus.emit('enterPlace', newPlaceId);
       }
     });

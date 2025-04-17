@@ -60,7 +60,11 @@ export class SingleSpawner extends BaseSpawner {
   }
 
   stop() {
-    // No-op; setTimeout handles scheduling
+    // Reset single-spawn flag and clear death handlers
+    this.hasAlive = false;
+    const deathEvent = `enemyDead:${this.placeId}`;
+    // Remove all handlers for this event
+    delete this.eventBus.handlers[deathEvent];
   }
 }
 
@@ -100,7 +104,10 @@ export class WaveSpawner extends BaseSpawner {
   }
 
   stop() {
-    // No-op
+    // Reset wave state and clear death handlers
+    this.waveActive = false;
+    const deathEvent = `enemyDead:${this.placeId}`;
+    delete this.eventBus.handlers[deathEvent];
   }
 }
 

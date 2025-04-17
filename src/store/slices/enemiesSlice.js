@@ -21,11 +21,22 @@ const enemiesSlice = createSlice({
         delete state.byId[id];
         state.allIds = state.allIds.filter(eid => eid !== id);
       }
+    },
+    // Remove all enemies in a specific place
+    removeEnemiesByPlace(state, action) {
+      const placeId = action.payload;
+      state.allIds = state.allIds.filter(id => {
+        if (state.byId[id].placeId === placeId) {
+          delete state.byId[id];
+          return false;
+        }
+        return true;
+      });
     }
   }
 });
 
-export const { addEnemy, removeEnemy } = enemiesSlice.actions;
+export const { addEnemy, removeEnemy, removeEnemiesByPlace } = enemiesSlice.actions;
 
 // Selectors
 const selectEnemiesState = (state) => state.enemies;
