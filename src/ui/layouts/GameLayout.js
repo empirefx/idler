@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useUIVisibility } from '../UIVisibilityContext';
 
 import BuildingCard from '../components/BuildingCard';
 import ResourceDisplay from '../components/display/ResourceDisplay';
@@ -25,6 +26,7 @@ import {
 import { selectVaultByPlaceId } from '../../store/slices/inventorySlice';
 
 const GameLayout = ({ clearCache }) => {
+  const { playerCard, workerCard } = useUIVisibility();
   // Use selectors to get state from Redux
   const buildings = useSelector(selectAllBuildings);
   const currentBuildings = useSelector(selectCurrentPlaceBuildings);
@@ -60,43 +62,46 @@ const GameLayout = ({ clearCache }) => {
       <main className="game-main">
         <CurrentPlaceDisplay />
 
-        <section className="player-section">
-          <PlayerCard player={playerInfo} vaultId={currentPlace.id} />
-        </section>
-        
-        <section className="workers-section">
-          <h2>Workers</h2>
-          <div className="workers-grid">
-            <div className="workers-list">
-              {unassignedWorkers.length > 0 ? (
-                unassignedWorkers.map(worker => (
-                  <WorkerCard
-                    key={worker.id}
-                    worker={worker}
-                    buildings={currentBuildings.map(buildingId => buildings[buildingId])}
-                  />
-                ))
-              ) : (
-                <div className="no-workers-message">No unassigned workers available</div>
-              )}
+        {playerCard && (
+          <section className="player-section">
+            <PlayerCard player={playerInfo} vaultId={currentPlace.id} />
+          </section>
+        )}
+
+        {workerCard && (
+          <section className="workers-section">
+            <h2>Workers</h2>
+            <div className="workers-grid">
+              <div className="workers-list">
+                {unassignedWorkers.length > 0 ? (
+                  unassignedWorkers.map(worker => (
+                    <WorkerCard
+                      key={worker.id}
+                      worker={worker}
+                      buildings={currentBuildings.map(buildingId => buildings[buildingId])}
+                    />
+                  ))
+                ) : (
+                  <div className="no-workers-message">No unassigned workers available</div>
+                )}
+              </div>
+              <h3>Assigned</h3>
+              <div className="workers-list">
+                {assignedWorkers.length > 0 ? (
+                  assignedWorkers.map(worker => (
+                    <WorkerCard
+                      key={worker.id}
+                      worker={worker}
+                      buildings={currentBuildings.map(buildingId => buildings[buildingId])}
+                    />
+                  ))
+                ) : (
+                  <div className="no-workers-message">Currently no workers</div>
+                )}
+              </div>
             </div>
-            
-            <h3>Assigned</h3>
-            <div className="workers-list">
-              {assignedWorkers.length > 0 ? (
-                assignedWorkers.map(worker => (
-                  <WorkerCard
-                    key={worker.id}
-                    worker={worker}
-                    buildings={currentBuildings.map(buildingId => buildings[buildingId])}
-                  />
-                ))
-              ) : (
-                <div className="no-workers-message">Currently no workers</div>
-              )}
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section className="buildings-section">
           <div className="buildings-grid">
