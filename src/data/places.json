@@ -41,6 +41,11 @@
       "resources": {
         "wood": 2,
         "herbs": 1
+      },
+      "spawn": {
+        "type": "single",
+        "pool": "forest_beast",
+        "respawnDelay": 5
       }
     },
     "deep_woods": {
@@ -61,6 +66,11 @@
         "wood": 3,
         "stone": 2,
         "herbs": 2
+      },
+      "spawn": {
+        "type": "single",
+        "pool": "woodland_predator",
+        "respawnDelay": 8
       }
     },
     "river_crossing": {
@@ -122,6 +132,11 @@
       "resources": {
         "meat": 2,
         "leather": 1
+      },
+      "spawn": {
+        "type": "single",
+        "pool": "trained_hunters",
+        "respawnDelay": 10
       }
     },
     "fishing_spot": {
@@ -169,11 +184,17 @@
         "stone": 3,
         "artifacts": 2,
         "knowledge": 1
+      },
+      "spawn": {
+        "type": "wave",
+        "pool": "ruins_undead",
+        "waveSize": [3, 6],
+        "respawnDelay": 15
       }
     }
   },
   "metadata": {
-    "version": "1.0.4",
-    "lastUpdated": "2025-03-29"
+    "version": "1.0.5",
+    "lastUpdated": "2025-04-17"
   }
 }

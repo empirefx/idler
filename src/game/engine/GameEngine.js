@@ -4,6 +4,7 @@ import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice
 import { InventoryService } from '../services/inventoryService';
 import { PlaceSelector } from '../services/placeSelector';
 import { ItemFactory } from '../factory/itemFactory';
+import SpawnService, { EventBus } from '../services/spawnService';
 
 class GameEngine {
   constructor(dispatch, store, {
@@ -22,6 +23,8 @@ class GameEngine {
     this.inventoryService = inventoryService;
     this.placeSelector = placeSelector;
     this.itemFactory = itemFactory;
+    this.eventBus = new EventBus();
+    this.spawnService = new SpawnService(this.eventBus);
   }
 
   // Get the inventory object for a given place
@@ -68,6 +71,13 @@ class GameEngine {
       Logger.log('Tick interval called', 0, 'game-loop');
       this.tick();
     }, 1000); // Update every 1000ms for smoother updates
+
+    // Hook navigation to spawn logic
+    this.unsubscribeNav = this.store.subscribe(() => {
+      const state = this.store.getState();
+      const placeId = state.places.currentPlaceId;
+      this.eventBus.emit('enterPlace', placeId);
+    });
   }
 
   // Stop the game loop
@@ -77,6 +87,7 @@ class GameEngine {
       clearInterval(this.tickInterval);
       this.tickInterval = null;
     }
+    if (this.unsubscribeNav) this.unsubscribeNav();
   }
 
   // Game tick
@@ -89,6 +100,11 @@ class GameEngine {
     this.lastUpdate = now;
 
     this.update(deltaTime);
+
+    // Listen for spawned enemies
+    this.eventBus.on('spawnEnemy', ({ placeId, enemy }) => {
+      this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
+    });
   }
 
   // Update game state
@@ -167,8 +183,6 @@ class GameEngine {
       Logger.log('No saved game state found', 0, 'game-loop');
     }
   }
-
-
 }
 
 export default GameEngine;
