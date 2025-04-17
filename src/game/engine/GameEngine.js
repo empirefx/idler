@@ -26,6 +26,8 @@ class GameEngine {
     this.itemFactory = itemFactory;
     this.eventBus = new EventBus();
     this.spawnService = new SpawnService(this.eventBus);
+    // Track enemy state for death detection
+    this.lastEnemyState = this.store.getState().enemies.byId;
     // Initialize lastPlaceId to detect actual place changes
     this.lastPlaceId = this.store.getState().places.currentPlaceId;
     // Register spawnEnemy handler once
@@ -91,6 +93,19 @@ class GameEngine {
         this.eventBus.emit('enterPlace', newPlaceId);
       }
     });
+    
+    // Subscribe to enemy removals to emit death events
+    this.unsubscribeEnemyDeath = this.store.subscribe(() => {
+      const state = this.store.getState();
+      const currById = state.enemies.byId;
+      const oldById = this.lastEnemyState || {};
+      // Any ids in old not in curr => deaths
+      Object.keys(oldById).filter(id => !(id in currById)).forEach(id => {
+        const placeId = oldById[id].placeId;
+        this.eventBus.emit(`enemyDead:${placeId}`);
+      });
+      this.lastEnemyState = { ...currById };
+    });
   }
 
   // Stop the game loop
@@ -101,6 +116,7 @@ class GameEngine {
       this.tickInterval = null;
     }
     if (this.unsubscribeNav) this.unsubscribeNav();
+    if (this.unsubscribeEnemyDeath) this.unsubscribeEnemyDeath();
   }
 
   // Game tick
