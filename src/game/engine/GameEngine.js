@@ -4,12 +4,18 @@ import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice
 import { InventoryService } from '../services/inventoryService';
 import { PlaceSelector } from '../services/placeSelector';
 import { ItemFactory } from '../factory/itemFactory';
+import SpawnService from '../services/spawnService';
+import { EventBus } from '../services/eventBus';
+import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
+import CombatService from '../services/combatService';
+// import { damage } from '../../store/slices/damageSlice';
 
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
     placeSelector = PlaceSelector,
-    itemFactory = ItemFactory
+    itemFactory = ItemFactory,
+    combatService = CombatService
   } = {}) {
     this.store = store;
     this.lastState = store.getState();
@@ -22,6 +28,22 @@ class GameEngine {
     this.inventoryService = inventoryService;
     this.placeSelector = placeSelector;
     this.itemFactory = itemFactory;
+    this.eventBus = new EventBus();
+    this.spawnService = new SpawnService(this.eventBus);
+    // Instantiate CombatService so instance methods are available
+    this.combatService = new combatService(
+      this.eventBus,
+      this.dispatch,
+      () => this.store.getState()
+    );
+    // Track enemy state for death detection
+    this.lastEnemyState = this.store.getState().enemies.byId;
+    // Initialize lastPlaceId to detect actual place changes
+    this.lastPlaceId = this.store.getState().places.currentPlaceId;
+    // Register spawnEnemy handler once
+    this.eventBus.on('spawnEnemy', ({ placeId, enemy }) => {
+      this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
+    });
   }
 
   // Get the inventory object for a given place
@@ -68,6 +90,42 @@ class GameEngine {
       Logger.log('Tick interval called', 0, 'game-loop');
       this.tick();
     }, 1000); // Update every 1000ms for smoother updates
+
+    // Hook navigation to spawn logic
+    this.unsubscribeNav = this.store.subscribe(() => {
+      const state = this.store.getState();
+      const newPlaceId = state.places.currentPlaceId;
+      const oldPlaceId = this.lastPlaceId;
+      if (newPlaceId !== oldPlaceId) {
+        this.lastPlaceId = newPlaceId;
+        // Despawn enemies from the previous place
+        this.dispatch(removeEnemiesByPlace(oldPlaceId));
+        this.eventBus.emit('enterPlace', newPlaceId);
+      }
+    });
+    
+    // Subscribe to enemy removals to emit death events
+    this.unsubscribeEnemyDeath = this.store.subscribe(() => {
+      const state = this.store.getState();
+      const currById = state.enemies.byId;
+      const oldById = this.lastEnemyState || {};
+      // Any ids in old not in curr => deaths
+      Object.keys(oldById).filter(id => !(id in currById)).forEach(id => {
+        const placeId = oldById[id].placeId;
+        this.eventBus.emit(`enemyDead:${placeId}`);
+      });
+      this.lastEnemyState = { ...currById };
+    });
+
+    // Subscribe to combat state changes to trigger automated combat
+    this.unsubscribeCombat = this.store.subscribe(() => {
+      const isInCombat = this.store.getState().combat.isInCombat;
+      if (isInCombat) {
+        this.combatService.startCombat();
+      } else {
+        this.combatService.stopCombat();
+      }
+    });
   }
 
   // Stop the game loop
@@ -77,6 +135,9 @@ class GameEngine {
       clearInterval(this.tickInterval);
       this.tickInterval = null;
     }
+    if (this.unsubscribeNav) this.unsubscribeNav();
+    if (this.unsubscribeEnemyDeath) this.unsubscribeEnemyDeath();
+    if (this.unsubscribeCombat) this.unsubscribeCombat();
   }
 
   // Game tick
@@ -167,8 +228,6 @@ class GameEngine {
       Logger.log('No saved game state found', 0, 'game-loop');
     }
   }
-
-
 }
 
 export default GameEngine;

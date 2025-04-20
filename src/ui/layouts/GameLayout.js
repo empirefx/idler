@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useUIVisibility } from '../UIVisibilityContext';
 
 import BuildingCard from '../components/BuildingCard';
@@ -7,8 +7,11 @@ import ResourceDisplay from '../components/display/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
 import PlayerCard from '../components/PlayerCard';
+import EntityCard from '../components/EntityCard';
+import ControlDisplay from '../components/display/ControlDisplay';
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import InventoryDisplay from '../components/display/InventoryDisplay';
+import EnemyDisplay from '../components/display/EnemyDisplay';
 
 import {
   selectUnassignedWorkers,
@@ -24,6 +27,8 @@ import {
   selectAvailableConnections,
 } from '../../store/slices/placesSlice';
 import { selectVaultByPlaceId } from '../../store/slices/inventorySlice';
+import { selectEnemiesForCurrentPlace } from '../../store/slices/enemiesSlice';
+import { startCombat, stopCombat, selectIsInCombat } from '../../store/slices/combatSlice';
 
 const GameLayout = ({ clearCache }) => {
   const { playerCard, workerCard } = useUIVisibility();
@@ -38,6 +43,9 @@ const GameLayout = ({ clearCache }) => {
   const playerInfo = useSelector(selectPlayer);
   const currentPlace = useSelector(selectCurrentPlace);
   const vault = useSelector(state => selectVaultByPlaceId(state, currentPlace.id));
+  const enemies = useSelector(selectEnemiesForCurrentPlace);
+  const dispatch = useDispatch();
+  const isInCombat = useSelector(selectIsInCombat);
 
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
@@ -116,6 +124,22 @@ const GameLayout = ({ clearCache }) => {
             })}
           </div>
         </section>
+
+        {currentPlace.spawn && (
+          <>
+            <ControlDisplay
+              isInCombat={isInCombat}
+              onToggleCombat={() => dispatch(isInCombat ? stopCombat() : startCombat())}
+            />
+            <EnemyDisplay enemies={enemies} />
+          </>
+        )}
+
+        {playerInfo && (
+          <section className="player-entity-section">
+            <EntityCard entity={playerInfo} avatarFolder="players" />
+          </section>
+        )}
 
         <section className="places-section">
           {currentPlace && vault && (
