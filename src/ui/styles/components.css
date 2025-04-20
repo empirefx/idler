@@ -670,6 +670,12 @@
   background-image: linear-gradient(0deg, #5081FF 0%, #5081FF00 60%);
   border-radius: var(--border-radius-lg);
   z-index: 10;
+  opacity: 1;
+}
+
+.entity-card:hover .block-gradient {
+  cursor: pointer;
+  opacity: 0.5;
 }
 
 .entity-card h3 {
@@ -714,4 +720,37 @@
   object-position: 100% 0;
   overflow: hidden;
   margin-bottom: 20px;
+}
+
+.control-display {
+  position: absolute;
+  bottom: 100px;
+  left: 860px;
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  height: 100px;
+  margin-bottom: var(--spacing-md);
+}
+
+.control-display .combat button{
+  max-width: 100px;
+  font-weight: bold;
+  color: white;
+  padding: 20px 10px;
+  border-radius: var(--border-radius-sm);
+  border: none;
+}
+
+.combat-btn.engage {
+  background-image: linear-gradient(0deg, #5081ff 18%, #799EFBFF 77%);
+}
+
+.combat-btn.stop {
+  background-image: linear-gradient(0deg, #FF0000FF 0%, #DC3545FF 100%);
+}
+
+.combat-btn.engage:hover,
+.combat-btn.stop:hover {
+  cursor: pointer;
 }
