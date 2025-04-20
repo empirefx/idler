@@ -9,7 +9,7 @@ import PlaceCard from '../components/PlaceCard';
 import PlayerCard from '../components/PlayerCard';
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import InventoryDisplay from '../components/display/InventoryDisplay';
-import EnemyCard from '../components/EnemyCard';
+import EnemyDisplay from '../components/display/EnemyDisplay';
 
 import {
   selectUnassignedWorkers,
@@ -123,21 +123,11 @@ const GameLayout = ({ clearCache }) => {
           </div>
         </section>
 
-        <section className="enemies-section">
-          <div className="combat-controls">
-            <button onClick={() => dispatch(isInCombat ? stopCombat() : startCombat())}>
-              {isInCombat ? 'Stop Combat' : 'Engage Combat'}
-            </button>
-          </div>
-          <h2>Enemies</h2>
-          <div className="enemies-list">
-            {enemies.length > 0 ? (
-              enemies.map(enemy => <EnemyCard key={enemy.id} enemy={enemy} />)
-            ) : (
-              <p>No enemies here.</p>
-            )}
-          </div>
-        </section>
+        <EnemyDisplay
+          enemies={enemies}
+          isInCombat={isInCombat}
+          onToggleCombat={() => dispatch(isInCombat ? stopCombat() : startCombat())}
+        />
 
         <section className="places-section">
           {currentPlace && vault && (
