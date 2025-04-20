@@ -4,6 +4,7 @@ import buildingsReducer from './slices/buildingsSlice';
 import placesReducer from './slices/placesSlice';
 import inventoryReducer from './slices/inventorySlice';
 import enemiesReducer from './slices/enemiesSlice';
+import combatReducer from './slices/combatSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     buildings: buildingsReducer,
     places: placesReducer,
     inventory: inventoryReducer,
-    enemies: enemiesReducer
+    enemies: enemiesReducer,
+    combat: combatReducer
   },
 });
 

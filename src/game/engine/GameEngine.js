@@ -4,16 +4,18 @@ import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice
 import { InventoryService } from '../services/inventoryService';
 import { PlaceSelector } from '../services/placeSelector';
 import { ItemFactory } from '../factory/itemFactory';
-import SpawnService, { EventBus } from '../services/spawnService';
 import SpawnService from '../services/spawnService';
 import { EventBus } from '../services/eventBus';
 import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
+import CombatService from '../services/combatService';
+// import { damage } from '../../store/slices/damageSlice';
 
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
     placeSelector = PlaceSelector,
-    itemFactory = ItemFactory
+    itemFactory = ItemFactory,
+    combatService = CombatService
   } = {}) {
     this.store = store;
     this.lastState = store.getState();
@@ -28,6 +30,12 @@ class GameEngine {
     this.itemFactory = itemFactory;
     this.eventBus = new EventBus();
     this.spawnService = new SpawnService(this.eventBus);
+    // Instantiate CombatService so instance methods are available
+    this.combatService = new combatService(
+      this.eventBus,
+      this.dispatch,
+      () => this.store.getState()
+    );
     // Track enemy state for death detection
     this.lastEnemyState = this.store.getState().enemies.byId;
     // Initialize lastPlaceId to detect actual place changes
@@ -108,6 +116,16 @@ class GameEngine {
       });
       this.lastEnemyState = { ...currById };
     });
+
+    // Subscribe to combat state changes to trigger automated combat
+    this.unsubscribeCombat = this.store.subscribe(() => {
+      const isInCombat = this.store.getState().combat.isInCombat;
+      if (isInCombat) {
+        this.combatService.startCombat();
+      } else {
+        this.combatService.stopCombat();
+      }
+    });
   }
 
   // Stop the game loop
@@ -119,6 +137,7 @@ class GameEngine {
     }
     if (this.unsubscribeNav) this.unsubscribeNav();
     if (this.unsubscribeEnemyDeath) this.unsubscribeEnemyDeath();
+    if (this.unsubscribeCombat) this.unsubscribeCombat();
   }
 
   // Game tick

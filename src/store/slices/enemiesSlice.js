@@ -32,11 +32,24 @@ const enemiesSlice = createSlice({
         }
         return true;
       });
-    }
+    },
+    // Damage an enemy by id
+    damageEnemy(state, action) {
+      const { id, amount } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy) {
+        enemy.health = Math.max(0, enemy.health - amount);
+        if (enemy.health === 0) {
+          delete state.byId[id];
+          // Also remove from allIds
+          state.allIds = state.allIds.filter(eid => eid !== id);
+        }
+      }
+    },
   }
 });
 
-export const { addEnemy, removeEnemy, removeEnemiesByPlace } = enemiesSlice.actions;
+export const { addEnemy, removeEnemy, removeEnemiesByPlace, damageEnemy } = enemiesSlice.actions;
 
 // Selectors
 const selectEnemiesState = (state) => state.enemies;

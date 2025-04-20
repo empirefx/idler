@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useUIVisibility } from '../UIVisibilityContext';
 
 import BuildingCard from '../components/BuildingCard';
@@ -26,6 +26,7 @@ import {
 } from '../../store/slices/placesSlice';
 import { selectVaultByPlaceId } from '../../store/slices/inventorySlice';
 import { selectEnemiesForCurrentPlace } from '../../store/slices/enemiesSlice';
+import { startCombat, stopCombat, selectIsInCombat } from '../../store/slices/combatSlice';
 
 const GameLayout = ({ clearCache }) => {
   const { playerCard, workerCard } = useUIVisibility();
@@ -41,6 +42,8 @@ const GameLayout = ({ clearCache }) => {
   const currentPlace = useSelector(selectCurrentPlace);
   const vault = useSelector(state => selectVaultByPlaceId(state, currentPlace.id));
   const enemies = useSelector(selectEnemiesForCurrentPlace);
+  const dispatch = useDispatch();
+  const isInCombat = useSelector(selectIsInCombat);
 
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
@@ -121,6 +124,11 @@ const GameLayout = ({ clearCache }) => {
         </section>
 
         <section className="enemies-section">
+          <div className="combat-controls">
+            <button onClick={() => dispatch(isInCombat ? stopCombat() : startCombat())}>
+              {isInCombat ? 'Stop Combat' : 'Engage Combat'}
+            </button>
+          </div>
           <h2>Enemies</h2>
           <div className="enemies-list">
             {enemies.length > 0 ? (

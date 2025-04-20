@@ -7,7 +7,9 @@ const initialState = {
   MAX_WORKERS: playerData.MAX_WORKERS,
   stats: playerData.stats,
   resources: playerData.resources,
-  workers: playerData.workers
+  workers: playerData.workers,
+  // Player current health based on vitality
+  health: playerData.stats.vitality
 };
 
 export const playerSlice = createSlice({
@@ -54,6 +56,11 @@ export const playerSlice = createSlice({
         worker.assignedBuildingId = buildingId;
       }
     },
+    // Apply damage to player health
+    damagePlayer: (state, action) => {
+      const { amount } = action.payload;
+      state.health = Math.max(0, state.health - amount);
+    },
     setPlayerState: (state, action) => {
       // This will replace the entire player state with the saved one
       // Only for loading saved states!
@@ -70,6 +77,7 @@ export const {
   removeWorker,
   unassignWorker,
   assignWorkerToBuilding,
+  damagePlayer,
   setPlayerState
 } = playerSlice.actions;
 
@@ -80,7 +88,7 @@ export const selectResources = state => state.player.resources;
 // Memoized selectors
 export const selectPlayer = createSelector(
   state => state.player,
-  player => ({ id: player.id, name: player.name, stats: player.stats })
+  player => ({ id: player.id, name: player.name, stats: player.stats, health: player.health })
 );
 export const listBuildingsWithAssignedWorkers = createSelector(
   [selectWorkers],
