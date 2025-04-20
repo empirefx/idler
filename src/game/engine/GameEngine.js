@@ -5,6 +5,8 @@ import { InventoryService } from '../services/inventoryService';
 import { PlaceSelector } from '../services/placeSelector';
 import { ItemFactory } from '../factory/itemFactory';
 import SpawnService, { EventBus } from '../services/spawnService';
+import SpawnService from '../services/spawnService';
+import { EventBus } from '../services/eventBus';
 import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
 
 class GameEngine {

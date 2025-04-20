@@ -1,19 +1,7 @@
 import Logger from '../engine/Logger';
 import EnemyFactory from '../factory/enemyFactory';
 import placesData from '../../data/places.json';
-
-// Handles events for spawn service
-export class EventBus {
-  constructor() {
-    this.handlers = {};
-  }
-  on(event, handler) {
-    (this.handlers[event] = this.handlers[event] || []).push(handler);
-  }
-  emit(event, data) {
-    (this.handlers[event] || []).forEach((h) => h(data));
-  }
-}
+import { EventBus } from './eventBus';
 
 // Base spawner class for all spawner types
 // Handles the creation and management of enemies
