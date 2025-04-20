@@ -9,7 +9,9 @@ export class EnemyFactory {
     const enemy = {
       id: null,           // to be set by spawner
       type,
+      name: def.name,
       health: def.baseHealth,
+      maxHealth: def.baseHealth,
       attack: def.baseAttack,
       speed: def.speed,
       // additional properties can be added here

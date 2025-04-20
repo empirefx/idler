@@ -1,12 +1,12 @@
 import React from 'react';
-import EnemyCard from '../EnemyCard';
+import EntityCard from '../EntityCard';
 
 const EnemyList = ({ enemies }) => (
   <div className="enemies-list">
     {enemies.length > 0 ? (
-      enemies.map(enemy => <EnemyCard key={enemy.id} enemy={enemy} />)
+      enemies.map(entity => <EntityCard key={entity.id} entity={entity} />)
     ) : (
-      <p>No enemies here.</p>
+      <p>No entities here.</p>
     )}
   </div>
 );
