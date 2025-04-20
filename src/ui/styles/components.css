@@ -746,8 +746,16 @@
   background-image: linear-gradient(0deg, #5081ff 18%, #799EFBFF 77%);
 }
 
+.combat-btn.engage:hover {
+  background-image: linear-gradient(0deg, #5081ff 60%, #799EFBFF 100%);
+}
+
 .combat-btn.stop {
   background-image: linear-gradient(0deg, #FF0000FF 0%, #DC3545FF 100%);
+}
+
+.combat-btn.stop:hover {
+  background-image: linear-gradient(0deg, #FF0000FF 80%, #DC3545FF 100%);
 }
 
 .combat-btn.engage:hover,
