@@ -98,6 +98,40 @@ h6 {
   box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   z-index: 1000;
 }
+
 .move-item-dialog button {
   margin: 0 0.5em;
+}
+
+.progress-bar {
+  display: flex;
+  gap: var(--spacing-xs);
+  text-align: center;
+}
+
+.progress-bar__fill {
+  min-width: 40px;
+  background-color: var(--color-success);
+  transition: width 0.2s ease-in-out;
+}
+
+.progress-bar__remain {
+  flex-grow:1;
+  min-width: 10px;
+  background-color: var(--color-dark);
+  transition: width 0.2s ease-in-out;
+  opacity: 0.7;
+}
+
+.progress-bar .progress-bar__fill,
+.progress-bar .progress-bar__remain {
+  border-radius: var(--border-radius-sm);
+}
+
+.progress-bar .progress-bar__remain span {
+  display: none;
+}
+
+.progress-bar span {
+  font-weight: bolder;
 }

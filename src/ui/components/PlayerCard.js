@@ -12,7 +12,7 @@ const PlayerCard = ({ player, vaultId }) => {
       <div className="player-grid">
         <div className="player-display">
           <div className="player-avatar"></div>
-          <h1>HP: {player.health}</h1>
+          <h1>60</h1>
           <h1>{player.name}</h1>
         </div>
 

@@ -1,14 +1,15 @@
 import React from 'react';
+import ProgressBar from './common/ProgressBar';
 
-const EntityCard = ({ entity }) => {
-  const { name, health, maxHealth } = entity;
-  const percent = Math.round((health / maxHealth) * 100);
+const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
+  const { name, health, maxHealth, avatar } = entity;
 
   return (
     <div className="entity-card">
-      <h4>{name}</h4>
-      <p>Health: {health}/{maxHealth}</p>
-      <progress value={health} max={maxHealth} />
+      <div className="block-gradient"></div>
+      <img src={`assets/avatars/${avatarFolder}/${avatar}`} alt={name} draggable="false"/>
+      <h3>{name}</h3>
+      <ProgressBar value={health} max={maxHealth} />
     </div>
   );
 };

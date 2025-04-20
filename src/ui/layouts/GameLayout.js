@@ -7,6 +7,7 @@ import ResourceDisplay from '../components/display/ResourceDisplay';
 import WorkerCard from '../components/WorkerCard';
 import PlaceCard from '../components/PlaceCard';
 import PlayerCard from '../components/PlayerCard';
+import EntityCard from '../components/EntityCard';
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import InventoryDisplay from '../components/display/InventoryDisplay';
 import EnemyDisplay from '../components/display/EnemyDisplay';
@@ -123,11 +124,19 @@ const GameLayout = ({ clearCache }) => {
           </div>
         </section>
 
-        <EnemyDisplay
-          enemies={enemies}
-          isInCombat={isInCombat}
-          onToggleCombat={() => dispatch(isInCombat ? stopCombat() : startCombat())}
-        />
+        {currentPlace.spawn && (
+          <EnemyDisplay
+            enemies={enemies}
+            isInCombat={isInCombat}
+            onToggleCombat={() => dispatch(isInCombat ? stopCombat() : startCombat())}
+          />
+        )}
+
+        {playerInfo && (
+          <section className="player-entity-section">
+            <EntityCard entity={playerInfo} avatarFolder="players" />
+          </section>
+        )}
 
         <section className="places-section">
           {currentPlace && vault && (

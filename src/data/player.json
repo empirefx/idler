@@ -2,13 +2,16 @@
   "id": 1,
   "name": "John Doe",
   "MAX_WORKERS": 5,
+  "avatar": "1.png",
+  "currentLocation": "village_center",
+  "baseHealth": 60,
+  "baseAttack": 8,
   "stats": {
     "strength": 10,
     "defense": 5,
     "agility": 7,
     "vitality": 12
   },
-  "currentLocation": "village_center",
   "resources": [
     {
       "name": "gold",
@@ -36,7 +39,7 @@
     }
   ],
   "metadata": {
-    "version": "1.0.8",
-    "lastUpdated": "2025-04-16"
+    "version": "1.0.10",
+    "lastUpdated": "2025-04-20"
   }
 }

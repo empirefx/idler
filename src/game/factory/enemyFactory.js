@@ -10,6 +10,7 @@ export class EnemyFactory {
       id: null,           // to be set by spawner
       type,
       name: def.name,
+      avatar: def.avatar,
       health: def.baseHealth,
       maxHealth: def.baseHealth,
       attack: def.baseAttack,

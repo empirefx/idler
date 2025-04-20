@@ -3,13 +3,12 @@ import EnemyList from '../list/EnemyList';
 
 const EnemyDisplay = ({ enemies, isInCombat, onToggleCombat }) => (
   <section className="enemies-section">
+    <EnemyList enemies={enemies} />
     <div className="combat-controls">
       <button onClick={onToggleCombat}>
         {isInCombat ? 'Stop Combat' : 'Engage Combat'}
       </button>
     </div>
-    <h2>Enemies</h2>
-    <EnemyList enemies={enemies} />
   </section>
 );
 

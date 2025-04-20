@@ -6,7 +6,7 @@ const EnemyList = ({ enemies }) => (
     {enemies.length > 0 ? (
       enemies.map(entity => <EntityCard key={entity.id} entity={entity} />)
     ) : (
-      <p>No entities here.</p>
+      <p>Respawning...</p>
     )}
   </div>
 );
