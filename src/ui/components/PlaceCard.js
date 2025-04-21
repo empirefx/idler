@@ -23,7 +23,6 @@ const PlaceCard = ({ place }) => {
       <div className="place-top">
         <div className="place-top-left">
           <h3>{place.name}</h3>
-          {/* <p className="place-description">{place.description}</p> */}
         </div>
 
         <div className="place-top-right">

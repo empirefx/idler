@@ -6,7 +6,7 @@ import GameLayout from './ui/layouts/GameLayout';
 import './ui/styles/components.css';
 
 const App = () => {
-  const { gameState, clearCache, error } = useGameState();
+  const { clearCache, error } = useGameState();
 
   if (error) {
     return (
@@ -22,10 +22,7 @@ const App = () => {
     <UIVisibilityProvider>
       <InputManager />
       <div className="App">
-        <GameLayout
-          gameState={gameState}
-          clearCache={clearCache}
-        />
+        <GameLayout clearCache={clearCache} />
       </div>
     </UIVisibilityProvider>
   );

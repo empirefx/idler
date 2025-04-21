@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import InventoryDisplay from './display/InventoryDisplay';
 import EquipmentDisplay from './display/EquipmentDisplay';
 import StatList from './list/StatList';
-import ProgressBar from './common/ProgressBar';
 import NewLevelDialog from './common/NewLevelDialog';
 import { levelUp } from '../../store/slices/playerSlice';
 
@@ -25,7 +24,6 @@ const PlayerCard = ({ player, vaultId }) => {
           <div className="player-avatar"></div>
           <h1>{player.level}</h1>
           <h1>{player.name}</h1>
-          {/* <ProgressBar value={player.exp} max={player.expToNext} /> */}
           <div className="player-options">
             {player.exp >= player.expToNext && (
               <button className="select-btn" onClick={() => setShowLevelUp(prev => !prev)}>Level Up</button>

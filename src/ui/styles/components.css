@@ -77,47 +77,6 @@
   cursor: pointer;
 }
 
-.building-card h3 {
-  margin: 0 0 var(--spacing-sm) 0;
-  color: var(--color-dark);
-}
-
-.building-stats {
-  display: flex;
-  justify-content: space-between;
-  margin: var(--spacing-md) 0;
-  padding: var(--spacing-sm);
-  background: var(--color-light);
-  border-radius: var(--border-radius-sm);
-}
-
-.building-actions {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.building-actions button {
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: none;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.building-actions button:first-child {
-  background: var(--color-success);
-  color: white;
-}
-
-.building-actions button:last-child {
-  background: var(--color-danger);
-  color: white;
-}
-
-.building-actions button:hover {
-  opacity: 0.9;
-}
-
 .worker-card {
   width: 360px;
   background: white;
