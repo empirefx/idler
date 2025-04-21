@@ -61,16 +61,14 @@ const GameLayout = ({ clearCache }) => {
 
   return (
     <div className="game-layout" style={styles}>
-      <header className="game-header">
-        <div className="header-controls">
+      <main className="game-main">
+        <section className="resources-section">
           <ResourceDisplay resources={resources} />
           <button onClick={clearCache} className="clear-cache-btn">Clear Cache</button>
-        </div>
-      </header>
-      
-      <main className="game-main">
+        </section>
+        
         <CurrentPlaceDisplay />
-
+        
         {playerCard && (
           <section className="player-section">
             <PlayerCard player={playerInfo} vaultId={currentPlace.id} />
@@ -163,7 +161,11 @@ const GameLayout = ({ clearCache }) => {
             ))}
           </div>
         </section>
-        <LogDisplay />
+
+        <section className="log-section">
+          <h2>Log</h2>
+          <LogDisplay />
+        </section>
       </main>
     </div>
   );
