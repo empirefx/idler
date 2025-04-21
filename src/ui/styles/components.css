@@ -492,6 +492,31 @@
   width: 300px;
   height: 380px;
   margin-top: 40px;
+  z-index: 1;
+}
+
+.player-options {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);
+  margin: 0;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  z-index: 10;
+}
+
+.player-options .select-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: var(--color-red);
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.player-options .select-btn:hover {
+  background-color: var(--color-danger);
 }
 
 .player-Equipment {

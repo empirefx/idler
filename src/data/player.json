@@ -6,6 +6,8 @@
   "currentLocation": "village_center",
   "baseHealth": 60,
   "baseAttack": 8,
+  "level": 1,
+  "exp": 0,
   "stats": {
     "strength": 10,
     "defense": 5,
@@ -39,7 +41,7 @@
     }
   ],
   "metadata": {
-    "version": "1.0.10",
-    "lastUpdated": "2025-04-20"
+    "version": "1.0.11",
+    "lastUpdated": "2025-04-21"
   }
 }

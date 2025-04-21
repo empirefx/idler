@@ -87,15 +87,6 @@ h6 {
 }
 
 .move-item-dialog {
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #222;
-  color: #fff;
-  padding: 1.5em 2em;
-  border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   z-index: 1000;
 }
 
@@ -140,4 +131,21 @@ h6 {
 
 .progress-bar span {
   font-weight: bolder;
+}
+
+.dialog {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #222;
+  color: #fff;
+  padding: 1.5em 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.dialog button:hover {
+  cursor: pointer;
 }

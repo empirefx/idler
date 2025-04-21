@@ -1,5 +1,5 @@
 import { damageEnemy } from '../../store/slices/enemiesSlice';
-import { damagePlayer } from '../../store/slices/playerSlice';
+import { damagePlayer, gainExp } from '../../store/slices/playerSlice';
 import { addItem } from '../../store/slices/inventorySlice';
 import { ItemFactory } from '../factory/itemFactory';
 import { enemyAttacked } from '../engine/events';
@@ -81,6 +81,8 @@ export default class CombatService {
           }
         });
       }
+      // Grant experience for enemy kill
+      this.dispatch(gainExp({ amount: target.maxHealth }));
     }
   }
 }
