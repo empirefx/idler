@@ -3,7 +3,6 @@ import { UIVisibilityProvider } from './ui/UIVisibilityContext';
 import InputManager from './ui/InputManager';
 import { useGameState } from './ui/hooks/useGameState';
 import GameLayout from './ui/layouts/GameLayout';
-import './ui/styles/components.css';
 
 const App = () => {
   const { clearCache, error } = useGameState();

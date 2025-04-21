@@ -1,5 +1,3 @@
-@import '../../styles/variables.css';
-
 .game-layout {
   margin: 0 auto;
   padding: 20px;
@@ -423,7 +421,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-image: url(../../assets/ui/player_frame.png);
+  background-image: url(../assets/ui/player_frame.png);
   background-size:contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -443,7 +441,7 @@
 
 .player-avatar {
   position: absolute;
-  background-image: url(../../assets/avatars/players/1.png);
+  background-image: url(../assets/avatars/players/1.png);
   background-size:contain;
   background-position: center;
   background-repeat: no-repeat;
