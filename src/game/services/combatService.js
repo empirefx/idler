@@ -1,5 +1,7 @@
 import { damageEnemy } from '../../store/slices/enemiesSlice';
 import { damagePlayer } from '../../store/slices/playerSlice';
+import { addItem } from '../../store/slices/inventorySlice';
+import { ItemFactory } from '../factory/itemFactory';
 import { enemyAttacked } from '../engine/events';
 
 /**
@@ -44,6 +46,7 @@ export default class CombatService {
     const player = state.player;
     if (!player) return;
 
+    // If no enemies, stop combat
     if (enemies.length === 0) {
       this.stopCombat();
       return;
@@ -54,12 +57,30 @@ export default class CombatService {
     const playerAttack = player.stats.strength;
     this.dispatch(damageEnemy({ id: target.id, amount: playerAttack }));
 
-    // Enemy attacks back if still alive
+    // Enemy attacks back if still alive, or roll drops on death
     const after = this.getState().enemies.byId[target.id];
     if (after) {
       const enemyAttack = after.attack || 0;
       this.dispatch(damagePlayer({ amount: enemyAttack }));
       this.dispatch(enemyAttacked(target.id, player.id, enemyAttack));
+    } else {
+      const place = this.getState().places[this.getState().places.currentPlaceId]; // Get current place
+      const spawnInfo = place.spawn; // Get spawn info
+      // Drop items on enemy death
+      // for each drop in spawnInfo.drops, create an item and add it to the player's inventory
+      if (spawnInfo && Array.isArray(spawnInfo.drops)) {
+        spawnInfo.drops.forEach(({ itemId, dropRate }) => {
+          if (Math.random() < dropRate) {
+            const loot = ItemFactory.create(itemId, 1);
+            if (loot) {
+              this.dispatch(addItem({
+                inventoryId: 'player',
+                item: loot
+              }));
+            }
+          }
+        });
+      }
     }
   }
 }

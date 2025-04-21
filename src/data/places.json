@@ -45,7 +45,10 @@
       "spawn": {
         "type": "single",
         "pool": "forest_beast",
-        "respawnDelay": 5
+        "respawnDelay": 5,
+        "drops": [
+          { "itemId": "apple", "dropRate": 0.1 }
+        ]
       }
     },
     "deep_woods": {
@@ -70,7 +73,10 @@
       "spawn": {
         "type": "single",
         "pool": "woodland_predator",
-        "respawnDelay": 8
+        "respawnDelay": 8,
+        "drops": [
+          { "itemId": "ore", "dropRate": 0.3 }
+        ]
       }
     },
     "river_crossing": {
@@ -136,7 +142,8 @@
       "spawn": {
         "type": "single",
         "pool": "trained_hunters",
-        "respawnDelay": 10
+        "respawnDelay": 10,
+        "drops": []
       }
     },
     "fishing_spot": {
@@ -189,12 +196,16 @@
         "type": "wave",
         "pool": "ruins_undead",
         "waveSize": [3, 6],
-        "respawnDelay": 15
+        "respawnDelay": 15,
+        "drops": [
+          { "itemId": "ore", "dropRate": 0.5 },
+          { "itemId": "apple", "dropRate": 0.2 }
+        ]
       }
     }
   },
   "metadata": {
-    "version": "1.0.5",
-    "lastUpdated": "2025-04-17"
+    "version": "1.0.7",
+    "lastUpdated": "2025-04-20"
   }
 }
