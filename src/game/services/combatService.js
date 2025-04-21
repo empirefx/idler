@@ -1,5 +1,6 @@
 import { damageEnemy } from '../../store/slices/enemiesSlice';
 import { damagePlayer } from '../../store/slices/playerSlice';
+import { enemyAttacked } from '../engine/events';
 
 /**
  * CombatService automates idle combat between player and enemies.
@@ -58,6 +59,7 @@ export default class CombatService {
     if (after) {
       const enemyAttack = after.attack || 0;
       this.dispatch(damagePlayer({ amount: enemyAttack }));
+      this.dispatch(enemyAttacked(target.id, player.id, enemyAttack));
     }
   }
 }

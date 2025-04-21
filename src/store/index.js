@@ -5,6 +5,8 @@ import placesReducer from './slices/placesSlice';
 import inventoryReducer from './slices/inventorySlice';
 import enemiesReducer from './slices/enemiesSlice';
 import combatReducer from './slices/combatSlice';
+import logReducer from './slices/logSlice';
+import logMiddleware from './middleware/logMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -13,8 +15,10 @@ export const store = configureStore({
     places: placesReducer,
     inventory: inventoryReducer,
     enemies: enemiesReducer,
-    combat: combatReducer
+    combat: combatReducer,
+    logs: logReducer
   },
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logMiddleware)
 });
 
 export default store;

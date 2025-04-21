@@ -12,6 +12,7 @@ import ControlDisplay from '../components/display/ControlDisplay';
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import InventoryDisplay from '../components/display/InventoryDisplay';
 import EnemyDisplay from '../components/display/EnemyDisplay';
+import LogDisplay from '../components/LogDisplay';
 
 import {
   selectUnassignedWorkers,
@@ -162,6 +163,7 @@ const GameLayout = ({ clearCache }) => {
             ))}
           </div>
         </section>
+        <LogDisplay />
       </main>
     </div>
   );
