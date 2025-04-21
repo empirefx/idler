@@ -28,7 +28,7 @@ const PlayerCard = ({ player, vaultId }) => {
           {/* <ProgressBar value={player.exp} max={player.expToNext} /> */}
           <div className="player-options">
             {player.exp >= player.expToNext && (
-              <button className="select-btn" onClick={() => setShowLevelUp(true)}>Level Up</button>
+              <button className="select-btn" onClick={() => setShowLevelUp(prev => !prev)}>Level Up</button>
             )}
             {showLevelUp && (
               <NewLevelDialog
