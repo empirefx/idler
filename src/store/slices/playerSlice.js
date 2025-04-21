@@ -67,6 +67,11 @@ export const playerSlice = createSlice({
       const { amount } = action.payload;
       state.health = Math.max(0, state.health - amount);
     },
+    // Heal player health
+    healPlayer: (state, action) => {
+      const { amount } = action.payload;
+      state.health = Math.min(state.baseHealth, state.health + amount);
+    },
     setPlayerState: (state, action) => {
       // This will replace the entire player state with the saved one
       // Only for loading saved states!
@@ -99,6 +104,7 @@ export const {
   unassignWorker,
   assignWorkerToBuilding,
   damagePlayer,
+  healPlayer,
   setPlayerState,
   gainExp,
   levelUp

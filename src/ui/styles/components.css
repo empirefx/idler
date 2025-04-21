@@ -567,13 +567,17 @@
   width: 50px;
   height: 50px;
   border-radius: var(--border-radius-sm);
-  background-color: var(--color-gray);
+  background-color: var(--color-gray-light);
   text-shadow: 0px 0px 3px black;
 }
 
-.inventory-flex > div:hover {
+.inventory-flex > .filled:hover {
   cursor: pointer;
-  border: outset 3px var(--color-gray-light);
+  background-color: var(--color-gray);
+}
+
+.inventory-flex .empty {
+  background-color: var(--color-dark);
 }
 
 .inventory-flex > div span {

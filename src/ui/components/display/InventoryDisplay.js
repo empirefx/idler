@@ -1,7 +1,8 @@
 import React,{ useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { moveItem, equipItem } from '../../../store/slices/inventorySlice';
+import { moveItem, equipItem, removeItem } from '../../../store/slices/inventorySlice';
+import { healPlayer } from '../../../store/slices/playerSlice';
 import MoveItemDialog from '../common/MoveItemDialog';
 import ToolTip from '../common/ToolTip';
 
@@ -41,6 +42,15 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
     setSelectedItem(null);
   };
 
+  // Consume consumable items: lookup heal from the item directly
+  const handleConsume = (item) => {
+    const healAmount = item.consumable?.heal;
+    if (healAmount > 0) {
+      dispatch(healPlayer({ amount: healAmount }));
+      dispatch(removeItem({ inventoryId: inventory.id, itemId: item.id, quantity: 1 }));
+    }
+  };
+
   // Calculate total items and weight if available
   const totalItems = inventory.items.length;
   const maxSlots = inventory.maxSlots;
@@ -72,11 +82,20 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 
           return (
             <div
-              className="inventory-slot"
+              className={`inventory-slot ${item ? 'filled' : 'empty'}`}
               key={i}
               onContextMenu={item && otherInventory ? (e) => handleContextMenu(e, item) : undefined}
-              onClick={item && item.type === 'equipment' ? () => dispatch(equipItem({ inventoryId: inventory.id, itemId: item.id })) : undefined}
-              style={{ cursor: item && item.type === 'equipment' ? 'pointer' : 'default' }}
+              // Handle equipment and consumable items
+              // left click for equipment/consumable, right click for move to vault/inventory
+              onClick={
+                item
+                  ? item.type === 'equipment'
+                    ? () => dispatch(equipItem({ inventoryId: inventory.id, itemId: item.id }))
+                    : item.type === 'consumable'
+                      ? () => handleConsume(item)
+                      : undefined
+                  : undefined
+              }
             >
               {item && (
                 <ToolTip item={item}>
