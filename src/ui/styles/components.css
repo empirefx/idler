@@ -744,18 +744,18 @@
   margin-bottom: 20px;
 }
 
-.control-display {
+.control-section {
   position: absolute;
-  bottom: 100px;
-  left: 860px;
   display: flex;
-  justify-content: center;
-  width: 200px;
-  height: 100px;
-  margin-bottom: var(--spacing-md);
+  justify-content: left;
+  bottom: 100px;
+  left: 900px;
+  width: auto;
+  height: 200px;
+  padding: var(--spacing-md);
 }
 
-.control-display .combat button{
+.control-section .combat button{
   max-width: 100px;
   font-weight: bold;
   color: white;

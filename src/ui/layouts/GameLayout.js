@@ -123,16 +123,19 @@ const GameLayout = ({ clearCache }) => {
             })}
           </div>
         </section>
-
+        
         {currentPlace.spawn && (
-          <>
+          <EnemyDisplay enemies={enemies} />
+        )}
+        
+        <section className="control-section">
+          {currentPlace.spawn && (
             <ControlDisplay
               isInCombat={isInCombat}
               onToggleCombat={() => dispatch(isInCombat ? stopCombat() : startCombat())}
             />
-            <EnemyDisplay enemies={enemies} />
-          </>
-        )}
+          )}
+        </section>
 
         {playerInfo && (
           <section className="player-entity-section">

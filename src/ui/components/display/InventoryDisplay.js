@@ -98,6 +98,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
               }
             >
               {item && (
+                // Show quantity & stats for items
                 <ToolTip item={item}>
                   <p>
                     <span>{item.type === 'equipment' ? '' : (item.quantity || '')}</span>
