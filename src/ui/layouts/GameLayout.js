@@ -12,6 +12,7 @@ import ControlDisplay from '../components/display/ControlDisplay';
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import InventoryDisplay from '../components/display/InventoryDisplay';
 import EnemyDisplay from '../components/display/EnemyDisplay';
+import LogDisplay from '../components/LogDisplay';
 
 import {
   selectUnassignedWorkers,
@@ -60,16 +61,14 @@ const GameLayout = ({ clearCache }) => {
 
   return (
     <div className="game-layout" style={styles}>
-      <header className="game-header">
-        <div className="header-controls">
+      <main className="game-main">
+        <section className="resources-section">
           <ResourceDisplay resources={resources} />
           <button onClick={clearCache} className="clear-cache-btn">Clear Cache</button>
-        </div>
-      </header>
-      
-      <main className="game-main">
+        </section>
+        
         <CurrentPlaceDisplay />
-
+        
         {playerCard && (
           <section className="player-section">
             <PlayerCard player={playerInfo} vaultId={currentPlace.id} />
@@ -161,6 +160,11 @@ const GameLayout = ({ clearCache }) => {
               />
             ))}
           </div>
+        </section>
+
+        <section className="log-section">
+          <h2>Log</h2>
+          <LogDisplay />
         </section>
       </main>
     </div>

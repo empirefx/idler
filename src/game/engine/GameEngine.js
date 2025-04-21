@@ -8,7 +8,7 @@ import SpawnService from '../services/spawnService';
 import { EventBus } from '../services/eventBus';
 import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
 import CombatService from '../services/combatService';
-// import { damage } from '../../store/slices/damageSlice';
+import { workerCreatedItem } from './events';
 
 class GameEngine {
   constructor(dispatch, store, {
@@ -36,10 +36,13 @@ class GameEngine {
       this.dispatch,
       () => this.store.getState()
     );
+
     // Track enemy state for death detection
     this.lastEnemyState = this.store.getState().enemies.byId;
+
     // Initialize lastPlaceId to detect actual place changes
     this.lastPlaceId = this.store.getState().places.currentPlaceId;
+    
     // Register spawnEnemy handler once
     this.eventBus.on('spawnEnemy', ({ placeId, enemy }) => {
       this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
@@ -72,7 +75,15 @@ class GameEngine {
 
       if (targetPlace && vaultInventory) {
         // Add produced item to the place's inventory
+        // Dispatch WORKER_CREATED_ITEM actions for assigned workers
         this.addItemToInventory(targetPlace.id, producedItem);
+        const assignedWorkerIds = state.player.workers
+          .filter(w => w.assignedBuildingId === buildingId)
+          .map(w => w.id);
+
+        assignedWorkerIds.forEach(workerId =>
+          this.dispatch(workerCreatedItem(workerId, building.productionType))
+        );
       } else if (targetPlace && !vaultInventory) {
         Logger.error('No inventory found for target place:', 0, 'inventory', targetPlace);
       }

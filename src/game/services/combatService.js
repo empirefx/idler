@@ -2,6 +2,7 @@ import { damageEnemy } from '../../store/slices/enemiesSlice';
 import { damagePlayer } from '../../store/slices/playerSlice';
 import { addItem } from '../../store/slices/inventorySlice';
 import { ItemFactory } from '../factory/itemFactory';
+import { enemyAttacked } from '../engine/events';
 
 /**
  * CombatService automates idle combat between player and enemies.
@@ -61,6 +62,7 @@ export default class CombatService {
     if (after) {
       const enemyAttack = after.attack || 0;
       this.dispatch(damagePlayer({ amount: enemyAttack }));
+      this.dispatch(enemyAttacked(target.id, player.id, enemyAttack));
     } else {
       const place = this.getState().places[this.getState().places.currentPlaceId]; // Get current place
       const spawnInfo = place.spawn; // Get spawn info
