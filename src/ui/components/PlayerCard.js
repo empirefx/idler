@@ -5,11 +5,16 @@ import InventoryDisplay from './display/InventoryDisplay';
 import EquipmentDisplay from './display/EquipmentDisplay';
 import StatList from './list/StatList';
 import ProgressBar from './common/ProgressBar';
+import NewLevelDialog from './common/NewLevelDialog';
 import { levelUp } from '../../store/slices/playerSlice';
 
 const PlayerCard = ({ player, vaultId }) => {
   const dispatch = useDispatch();
   const [showLevelUp, setShowLevelUp] = useState(false);
+  const handleLevelChoice = (bonuses) => {
+    dispatch(levelUp(bonuses));
+    setShowLevelUp(false);
+  };
 
   if (!player) return null;
 
@@ -23,24 +28,13 @@ const PlayerCard = ({ player, vaultId }) => {
           {/* <ProgressBar value={player.exp} max={player.expToNext} /> */}
           <div className="player-options">
             {player.exp >= player.expToNext && (
-              <button onClick={() => setShowLevelUp(true)}>Level Up</button>
+              <button className="select-btn" onClick={() => setShowLevelUp(true)}>Level Up</button>
             )}
             {showLevelUp && (
-              <div className="level-up-options">
-                <p>Choose bonus:</p>
-                <button onClick={() => { dispatch(levelUp({ strength: 1 })); setShowLevelUp(false); }}>
-                  +1 STR
-                </button>
-                <button onClick={() => { dispatch(levelUp({ defense: 2 })); setShowLevelUp(false); }}>
-                  +2 DEF
-                </button>
-                <button onClick={() => { dispatch(levelUp({ agility: 1 })); setShowLevelUp(false); }}>
-                  +1 AGI
-                </button>
-                <button onClick={() => { dispatch(levelUp({ vitality: 3 })); setShowLevelUp(false); }}>
-                  +3 VIT
-                </button>
-              </div>
+              <NewLevelDialog
+                onChoose={handleLevelChoice}
+                onCancel={() => setShowLevelUp(false)}
+              />
             )}
           </div>
         </div>

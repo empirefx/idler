@@ -497,7 +497,7 @@
 
 .player-options {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: var(--spacing-sm);
   margin: 0;
   padding: var(--spacing-sm);
@@ -505,7 +505,7 @@
   z-index: 10;
 }
 
-.player-options button {
+.player-options .select-btn {
   padding: var(--spacing-sm) var(--spacing-md);
   border: none;
   border-radius: var(--border-radius-sm);
@@ -513,10 +513,9 @@
   color: white;
   cursor: pointer;
   transition: opacity 0.2s;
-  z-index: 10;
 }
 
-.player-options button:hover {
+.player-options .select-btn:hover {
   background-color: var(--color-danger);
 }
 
