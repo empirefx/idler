@@ -13,7 +13,9 @@ const initialState = {
   baseHealth: playerData.baseHealth + playerData.baseHealth,
   baseAttack: playerData.baseAttack + playerData.baseAttack,
   health: playerData.baseHealth + playerData.baseHealth,
-  attack: playerData.baseAttack + playerData.baseAttack
+  attack: playerData.baseAttack + playerData.baseAttack,
+  level: playerData.level,
+  exp: playerData.exp
 };
 
 export const playerSlice = createSlice({
@@ -69,6 +71,21 @@ export const playerSlice = createSlice({
       // This will replace the entire player state with the saved one
       // Only for loading saved states!
       return action.payload; // Replace entire state with payload
+    },
+    gainExp: (state, action) => {
+      const { amount } = action.payload;
+      state.exp += amount;
+    },
+    levelUp: (state, action) => {
+      const required = state.level * 100;
+      if (state.exp < required) return;
+      state.exp -= required;
+      state.level += 1;
+      const { strength = 0, defense = 0, agility = 0, vitality = 0 } = action.payload;
+      state.stats.strength += strength;
+      state.stats.defense += defense;
+      state.stats.agility += agility;
+      state.stats.vitality += vitality;
     }
   },
 });
@@ -82,7 +99,9 @@ export const {
   unassignWorker,
   assignWorkerToBuilding,
   damagePlayer,
-  setPlayerState
+  setPlayerState,
+  gainExp,
+  levelUp
 } = playerSlice.actions;
 
 // Selectors
@@ -99,7 +118,10 @@ export const selectPlayer = createSelector(
     stats: player.stats,
     health: player.health,
     maxHealth: player.baseHealth,
-    attack: player.baseAttack
+    attack: player.baseAttack,
+    level: player.level,
+    exp: player.exp,
+    expToNext: player.level * 100
   })
 );
 export const listBuildingsWithAssignedWorkers = createSelector(
