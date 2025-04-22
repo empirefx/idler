@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import InventoryDisplay from './display/InventoryDisplay';
-import EquipmentDisplay from './display/EquipmentDisplay';
-import StatList from './list/StatList';
-import NewLevelDialog from './common/NewLevelDialog';
-import { levelUp } from '../../store/slices/playerSlice';
+import InventoryDisplay from '../display/InventoryDisplay';
+import EquipmentDisplay from '../display/EquipmentDisplay';
+import StatList from '../list/StatList';
+import NewLevelDialog from '../common/NewLevelDialog';
+import { levelUp } from '../../../store/slices/playerSlice';
 
 const PlayerCard = ({ player, vaultId }) => {
   const dispatch = useDispatch();

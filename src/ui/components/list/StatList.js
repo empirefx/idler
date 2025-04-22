@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import { selectInventoryById } from '../../../store/slices/inventorySlice';
 
 // Displays base stats and equipment bonuses

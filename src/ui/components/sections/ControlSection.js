@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCurrentPlace, selectAvailableConnections } from '../../../store/slices/placesSlice';
+
+import '../../../styles/sections/control-section.css';
+import { selectCurrentPlace } from '../../../store/slices/placesSlice';
 import { selectIsInCombat, startCombat, stopCombat } from '../../../store/slices/combatSlice';
 import ControlDisplay from '../display/ControlDisplay';
 

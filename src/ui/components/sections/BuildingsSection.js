@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import BuildingCard from '../BuildingCard';
+
+import '../../../styles/sections/buildings-section.css';
+import BuildingCard from '../card/BuildingCard';
 import { selectAllBuildings } from '../../../store/slices/buildingsSlice';
 import { selectCurrentPlaceBuildings } from '../../../store/slices/placesSlice';
 

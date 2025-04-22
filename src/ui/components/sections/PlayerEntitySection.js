@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
+import '../../../styles/sections/player-entity-section.css';
 import { selectPlayer } from '../../../store/slices/playerSlice';
-import EntityCard from '../EntityCard';
+import EntityCard from '../card/EntityCard';
 
 const PlayerEntitySection = () => {
   const playerInfo = useSelector(selectPlayer);

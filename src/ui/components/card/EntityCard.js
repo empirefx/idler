@@ -1,5 +1,6 @@
 import React from 'react';
-import ProgressBar from './common/ProgressBar';
+
+import ProgressBar from '../common/ProgressBar';
 
 const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
   const { name, health, maxHealth, avatar } = entity;

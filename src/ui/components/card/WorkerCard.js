@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { assignWorkerToBuilding, unassignWorker } from '../../store/slices/playerSlice';
+
+import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/playerSlice';
 
 const WorkerCard = ({ worker, buildings }) => {
   const dispatch = useDispatch();

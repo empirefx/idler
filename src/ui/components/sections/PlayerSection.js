@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
+import '../../../styles/sections/player-section.css';
 import { useUIVisibility } from '../../UIVisibilityContext';
-import PlayerCard from '../PlayerCard';
+import PlayerCard from '../card/PlayerCard';
 import { selectPlayer } from '../../../store/slices/playerSlice';
 import { selectCurrentPlace } from '../../../store/slices/placesSlice';
 

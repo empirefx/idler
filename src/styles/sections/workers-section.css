@@ -1,0 +1,112 @@
+.workers-section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+  z-index: 11;
+}
+
+.workers-section h2 {
+  color: var(--color-secondary);
+}
+
+.workers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.workers-grid h3 {
+  color: var(--color-secondary);
+  text-transform: uppercase;
+}
+
+.workers-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.no-workers-message {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--color-gray);
+  background: rgba(255,255,255,0.1);
+  padding: var(--spacing-md);
+  margin: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+}
+
+.worker-card {
+  width: 360px;
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}
+
+.worker-card div:nth-child(4) {
+  flex-basis: 100%;
+}
+
+.worker-card h3 {
+  margin: 0;
+  color: var(--color-dark);
+  font-family: var(--font-family-secondary);
+}
+
+.worker-info {
+  flex-grow: 1;
+}
+
+.worker-info p {
+  text-indent: 10px;
+  color: black !important;
+}
+
+.worker-avatar img {
+  border-radius: 50%;
+}
+
+.worker-status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: 0;
+  padding: var(--spacing-sm);
+  background: var(--color-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.worker-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.worker-actions select {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background: white;
+  cursor: pointer;
+}
+
+.worker-actions button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: var(--color-danger);
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.worker-actions button:hover {
+  opacity: 0.9;
+}

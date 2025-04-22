@@ -1,0 +1,64 @@
+.enemies-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  align-items: center;
+}
+
+.entity-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 160px;
+  height: 250px;
+  border-radius: var(--border-radius-lg);
+  color: white;
+  user-select: none;
+}
+
+.entity-card .block-gradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  background-position: 0px 0px;
+  background-image: linear-gradient(0deg, #5081FF 0%, #5081FF00 60%);
+  border-radius: var(--border-radius-lg);
+  z-index: 10;
+  opacity: 1;
+}
+
+.entity-card:hover .block-gradient {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.entity-card h3 {
+  margin-bottom: 18px;
+  font-weight: bolder;
+  text-align: center;
+  text-transform: capitalize;
+  max-width: 95%;
+}
+
+.entity-card img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius-lg);
+  mask-image: linear-gradient(to top, transparent 11%, black 35%);
+}
+
+.entity-card .progress-bar {
+  position: absolute;
+  bottom: -40px;
+  width: 100%;
+}
+
+.entity-card h3, .entity-card p, .entity-card .progress-bar {
+  z-index: 10;
+}

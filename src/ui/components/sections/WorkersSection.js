@@ -1,8 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
+import '../../../styles/sections/workers-section.css';
 import { useUIVisibility } from '../../UIVisibilityContext';
-import WorkerCard from '../WorkerCard';
-import { selectUnassignedWorkers, selectAssignedWorkers, selectPlayer } from '../../../store/slices/playerSlice';
+import WorkerCard from '../card/WorkerCard';
+import { selectUnassignedWorkers, selectAssignedWorkers } from '../../../store/slices/playerSlice';
 import { selectAllBuildings } from '../../../store/slices/buildingsSlice';
 import { selectCurrentPlaceBuildings } from '../../../store/slices/placesSlice';
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import LogDisplay from '../LogDisplay';
+
+import '../../../styles/sections/log-section.css';
+import LogDisplay from '../display/LogDisplay';
 
 const LogSection = () => (
   <section className="log-section">

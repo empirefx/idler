@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { navigateToPlace } from '../../store/slices/placesSlice';
+import { navigateToPlace } from '../../../store/slices/placesSlice';
 
 
 const PlaceCard = ({ place }) => {

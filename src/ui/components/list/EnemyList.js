@@ -1,5 +1,6 @@
 import React from 'react';
-import EntityCard from '../EntityCard';
+
+import EntityCard from '../card/EntityCard';
 
 const EnemyList = ({ enemies }) => (
   <div className="enemies-list">

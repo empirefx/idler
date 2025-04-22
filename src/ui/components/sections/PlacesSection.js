@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
+import '../../../styles/sections/places-section.css';
 import InventoryDisplay from '../display/InventoryDisplay';
-import PlaceCard from '../PlaceCard';
+import PlaceCard from '../card/PlaceCard';
 import { selectCurrentPlace, selectAvailableConnections } from '../../../store/slices/placesSlice';
 import { selectVaultByPlaceId } from '../../../store/slices/inventorySlice';
 
