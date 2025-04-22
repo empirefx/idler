@@ -16,7 +16,8 @@
   "scripts": {
     "start": "parcel",
     "build": "parcel build --no-source-maps --no-cache",
-    "process-images": "parcel build --target images"
+    "process-images": "parcel build --target images",
+    "test": "vitest"
   },
   "parcel": {
     "plugins": [
@@ -39,7 +40,8 @@
     "@parcel/transformer-image": "^2.14.4",
     "parcel": "^2.14.4",
     "process": "^0.11.10",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "vitest": "^3.1.2"
   },
   "browserslist": "> 0.5%, last 2 versions, not dead"
 }
