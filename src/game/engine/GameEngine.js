@@ -2,7 +2,6 @@ import Logger from './Logger';
 
 import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice';
 import { InventoryService } from '../services/inventoryService';
-import { PlaceSelector } from '../services/placeSelector';
 import { ItemFactory } from '../factory/itemFactory';
 import SpawnService from '../services/spawnService';
 import { EventBus } from '../services/eventBus';
@@ -13,7 +12,6 @@ import { workerCreatedItem } from './events';
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
-    placeSelector = PlaceSelector,
     itemFactory = ItemFactory,
     combatService = CombatService
   } = {}) {
@@ -26,7 +24,6 @@ class GameEngine {
     
     // Dependency injection for testability/modularity
     this.inventoryService = inventoryService;
-    this.placeSelector = placeSelector;
     this.itemFactory = itemFactory;
     this.eventBus = new EventBus();
     this.spawnService = new SpawnService(this.eventBus);
@@ -70,8 +67,8 @@ class GameEngine {
 
     if (producedItem && producedItem.quantity > 0) {
       // Find nearest Place with hasInventory:true (for now, just village_center)
-      const targetPlace = this.placeSelector.findFirstWithInventory(state);
-      const vaultInventory = this.inventoryService.getInventoryForPlace(state, targetPlace && targetPlace.id);
+      const targetPlace = Object.values(state.places).find(p => p.hasInventory);
+      const vaultInventory = state.inventory && state.inventory.inventories[targetPlace?.id];
 
       if (targetPlace && vaultInventory) {
         // Add produced item to the place's inventory
