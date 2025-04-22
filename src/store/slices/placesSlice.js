@@ -41,105 +41,22 @@ export const placesSlice = createSlice({
   reducers: {
     navigateToPlace: (state, action) => {
       const placeId = action.payload;
-      
       // Make sure the place exists and is connected to current place
-      if (state[placeId] && 
-          (state[state.currentPlaceId].connections.includes(placeId) || 
+      if (state[placeId] &&
+          (state[state.currentPlaceId].connections.includes(placeId) ||
            placeId === state.currentPlaceId)) {
-        
         // Save previous place
         state.previousPlaceId = state.currentPlaceId;
-        
         // Update current place
         state.currentPlaceId = placeId;
-        
         // Mark as visited
         state[placeId].visited = true;
-        
-        // If not already discovered, add to discovered places
-        if (!state.discoveredPlaces.includes(placeId)) {
-          state.discoveredPlaces.push(placeId);
-        }
-        
         // Update available connections
         updateAvailableConnections(state);
       }
     },
-    
-    returnToPreviousPlace: (state) => {
-      if (state.previousPlaceId) {
-        // Swap current and previous
-        const temp = state.currentPlaceId;
-        state.currentPlaceId = state.previousPlaceId;
-        state.previousPlaceId = temp;
-        
-        // Update available connections
-        updateAvailableConnections(state);
-      }
-    },
-    
-    discoverPlace: (state, action) => {
-      const placeId = action.payload;
-      
-      if (state[placeId] && !state.discoveredPlaces.includes(placeId)) {
-        state.discoveredPlaces.push(placeId);
-      }
-    },
-    
-    addBuildingToPlace: (state, action) => {
-      const { placeId, buildingId } = action.payload;
-      
-      if (state[placeId] && !state[placeId].buildings.includes(buildingId)) {
-        state[placeId].buildings.push(buildingId);
-      }
-    },
-    
-    removeBuildingFromPlace: (state, action) => {
-      const { placeId, buildingId } = action.payload;
-      
-      if (state[placeId]) {
-        state[placeId].buildings = state[placeId].buildings.filter(id => id !== buildingId);
-      }
-    },
-    
-    updatePlaceResources: (state, action) => {
-      const { placeId, resources } = action.payload;
-      
-      if (state[placeId]) {
-        state[placeId].resources = {
-          ...state[placeId].resources,
-          ...resources
-        };
-      }
-    },
-    
-    addFeatureToPlace: (state, action) => {
-      const { placeId, featureId, feature } = action.payload;
-      
-      if (state[placeId]) {
-        state[placeId].features = {
-          ...state[placeId].features,
-          [featureId]: feature
-        };
-      }
-    },
-    
-    removeFeatureFromPlace: (state, action) => {
-      const { placeId, featureId } = action.payload;
-      
-      if (state[placeId] && state[placeId].features) {
-        const { [featureId]: removed, ...remainingFeatures } = state[placeId].features;
-        state[placeId].features = remainingFeatures;
-      }
-    },
-    
-    updatePlaceMetadata: (state, action) => {
-      state.metadata = {
-        ...state.metadata,
-        ...action.payload,
-        lastUpdated: new Date().toISOString()
-      };
-    }
+    // Set entire places state (used for loading saved state)
+    setPlaces: (state, action) => action.payload
   },
   
   extraReducers: (builder) => {
@@ -157,33 +74,11 @@ export const placesSlice = createSlice({
   }
 });
 
-// Export actions
-export const {
-  navigateToPlace,
-  returnToPreviousPlace,
-  discoverPlace,
-  addBuildingToPlace,
-  removeBuildingFromPlace,
-  updatePlaceResources,
-  addFeatureToPlace,
-  removeFeatureFromPlace,
-  updatePlaceMetadata
-} = placesSlice.actions;
+export const { navigateToPlace, setPlaces } = placesSlice.actions;
 
-// Updated selectors to work with the flattened state
-export const selectAllPlaces = (state) => {
-  const { currentPlaceId, previousPlaceId, availableConnections, discoveredPlaces, metadata, ...places } = state.places;
-  return places;
-};
-
-// Selectors
+// Essential selectors
 export const selectCurrentPlace = (state) => state.places[state.places.currentPlaceId];
-export const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 export const selectAvailableConnections = (state) => state.places.availableConnections;
-export const selectDiscoveredPlaces = (state) => state.places.discoveredPlaces;
-export const selectPlaceById = (state, placeId) => state.places[placeId];
-
-// Memoized selectors
 export const selectBackgroundImage = (state) => {
   const currentPlace = state.places[state.places.currentPlaceId];
   return currentPlace ? currentPlace['background-image'] : null;
@@ -191,14 +86,6 @@ export const selectBackgroundImage = (state) => {
 export const selectCurrentPlaceBuildings = (state) => {
   const currentPlace = state.places[state.places.currentPlaceId];
   return currentPlace ? currentPlace.buildings : [];
-};
-export const selectCurrentPlaceFeatures = (state) => {
-  const currentPlace = state.places[state.places.currentPlaceId];
-  return currentPlace ? currentPlace.features : {};
-};
-export const selectCurrentPlaceResources = (state) => {
-  const currentPlace = state.places[state.places.currentPlaceId];
-  return currentPlace ? currentPlace.resources : {};
 };
 
 export default placesSlice.reducer;

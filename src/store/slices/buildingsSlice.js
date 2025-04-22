@@ -32,11 +32,13 @@ export const buildingsSlice = createSlice({
       if (state[buildingId]) {
         state[buildingId].production = state[buildingId].baseProduction;
       }
-    }
+    },
+    // Set entire buildings state (used for loading saved state)
+    setBuildings: (state, action) => action.payload
   },
 });
 
-export const { updateBuilding } = buildingsSlice.actions;
+export const { updateBuilding, setBuildings } = buildingsSlice.actions;
 
 // Selectors
 export const selectAllBuildings = (state) => state.buildings;

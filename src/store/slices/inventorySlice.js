@@ -229,17 +229,13 @@ const inventorySlice = createSlice({
 
 export const { updateInventory, addItem, moveItem, removeItem, equipItem, unequipItem } = inventorySlice.actions;
 
-// Selectors
-export const selectInventory = (state) => state.inventory;
-export const selectPlayerInventory = (state) => state.inventory.player;
-
 // Memoized selectors
 export const selectInventoryById = (state, id) =>
   state.inventory && state.inventory.inventories ? state.inventory.inventories[id] : undefined;
 
 export const selectVaultByPlaceId = createSelector(
-  [selectInventory, (state, placeId) => placeId],
-  (inventory, placeId) => (inventory && inventory.inventories ? inventory.inventories[placeId] : undefined)
+  [(state) => state.inventory.inventories, (state, placeId) => placeId],
+  (inventories, placeId) => (inventories ? inventories[placeId] : undefined)
 );
 
 export default inventorySlice.reducer;

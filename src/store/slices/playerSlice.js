@@ -22,32 +22,6 @@ export const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
-    addResource: (state, action) => {
-      const { resource, amount } = action.payload;
-      
-      // Find the resource in the array
-      const resourceIndex = state.resources.findIndex(r => r.name === resource);
-      
-      if (resourceIndex >= 0) {
-        // Update existing resource
-        state.resources[resourceIndex].amount += amount;
-      } else {
-        // Add new resource to the array
-        state.resources.push({ name: resource, amount: amount });
-      }
-    },
-    removeResource: (state, action) => {
-      const { resource, amount } = action.payload;
-      state.resources[resource] = (state.resources[resource] || 0) - amount;
-    },
-    addWorker: (state, action) => {
-      const { worker } = action.payload;
-      state.workers.push(worker);
-    },
-    removeWorker: (state, action) => {
-      const { workerId } = action.payload;
-      state.workers = state.workers.filter(worker => worker.id !== workerId);
-    },
     unassignWorker: (state, action) => {
       const { workerId } = action.payload;
       const worker = state.workers.find(worker => worker.id === workerId);
@@ -97,10 +71,6 @@ export const playerSlice = createSlice({
 
 // Action creators
 export const { 
-  addResource,
-  removeResource,
-  addWorker,
-  removeWorker,
   unassignWorker,
   assignWorkerToBuilding,
   damagePlayer,
