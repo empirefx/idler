@@ -1,4 +1,4 @@
-import Logger from '../engine/Logger';
+import Logger from '../utils/Logger';
 import EnemyFactory from '../factory/enemyFactory';
 import placesData from '../../data/places.json';
 import { EventBus } from './eventBus';

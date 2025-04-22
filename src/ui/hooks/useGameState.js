@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { store } from '../../store';
 
 import GameEngine from '../../game/engine/GameEngine';
-import Logger from '../../game/engine/Logger';
+import Logger from '../../game/utils/Logger';
 
 export const useGameState = () => {
   const dispatch = useDispatch(); // Get dispatch function from Redux and pass it to GameEngine

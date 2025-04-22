@@ -1,4 +1,4 @@
-import Logger from './Logger';
+import Logger from '../utils/Logger';
 
 import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice';
 import { InventoryService } from '../services/inventoryService';
