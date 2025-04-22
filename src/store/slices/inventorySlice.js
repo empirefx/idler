@@ -30,7 +30,7 @@ const initialState = {
 };
 
 // Helper function to check if two items can stack
-const canItemsStack = (item1, item2) => {
+export const canItemsStack = (item1, item2) => {
   // Stackable items must have the same type and name
   if (item1.type !== item2.type) return false;
   if (item1.name !== item2.name) return false;
