@@ -31,9 +31,10 @@ const initialState = {
 
 // Helper function to check if two items can stack
 const canItemsStack = (item1, item2) => {
+  // Stackable items must have the same type and name
   if (item1.type !== item2.type) return false;
-  // Stackable items (e.g., apples) have no stats or identical stats
-  if (item1.type === 'apple') return true; // Apples always stack
+  if (item1.name !== item2.name) return false;
+
   // Non-stackable items (e.g., armor) only stack if stats are identical
   if (item1.stats && item2.stats) {
     return JSON.stringify(item1.stats) === JSON.stringify(item2.stats);
