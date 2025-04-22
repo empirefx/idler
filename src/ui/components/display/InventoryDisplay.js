@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { moveItem, equipItem, removeItem } from '../../../store/slices/inventorySlice';
 import { healPlayer } from '../../../store/slices/playerSlice';
 import MoveItemDialog from '../common/MoveItemDialog';
-import ToolTip from '../common/ToolTip';
+import ItemInfo from '../common/ItemInfo';
+import KeyBind from '../common/KeyBind';
 
 import { selectInventoryById } from '../../../store/slices/inventorySlice';
 import { calculateTotalPlayerWeight } from '../../../store/slices/inventorySlice';
@@ -75,7 +76,9 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 
   return (
     <>
-      <div className="inventory-info" style={{ marginBottom: '8px', fontWeight: 'bold' }}>
+      <div className="inventory-info">
+        <KeyBind value="RClick" info="Move items between inventories" />
+        {inventory.type === 'player' && <KeyBind value="LClick" info="Equip item" />}
         <span>{totalItems} / <b>{maxSlots} slots</b></span>
         {hasWeightLimit && (
           <span style={{ marginLeft: '16px' }}>
@@ -106,11 +109,11 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
             >
               {item && (
                 // Show quantity & stats for items
-                <ToolTip item={item}>
+                <ItemInfo item={item}>
                   <p>
                     <span>{item.type === 'equipment' ? '' : (item.quantity || '')}</span>
                   </p>
-                </ToolTip>
+                </ItemInfo>
               )}
             </div>
           );

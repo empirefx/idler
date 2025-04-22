@@ -103,6 +103,9 @@
 
 .inventory-info {
   position: absolute;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
   top: 40px;
   right: 20px;
 }
@@ -113,4 +116,62 @@
 
 .inventory-info b {
   color: var(--color-gray-light);
+}
+
+/* key bind styles (ui/components/common/KeyBind.js)*/
+
+.key-bind {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 6px;
+  font-size: var(--font-size-sm);
+  background-color: var(--color-gray);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.key-bind b {
+  color: var(--color-gray-dark);
+}
+
+.key-bind:hover {
+  cursor: default;
+}
+
+/* tooltip text (ui/components/common/ToolTip.js)*/
+
+.tooltip {
+  visibility: hidden;
+  width: max-content;
+  background-color: #4579bd6e;
+  color: #aed7ff;
+  text-align: center;
+  text-transform: capitalize !important;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  position: absolute;
+  z-index: 100;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #4579bd6e transparent transparent transparent;
+}
+
+.key-bind:hover > .tooltip {
+  visibility: visible;
+  opacity: 1;
 }

@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useUIVisibility } from '../UIVisibilityContext';
 
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
-import ResourcesSection from '../components/sections/ResourcesSection';
 import PlayerSection from '../components/sections/PlayerSection';
 import WorkersSection from '../components/sections/WorkersSection';
 import BuildingsSection from '../components/sections/BuildingsSection';
@@ -16,8 +14,6 @@ import LogSection from '../components/sections/LogSection';
 import { selectBackgroundImage } from '../../store/slices/placesSlice';
 
 const GameLayout = ({ clearCache }) => {
-  const { playerCard, workerCard } = useUIVisibility();
-
   const currentPlaceBackgroundImage = useSelector(selectBackgroundImage);
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
@@ -33,13 +29,12 @@ const GameLayout = ({ clearCache }) => {
   return (
     <div className="game-layout" style={styles}>
       <main className="game-main">
-        <ResourcesSection clearCache={clearCache} />
         <CurrentPlaceDisplay />
         <PlayerSection />
         <WorkersSection />
         <BuildingsSection />
         <EnemySection />
-        <ControlSection />
+        <ControlSection clearCache={clearCache}/>
         <PlayerEntitySection />
         <PlacesSection />
         <LogSection />

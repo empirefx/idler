@@ -1,12 +1,59 @@
 .control-section {
   position: absolute;
   display: flex;
+  flex-direction: column;
   justify-content: left;
-  bottom: 100px;
+  gap: 30px;
+  bottom: 40px;
   left: 900px;
   width: auto;
-  height: 200px;
-  padding: var(--spacing-md);
+  height: auto;
+}
+
+.control-section .control-top,
+.control-section .control-bottom {
+  display: flex;
+  justify-content: left;
+  align-items: stretch;
+  gap: var(--spacing-md);
+}
+
+.control-section .control-top {
+  flex-direction: row;
+}
+
+.control-section .control-bottom {
+  flex-direction: column;
+}
+
+.keys-bindings {
+  display: flex;
+  justify-content: left;
+  align-items: stretch;
+  gap: var(--spacing-md);
+  color: var(--color-gray);
+}
+
+.keys-bindings > span {
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+.keys-bindings > span .key-bind {
+  margin-right: var(--spacing-sm);
+}
+
+.resources {
+  display: flex;
+  justify-content: left;
+  align-items: stretch;
+  gap: var(--spacing-md);
+  color: var(--color-gray);
+}
+
+.resources .resource-item {
+  color: white;
 }
 
 .control-section .combat button {

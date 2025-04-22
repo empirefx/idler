@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { unequipItem, selectInventoryById } from '../../../store/slices/inventorySlice';
-import ToolTip from '../common/ToolTip';
+import ItemInfo from '../common/ItemInfo';
 
 const EQUIPMENT_SLOTS = [
   { key: 'head', label: 'Head' },
@@ -27,9 +27,9 @@ const EquipmentDisplay = () => {
       {EQUIPMENT_SLOTS.map(({ key, label }) => (
         <div className={key} key={key} onClick={() => equipment[key] && handleUnequip(key)} style={{ cursor: equipment[key] ? 'pointer' : 'default' }}>
           {equipment[key] ? (
-            <ToolTip item={equipment[key]}>
+            <ItemInfo item={equipment[key]}>
               <span>{equipment[key].name}</span>
-            </ToolTip>
+            </ItemInfo>
           ) : (
             <span>{label}</span>
           )}
