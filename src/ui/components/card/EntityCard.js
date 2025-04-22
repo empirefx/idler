@@ -15,4 +15,4 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
   );
 };
 
-export default EntityCard;
+export default React.memo(EntityCard);

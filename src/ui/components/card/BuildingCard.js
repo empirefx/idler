@@ -10,4 +10,4 @@ const BuildingCard = ({ building }) => {
   );
 };
 
-export default BuildingCard;
+export default React.memo(BuildingCard);

@@ -113,4 +113,15 @@ export const selectUnassignedWorkers = createSelector(
   workers => workers.filter(worker => !worker.assignedBuildingId)
 );
 
+// Centralized selectors for player resources and workers
+export const selectGold = createSelector(
+  [selectResources],
+  resources => resources.find(r => r.name === 'gold')?.amount || 0
+);
+export const selectWorkerCount = createSelector(
+  [selectWorkers],
+  workers => workers.length
+);
+export const selectMaxWorkers = state => state.player.MAX_WORKERS;
+
 export default playerSlice.reducer;

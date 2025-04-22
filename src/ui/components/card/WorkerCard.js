@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/playerSlice';
@@ -6,13 +6,15 @@ import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/pl
 const WorkerCard = ({ worker, buildings }) => {
   const dispatch = useDispatch();
 
-  const handleAssign = (workerId, buildingId) => {
-    dispatch(assignWorkerToBuilding({ workerId, buildingId }));
-  };
-
-  const handleUnassign = (workerId) => {
-    dispatch(unassignWorker({ workerId }));
-  };
+  // Handle worker assignment to a building
+  const handleAssign = useCallback((buildingId) => {
+    dispatch(assignWorkerToBuilding({ workerId: worker.id, buildingId }));
+  }, [dispatch, worker.id]);
+  
+  // Handle worker unassignment from a building
+  const handleUnassign = useCallback(() => {
+    dispatch(unassignWorker({ workerId: worker.id }));
+  }, [dispatch, worker.id]);
 
   return (
     <div className="worker-card">
@@ -30,10 +32,7 @@ const WorkerCard = ({ worker, buildings }) => {
       </div>
       <div className="worker-actions">
         {!worker.assignedBuildingId && buildings && buildings.length > 0 ? (
-          <select
-            onChange={(e) => handleAssign(worker.id, e.target.value)}
-            value=""
-          >
+          <select onChange={(e) => handleAssign(e.target.value)} value="">
             <option value="" disabled>Assign</option>
             {buildings.map(building => (
               <option key={building.id} value={building.id}>
@@ -42,7 +41,7 @@ const WorkerCard = ({ worker, buildings }) => {
             ))}
           </select>
         ) : worker.assignedBuildingId ? (
-          <button onClick={() => handleUnassign(worker.id)}>Unassign</button>
+          <button onClick={handleUnassign}>Unassign</button>
         ) : null}
       </div>
       {worker.assignedBuildingId && (
@@ -54,4 +53,4 @@ const WorkerCard = ({ worker, buildings }) => {
   );
 };
 
-export default WorkerCard;
+export default React.memo(WorkerCard);

@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { moveItem, equipItem, removeItem } from '../../../store/slices/inventorySlice';
@@ -18,44 +18,51 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 
   if (!inventory) return null; // If inventory is not found, render nothing
 
-  const handleContextMenu = (e, item) => {
+  // Handle right-click context menu for moving items between inventories
+  const handleContextMenu = useCallback((e, item) => {
     if (!otherInventory) return; // Do nothing if no target inventory
     e.preventDefault();
     setSelectedItem(item);
     setDialogOpen(true);
-  };
+  }, [otherInventory]);
 
-  const handleConfirmMove = () => {
-    if (!otherInventory || !selectedItem) return;
+  // Handle confirm button for moving items between inventories
+  const handleConfirmMove = useCallback(() => {
+    if (!otherInventoryId || !selectedItem) return; // Do nothing if no target inventory or no item selected
     dispatch(moveItem({
       fromInventoryId: inventory.id,
-      toInventoryId: otherInventory.id,
+      toInventoryId: otherInventoryId,
       itemId: selectedItem.id,
       quantity: selectedItem.quantity || 1,
     }));
     setDialogOpen(false);
     setSelectedItem(null);
-  };
+  }, [dispatch, inventory.id, otherInventoryId, selectedItem]);
 
-  const handleCancel = () => {
+  // Handle cancel button for moving items between inventories
+  const handleCancel = useCallback(() => {
     setDialogOpen(false);
     setSelectedItem(null);
-  };
+  }, []);
 
   // Consume consumable items: lookup heal from the item directly
-  const handleConsume = (item) => {
+  const handleConsume = useCallback((item) => {
     const healAmount = item.consumable?.heal;
     if (healAmount > 0) {
       dispatch(healPlayer({ amount: healAmount }));
       dispatch(removeItem({ inventoryId: inventory.id, itemId: item.id, quantity: 1 }));
     }
-  };
+  }, [dispatch, inventory.id]);
 
   // Calculate total items and weight if available
   const totalItems = inventory.items.length;
   const maxSlots = inventory.maxSlots;
   const hasWeightLimit = typeof inventory.maxWeight !== 'undefined';
   let currentWeight = 0;
+
+  // Calculate current weight
+  // If player, use calculateTotalPlayerWeight
+  // Otherwise, calculate manually
   if (inventory.type === 'player') {
     currentWeight = calculateTotalPlayerWeight(inventory);
   } else {
@@ -64,7 +71,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
       0
     );
   }
-  const maxWeight = inventory.maxWeight;
+  const maxWeight = inventory.maxWeight; // If undefined, no weight limit
 
   return (
     <>
@@ -120,4 +127,4 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
   );
 };
 
-export default InventoryDisplay;
+export default React.memo(InventoryDisplay);
