@@ -10,7 +10,7 @@ Very early stage for an RPG-idler game built with React, Redux & Parcel.
 #### Enemies
 - [ ] `Enemy` pool should attack(all at once) in different delay times 
 - [ ] `Enemy` pool should have different `enemies`
-- [ ] `Enemy` should have a change to become a `worker`
+- [ ] `Enemy`(some) should have a chance to become a `worker`
 
 #### Mechanics
 - [ ] Calculate DMG/DEF with `stats`, `equipment`, `skills`(?)
@@ -24,6 +24,7 @@ Very early stage for an RPG-idler game built with React, Redux & Parcel.
 #### Other
 - [ ] `Log` better format for better readability
 - [ ] Alert `player` he cant carry that much `weight`
+- [ ] `Engine` better performance iterations, maybe abstract to a class? for re-use
 - [ ] Icons
 
 ## Setup
