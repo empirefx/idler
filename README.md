@@ -13,6 +13,7 @@ Very early stage for an RPG-idler game built with React, Redux & Parcel.
 
 
 #### Mechanics
+- [ ] `Inventory` should display a slider when item quantity is more than 1
 - [ ] `Recipies`(ex 10x apple's -> apple-pie)
 - [ ] Able to sell items for gold
 - [ ] Melt equipment for crafting materials
