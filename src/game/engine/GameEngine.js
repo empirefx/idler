@@ -48,7 +48,7 @@ class GameEngine {
 
   // Get the inventory object for a given place
   getVaultInventory(state, targetPlace) {
-    const inventories = state.inventory && state.inventory.inventories;
+    const inventories = state.inventory;
     return inventories && targetPlace ? inventories[targetPlace.id] : undefined;
   }
 
@@ -68,7 +68,7 @@ class GameEngine {
     if (producedItem && producedItem.quantity > 0) {
       // Find nearest Place with hasInventory:true (for now, just village_center)
       const targetPlace = Object.values(state.places).find(p => p.hasInventory);
-      const vaultInventory = state.inventory && state.inventory.inventories[targetPlace?.id];
+      const vaultInventory = state.inventory && state.inventory[targetPlace?.id];
 
       if (targetPlace && vaultInventory) {
         // Add produced item to the place's inventory

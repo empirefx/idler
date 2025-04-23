@@ -5,9 +5,7 @@ import { inventoryData } from '../../data/inventory';
 // Create a flattened object structure for the initial state
 const EQUIPMENT_SLOTS = ['head', 'body', 'pants', 'main-weapon', 'second-weapon'];
 
-const initialState = {
-  inventories: inventoryData
-};
+const initialState = inventoryData;
 
 // Helper function to check if two items can stack
 export const canItemsStack = (item1, item2) => {
@@ -54,7 +52,7 @@ const inventorySlice = createSlice({
     // Add item to inventory
     addItem(state, action) {
       const { inventoryId, item } = action.payload;
-      const inventory = state.inventories[inventoryId];
+      const inventory = state[inventoryId];
       if (!inventory) return;
 
       const maxSlots = inventory.maxSlots;
@@ -90,8 +88,8 @@ const inventorySlice = createSlice({
     // Move item between inventories
     moveItem(state, action) {
       const { fromInventoryId, toInventoryId, itemId, quantity } = action.payload;
-      const fromInv = state.inventories[fromInventoryId];
-      const toInv = state.inventories[toInventoryId];
+      const fromInv = state[fromInventoryId];
+      const toInv = state[toInventoryId];
       if (!fromInv || !toInv) return;
 
       // Find the item in source inventory
@@ -151,7 +149,7 @@ const inventorySlice = createSlice({
     // Remove item from inventory
     removeItem(state, action) {
       const { inventoryId, itemId, quantity } = action.payload;
-      const inventory = state.inventories[inventoryId];
+      const inventory = state[inventoryId];
       if (!inventory) return;
 
       const itemIndex = inventory.items.findIndex((i) => i.id === itemId);
@@ -167,13 +165,13 @@ const inventorySlice = createSlice({
       }
     },
     updateInventory(state, action) {
-      state.inventory = action.payload;
+      state = action.payload;
     },
 
     // Equip item from inventory to equipment slot
     equipItem(state, action) {
       const { inventoryId, itemId } = action.payload;
-      const inventory = state.inventories[inventoryId];
+      const inventory = state[inventoryId];
       if (!inventory || inventory.type !== 'player') return;
       const itemIdx = inventory.items.findIndex((i) => i.id === itemId);
       if (itemIdx === -1) return;
@@ -195,7 +193,7 @@ const inventorySlice = createSlice({
     // Unequip item from equipment slot back to inventory
     unequipItem(state, action) {
       const { inventoryId, slot } = action.payload;
-      const inventory = state.inventories[inventoryId];
+      const inventory = state[inventoryId];
       if (!inventory || inventory.type !== 'player') return;
       if (!EQUIPMENT_SLOTS.includes(slot)) return;
       const equipped = inventory.equipment[slot];
@@ -212,11 +210,11 @@ export const { updateInventory, addItem, moveItem, removeItem, equipItem, unequi
 
 // Memoized selectors
 export const selectInventoryById = (state, id) =>
-  state.inventory && state.inventory.inventories ? state.inventory.inventories[id] : undefined;
+  state.inventory ? state.inventory[id] : undefined;
 
 export const selectVaultByPlaceId = createSelector(
-  [(state) => state.inventory.inventories, (state, placeId) => placeId],
-  (inventories, placeId) => (inventories ? inventories[placeId] : undefined)
+  [(state) => state.inventory, (state, placeId) => placeId],
+  (inventory, placeId) => (inventory ? inventory[placeId] : undefined)
 );
 
 export default inventorySlice.reducer;

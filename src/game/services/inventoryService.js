@@ -3,7 +3,7 @@ export const InventoryService = {
   
   // Get the inventory object for a given place
   getInventoryForPlace(state, placeId) {
-    const inventories = state.inventory && state.inventory.inventories;
+    const inventories = state.inventory;
     return inventories && placeId ? inventories[placeId] : undefined;
   },
 
