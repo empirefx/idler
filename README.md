@@ -24,6 +24,7 @@ Very early stage for an RPG-idler game built with React, Redux & Parcel.
 #### Other
 - [ ] `Log` better format for better readability
 - [ ] Alert `player` he cant carry that much `weight`
+- [ ] Icons
 
 ## Setup
 
@@ -76,6 +77,12 @@ The app is bundled by Parcel, renders a React application, and uses Redux for st
 - Combat system: toggle combat state via Redux slice to simulate battles.
 - Inventory management: add/remove items per location with `InventoryService`.
 - Factories: generate game entities (items, monsters, etc.) at startup.
+
+## Assets
+
+### Backgrounds/avatars
+
+- **Perchance**: https://perchance.org/ai-text-to-image-generator
 
 ## Libraries & Packages
 
