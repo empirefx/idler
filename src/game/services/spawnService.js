@@ -1,6 +1,6 @@
 import Logger from '../utils/Logger';
 import EnemyFactory from '../factory/enemyFactory';
-import placesData from '../../data/places.json';
+import { placesData } from '../../data/places';
 
 // Base spawner class for all spawner types
 // Handles the creation and management of enemies
@@ -115,7 +115,7 @@ export default class SpawnService {
       this.spawners[this.currentPlaceId].stop();
     }
     this.currentPlaceId = placeId;
-    const config = placesData.places[placeId]?.spawn;
+    const config = placesData[placeId]?.spawn;
     if (!config) return;
     // Lazy-create per-place spawner
     if (!this.spawners[placeId]) {

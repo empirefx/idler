@@ -1,25 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import placesData from '../../data/places.json';
+import { placesData } from '../../data/places';
 
-const initialPlacesMap = Object.entries(placesData.places).reduce((acc, [id, place]) => {
-  acc[id] = {
-    ...place,
-    visited: id === 'village_center', // Start with only village_center as visited
-    features: place.features || {},
-    buildings: place.buildings || [],
-    resources: place.resources || {}
-  };
-  return acc;
-}, {});
-
-const initialState = {
-  // Store places directly in the state object instead of nested
-  ...initialPlacesMap,
-  currentPlaceId: 'village_center', // Start at village center
+const initialState = { 
+  ...placesData,
+  currentPlaceId: 'village_center',
   previousPlaceId: null,
-  availableConnections: [], // Will be populated in extraReducers
-  discoveredPlaces: ['village_center'], // Start with only village center discovered
-  metadata: placesData.metadata || { version: '1.0.0' }
+  availableConnections: []
 };
 
 // Helper function to update available connections

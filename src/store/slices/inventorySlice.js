@@ -1,32 +1,12 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import inventoryData from '../../data/inventory.json';
+import { inventoryData } from '../../data/inventory';
 
 // Create a flattened object structure for the initial state
 const EQUIPMENT_SLOTS = ['head', 'body', 'pants', 'main-weapon', 'second-weapon'];
 
-const initialStateInventories = Object.entries(inventoryData.inventory).reduce((acc, [id, inventory]) => {
-  acc[id] = {
-    ...inventory,
-    id,
-    // Ensure equipment object exists for player inventory
-    ...(inventory.type === 'player' && !inventory.equipment
-      ? {
-          equipment: {
-            head: null,
-            body: null,
-            pants: null,
-            'main-weapon': null,
-            'second-weapon': null,
-          },
-        }
-      : {})
-  };
-  return acc;
-}, {});
-
 const initialState = {
-  inventories: initialStateInventories,
+  inventories: inventoryData
 };
 
 // Helper function to check if two items can stack

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import buildingsReducer, { updateBuilding, setBuildings, selectAllBuildings, selectBuildingById } from '../src/store/slices/buildingsSlice';
-import buildingsData from '../src/data/buildings.json';
+import { buildingsData } from '../src/data/buildings';
 
 describe('buildingsSlice', () => {
   let initialState;
@@ -9,7 +9,7 @@ describe('buildingsSlice', () => {
   });
 
   it('should initialize state from buildingsData', () => {
-    const expected = Object.entries(buildingsData.buildings).reduce((acc, [id, building]) => {
+    const expected = Object.entries(buildingsData).reduce((acc, [id, building]) => {
       acc[id] = { ...building, id };
       return acc;
     }, {});

@@ -1,22 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import playerData from '../../data/player.json';
+import {playerData} from '../../data/player';
 
-const initialState = {
-  id: playerData.id,
-  name: playerData.name,
-  MAX_WORKERS: playerData.MAX_WORKERS,
-  stats: playerData.stats,
-  resources: playerData.resources,
-  workers: playerData.workers,
-  avatar: playerData.avatar,
-  baseHealth: playerData.baseHealth + playerData.baseHealth,
-  baseAttack: playerData.baseAttack + playerData.baseAttack,
-  health: playerData.baseHealth + playerData.baseHealth,
-  attack: playerData.baseAttack + playerData.baseAttack,
-  level: playerData.level,
-  exp: playerData.exp
-};
+const initialState = { ...playerData };
 
 export const playerSlice = createSlice({
   name: 'player',

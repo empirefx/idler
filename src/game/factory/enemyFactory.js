@@ -1,9 +1,9 @@
-import enemyData from '../../data/enemies.json';
+import { enemyCatalog } from '../../data/enemyCatalog';
 
 // Factory for creating enemy instances with base stats
 export class EnemyFactory {
   static create(type, options = {}) {
-    const def = enemyData[type];
+    const def = enemyCatalog[type];
     if (!def) return null;
     // Clone base definition
     const enemy = {
