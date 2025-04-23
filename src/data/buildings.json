@@ -5,7 +5,7 @@
       "name": "Farm",
       "description": "Produces food for your population",
       "icon": "farm.jpg",
-      "productionType": "Apple",
+      "productionType": "apple",
       "baseProductionRate": 1
     },
     "mine": {
@@ -13,7 +13,7 @@
       "name": "Mine",
       "description": "Extracts valuable resources from the earth",
       "icon": "mine.jpg",
-      "productionType": "Ore",
+      "productionType": "ore",
       "baseProductionRate": 1
     }
   },

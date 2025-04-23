@@ -8,21 +8,7 @@
       "hasInventory": true,
       "connections": ["forest_edge", "river_crossing", "farmlands"],
       "background-image": "village_center.jpg",
-      "features": {
-        "marketplace": {
-          "name": "Marketplace",
-          "description": "A small trading post where resources can be exchanged"
-        },
-        "well": {
-          "name": "Village Well",
-          "description": "A source of fresh water for the village"
-        }
-      },
-      "buildings": ["farm"],
-      "resources": {
-        "water": 1,
-        "food": 1
-      }
+      "buildings": ["farm"]
     },
     "forest_edge": {
       "id": "forest_edge",
@@ -31,17 +17,7 @@
       "type": "wilderness",
       "connections": ["village_center", "deep_woods", "hunter_camp"],
       "background-image": "forest_edge.jpg",
-      "features": {
-        "gathering_spot": {
-          "name": "Gathering Spot",
-          "description": "A good place to collect berries and herbs"
-        }
-      },
       "buildings": [],
-      "resources": {
-        "wood": 2,
-        "herbs": 1
-      },
       "spawn": {
         "type": "single",
         "pool": "forest_beast",
@@ -58,18 +34,7 @@
       "type": "wilderness",
       "connections": ["forest_edge", "ancient_ruins"],
       "background-image": "deep_woods.jpg",
-      "features": {
-        "old_mine": {
-          "name": "Abandoned Mine",
-          "description": "A mysterious mine entrance, partially overgrown"
-        }
-      },
       "buildings": [],
-      "resources": {
-        "wood": 3,
-        "stone": 2,
-        "herbs": 2
-      },
       "spawn": {
         "type": "single",
         "pool": "woodland_predator",
@@ -86,17 +51,7 @@
       "type": "landmark",
       "connections": ["village_center", "farmlands", "fishing_spot"],
       "background-image": "river_crossing.jpg",
-      "features": {
-        "dock": {
-          "name": "Small Dock",
-          "description": "A wooden platform for fishing and loading goods"
-        }
-      },
-      "buildings": ["mine"],
-      "resources": {
-        "fish": 2,
-        "water": 3
-      }
+      "buildings": ["mine"]
     },
     "farmlands": {
       "id": "farmlands",
@@ -105,17 +60,7 @@
       "type": "settlement",
       "connections": ["village_center", "river_crossing"],
       "background-image": "farmlands.jpg",
-      "features": {
-        "granary": {
-          "name": "Community Granary",
-          "description": "Storage for harvested crops"
-        }
-      },
-      "buildings": [],
-      "resources": {
-        "food": 3,
-        "herbs": 1
-      }
+      "buildings": []
     },
     "hunter_camp": {
       "id": "hunter_camp",
@@ -124,21 +69,7 @@
       "type": "outpost",
       "connections": ["forest_edge"],
       "background-image": "hunter_camp.jpg",
-      "features": {
-        "tanning_rack": {
-          "name": "Tanning Rack",
-          "description": "Used to process animal hides and prepare leather"
-        },
-        "campfire": {
-          "name": "Campfire",
-          "description": "A place to cook and preserve meat from the hunt"
-        }
-      },
       "buildings": [],
-      "resources": {
-        "meat": 2,
-        "leather": 1
-      },
       "spawn": {
         "type": "single",
         "pool": "trained_hunters",
@@ -153,21 +84,7 @@
       "type": "gathering",
       "connections": ["river_crossing"],
       "background-image": "fishing_spot.jpg",
-      "features": {
-        "dock": {
-          "name": "Wooden Dock",
-          "description": "A simple platform extending into the water"
-        },
-        "fish_cleaning": {
-          "name": "Fish Cleaning Station",
-          "description": "A designated area to clean and prepare caught fish"
-        }
-      },
-      "buildings": [],
-      "resources": {
-        "fish": 3,
-        "water": 1
-      }
+      "buildings": []
     },
     "ancient_ruins": {
       "id": "ancient_ruins",
@@ -176,22 +93,7 @@
       "type": "ruins",
       "connections": ["deep_woods"],
       "background-image": "ancient_ruins.jpg",
-      "features": {
-        "temple": {
-          "name": "Crumbling Temple",
-          "description": "A once-grand temple now in ruins, hiding valuable treasures"
-        },
-        "workshop": {
-          "name": "Ancient Workshop",
-          "description": "A workshop containing remnants of advanced crafting techniques"
-        }
-      },
       "buildings": [],
-      "resources": {
-        "stone": 3,
-        "artifacts": 2,
-        "knowledge": 1
-      },
       "spawn": {
         "type": "wave",
         "pool": "ruins_undead",
@@ -205,7 +107,7 @@
     }
   },
   "metadata": {
-    "version": "1.0.7",
-    "lastUpdated": "2025-04-20"
+    "version": "1.0.8",
+    "lastUpdated": "2025-04-23"
   }
 }

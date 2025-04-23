@@ -24,13 +24,13 @@ describe('inventorySlice reducer and selectors', () => {
   });
 
   it('should stack items on addItem', () => {
-    const item = { id: 1, type: 'consumable', name: 'Apple', quantity: 5, weight: 0.5 };
+    const item = { id: 1, type: 'consumable', name: 'apple', quantity: 5, weight: 0.5 };
     const newState = inventoryReducer(state, addItem({ inventoryId: 'player', item }));
     expect(newState.inventories.player.items.find(i => i.id === 1).quantity).toBe(10);
   });
 
   it('should add new item when not stackable', () => {
-    const newItem = { id: 99, type: 'consumable', name: 'Orange', quantity: 2, weight: 0.3 };
+    const newItem = { id: 99, type: 'consumable', name: 'orange', quantity: 2, weight: 0.3 };
     const newState = inventoryReducer(state, addItem({ inventoryId: 'player', item: newItem }));
     expect(newState.inventories.player.items.some(i => i.id === 99)).toBe(true);
   });
