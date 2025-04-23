@@ -1,5 +1,5 @@
 // A simple pub/sub event bus
-export class EventBus {
+export class EventBusService {
   constructor() {
     this.handlers = {};
   }

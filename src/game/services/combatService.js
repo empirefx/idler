@@ -11,7 +11,7 @@ import { enemyAttacked } from '../engine/events';
  */
 export default class CombatService {
   constructor(eventBus, dispatch, getState) {
-    this.eventBus = eventBus;
+    this.eventBusService = eventBus;
     this.dispatch = dispatch;
     this.getState = getState;
     this.isInCombat = false;

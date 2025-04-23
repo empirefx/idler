@@ -4,7 +4,7 @@ import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice
 import { InventoryService } from '../services/inventoryService';
 import { ItemFactory } from '../factory/itemFactory';
 import SpawnService from '../services/spawnService';
-import { EventBus } from '../services/eventBus';
+import { EventBusService } from '../services/eventBusService';
 import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
 import CombatService from '../services/combatService';
 import { workerCreatedItem } from './events';
@@ -25,11 +25,11 @@ class GameEngine {
     // Dependency injection for testability/modularity
     this.inventoryService = inventoryService;
     this.itemFactory = itemFactory;
-    this.eventBus = new EventBus();
-    this.spawnService = new SpawnService(this.eventBus);
+    this.eventBusService = new EventBusService();
+    this.spawnService = new SpawnService(this.eventBusService);
     // Instantiate CombatService so instance methods are available
     this.combatService = new combatService(
-      this.eventBus,
+      this.eventBusService,
       this.dispatch,
       () => this.store.getState()
     );
@@ -41,7 +41,7 @@ class GameEngine {
     this.lastPlaceId = this.store.getState().places.currentPlaceId;
     
     // Register spawnEnemy handler once
-    this.eventBus.on('spawnEnemy', ({ placeId, enemy }) => {
+    this.eventBusService.on('spawnEnemy', ({ placeId, enemy }) => {
       this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
     });
   }
@@ -108,7 +108,7 @@ class GameEngine {
         this.lastPlaceId = newPlaceId;
         // Despawn enemies from the previous place
         this.dispatch(removeEnemiesByPlace(oldPlaceId));
-        this.eventBus.emit('enterPlace', newPlaceId);
+        this.eventBusService.emit('enterPlace', newPlaceId);
       }
     });
     
@@ -120,7 +120,7 @@ class GameEngine {
       // Any ids in old not in curr => deaths
       Object.keys(oldById).filter(id => !(id in currById)).forEach(id => {
         const placeId = oldById[id].placeId;
-        this.eventBus.emit(`enemyDead:${placeId}`);
+        this.eventBusService.emit(`enemyDead:${placeId}`);
       });
       this.lastEnemyState = { ...currById };
     });

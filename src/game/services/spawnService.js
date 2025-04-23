@@ -1,15 +1,14 @@
 import Logger from '../utils/Logger';
 import EnemyFactory from '../factory/enemyFactory';
 import placesData from '../../data/places.json';
-import { EventBus } from './eventBus';
 
 // Base spawner class for all spawner types
 // Handles the creation and management of enemies
 class BaseSpawner {
-  constructor(placeId, config, eventBus) {
+  constructor(placeId, config, eventBusService) {
     this.placeId = placeId;
     this.config = config;
-    this.eventBus = eventBus;
+    this.eventBusService = eventBusService;
   }
   createEnemy() {
     // Unique ID: pool + timestamp + random suffix
@@ -24,8 +23,8 @@ class BaseSpawner {
 // Single spawner class for single enemy spawns
 // Handles the creation and management of a single enemy
 export class SingleSpawner extends BaseSpawner {
-  constructor(placeId, config, eventBus) {
-    super(placeId, config, eventBus);
+  constructor(placeId, config, eventBusService) {
+    super(placeId, config, eventBusService);
     this.hasAlive = false;
   }
 
@@ -38,14 +37,14 @@ export class SingleSpawner extends BaseSpawner {
     this.hasAlive = true;
     const enemy = this.createEnemy();
     Logger.log(`Spawned enemy ${enemy.id} at ${this.placeId}`, 0, 'spawn');
-    this.eventBus.emit('spawnEnemy', { placeId: this.placeId, enemy });
+    this.eventBusService.emit('spawnEnemy', { placeId: this.placeId, enemy });
     const deathEvent = `enemyDead:${this.placeId}`;
     const handler = () => {
-      this.eventBus.handlers[deathEvent] = (this.eventBus.handlers[deathEvent] || []).filter(h => h !== handler);
+      this.eventBusService.handlers[deathEvent] = (this.eventBusService.handlers[deathEvent] || []).filter(h => h !== handler);
       this.hasAlive = false;
       setTimeout(() => this.spawnOne(), this.config.respawnDelay * 1000);
     };
-    this.eventBus.on(deathEvent, handler);
+    this.eventBusService.on(deathEvent, handler);
   }
 
   stop() {
@@ -53,15 +52,15 @@ export class SingleSpawner extends BaseSpawner {
     this.hasAlive = false;
     const deathEvent = `enemyDead:${this.placeId}`;
     // Remove all handlers for this event
-    delete this.eventBus.handlers[deathEvent];
+    delete this.eventBusService.handlers[deathEvent];
   }
 }
 
 // Wave spawner class for wave enemy spawns
 // Handles the creation and management of a wave of enemies
 export class WaveSpawner extends BaseSpawner {
-  constructor(placeId, config, eventBus) {
-    super(placeId, config, eventBus);
+  constructor(placeId, config, eventBusService) {
+    super(placeId, config, eventBusService);
     this.waveActive = false;
   }
 
@@ -79,16 +78,16 @@ export class WaveSpawner extends BaseSpawner {
     const handler = () => {
       killed++;
       if (killed >= count) {
-        this.eventBus.handlers[deathEvent] = (this.eventBus.handlers[deathEvent] || []).filter(h => h !== handler);
+        this.eventBusService.handlers[deathEvent] = (this.eventBusService.handlers[deathEvent] || []).filter(h => h !== handler);
         this.waveActive = false;
         setTimeout(() => this.spawnWave(), this.config.respawnDelay * 1000);
       }
     };
-    this.eventBus.on(deathEvent, handler);
+    this.eventBusService.on(deathEvent, handler);
     for (let i = 0; i < count; i++) {
       const enemy = this.createEnemy();
       Logger.log(`Spawned enemy ${enemy.id} at ${this.placeId}`, 0, 'spawn');
-      this.eventBus.emit('spawnEnemy', { placeId: this.placeId, enemy });
+      this.eventBusService.emit('spawnEnemy', { placeId: this.placeId, enemy });
     }
   }
 
@@ -96,18 +95,18 @@ export class WaveSpawner extends BaseSpawner {
     // Reset wave state and clear death handlers
     this.waveActive = false;
     const deathEvent = `enemyDead:${this.placeId}`;
-    delete this.eventBus.handlers[deathEvent];
+    delete this.eventBusService.handlers[deathEvent];
   }
 }
 
 // Spawn service class for managing enemy spawns
 // Handles the creation and management of enemy spawns
 export default class SpawnService {
-  constructor(eventBus) {
-    this.eventBus = eventBus;
+  constructor(eventBusService) {
+    this.eventBusService = eventBusService;
     this.spawners = {};        // Map placeId -> spawner
     this.currentPlaceId = null; // Track current place
-    this.eventBus.on('enterPlace', (placeId) => this.onEnterPlace(placeId));
+    this.eventBusService.on('enterPlace', (placeId) => this.onEnterPlace(placeId));
   }
   onEnterPlace(placeId) {
     if (placeId === this.currentPlaceId) return;          // No-op if same place
@@ -121,8 +120,8 @@ export default class SpawnService {
     // Lazy-create per-place spawner
     if (!this.spawners[placeId]) {
       this.spawners[placeId] = config.type === 'single'
-        ? new SingleSpawner(placeId, config, this.eventBus)
-        : new WaveSpawner(placeId, config, this.eventBus);
+        ? new SingleSpawner(placeId, config, this.eventBusService)
+        : new WaveSpawner(placeId, config, this.eventBusService);
     }
     // Start (will no-op if already active)
     this.spawners[placeId].start();
