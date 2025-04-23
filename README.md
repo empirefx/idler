@@ -69,16 +69,6 @@ src/
 
 The app is bundled by Parcel, renders a React application, and uses Redux for state management. Services and factories encapsulate game logic.
 
-```mermaid
-flowchart LR
-  A["Index.html"] --> B["Entry (src/index.js)"]
-  B --> C["React App"]
-  C --> D["Components"]
-  C --> E["Redux Store"]
-  E --> F["Services"]
-  F --> G["Factories"]
-```
-
 ## Game Mechanics
 
 - Idle resource generation: items/resources accumulate over time or via actions.
