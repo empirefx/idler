@@ -15,8 +15,10 @@
     }
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development parcel src/index.html",
-    "build": "cross-env NODE_ENV=production parcel build src/index.html --no-source-maps --no-cache",
+    "clean": "rimraf .dist .parcel-cache",
+    "prestart": "npm run clean",
+    "start": "cross-env NODE_ENV=development parcel",
+    "build": "cross-env NODE_ENV=production parcel build --no-source-maps --no-cache",
     "process-images": "parcel build --target images",
     "test": "vitest",
     "predeploy": "npm run build",
@@ -45,6 +47,7 @@
     "gh-pages": "^6.3.0",
     "parcel": "^2.14.4",
     "process": "^0.11.10",
+    "rimraf": "^6.0.1",
     "sharp": "^0.33.5",
     "vitest": "^3.1.2"
   },
