@@ -6,7 +6,7 @@
   "source": "src/index.html",
   "targets": {
     "images": {
-      "distDir": "./public/images",
+      "distDir": "./public/assets",
       "source": "./src/assets/**"
     },
     "default": {
@@ -18,10 +18,10 @@
     "clean": "rimraf .dist .parcel-cache",
     "prestart": "npm run clean",
     "start": "cross-env NODE_ENV=development parcel",
-    "build": "cross-env NODE_ENV=production parcel build --no-source-maps --no-cache",
-    "process-images": "parcel build --target images",
+    "build": "cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
+    "process-images": "parcel build --target images --public-url ./ --no-source-maps --no-cache",
     "test": "vitest",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && npm run process-images",
     "deploy": "gh-pages -d public"
   },
   "parcel": {
