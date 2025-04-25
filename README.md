@@ -1,6 +1,6 @@
 # Idler
 
-Very early stage for an RPG-idler game built with React, Redux & Parcel.
+Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel.
 
 ![screenshot](static/screenshot.png)
 
