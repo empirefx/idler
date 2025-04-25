@@ -2,6 +2,8 @@
 
 Very early stage for an RPG-idler game built with React, Redux & Parcel.
 
+![screenshot](static/screenshot.png)
+
 ## TO-DO
 #### Player
 - [ ] `Player` death & punishment(15% lost EXP)
