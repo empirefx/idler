@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Armor Sprite Sheet Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2c2c2c;
+      color: #fff;
+      padding: 20px;
+    }
+
+    a {
+      color: lightblue;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      border-bottom: 2px solid #555;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .sprite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .sprite-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      background-color: #3a3a3a;
+      border-radius: 8px;
+      transition: transform 0.2s;
+    }
+
+    .sprite-item:hover {
+      transform: scale(1.05);
+      background-color: #4a4a4a;
+    }
+
+    .sprite-label {
+      margin-top: 8px;
+      font-size: 11px;
+      text-align: center;
+      color: #ccc;
+    }
+
+    /* Base sprite sheet setup */
+    .armor-sprite {
+      width: 32px;
+      height: 32px;
+      background-image: url('../src/assets/icons/items/idylwilds-armory.png');
+      background-repeat: no-repeat;
+      display: inline-block;
+      image-rendering: pixelated;
+      transform: scale(2);
+    }
+
+    /* Row 1 - Helmets and Head Armor */
+    #leather-hood { background-position: 0px 0px; }
+    #dark-hood { background-position: -32px 0px; }
+    #brown-tunic { background-position: -64px 0px; }
+    #leather-bracer-1 { background-position: -96px 0px; }
+    #leather-bracer-2 { background-position: -128px 0px; }
+    #dark-boots { background-position: -160px 0px; }
+    #buckler-1 { background-position: -192px 0px; }
+    #bronze-helmet-1 { background-position: -224px 0px; }
+    #ring-1 { background-position: -256px 0px; }
+    #ring-2 { background-position: -288px 0px; }
+
+    /* Row 2 - Body Armor and Accessories */
+    #red-tunic { background-position: 0px -32px; }
+    #orange-hood { background-position: -32px -32px; }
+    #leather-armor { background-position: -64px -32px; }
+    #studded-bracer { background-position: -96px -32px; }
+    #leather-glove { background-position: -128px -32px; }
+    #leather-boots { background-position: -160px -32px; }
+    #wooden-shield { background-position: -192px -32px; }
+    #iron-helmet { background-position: -224px -32px; }
+    #amulet-1 { background-position: -256px -32px; }
+    #bronze-shield-1 { background-position: -288px -32px; }
+
+    /* Row 3 - Medium Armor */
+    #scale-mail { background-position: 0px -64px; }
+    #chainmail-hood { background-position: -32px -64px; }
+    #chainmail { background-position: -64px -64px; }
+    #metal-bracer-1 { background-position: -96px -64px; }
+    #chainmail-glove { background-position: -128px -64px; }
+    #metal-boots-1 { background-position: -160px -64px; }
+    #round-shield { background-position: -192px -64px; }
+    #winged-helmet { background-position: -224px -64px; }
+    #blue-tunic { background-position: -256px -64px; }
+    #kite-shield-1 { background-position: -288px -64px; }
+
+    /* Row 4 - Heavy Armor */
+    #bronze-armor { background-position: 0px -96px; }
+    #bronze-helmet-2 { background-position: -32px -96px; }
+    #bronze-chestplate { background-position: -64px -96px; }
+    #plate-bracer { background-position: -96px -96px; }
+    #plate-gauntlet { background-position: -128px -96px; }
+    #plate-boots { background-position: -160px -96px; }
+    #heater-shield { background-position: -192px -96px; }
+    #golden-helmet { background-position: -224px -96px; }
+    #belt-1 { background-position: -256px -96px; }
+    #tower-shield { background-position: -288px -96px; }
+
+    /* Row 5 - Elite Armor */
+    #plate-mail { background-position: 0px -128px; }
+    #full-helm { background-position: -32px -128px; }
+    #plate-armor { background-position: -64px -128px; }
+    #heavy-bracer { background-position: -96px -128px; }
+    #heavy-gauntlet { background-position: -128px -128px; }
+    #armored-boots { background-position: -160px -128px; }
+    #ring-3 { background-position: -192px -128px; }
+    #ring-4 { background-position: -224px -128px; }
+    #ring-5 { background-position: -256px -128px; }
+    #ring-6 { background-position: -288px -128px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚔️ Armor Sprite Sheet Test ⚔️</h1>
+    <center><p>Idylwilds Armory <a href="https://idylwild.itch.io/idylwilds-armory">Download</a></p></center>
+    <div class="section">
+      <h2>Row 1 - Light Armor & Accessories</h2>
+      <div class="sprite-grid">
+        <div class="sprite-item">
+          <div class="armor-sprite" id="leather-hood"></div>
+          <div class="sprite-label">Leather Hood</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="dark-hood"></div>
+          <div class="sprite-label">Dark Hood</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="brown-tunic"></div>
+          <div class="sprite-label">Brown Tunic</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="leather-bracer-1"></div>
+          <div class="sprite-label">Leather Bracer 1</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="leather-bracer-2"></div>
+          <div class="sprite-label">Leather Bracer 2</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="dark-boots"></div>
+          <div class="sprite-label">Dark Boots</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="buckler-1"></div>
+          <div class="sprite-label">Buckler</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="bronze-helmet-1"></div>
+          <div class="sprite-label">Bronze Helmet 1</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="ring-1"></div>
+          <div class="sprite-label">Ring 1</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="ring-2"></div>
+          <div class="sprite-label">Ring 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Row 2 - Body Armor & Accessories</h2>
+      <div class="sprite-grid">
+        <div class="sprite-item">
+          <div class="armor-sprite" id="red-tunic"></div>
+          <div class="sprite-label">Red Tunic</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="orange-hood"></div>
+          <div class="sprite-label">Orange Hood</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="leather-armor"></div>
+          <div class="sprite-label">Leather Armor</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="studded-bracer"></div>
+          <div class="sprite-label">Studded Bracer</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="leather-glove"></div>
+          <div class="sprite-label">Leather Glove</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="leather-boots"></div>
+          <div class="sprite-label">Leather Boots</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="wooden-shield"></div>
+          <div class="sprite-label">Wooden Shield</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="iron-helmet"></div>
+          <div class="sprite-label">Iron Helmet</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="amulet-1"></div>
+          <div class="sprite-label">Amulet</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="bronze-shield-1"></div>
+          <div class="sprite-label">Bronze Shield</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Row 3 - Medium Armor</h2>
+      <div class="sprite-grid">
+        <div class="sprite-item">
+          <div class="armor-sprite" id="scale-mail"></div>
+          <div class="sprite-label">Scale Mail</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="chainmail-hood"></div>
+          <div class="sprite-label">Chainmail Hood</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="chainmail"></div>
+          <div class="sprite-label">Chainmail</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="metal-bracer-1"></div>
+          <div class="sprite-label">Metal Bracer</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="chainmail-glove"></div>
+          <div class="sprite-label">Chainmail Glove</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="metal-boots-1"></div>
+          <div class="sprite-label">Metal Boots</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="round-shield"></div>
+          <div class="sprite-label">Round Shield</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="winged-helmet"></div>
+          <div class="sprite-label">Winged Helmet</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="blue-tunic"></div>
+          <div class="sprite-label">Blue Tunic</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="kite-shield-1"></div>
+          <div class="sprite-label">Kite Shield</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Row 4 - Heavy Armor</h2>
+      <div class="sprite-grid">
+        <div class="sprite-item">
+          <div class="armor-sprite" id="bronze-armor"></div>
+          <div class="sprite-label">Bronze Armor</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="bronze-helmet-2"></div>
+          <div class="sprite-label">Bronze Helmet 2</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="bronze-chestplate"></div>
+          <div class="sprite-label">Bronze Chestplate</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="plate-bracer"></div>
+          <div class="sprite-label">Plate Bracer</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="plate-gauntlet"></div>
+          <div class="sprite-label">Plate Gauntlet</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="plate-boots"></div>
+          <div class="sprite-label">Plate Boots</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="heater-shield"></div>
+          <div class="sprite-label">Heater Shield</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="golden-helmet"></div>
+          <div class="sprite-label">Golden Helmet</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="belt-1"></div>
+          <div class="sprite-label">Belt</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="tower-shield"></div>
+          <div class="sprite-label">Tower Shield</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Row 5 - Elite Armor & Rings</h2>
+      <div class="sprite-grid">
+        <div class="sprite-item">
+          <div class="armor-sprite" id="plate-mail"></div>
+          <div class="sprite-label">Plate Mail</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="full-helm"></div>
+          <div class="sprite-label">Full Helm</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="plate-armor"></div>
+          <div class="sprite-label">Plate Armor</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="heavy-bracer"></div>
+          <div class="sprite-label">Heavy Bracer</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="heavy-gauntlet"></div>
+          <div class="sprite-label">Heavy Gauntlet</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="armored-boots"></div>
+          <div class="sprite-label">Armored Boots</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="ring-3"></div>
+          <div class="sprite-label">Ring 3</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="ring-4"></div>
+          <div class="sprite-label">Ring 4</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="ring-5"></div>
+          <div class="sprite-label">Ring 5</div>
+        </div>
+        <div class="sprite-item">
+          <div class="armor-sprite" id="ring-6"></div>
+          <div class="sprite-label">Ring 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
