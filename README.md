@@ -46,7 +46,6 @@ API_URL=...
 - `npm start` → dev server (Parcel)
 - `npm run build` → production build
 - `npm test` → run tests (Vitest)
-- `npm run deploy` → build & deploy to GitHub Pages
 
 ## Project Structure
 ```text
@@ -96,7 +95,6 @@ The app is bundled by Parcel, renders a React application, and uses Redux for st
 ### Dev dependencies
 - **parcel**, **@parcel/config-default**, **@parcel/plugin**, **@parcel/resolver-glob**, **@parcel/transformer-image**: bundler & plugins
 - **cross-env**: cross-platform environment variables
-- **gh-pages**: GitHub Pages deployment
 - **vitest**: testing framework
 - **@babel/core**, **@babel/preset-react**: transpilation
 - **process**, **sharp**: polyfills & image transformations
