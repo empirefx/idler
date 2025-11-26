@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { store } from '../../store';
+import { useDispatch, useStore } from 'react-redux';
 
 import GameEngine from '../../game/engine/GameEngine';
 import Logger from '../../game/utils/Logger';
 
 export const useGameState = () => {
   const dispatch = useDispatch(); // Get dispatch function from Redux and pass it to GameEngine
+  const store = useStore(); // Get store instance from Redux Provider
 
   // Create GameEngine instance with a ref to ensure it's created only once
   const gameEngineRef = useRef(null);
