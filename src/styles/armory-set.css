@@ -1,0 +1,70 @@
+/* Base sprite sheet setup */
+.armor-sprite {
+  width: 32px;
+  height: 32px;
+  background-image: url('../assets/icons/items/idylwilds-armory.png');
+  background-repeat: no-repeat;
+  display: inline-block;
+  image-rendering: pixelated;
+  transform: scale(1.5);
+}
+
+/* Row 1 - Helmets and Head Armor */
+#leather-hood { background-position: 0px 0px; }
+#dark-hood { background-position: -32px 0px; }
+#brown-tunic { background-position: -64px 0px; }
+#leather-bracer-1 { background-position: -96px 0px; }
+#leather-bracer-2 { background-position: -128px 0px; }
+#dark-boots { background-position: -160px 0px; }
+#buckler-1 { background-position: -192px 0px; }
+#bronze-helmet-1 { background-position: -224px 0px; }
+#ring-1 { background-position: -256px 0px; }
+#ring-2 { background-position: -288px 0px; }
+
+/* Row 2 - Body Armor and Accessories */
+#red-tunic { background-position: 0px -32px; }
+#orange-hood { background-position: -32px -32px; }
+#leather-armor { background-position: -64px -32px; }
+#studded-bracer { background-position: -96px -32px; }
+#leather-glove { background-position: -128px -32px; }
+#leather-boots { background-position: -160px -32px; }
+#wooden-shield { background-position: -192px -32px; }
+#iron-helmet { background-position: -224px -32px; }
+#amulet-1 { background-position: -256px -32px; }
+#bronze-shield-1 { background-position: -288px -32px; }
+
+/* Row 3 - Medium Armor */
+#scale-mail { background-position: 0px -64px; }
+#chainmail-hood { background-position: -32px -64px; }
+#chainmail { background-position: -64px -64px; }
+#metal-bracer-1 { background-position: -96px -64px; }
+#chainmail-glove { background-position: -128px -64px; }
+#metal-boots-1 { background-position: -160px -64px; }
+#round-shield { background-position: -192px -64px; }
+#winged-helmet { background-position: -224px -64px; }
+#blue-tunic { background-position: -256px -64px; }
+#kite-shield-1 { background-position: -288px -64px; }
+
+/* Row 4 - Heavy Armor */
+#bronze-armor { background-position: 0px -96px; }
+#bronze-helmet-2 { background-position: -32px -96px; }
+#bronze-chestplate { background-position: -64px -96px; }
+#plate-bracer { background-position: -96px -96px; }
+#plate-gauntlet { background-position: -128px -96px; }
+#plate-boots { background-position: -160px -96px; }
+#heater-shield { background-position: -192px -96px; }
+#golden-helmet { background-position: -224px -96px; }
+#belt-1 { background-position: -256px -96px; }
+#tower-shield { background-position: -288px -96px; }
+
+/* Row 5 - Elite Armor */
+#plate-mail { background-position: 0px -128px; }
+#full-helm { background-position: -32px -128px; }
+#plate-armor { background-position: -64px -128px; }
+#heavy-bracer { background-position: -96px -128px; }
+#heavy-gauntlet { background-position: -128px -128px; }
+#armored-boots { background-position: -160px -128px; }
+#ring-3 { background-position: -192px -128px; }
+#ring-4 { background-position: -224px -128px; }
+#ring-5 { background-position: -256px -128px; }
+#ring-6 { background-position: -288px -128px; }

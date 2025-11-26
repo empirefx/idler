@@ -107,6 +107,10 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
                   : undefined
               }
             >
+              {item?.type === 'equipment' && (
+                // Display armor/weapon sprite
+                <div className="armor-sprite" id={item?.id ? item?.id : 'empty'}></div>
+              )}
               {item && (
                 // Show quantity & stats for items
                 <ItemInfo item={item}>

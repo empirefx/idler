@@ -85,6 +85,7 @@ The app is bundled by Parcel, renders a React application, and uses Redux for st
 ### Backgrounds/avatars
 
 - **Perchance**: https://perchance.org/ai-text-to-image-generator
+- **Idylwilds Armory**: https://idylwild.itch.io/idylwilds-armory
 
 ## Libraries & Packages
 

@@ -5,6 +5,7 @@ import store from './store';
 import App from './App';
 import './styles/components.css';
 import './styles/global.css';
+import './styles/armory-set.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

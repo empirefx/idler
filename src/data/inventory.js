@@ -8,7 +8,7 @@ export const inventoryData = {
     maxWeight: 100,
     items: [
       { id: 1, name: 'apple', description: 'A fresh apple', type: 'consumable', quantity: 5, weight: 0.5, consumable: { heal: 10 } },
-      { id: 'armor1', name: 'rusty armor', description: 'A sturdy piece of armor', type: 'equipment', piece: 'body', quantity: 1, stats: { defense: 10 }, weight: 15 },
+      { id: 'leather-hood', name: 'rusty armor', description: 'A sturdy piece of armor', type: 'equipment', piece: 'body', quantity: 1, stats: { defense: 10 }, weight: 15 },
       { id: 2, name: 'banana', description: 'A ripe banana', type: 'consumable', quantity: 3, weight: 0.5, consumable: { heal: 12 } }
     ],
     equipment: {
@@ -26,7 +26,7 @@ export const inventoryData = {
     maxSlots: 30,
     items: [
       { id: 1, name: 'apple', description: 'A fresh apple', type: 'consumable', quantity: 10, weight: 0.5, consumable: { heal: 10 } },
-      { id: 'armor2', name: 'rusty armor', description: 'A sturdy piece of armor', type: 'equipment', piece: 'body', quantity: 1, stats: { defense: 12 }, weight: 18 }
+      { id: 'leather-hood', name: 'rusty armor', description: 'A sturdy piece of armor', type: 'equipment', piece: 'body', quantity: 1, stats: { defense: 12 }, weight: 18 }
     ]
   }
 };
