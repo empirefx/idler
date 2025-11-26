@@ -21,8 +21,6 @@
     "build": "npm run clean && cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
     "process-images": "parcel build --target images --public-url ./ --no-source-maps --no-cache",
     "test": "vitest",
-    "predeploy": "npm run build && npm run process-images",
-    "deploy": "gh-pages -d public",
     "public": "npm run build && parcel serve --dist-dir public --no-hmr --no-autoinstall --no-cache"
   },
   "parcel": {
