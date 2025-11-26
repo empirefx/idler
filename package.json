@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "clean": "rimraf .dist .parcel-cache",
+    "clean": "rimraf dist public .parcel-cache",
     "prestart": "npm run clean",
     "start": "cross-env NODE_ENV=development parcel",
     "build": "cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
