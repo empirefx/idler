@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/empirefx/idler/compare/v2.0.0...v2.0.1) (2025-11-26)
+
+
+### Bug Fixes
+
+* initial for icons ([9d05261](https://github.com/empirefx/idler/commit/9d05261439a30412fccad29a0a372f0b981513d3))
+* prevent recreate store ([8a7f4a6](https://github.com/empirefx/idler/commit/8a7f4a6ba4dec707898c779fcc29c069bebf565d))
+
 ## [2.0.0](https://github.com/empirefx/idler/compare/v1.0.0...v2.0.0) (2025-04-23)
 
 
