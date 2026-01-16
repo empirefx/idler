@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/empirefx/idler/compare/v2.0.0...v2.1.0) (2026-01-16)
+
+
+### Features
+
+* **engine:** implement unified GameLoop system ([6a1a47a](https://github.com/empirefx/idler/commit/6a1a47aa0292fbfa0827d364de0ed9dd2bbd7e4b))
+
+
+### Bug Fixes
+
+* initial for icons ([9d05261](https://github.com/empirefx/idler/commit/9d05261439a30412fccad29a0a372f0b981513d3))
+* places-grid div will now be populated ([08d275c](https://github.com/empirefx/idler/commit/08d275ceea4d2583d67ecf57813c9104f9f45b00))
+* prevent recreate store ([8a7f4a6](https://github.com/empirefx/idler/commit/8a7f4a6ba4dec707898c779fcc29c069bebf565d))
+
 ## [2.0.0](https://github.com/empirefx/idler/compare/v1.0.0...v2.0.0) (2025-04-23)
 
 
