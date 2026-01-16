@@ -15,23 +15,34 @@ export default class CombatService {
     this.dispatch = dispatch;
     this.getState = getState;
     this.isInCombat = false;
-    this.timer = null;
+    this.gameLoop = null; // Will be injected when combat starts
     this.tickRate = 1000; // milliseconds
   }
 
-  startCombat() {
+  startCombat(gameLoop) {
     if (this.isInCombat) return;
     this.isInCombat = true;
-    // Start combat timer
-    this.timer = setInterval(() => this._tick(), this.tickRate);
+    this.gameLoop = gameLoop;
+
+    // Register combat system with GameLoop
+    this.gameLoop.register('combat', (deltaTime) => {
+      this._tick();
+    }, {
+      priority: 2, // Run after production (priority 1)
+      interval: this.tickRate
+    });
   }
 
-  // Stop combat and clear timer
-  stopCombat() {
+  // Stop combat and unregister from GameLoop
+  stopCombat(gameLoop) {
     if (!this.isInCombat) return;
     this.isInCombat = false;
-    clearInterval(this.timer);
-    this.timer = null;
+
+    if (this.gameLoop) {
+      // Unregister from GameLoop
+      this.gameLoop.unregister('combat');
+      this.gameLoop = null;
+    }
   }
 
   _tick() {

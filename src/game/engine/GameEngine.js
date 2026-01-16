@@ -8,19 +8,23 @@ import { EventBusService } from '../services/eventBusService';
 import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
 import CombatService from '../services/combatService';
 import { workerCreatedItem } from './events';
+import GameLoop from '../core/GameLoop';
 
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
     itemFactory = ItemFactory,
-    combatService = CombatService
+    combatService = CombatService,
+    gameLoop = GameLoop
   } = {}) {
     this.store = store;
     this.lastState = store.getState();
     this.dispatch = dispatch;
     this.lastUpdate = Date.now();
     this.isRunning = false;
-    this.tickInterval = null;
+
+    // Initialize unified game loop
+    this.gameLoop = new gameLoop();
     
     // Dependency injection for testability/modularity
     this.inventoryService = inventoryService;
@@ -62,7 +66,7 @@ class GameEngine {
     const production = building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0;
     const producedItem = this.itemFactory.create(
       building.productionType,
-      Math.floor(production * deltaTime)
+      Math.floor(production)
     );
 
     if (producedItem && producedItem.quantity > 0) {
@@ -94,10 +98,18 @@ class GameEngine {
     Logger.log('Game engine starting', 0, 'game-loop');
     this.isRunning = true;
     this.lastUpdate = Date.now();
-    this.tickInterval = setInterval(() => {
-      Logger.log('Tick interval called', 0, 'game-loop');
-      this.tick();
-    }, 1000); // Update every 1000ms for smoother updates
+
+    // Register main game update system with GameLoop
+    this.gameLoop.register('production', (deltaTime) => {
+      Logger.log('Production tick called', 0, 'game-loop');
+      this.update(deltaTime);
+    }, {
+      priority: 1,
+      interval: 1000 // Update every second for production
+    });
+
+    // Start the unified game loop
+    this.gameLoop.start();
 
     // Hook navigation to spawn logic
     this.unsubscribeNav = this.store.subscribe(() => {
@@ -129,9 +141,9 @@ class GameEngine {
     this.unsubscribeCombat = this.store.subscribe(() => {
       const isInCombat = this.store.getState().combat.isInCombat;
       if (isInCombat) {
-        this.combatService.startCombat();
+        this.combatService.startCombat(this.gameLoop);
       } else {
-        this.combatService.stopCombat();
+        this.combatService.stopCombat(this.gameLoop);
       }
     });
   }
@@ -139,30 +151,17 @@ class GameEngine {
   // Stop the game loop
   stop() {
     this.isRunning = false;
-    if (this.tickInterval) {
-      clearInterval(this.tickInterval);
-      this.tickInterval = null;
-    }
+
+    // Stop the unified game loop
+    this.gameLoop.stop();
+
     if (this.unsubscribeNav) this.unsubscribeNav();
     if (this.unsubscribeEnemyDeath) this.unsubscribeEnemyDeath();
     if (this.unsubscribeCombat) this.unsubscribeCombat();
   }
 
-  // Game tick
-  tick() {
-    if (!this.isRunning) return;
-
-    Logger.log('Tick method called', 0, 'game-loop');
-    const now = Date.now();
-    const deltaTime = (now - this.lastUpdate) / 1000; // Convert to seconds
-    this.lastUpdate = now;
-
-    this.update(deltaTime);
-  }
-
   // Update game state
   update(deltaTime) {
-    Logger.log(`Update called with deltaTime: ${deltaTime.toFixed(3)}`, 0, 'game-loop');
 
     // Load game state if not already loaded
     if (!localStorage.getItem('gameState')) {
