@@ -27,7 +27,7 @@ const WorkersSection = () => {
               <WorkerCard key={w.id} worker={w} buildings={currentBuildings.map(id => buildings[id])} />
             ))
           ) : (
-            <div className="no-workers-message">No unassigned workers available</div>
+            <div className="no-workers-message">No workers available</div>
           )}
         </div>
         <h3>Assigned</h3>
