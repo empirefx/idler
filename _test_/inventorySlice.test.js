@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { canItemsStack, calculateTotalPlayerWeight } from '../src/store/slices/inventorySlice';
+import { canItemsStack, calculateTotalPlayerWeight } from '../src/store/slices/inventory/inventoryUtils';
 
 // Tests for canItemsStack
 describe('canItemsStack', () => {

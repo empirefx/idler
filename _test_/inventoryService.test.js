@@ -3,7 +3,7 @@ import { InventoryService } from '../src/game/services/inventoryService';
 
 describe('InventoryService', () => {
   it('getInventoryForPlace returns correct inventory or undefined', () => {
-    const state = { inventory: { p1: { items: [] } } };
+    const state = { placeInventory: { p1: { items: [] } } };
     expect(InventoryService.getInventoryForPlace(state, 'p1')).toEqual({ items: [] });
     expect(InventoryService.getInventoryForPlace(state, 'unknown')).toBeUndefined();
   });
@@ -13,7 +13,7 @@ describe('InventoryService', () => {
     const item = { id: 1 };
     InventoryService.addItemToInventory(store, 'p1', item);
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: 'inventory/addItem',
+      type: 'placeInventory/addItem',
       payload: { inventoryId: 'p1', item }
     });
   });
