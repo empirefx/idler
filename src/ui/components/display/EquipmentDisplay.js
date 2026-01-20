@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { unequipItem, selectInventoryById } from '../../../store/slices/inventorySlice';
+import { unequipItem, selectPlayerInventoryById } from '../../../store/slices/playerInventorySlice';
 import ItemInfo from '../common/ItemInfo';
 
 const EQUIPMENT_SLOTS = [
@@ -13,7 +13,7 @@ const EQUIPMENT_SLOTS = [
 
 const EquipmentDisplay = () => {
   const dispatch = useDispatch();
-  const playerInventory = useSelector(state => selectInventoryById(state, 'player'));
+  const playerInventory = useSelector(state => selectPlayerInventoryById(state, 'player'));
   const equipment = playerInventory?.equipment || {};
 
   const handleUnequip = (slot) => {

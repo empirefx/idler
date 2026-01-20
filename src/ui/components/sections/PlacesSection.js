@@ -5,7 +5,7 @@ import '../../../styles/sections/places-section.css';
 import InventoryDisplay from '../display/InventoryDisplay';
 import PlaceCard from '../card/PlaceCard';
 import { selectCurrentPlace, selectAvailableConnections } from '../../../store/slices/placesSlice';
-import { selectVaultByPlaceId } from '../../../store/slices/inventorySlice';
+import { selectVaultByPlaceId } from '../../../store/slices/placeInventorySlice';
 
 const PlacesSection = () => {
   const currentPlace = useSelector(selectCurrentPlace);

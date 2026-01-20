@@ -1,18 +1,39 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { moveItem, equipItem, removeItem } from '../../../store/slices/inventorySlice';
+import { equipItem } from '../../../store/slices/playerInventorySlice';
+import { moveItemBetweenInventories, removeItemFromInventory } from '../../../store/slices/inventoryThunks.js';
 import { healPlayer } from '../../../store/slices/playerSlice';
 import MoveItemDialog from '../common/MoveItemDialog';
 import ItemInfo from '../common/ItemInfo';
 import KeyBind from '../common/KeyBind';
 
-import { selectInventoryById } from '../../../store/slices/inventorySlice';
-import { calculateTotalPlayerWeight } from '../../../store/slices/inventorySlice';
+import { selectPlayerInventoryById } from '../../../store/slices/playerInventorySlice';
+import { selectVaultByPlaceId, selectPlaceInventoryById } from '../../../store/slices/placeInventorySlice';
+import { calculateTotalPlayerWeight } from '../../../store/slices/inventory/inventoryUtils';
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
-  const inventory = useSelector(state => selectInventoryById(state, inventoryId));
-  const otherInventory = useSelector(state => selectInventoryById(state, otherInventoryId));
+  // Determine which selector to use based on inventory type
+  const inventory = useSelector(state => {
+    if (inventoryId === 'player') {
+      return selectPlayerInventoryById(state, inventoryId);
+    } else {
+      // Try place inventory first, then fallback to player inventory selector
+      const placeInventory = selectVaultByPlaceId(state, inventoryId);
+      if (placeInventory) return placeInventory;
+      return selectPlaceInventoryById(state, inventoryId);
+    }
+  });
+  
+  const otherInventory = useSelector(state => {
+    if (otherInventoryId === 'player') {
+      return selectPlayerInventoryById(state, otherInventoryId);
+    } else {
+      const placeInventory = selectVaultByPlaceId(state, otherInventoryId);
+      if (placeInventory) return placeInventory;
+      return selectPlaceInventoryById(state, otherInventoryId);
+    }
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
@@ -30,14 +51,18 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
   // Handle confirm button for moving items between inventories
   const handleConfirmMove = useCallback(() => {
     if (!otherInventoryId || !selectedItem) return; // Do nothing if no target inventory or no item selected
-    dispatch(moveItem({
-      fromInventoryId: inventory.id,
-      toInventoryId: otherInventoryId,
-      itemId: selectedItem.id,
-      quantity: selectedItem.quantity || 1,
-    }));
-    setDialogOpen(false);
-    setSelectedItem(null);
+    
+    const success = dispatch(moveItemBetweenInventories(
+      inventory.id,
+      otherInventoryId,
+      selectedItem.id,
+      selectedItem.quantity || 1
+    ));
+    
+    if (success) {
+      setDialogOpen(false);
+      setSelectedItem(null);
+    }
   }, [dispatch, inventory.id, otherInventoryId, selectedItem]);
 
   // Handle cancel button for moving items between inventories
@@ -51,7 +76,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
     const healAmount = item.consumable?.heal;
     if (healAmount > 0) {
       dispatch(healPlayer({ amount: healAmount }));
-      dispatch(removeItem({ inventoryId: inventory.id, itemId: item.id, quantity: 1 }));
+      dispatch(removeItemFromInventory(inventory.id, item.id, 1));
     }
   }, [dispatch, inventory.id]);
 
