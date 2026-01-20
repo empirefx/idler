@@ -15,6 +15,8 @@
     { "type": "feat", "section": "Features" },
     { "type": "fix", "section": "Bug Fixes" },
     { "type": "refactor", "section": "Code Refactoring", "hidden": false },
-    { "type": "chore", "section": "Miscellaneous", "hidden": true }
+    { "type": "chore", "section": "Miscellaneous", "hidden": true },
+    { "type": "test", "section": "Tests", "hidden": true },
+    { "type": "ci", "section": "Continuous Integration", "hidden": true }
   ]
 }
