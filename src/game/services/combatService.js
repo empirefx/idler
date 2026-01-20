@@ -1,6 +1,6 @@
 import { damageEnemy } from '../../store/slices/enemiesSlice';
 import { damagePlayer, gainExp } from '../../store/slices/playerSlice';
-import { addItem } from '../../store/slices/inventorySlice';
+import { addItem } from '../../store/slices/playerInventorySlice';
 import { ItemFactory } from '../factory/itemFactory';
 import { enemyAttacked } from '../engine/events';
 
