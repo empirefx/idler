@@ -46,6 +46,9 @@ class GameEngine {
     this.spawnService = SpawnService ? new SpawnService(this.eventBusService) : { spawners: {}, currentPlaceId: null };
     this.gameLoop = new GameLoop();
     this.combatService = this.combatCoordinationService;
+    
+    // Initialize services
+    this.combatCoordinationService.initialize(this.store, this.eventBusService);
 
     // Listen for spawn events and add enemies to store
     this.eventBusService.on('spawnEnemy', ({ placeId, enemy }) => {

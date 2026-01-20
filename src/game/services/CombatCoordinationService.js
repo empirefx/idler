@@ -6,8 +6,19 @@ import { gainExp } from '../../store/slices/playerSlice';
 import { ItemFactory } from '../factory/itemFactory';
 
 export const CombatCoordinationService = {
+  // Initialize with store and eventBus
+  initialize(store, eventBus) {
+    this.store = store;
+    this.eventBusService = eventBus;
+  },
+
   // Start combat when combat state changes to true
   handleCombatStateChange(wasInCombat, isInCombat, gameLoop) {
+    // Ensure store is available before proceeding
+    if (!this.store) {
+      console.error('CombatCoordinationService: store not initialized');
+      return;
+    }
     // Transition from not in combat to in combat
     if (!wasInCombat && isInCombat) {
       this.startCombat(gameLoop);
@@ -26,7 +37,7 @@ export const CombatCoordinationService = {
       return;
     }
     Logger.log('GameLoop is available, attempting to register combat system', 0, 'combat');
-    // Register combat tick with high priority to run before production
+    // Initialize store reference for better error messages
     const result = gameLoop.register('combat', (deltaTime) => {
       // Get current game state from store subscription
       const state = this.store.getState();
