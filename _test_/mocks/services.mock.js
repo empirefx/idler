@@ -20,6 +20,13 @@ export const createMockStore = (initialState = {}) => {
         state.enemies = state.enemies || { byId: {} };
         state.enemies.byId[action.payload.placeId] = action.payload.enemy;
       }
+      if (action.type === 'enemies/damageEnemy') {
+        if (state.enemies && state.enemies.byId[action.payload.id]) {
+          state.enemies.byId[action.payload.id].health = Math.max(0, 
+            state.enemies.byId[action.payload.id].health - action.payload.amount
+          );
+        }
+      }
     }),
     subscribe: vi.fn((listener) => {
       listeners.push(listener);
