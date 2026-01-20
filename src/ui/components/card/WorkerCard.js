@@ -1,20 +1,29 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { assignWorkerToBuilding, unassignWorker } from '../../../store/slices/playerSlice';
+import { 
+  assignWorkerToBuilding, 
+  unassignWorker, 
+  assignWorkerToBuildingWithEvent, 
+  unassignWorkerWithEvent 
+} from '../../../store/slices/playerSlice';
 
 const WorkerCard = ({ worker, buildings }) => {
   const dispatch = useDispatch();
 
   // Handle worker assignment to a building
   const handleAssign = useCallback((buildingId) => {
-    dispatch(assignWorkerToBuilding({ workerId: worker.id, buildingId }));
-  }, [dispatch, worker.id]);
+    const building = buildings.find(b => b.id === buildingId);
+    dispatch(assignWorkerToBuildingWithEvent(worker.id, buildingId, building?.name));
+  }, [dispatch, worker.id, buildings]);
   
   // Handle worker unassignment from a building
   const handleUnassign = useCallback(() => {
-    dispatch(unassignWorker({ workerId: worker.id }));
-  }, [dispatch, worker.id]);
+    if (worker.assignedBuildingId) {
+      const building = buildings.find(b => b.id === worker.assignedBuildingId);
+      dispatch(unassignWorkerWithEvent(worker.id, building?.name));
+    }
+  }, [dispatch, worker.id, worker.assignedBuildingId, buildings]);
 
   return (
     <div className="worker-card">

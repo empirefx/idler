@@ -1,21 +1,31 @@
 import Logger from '../utils/Logger';
 
 import { listBuildingsWithAssignedWorkers } from '../../store/slices/playerSlice';
-import { InventoryService } from '../services/inventoryService';
+import { InventoryService } from '../services/InventoryService';
 import { ItemFactory } from '../factory/itemFactory';
 import SpawnService from '../services/spawnService';
-import { EventBusService } from '../services/eventBusService';
-import { removeEnemiesByPlace } from '../../store/slices/enemiesSlice';
-import CombatService from '../services/combatService';
-import { workerCreatedItem } from './events';
+import { EventBusService } from '../services/EventBusService';
+import { CombatService } from '../services/CombatService';
+import { workerCreatedItem } from '../events';
 import GameLoop from '../core/GameLoop';
+import ProductionService from '../services/ProductionService';
+import { SaveService } from '../services/SaveService';
+import { NavigationService } from '../services/NavigationService';
+import { EnemyLifecycleService } from '../services/EnemyLifecycleService';
+import { CombatCoordinationService } from '../services/CombatCoordinationService';
 
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
     itemFactory = ItemFactory,
-    combatService = CombatService,
-    gameLoop = GameLoop
+    productionService = ProductionService,
+    saveService = SaveService,
+    navigationService = NavigationService,
+    enemyLifecycleService = EnemyLifecycleService,
+    combatCoordinationService = CombatCoordinationService,
+    gameLoop = GameLoop,
+    eventBusService = EventBusService,
+    spawnService = SpawnService
   } = {}) {
     this.store = store;
     this.lastState = store.getState();
@@ -23,37 +33,50 @@ class GameEngine {
     this.lastUpdate = Date.now();
     this.isRunning = false;
 
-    // Initialize unified game loop
-    this.gameLoop = new gameLoop();
-    
-    // Dependency injection for testability/modularity
-    this.inventoryService = inventoryService;
-    this.itemFactory = itemFactory;
-    this.eventBusService = new EventBusService();
-    this.spawnService = new SpawnService(this.eventBusService);
-    // Instantiate CombatService so instance methods are available
-    this.combatService = new combatService(
-      this.eventBusService,
-      this.dispatch,
-      () => this.store.getState()
-    );
+    // Initialize services
+    this.inventoryService = this.inventoryService || InventoryService;
+    this.itemFactory = this.itemFactory || ItemFactory;
+    this.events = { workerCreatedItem }; // Simple events object
+    this.productionService = new ProductionService(this.inventoryService, this.itemFactory, this.store, this.dispatch, this.events);
+    this.saveService = this.saveService || SaveService;
+    this.navigationService = this.navigationService || NavigationService;
+    this.enemyLifecycleService = this.enemyLifecycleService || EnemyLifecycleService;
+    this.combatCoordinationService = this.combatCoordinationService || CombatCoordinationService;
+    this.eventBusService = this.eventBusService || new EventBusService();
+    this.spawnService = SpawnService ? new SpawnService(this.eventBusService) : { spawners: {}, currentPlaceId: null };
+    this.gameLoop = new GameLoop();
+    this.combatService = this.combatCoordinationService;
 
-    // Track enemy state for death detection
-    this.lastEnemyState = this.store.getState().enemies.byId;
-
-    // Initialize lastPlaceId to detect actual place changes
-    this.lastPlaceId = this.store.getState().places.currentPlaceId;
-    
-    // Register spawnEnemy handler once
+    // Listen for spawn events and add enemies to store
     this.eventBusService.on('spawnEnemy', ({ placeId, enemy }) => {
+      Logger.log(`Adding enemy ${enemy.id} to store at place ${placeId}`, 0, 'spawn');
       this.dispatch({ type: 'enemies/addEnemy', payload: { placeId, enemy } });
     });
   }
 
-  // Get the inventory object for a given place
-  getVaultInventory(state, targetPlace) {
-    const inventories = state.placeInventory;
-    return inventories && targetPlace ? inventories[targetPlace.id] : undefined;
+  // Process production for a single building
+  processBuildingProduction(buildingId, building, state, deltaTime) {
+    this.productionService.processBuildingProduction(buildingId, building, state, deltaTime);
+  }
+
+  // Get workers assigned to a specific building
+  getAssignedWorkers(state, buildingId) {
+    return this.productionService.getAssignedWorkers(state, buildingId);
+  }
+
+  // Calculate production rate for a building
+  calculateProductionRate(building, state) {
+    return this.productionService.calculateProductionRate(building, state);
+  }
+
+  // Validate that a building can produce
+  canBuildingProduce(state, buildingId) {
+    return this.productionService.canBuildingProduce(state, buildingId);
+  }
+
+  // Get all production calculations for UI purposes
+  getAllProductionCalculations(state) {
+    return this.productionService.getAllProductionCalculations(state);
   }
 
   // Add an item to a place's inventory handled by InventoryService
@@ -61,34 +84,88 @@ class GameEngine {
     this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
   }
 
-  // Process production for a single building
-  processBuildingProduction(buildingId, building, state, deltaTime) {
-    const production = building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0;
-    const producedItem = this.itemFactory.create(
-      building.productionType,
-      Math.floor(production)
-    );
-
-    if (producedItem && producedItem.quantity > 0) {
-      // Find nearest Place with hasInventory:true (for now, just village_center)
-      const targetPlace = Object.values(state.places).find(p => p.hasInventory);
-      const vaultInventory = state.placeInventory && state.placeInventory[targetPlace?.id];
-
-      if (targetPlace && vaultInventory) {
-        // Add produced item to the place's inventory
-        // Dispatch WORKER_CREATED_ITEM actions for assigned workers
-        this.addItemToInventory(targetPlace.id, producedItem);
-        const assignedWorkerIds = state.player.workers
-          .filter(w => w.assignedBuildingId === buildingId)
-          .map(w => w.id);
-
-        assignedWorkerIds.forEach(workerId =>
-          this.dispatch(workerCreatedItem(workerId, building.productionType))
-        );
-      } else if (targetPlace && !vaultInventory) {
-        Logger.error('No inventory found for target place:', 0, 'inventory', targetPlace);
-      }
+  // Update game state if not already loaded
+  update(state, deltaTime) {
+    // Load game state if not already loaded (now handled by SaveService)
+    if (!this.saveService.hasSavedState()) {
+      this.saveService.loadState(this.store);
     }
+
+    const currentState = state;
+    const buildingsWithAssignedWorkers = listBuildingsWithAssignedWorkers(currentState);
+
+    // Update resources based on building production (now handled by ProductionService)
+    Object.entries(currentState.buildings).forEach(([buildingId, building]) => {
+      const hasWorkers = buildingsWithAssignedWorkers.includes(buildingId);
+      const hasProduction = (building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0) > 0;
+
+      if (hasWorkers && hasProduction) {
+        this.productionService.processBuildingProduction(buildingId, building, currentState, deltaTime);
+      }
+    });
+  }
+
+  // Get workers assigned to a specific building (now handled by ProductionService)
+  getAssignedWorkers(state, buildingId) {
+    return this.productionService.getAssignedWorkers(state, buildingId);
+  }
+
+  // Calculate production rate for a building (now handled by ProductionService)
+  calculateProductionRate(building, state) {
+    return this.productionService.calculateProductionRate(building, state);
+  }
+
+  // Validate that a building can produce (now handled by ProductionService)
+  canBuildingProduce(state, buildingId) {
+    return this.productionService.canBuildingProduce(state, buildingId);
+  }
+
+  // Get all production calculations for UI purposes (now handled by ProductionService)
+  getAllProductionCalculations(state) {
+    return this.productionService.getAllProductionCalculations(state);
+  }
+
+  // Save game state to localStorage
+  save() {
+    return this.saveService.saveState(this.store);
+  }
+
+
+
+  // Validate structure of loaded state
+  validateLoadedState(state) {
+    return this.saveService.validateLoadedState(state);
+  }
+
+  // Check if there's a saved game
+  hasSavedState() {
+    return this.saveService.hasSavedState();
+  }
+
+  // Clear saved game state
+  clearSavedState() {
+    this.saveService.clearSavedState();
+  }
+
+
+  // Get workers assigned to a specific building (now handled by ProductionService)
+  getAssignedWorkers(state, buildingId) {
+    return this.productionService.getAssignedWorkers(state, buildingId);
+  }
+
+  // Calculate production rate for a building (now handled by ProductionService)
+  calculateProductionRate(building, state) {
+    return this.productionService.calculateProductionRate(building, state);
+  }
+
+  // Validate that a building can produce (now handled by ProductionService)
+  canBuildingProduce(state, buildingId) {
+    return this.productionService.canBuildingProduce(state, buildingId);
+  }
+
+  // Get all production calculations for UI purposes (now handled by ProductionService)
+  getAllProductionCalculations(state) {
+    return this.productionService.getAllProductionCalculations(state);
   }
 
   // Start the game loop
@@ -99,102 +176,54 @@ class GameEngine {
     this.isRunning = true;
     this.lastUpdate = Date.now();
 
-    // Register main game update system with GameLoop
+    // Register production system (now handled by ProductionService)
     this.gameLoop.register('production', (deltaTime) => {
-      Logger.log('Production tick called', 0, 'game-loop');
-      this.update(deltaTime);
+      this.update(this.store.getState(), deltaTime);
     }, {
       priority: 1,
       interval: 1000 // Update every second for production
     });
 
+    // Start combat system (now handled by CombatCoordinationService)
+    // this.combatCoordinationService.start(this.gameLoop);
+
+    // Initialize and hook lifecycle services
+    if (this.enemyLifecycleService && this.enemyLifecycleService.initialize) {
+      this.enemyLifecycleService.eventBusService = this.eventBusService;
+      this.enemyLifecycleService.initialize(this.store.getState());
+      this.enemyLifecycleService.subscribeToEnemyChanges(this.store);
+    }
+    if (this.navigationService && this.navigationService.subscribeToPlaceChanges) {
+      this.navigationService.eventBus = this.eventBusService;
+      this.navigationService.subscribeToPlaceChanges(this.store);
+    }
+    // Subscribe to combat state changes
+    if (this.combatCoordinationService && this.combatCoordinationService.handleCombatStateChange) {
+      this.combatCoordinationService.eventBusService = this.eventBusService;
+      this.combatCoordinationService.store = this.store;
+      let lastCombatState = this.store.getState().combat.isInCombat;
+      this.store.subscribe(() => {
+        const state = this.store.getState();
+        const currentCombatState = state.combat.isInCombat;
+        if (currentCombatState !== lastCombatState) {
+          Logger.log('Combat state changed from' + lastCombatState + 'to' + currentCombatState, 0, 'game-loop');
+          this.combatCoordinationService.handleCombatStateChange(lastCombatState, currentCombatState, this.gameLoop);
+          lastCombatState = currentCombatState;
+        }
+      });
+    }
+
     // Start the unified game loop
     this.gameLoop.start();
-
-    // Hook navigation to spawn logic
-    this.unsubscribeNav = this.store.subscribe(() => {
-      const state = this.store.getState();
-      const newPlaceId = state.places.currentPlaceId;
-      const oldPlaceId = this.lastPlaceId;
-      if (newPlaceId !== oldPlaceId) {
-        this.lastPlaceId = newPlaceId;
-        // Despawn enemies from the previous place
-        this.dispatch(removeEnemiesByPlace(oldPlaceId));
-        this.eventBusService.emit('enterPlace', newPlaceId);
-      }
-    });
-    
-    // Subscribe to enemy removals to emit death events
-    this.unsubscribeEnemyDeath = this.store.subscribe(() => {
-      const state = this.store.getState();
-      const currById = state.enemies.byId;
-      const oldById = this.lastEnemyState || {};
-      // Any ids in old not in curr => deaths
-      Object.keys(oldById).filter(id => !(id in currById)).forEach(id => {
-        const placeId = oldById[id].placeId;
-        this.eventBusService.emit(`enemyDead:${placeId}`);
-      });
-      this.lastEnemyState = { ...currById };
-    });
-
-    // Subscribe to combat state changes to trigger automated combat
-    this.unsubscribeCombat = this.store.subscribe(() => {
-      const isInCombat = this.store.getState().combat.isInCombat;
-      if (isInCombat) {
-        this.combatService.startCombat(this.gameLoop);
-      } else {
-        this.combatService.stopCombat(this.gameLoop);
-      }
-    });
   }
 
   // Stop the game loop
   stop() {
-    this.isRunning = false;
+    if (!this.isRunning) return;
 
-    // Stop the unified game loop
+    Logger.log('Game engine stopping', 0, 'game-loop');
     this.gameLoop.stop();
-
-    if (this.unsubscribeNav) this.unsubscribeNav();
-    if (this.unsubscribeEnemyDeath) this.unsubscribeEnemyDeath();
-    if (this.unsubscribeCombat) this.unsubscribeCombat();
-  }
-
-  // Update game state
-  update(deltaTime) {
-
-    // Load game state if not already loaded
-    if (!localStorage.getItem('gameState')) {
-      Logger.log('No saved game state found', 0, 'game-loop');
-      this.save();
-      Logger.log('Saved current state', 0, 'game-loop');
-    }
-
-    const state = this.store.getState();
-    const buildingsWithAssignedWorkers = listBuildingsWithAssignedWorkers(state);
-
-    // Update resources based on building production
-    // Produce items and store in nearest Place with hasInventory:true
-    Object.entries(state.buildings).forEach(([buildingId, building]) => {
-      if (
-        buildingsWithAssignedWorkers.includes(buildingId)
-        && (building.calculateProduction ? building.calculateProduction() : building.baseProductionRate || 0) > 0
-      ) {
-        this.processBuildingProduction(buildingId, building, state, deltaTime);
-      }
-    });
-  }
-
-  // Save game state
-  save() {
-    const currentState = this.store.getState(); // Get fresh state from Redux
-    const state = {
-      player: currentState.player,
-      buildings: currentState.buildings,
-      place: currentState.places
-    };
-
-    localStorage.setItem('gameState', JSON.stringify(state));
+    this.isRunning = false;
   }
 
   // Load game state
@@ -203,26 +232,26 @@ class GameEngine {
     if (savedState) {
       try {
         const state = JSON.parse(savedState);
-        
+
         // Dispatch the correct actions with the right payload format
         if (state.player) {
-          this.dispatch({ 
+          this.dispatch({
             type: 'player/setPlayerState',
-            payload: state.player 
+            payload: state.player
           });
         }
-        
+
         if (state.buildings) {
-          this.dispatch({ 
-            type: 'buildings/setBuildings', 
-            payload: state.buildings 
+          this.dispatch({
+            type: 'buildings/setBuildings',
+            payload: state.buildings
           });
         }
-        
+
         if (state.place) {
-          this.dispatch({ 
-            type: 'places/setPlaces', 
-            payload: state.place 
+          this.dispatch({
+            type: 'places/setPlaces',
+            payload: state.place
           });
         }
         Logger.log('Game state loaded successfully', 0, 'game-loop');
@@ -232,7 +261,7 @@ class GameEngine {
         localStorage.removeItem('gameState');
       }
     } else {
-      Logger.log('No saved game state found', 0, 'game-loop');
+      //Logger.log('No saved game state found', 0, 'game-loop');
     }
   }
 }

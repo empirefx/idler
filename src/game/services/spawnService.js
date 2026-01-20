@@ -109,6 +109,7 @@ export default class SpawnService {
     this.eventBusService.on('enterPlace', (placeId) => this.onEnterPlace(placeId));
   }
   onEnterPlace(placeId) {
+    Logger.log(`Entering place ${placeId}`, 0, 'spawn');
     if (placeId === this.currentPlaceId) return;          // No-op if same place
     // Stop previous place spawner
     if (this.currentPlaceId && this.spawners[this.currentPlaceId]) {
@@ -116,7 +117,11 @@ export default class SpawnService {
     }
     this.currentPlaceId = placeId;
     const config = placesData[placeId]?.spawn;
-    if (!config) return;
+    if (!config) {
+      Logger.log(`No spawn config found for place ${placeId}`, 0, 'spawn');
+      return;
+    }
+    Logger.log(`Creating spawner for place ${placeId} with config:`, 0, 'spawn', config);
     // Lazy-create per-place spawner
     if (!this.spawners[placeId]) {
       this.spawners[placeId] = config.type === 'single'

@@ -34,6 +34,7 @@ class GameLoop {
 
     this.systems.set(name, config);
     Logger.log(`GameLoop: Registered system: ${name} (priority: ${config.priority}, interval: ${config.interval}ms)`, 2, 'game-loop');
+    return config; // Return the registered config for confirmation
   }
 
   /**

@@ -1,6 +1,36 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import {playerData} from '../../data/player';
+import { playerData } from '../../data/player';
+import { workerAssigned, workerUnassigned } from '../../game/events';
+
+// Thunks for worker operations that also emit events
+export const assignWorkerToBuildingWithEvent = (workerId, buildingId, buildingName) => {
+  return (dispatch, getState) => {
+    // First dispatch the original action to update state
+    dispatch(assignWorkerToBuilding({ workerId, buildingId, buildingName }));
+    
+    // Then dispatch the event for logging
+    const state = getState();
+    const worker = state.player.workers.find(w => w.id === workerId);
+    if (worker) {
+      dispatch(workerAssigned(workerId, worker.name, buildingId, buildingName));
+    }
+  };
+};
+
+export const unassignWorkerWithEvent = (workerId, buildingName) => {
+  return (dispatch, getState) => {
+    // First dispatch the original action to update state
+    dispatch(unassignWorker({ workerId, buildingName }));
+    
+    // Then dispatch the event for logging
+    const state = getState();
+    const worker = state.player.workers.find(w => w.id === workerId);
+    if (worker) {
+      dispatch(workerUnassigned(workerId, worker.name, worker.assignedBuildingId, buildingName));
+    }
+  };
+};
 
 const initialState = { ...playerData };
 
@@ -9,17 +39,29 @@ export const playerSlice = createSlice({
   initialState,
   reducers: {
     unassignWorker: (state, action) => {
-      const { workerId } = action.payload;
+      const { workerId, buildingName } = action.payload;
       const worker = state.workers.find(worker => worker.id === workerId);
       if (worker) {
+        const previousBuildingId = worker.assignedBuildingId;
         worker.assignedBuildingId = null; // Set to null rather than removing the worker
+
+        // Add building info to action for logging
+        action.payload.buildingId = previousBuildingId;
+        action.payload.buildingName = buildingName || previousBuildingId;
+        action.payload.workerName = worker.name;
       }
     },
     assignWorkerToBuilding: (state, action) => {
-      const { workerId, buildingId } = action.payload;
+      const { workerId, buildingId, buildingName } = action.payload;
       const worker = state.workers.find(worker => worker.id === workerId);
       if (worker) {
+        const previousBuildingId = worker.assignedBuildingId;
         worker.assignedBuildingId = buildingId;
+
+        // Add worker info to action for logging
+        action.payload.workerName = worker.name;
+        action.payload.buildingName = buildingName || buildingId;
+        action.payload.previousBuildingId = previousBuildingId;
       }
     },
     // Apply damage to player health
