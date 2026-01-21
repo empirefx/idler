@@ -235,6 +235,198 @@ describe('ProductionService', () => {
     });
   });
 
+  describe('findClosestPlaceWithInventory', () => {
+    it('should return current place when it has inventory', () => {
+      const state = {
+        places: {
+          village_center: {
+            hasInventory: true,
+            connections: ['river_crossing']
+          },
+          river_crossing: {
+            hasInventory: false,
+            connections: ['village_center']
+          }
+        },
+        placeInventory: {
+          village_center: { items: [] }
+        }
+      };
+
+      const result = productionService.findClosestPlaceWithInventory('village_center', state);
+      expect(result).toBe('village_center');
+    });
+
+    it('should find closest connected place with inventory', () => {
+      const state = {
+        places: {
+          river_crossing: {
+            hasInventory: false,
+            connections: ['village_center', 'farmlands']
+          },
+          village_center: {
+            hasInventory: true,
+            connections: ['river_crossing']
+          },
+          farmlands: {
+            hasInventory: false,
+            connections: ['river_crossing']
+          }
+        },
+        placeInventory: {
+          village_center: { items: [] }
+        }
+      };
+
+      const result = productionService.findClosestPlaceWithInventory('river_crossing', state);
+      expect(result).toBe('village_center');
+    });
+
+    it('should search multiple levels for closest inventory', () => {
+      const state = {
+        places: {
+          river_crossing: {
+            hasInventory: false,
+            connections: ['farmlands']
+          },
+          farmlands: {
+            hasInventory: false,
+            connections: ['river_crossing', 'village_center']
+          },
+          village_center: {
+            hasInventory: true,
+            connections: ['farmlands']
+          }
+        },
+        placeInventory: {
+          village_center: { items: [] }
+        }
+      };
+
+      const result = productionService.findClosestPlaceWithInventory('river_crossing', state);
+      expect(result).toBe('village_center');
+    });
+
+    it('should fallback to village_center when no other inventory found', () => {
+      const state = {
+        places: {
+          river_crossing: {
+            hasInventory: false,
+            connections: ['farmlands']
+          },
+          farmlands: {
+            hasInventory: false,
+            connections: ['river_crossing']
+          }
+        },
+        placeInventory: {
+          village_center: { items: [] }
+        }
+      };
+
+      const result = productionService.findClosestPlaceWithInventory('river_crossing', state);
+      expect(result).toBe('village_center');
+    });
+
+    it('should return current place as fallback when no inventory found anywhere', () => {
+      const state = {
+        places: {
+          river_crossing: {
+            hasInventory: false,
+            connections: []
+          }
+        },
+        placeInventory: {}
+      };
+
+      const result = productionService.findClosestPlaceWithInventory('river_crossing', state);
+      expect(result).toBe('river_crossing');
+    });
+  });
+
+  describe('processBuildingProduction with closest inventory', () => {
+    it('should send items to closest place inventory when current place has none', () => {
+      const building = {
+        id: 'mine',
+        calculateProduction: () => 5,
+        productionType: 'ore'
+      };
+      
+      const state = {
+        ...createStateWithWorkers([{ id: 'worker1', assignedBuildingId: 'mine' }]),
+        places: {
+          river_crossing: {
+            hasInventory: false,
+            connections: ['village_center'],
+            buildings: ['mine']
+          },
+          village_center: {
+            hasInventory: true,
+            connections: ['river_crossing'],
+            buildings: ['farm']
+          }
+        },
+        placeInventory: {
+          village_center: { items: [] }
+        }
+      };
+      const deltaTime = 1000;
+
+      productionService.processBuildingProduction('mine', building, state, deltaTime);
+
+      // Should send items to village_center (closest with inventory)
+      expect(mockInventoryService.addItemToInventory).toHaveBeenCalledWith(
+        mockStore,
+        'village_center',
+        expect.objectContaining({
+          name: 'ore',
+          quantity: 5,
+          type: 'material'
+        })
+      );
+    });
+
+    it('should keep items at current place when it has inventory', () => {
+      const building = {
+        id: 'farm',
+        calculateProduction: () => 3,
+        productionType: 'apple'
+      };
+      
+      const state = {
+        ...createStateWithWorkers([{ id: 'worker1', assignedBuildingId: 'farm' }]),
+        places: {
+          village_center: {
+            hasInventory: true,
+            connections: ['river_crossing'],
+            buildings: ['farm']
+          },
+          river_crossing: {
+            hasInventory: false,
+            connections: ['village_center'],
+            buildings: ['mine']
+          }
+        },
+        placeInventory: {
+          village_center: { items: [] }
+        }
+      };
+      const deltaTime = 1000;
+
+      productionService.processBuildingProduction('farm', building, state, deltaTime);
+
+      // Should keep items at village_center (current place has inventory)
+      expect(mockInventoryService.addItemToInventory).toHaveBeenCalledWith(
+        mockStore,
+        'village_center',
+        expect.objectContaining({
+          name: 'apple',
+          quantity: 3
+        })
+      );
+    });
+  });
+
   describe('Error handling', () => {
     it('should handle errors gracefully', () => {
       // Mock itemFactory to throw error

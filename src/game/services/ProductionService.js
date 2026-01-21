@@ -43,12 +43,14 @@ export default class ProductionService {
         return;
       }
 
-      // Determine which place to add the item to (use building's place or a default)
       // Get building's location from place data
       const buildingPlaceId = this.getBuildingPlaceId(buildingId, state) || 'village_center';
       
-      // Add item to inventory at building's location
-      this.inventoryService.addItemToInventory(this.store, buildingPlaceId, item);
+      // Find the closest place with available inventory
+      const targetPlaceId = this.findClosestPlaceWithInventory(buildingPlaceId, state);
+      
+      // Add item to inventory at the closest available place
+      this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
 
       // Emit workerCreatedItem event using Redux dispatch
       if (this.dispatch) {
@@ -59,7 +61,8 @@ export default class ProductionService {
         });
       }
 
-      Logger.log(`Produced ${productionRate}x ${productionType} at ${buildingId} with ${assignedWorkers.length} workers`, 0, 'production');
+      const locationText = targetPlaceId === buildingPlaceId ? 'at' : `sent to ${targetPlaceId} from`;
+      Logger.log(`Produced ${productionRate}x ${productionType} ${locationText} ${buildingId} with ${assignedWorkers.length} workers`, 0, 'production');
       
     } catch (error) {
       console.error('Failed to create item during production', error);
@@ -82,6 +85,46 @@ export default class ProductionService {
       }
     }
     return null;
+  }
+
+  // Find the closest place with available inventory
+  findClosestPlaceWithInventory(currentPlaceId, state) {
+    const places = state.places;
+    const placeInventory = state.placeInventory;
+    
+    // Check if current place has inventory
+    if (places[currentPlaceId]?.hasInventory && placeInventory[currentPlaceId]) {
+      return currentPlaceId;
+    }
+
+    // BFS to find closest place with inventory
+    const queue = [currentPlaceId];
+    const visited = new Set([currentPlaceId]);
+    
+    while (queue.length > 0) {
+      const placeId = queue.shift();
+      const place = places[placeId];
+      
+      if (!place) continue;
+      
+      // Check if this place has inventory
+      if (place.hasInventory && placeInventory[placeId]) {
+        return placeId;
+      }
+      
+      // Add connected places to queue
+      if (place.connections) {
+        for (const connectedPlaceId of place.connections) {
+          if (!visited.has(connectedPlaceId)) {
+            visited.add(connectedPlaceId);
+            queue.push(connectedPlaceId);
+          }
+        }
+      }
+    }
+    
+    // Fallback to village_center if no other place found
+    return placeInventory['village_center'] ? 'village_center' : currentPlaceId;
   }
 
   // Calculate production rate for a building
