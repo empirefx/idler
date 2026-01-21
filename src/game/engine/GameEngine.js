@@ -13,7 +13,6 @@ import { SaveService } from '../services/SaveService';
 import { NavigationService } from '../services/NavigationService';
 import { EnemyLifecycleService } from '../services/EnemyLifecycleService';
 
-
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
@@ -46,7 +45,6 @@ class GameEngine {
     this.spawnService = SpawnService ? new SpawnService(this.eventBusService) : { spawners: {}, currentPlaceId: null };
     this.gameLoop = new GameLoop();
 
-    
     // Initialize services
     this.combatService.initialize(this.store, this.eventBusService);
 
@@ -133,8 +131,6 @@ class GameEngine {
     return this.saveService.saveState(this.store);
   }
 
-
-
   // Validate structure of loaded state
   validateLoadedState(state) {
     return this.saveService.validateLoadedState(state);
@@ -149,7 +145,6 @@ class GameEngine {
   clearSavedState() {
     this.saveService.clearSavedState();
   }
-
 
   // Get workers assigned to a specific building (now handled by ProductionService)
   getAssignedWorkers(state, buildingId) {
