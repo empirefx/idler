@@ -44,19 +44,68 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
   const handleContextMenu = useCallback((e, item) => {
     if (!otherInventory) return; // Do nothing if no target inventory
     e.preventDefault();
-    setSelectedItem(item);
-    setDialogOpen(true);
-  }, [otherInventory]);
+    
+    const quantity = item.quantity || 1;
+    
+    // Skip dialog for single items, move directly
+    if (quantity === 1) {
+      const itemWeight = item.weight || 0;
+      
+      // Check weight limit for player inventories
+      if (otherInventory.type === 'player' && itemWeight > 0) {
+        const currentWeight = calculateTotalPlayerWeight(otherInventory);
+        const maxWeight = otherInventory.maxWeight || 0;
+        
+        if (currentWeight + itemWeight > maxWeight) {
+          // Show notification instead of dialog
+          dispatch({
+            type: 'notifications/addNotification',
+            payload: {
+              id: Date.now().toString(),
+              message: `Cannot move "${item.name}" - not enough carry capacity! (Need ${(currentWeight + itemWeight) - maxWeight} more capacity)`,
+              type: 'warning'
+            }
+          });
+          return;
+        }
+      }
+      
+      // Direct move for single item
+      const success = dispatch(moveItemBetweenInventories(
+        inventory.id,
+        otherInventoryId,
+        item.id,
+        1
+      ));
+      
+      if (!success) {
+        // Handle other move errors
+        dispatch({
+          type: 'notifications/addNotification',
+          payload: {
+            id: Date.now().toString(),
+            message: `Failed to move "${item.name}"`,
+            type: 'error'
+          }
+        });
+      }
+    } else {
+      // Show dialog for multiple items
+      setSelectedItem(item);
+      setDialogOpen(true);
+    }
+  }, [otherInventory, otherInventoryId, inventory.id, dispatch]);
 
   // Handle confirm button for moving items between inventories
-  const handleConfirmMove = useCallback(() => {
+  const handleConfirmMove = useCallback((quantity = null) => {
     if (!otherInventoryId || !selectedItem) return; // Do nothing if no target inventory or no item selected
     
+    const moveQuantity = quantity || selectedItem.quantity || 1;
     const success = dispatch(moveItemBetweenInventories(
       inventory.id,
       otherInventoryId,
       selectedItem.id,
-      selectedItem.quantity || 1
+      moveQuantity
     ));
     
     if (success) {
@@ -153,6 +202,8 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
           item={selectedItem}
           onConfirm={handleConfirmMove}
           onCancel={handleCancel}
+          sourceInventory={inventory}
+          targetInventory={otherInventory}
         />
       )}
     </>

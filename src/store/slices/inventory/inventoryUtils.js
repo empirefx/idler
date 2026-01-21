@@ -156,3 +156,41 @@ export const getInventorySummary = (inventory) => {
   
   return summary;
 };
+
+// Calculate maximum number of items that can be moved based on weight
+export const calculateMaxMovableItems = (item, targetInventory, currentQuantity = 1) => {
+  if (!item || !targetInventory) return currentQuantity;
+  
+  // Only player inventories have weight limits
+  if (targetInventory.type !== 'player') return currentQuantity;
+  
+  const itemWeight = item.weight || 0;
+  if (itemWeight <= 0) return currentQuantity; // No weight restriction for weightless items
+  
+  const currentTotalWeight = calculateTotalPlayerWeight(targetInventory);
+  const maxWeight = targetInventory.maxWeight || 0;
+  const remainingWeight = maxWeight - currentTotalWeight;
+  
+  // Calculate how many items can fit in remaining weight capacity
+  const maxByWeight = Math.floor(remainingWeight / itemWeight);
+  
+  // Return the lesser of current quantity and weight-limited quantity
+  return Math.max(0, Math.min(currentQuantity, maxByWeight));
+};
+
+// Check if a specific quantity of items can be moved without exceeding weight limit
+export const canMoveItemsByWeight = (item, targetInventory, quantity = 1) => {
+  if (!item || !targetInventory) return false;
+  
+  // Only player inventories have weight limits
+  if (targetInventory.type !== 'player') return true;
+  
+  const itemWeight = item.weight || 0;
+  if (itemWeight <= 0) return true; // No weight restriction for weightless items
+  
+  const currentTotalWeight = calculateTotalPlayerWeight(targetInventory);
+  const maxWeight = targetInventory.maxWeight || 0;
+  const totalWeightAfterMove = currentTotalWeight + (itemWeight * quantity);
+  
+  return totalWeightAfterMove <= maxWeight;
+};
