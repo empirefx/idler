@@ -52,7 +52,7 @@ const LogSection = () => {
             onClick={() => setShowFilter(!showFilter)}
             title="Filter logs"
           >
-
+          ≡
           </button>
 
           {showFilter && (
