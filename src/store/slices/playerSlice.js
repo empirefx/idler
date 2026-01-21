@@ -152,4 +152,10 @@ export const selectWorkerCount = createSelector(
 );
 export const selectMaxWorkers = state => state.player.MAX_WORKERS;
 
+// Selector to check if player is ready to level up
+export const selectIsReadyToLevelUp = createSelector(
+  [state => state.player.level, state => state.player.exp],
+  (level, exp) => exp >= (level * 100)
+);
+
 export default playerSlice.reducer;

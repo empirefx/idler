@@ -7,7 +7,9 @@ import placeInventoryReducer from './slices/placeInventorySlice';
 import enemiesReducer from './slices/enemiesSlice';
 import combatReducer from './slices/combatSlice';
 import logReducer from './slices/logSlice';
+import notificationReducer from './slices/notificationSlice';
 import logMiddleware from './middleware/logMiddleware';
+import gameEventMiddleware from './middleware/gameEventMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -18,9 +20,10 @@ export const store = configureStore({
     placeInventory: placeInventoryReducer,
     enemies: enemiesReducer,
     combat: combatReducer,
-    logs: logReducer
+    logs: logReducer,
+    notifications: notificationReducer
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logMiddleware)
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logMiddleware, gameEventMiddleware)
 });
 
 export default store;

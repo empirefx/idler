@@ -10,6 +10,7 @@ import ControlSection from '../components/sections/ControlSection';
 import PlayerEntitySection from '../components/sections/PlayerEntitySection';
 import PlacesSection from '../components/sections/PlacesSection';
 import LogSection from '../components/sections/LogSection';
+import NotificationContainer from '../components/common/NotificationContainer';
 
 import { selectBackgroundImage } from '../../store/slices/placesSlice';
 
@@ -29,6 +30,7 @@ const GameLayout = ({ clearCache }) => {
 
   return (
     <div className="game-layout" style={styles}>
+      <NotificationContainer />
       <main className="game-main">
         <CurrentPlaceDisplay />
         <PlayerSection />

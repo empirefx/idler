@@ -1,0 +1,107 @@
+/* Notification System Styles */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  pointer-events: none;
+}
+
+.notification {
+  background: var(--color-dark);
+  color: #fff;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  border-left: 4px solid;
+  min-width: 300px;
+  max-width: 500px;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideIn 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+.notification:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+.notification-error {
+  border-left-color: var(--color-danger);
+  background: linear-gradient(135deg, #2d1b1b 0%, var(--color-dark) 100%);
+}
+
+.notification-warning {
+  border-left-color: var(--color-warning);
+  background: linear-gradient(135deg, #2d2a1b 0%, var(--color-dark) 100%);
+}
+
+.notification-info {
+  border-left-color: var(--color-info);
+  background: linear-gradient(135deg, #1b2d2a 0%, var(--color-dark) 100%);
+}
+
+.notification-success {
+  border-left-color: var(--color-success);
+  background: linear-gradient(135deg, #1b2d1b 0%, var(--color-dark) 100%);
+}
+
+.notification-message {
+  flex: 1;
+  font-weight: 500;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: var(--color-gray);
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  margin-left: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.notification-close:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.notification.removing {
+  animation: slideOut 0.3s ease-out;
+}

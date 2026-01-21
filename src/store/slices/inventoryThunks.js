@@ -13,6 +13,8 @@ import {
   validateItemExists
 } from './inventory/inventoryValidators.js';
 import { cloneItem } from './inventory/inventoryUtils.js';
+import { addNotification } from './notificationSlice.js';
+import { NOTIFICATION_TYPES } from './notificationSlice.js';
 
 // Thunk for moving items between different inventory types
 export const moveItemBetweenInventories = (fromInventoryId, toInventoryId, itemId, quantity) => {
@@ -44,14 +46,20 @@ export const moveItemBetweenInventories = (fromInventoryId, toInventoryId, itemI
     }
     
     if (!fromInventory || !toInventory) {
-      console.error('Source or target inventory not found');
+      dispatch(addNotification('Source or target inventory not found', NOTIFICATION_TYPES.ERROR));
       return false;
     }
     
     // Validate the move
     const validation = validateItemMove(fromInventory, toInventory, itemId, quantity);
     if (!validation.isValid) {
-      console.error(validation.message);
+      // Dispatch notification for user feedback
+      let notificationType = NOTIFICATION_TYPES.ERROR;
+      if (validation.error === 'WEIGHT_LIMIT_EXCEEDED' || validation.error === 'INVENTORY_FULL') {
+        notificationType = NOTIFICATION_TYPES.WARNING;
+      }
+      
+      dispatch(addNotification(validation.message, notificationType));
       return false;
     }
     
@@ -83,7 +91,7 @@ export const moveItemBetweenInventories = (fromInventoryId, toInventoryId, itemI
       
       return true;
     } catch (error) {
-      console.error('Failed to move item:', error);
+      dispatch(addNotification('Failed to move item: ' + error.message, NOTIFICATION_TYPES.ERROR));
       return false;
     }
   };
@@ -109,7 +117,7 @@ export const removeItemFromInventory = (inventoryId, itemId, quantity) => {
     
     const validation = validateItemExists(inventory, itemId);
     if (!validation.isValid) {
-      console.error(validation.message);
+      dispatch(addNotification(validation.message, NOTIFICATION_TYPES.ERROR));
       return false;
     }
     
@@ -123,7 +131,7 @@ export const removeItemFromInventory = (inventoryId, itemId, quantity) => {
       }));
       return true;
     } catch (error) {
-      console.error('Failed to remove item:', error);
+      dispatch(addNotification('Failed to remove item: ' + error.message, NOTIFICATION_TYPES.ERROR));
       return false;
     }
   };
