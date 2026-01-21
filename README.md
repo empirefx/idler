@@ -20,6 +20,7 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 - [ ] `Recipies`(ex 10x apple's -> apple-pie)
 - [ ] Able to sell items for gold
 - [ ] Melt equipment for crafting materials
+- [ ] Building can be upgraded by gold, unlocking new mats
 - [ ] `Crafting` equipment(cost gold/crafting materials)
 - [ ] `NPC` dialog
 
