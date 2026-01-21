@@ -85,6 +85,11 @@ class GameEngine {
     this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
   }
 
+  // Get inventory for a specific place (vault functionality)
+  getVaultInventory(state, targetPlace) {
+    return this.inventoryService.getInventoryForPlace(state, targetPlace);
+  }
+
   // Update game state if not already loaded
   update(state, deltaTime) {
     // Load game state if not already loaded (now handled by SaveService)
