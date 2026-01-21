@@ -4,6 +4,7 @@ import Logger from '../../src/game/utils/Logger';
 import {
   createMockStore,
   createMockGameLoopConstructor,
+  createMockGameLoop,
   createMockEventBus,
   createMockInventoryService,
   createMockItemFactory,

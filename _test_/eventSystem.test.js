@@ -9,22 +9,22 @@ import {
   workerUnassigned,
   locationChanged,
   playerDamaged
-} from '../../src/game/events';
+} from '../src/game/events.js';
 
 // Import log actions
-import { addLog, clearLogs } from '../../src/store/slices/logSlice';
+import { addLog, clearLogs } from '../src/store/slices/logSlice';
 
 // Import store setup (copied from working tests)
-import configureStore from '@reduxjs/toolkit';
-import playerReducer from '../../src/store/slices/playerSlice';
-import buildingsReducer from '../../src/store/slices/buildingsSlice';
-import placesReducer from '../../src/store/slices/placesSlice';
-import playerInventoryReducer from '../../src/store/slices/playerInventorySlice';
-import placeInventoryReducer from '../../src/store/slices/placeInventorySlice';
-import enemiesReducer from '../../src/store/slices/enemiesSlice';
-import combatReducer from '../../src/store/slices/combatSlice';
-import logReducer from '../../src/store/slices/logSlice';
-import logMiddleware from '../../src/store/middleware/logMiddleware';
+import { configureStore } from '@reduxjs/toolkit';
+import playerReducer from '../src/store/slices/playerSlice';
+import buildingsReducer from '../src/store/slices/buildingsSlice';
+import placesReducer from '../src/store/slices/placesSlice';
+import playerInventoryReducer from '../src/store/slices/playerInventorySlice';
+import placeInventoryReducer from '../src/store/slices/placeInventorySlice';
+import enemiesReducer from '../src/store/slices/enemiesSlice';
+import combatReducer from '../src/store/slices/combatSlice';
+import logReducer from '../src/store/slices/logSlice';
+import logMiddleware from '../src/store/middleware/logMiddleware';
 
 const configureTestStore = (initialState = {}) => {
   return configureStore({
