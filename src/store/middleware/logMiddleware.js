@@ -19,41 +19,46 @@ const logMiddleware = store => next => action => {
   switch (action.type) {
     case WORKER_CREATED_ITEM:
       store.dispatch(
-        addLog(
-          `Worker ${action.payload.workerId} made a ${action.payload.itemType}`
-        )
+        addLog({
+          message: `Worker ${action.payload.workerId} made a ${action.payload.itemType}`,
+          category: 'worker'
+        })
       );
       break;
       
     case ENEMY_ATTACKED:
       store.dispatch(
-        addLog(
-          `Enemy ${action.payload.attackerId} hit ${action.payload.targetId} for ${action.payload.damage} HP`
-        )
+        addLog({
+          message: `Enemy ${action.payload.attackerId} hit ${action.payload.targetId} for ${action.payload.damage} HP`,
+          category: 'combat'
+        })
       );
       break;
       
     case WORKER_ASSIGNED:
       store.dispatch(
-        addLog(
-          `Worker ${action.payload.workerName} assigned to ${action.payload.buildingName || action.payload.buildingId}`
-        )
+        addLog({
+          message: `Worker ${action.payload.workerName} assigned to ${action.payload.buildingName || action.payload.buildingId}`,
+          category: 'worker'
+        })
       );
       break;
       
     case WORKER_UNASSIGNED:
       store.dispatch(
-        addLog(
-          `Worker ${action.payload.workerName} unassigned from ${action.payload.buildingName || action.payload.buildingId}`
-        )
+        addLog({
+          message: `Worker ${action.payload.workerName} unassigned from ${action.payload.buildingName || action.payload.buildingId}`,
+          category: 'worker'
+        })
       );
       break;
       
     case LOCATION_CHANGED:
       store.dispatch(
-        addLog(
-          `Moved from ${action.payload.fromPlace} to ${action.payload.toPlace}`
-        )
+        addLog({
+          message: `Moved from ${action.payload.fromPlace} to ${action.payload.toPlace}`,
+          category: 'movement'
+        })
       );
       break;
       
@@ -61,15 +66,17 @@ const logMiddleware = store => next => action => {
       const { attackerId, attackerType, targetId, damage, damageType } = action.payload;
       if (damageType === 'dealt') {
         store.dispatch(
-          addLog(
-            `Player dealt ${damage} damage to ${attackerType} ${targetId}`
-          )
+          addLog({
+            message: `Player dealt ${damage} damage to ${attackerType} ${targetId}`,
+            category: 'combat'
+          })
         );
       } else if (damageType === 'received') {
         store.dispatch(
-          addLog(
-            `Player received ${damage} damage from ${attackerType} ${attackerId}`
-          )
+          addLog({
+            message: `Player received ${damage} damage from ${attackerType} ${attackerId}`,
+            category: 'combat'
+          })
         );
       }
       break;

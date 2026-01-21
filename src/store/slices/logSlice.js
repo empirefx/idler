@@ -6,9 +6,14 @@ const logSlice = createSlice({
   reducers: {
     addLog: (state, action) => {
       const now = Date.now();
+      const { message, category = 'default' } = typeof action.payload === 'string' 
+        ? { message: action.payload, category: 'default' }
+        : action.payload;
+      
       state.push({
         id: `${now}-${Math.random().toString(36)}`,
-        message: action.payload,
+        message,
+        category,
         ts: now
       });
       if (state.length > 100) state.shift();

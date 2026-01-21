@@ -1,8 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export default function LogDisplay() {
-  const logs = useSelector(state => state.logs);
+const LOG_CATEGORIES = {
+  worker: { label: 'Workers', color: 'worker' },
+  combat: { label: 'Combat', color: 'combat' },
+  movement: { label: 'Movement', color: 'movement' },
+  default: { label: 'Default', color: 'default' }
+};
+
+export default function LogDisplay({ filteredLogs }) {
   const containerRef = useRef(null);
 
   // Scroll to bottom on update
@@ -10,15 +16,17 @@ export default function LogDisplay() {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [logs]);
+  }, [filteredLogs]);
 
   return (
     <div className="log-display" ref={containerRef}>
-      {logs.map(l => (
-        <div key={l.id} className="log-entry">
-          <small>{new Date(l.ts).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false })}</small>&nbsp;{l.message}
-        </div>
-      ))}
+      <div className="log-entries">
+        {filteredLogs.map(l => (
+          <div key={l.id} className={`log-entry log-entry-${l.category || 'default'}`}>
+            <small>{new Date(l.ts).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false })}</small>&nbsp;{l.message}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

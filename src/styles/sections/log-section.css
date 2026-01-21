@@ -6,8 +6,15 @@
   height: auto;
 }
 
+.log-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
 .log-section h2 {
-  margin: 0 0 var(--spacing-md) 0;
+  margin: 0;
   color: var(--color-primary);
   text-transform: uppercase;
 }
@@ -15,24 +22,143 @@
 .log-section .log-display {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   max-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: var(--color-dark) #00000034;
+  position: relative;
+}
+
+.log-filter-container {
+  position: relative;
+  z-index: 10;
+}
+
+.log-filter-toggle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%23585858' d='M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: #d0d0d0;
+  border: 2px solid #585858;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  border-radius:var(--border-radius-sm);
+  transition: opacity 0.2s ease;
+}
+
+.log-filter-toggle:hover {
+  opacity: 0.9;
+}
+
+.log-filter-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--color-dark);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm);
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.log-filter-header {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: white;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-xs);
+}
+
+.log-filter-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  padding: var(--spacing-xs) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-light);
+  transition: color 0.2s ease;
+}
+
+.log-filter-option:hover {
+  color: var(--color-primary);
+}
+
+.log-filter-color-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.log-filter-color-indicator.log-entry-default {
+  background-color: hsla(0, 0%, 40%, 0.8);
+}
+
+.log-filter-color-indicator.log-entry-worker {
+  background-color: hsla(200, 20%, 40%, 0.8);
+}
+
+.log-filter-color-indicator.log-entry-combat {
+  background-color: hsla(0, 20%, 40%, 0.8);
+}
+
+.log-filter-color-indicator.log-entry-movement {
+  background-color: hsla(45, 20%, 40%, 0.8);
+}
+
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .log-display .log-entry {
   font-size: var(--font-size-sm);
   color: var(--color-gray-light);
   font-family: var(--font-family-secondary);
-  background-color: hsla(0, 0%, 0%, 0.205);
   margin: 0 var(--spacing-sm) var(--spacing-xs) 0;
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--border-radius-sm);
+  transition: background-color 0.2s ease;
 }
 
 .log-display .log-entry:last-child {
   margin-bottom: 0;
+}
+
+.log-display .log-entry-default {
+  background-color: hsla(0, 0%, 40%, 0.8);
+}
+
+.log-display .log-entry-worker {
+  background-color: hsla(200, 20%, 40%, 0.8);
+}
+
+.log-display .log-entry-combat {
+  background-color: hsla(0, 20%, 40%, 0.8);
+}
+
+.log-display .log-entry-movement {
+  background-color: hsla(45, 20%, 40%, 0.8);
+}
+
+.log-display .log-entry-worker:hover {
+  background-color: hsla(200, 25%, 45%, 0.9);
+}
+
+.log-display .log-entry-combat:hover {
+  background-color: hsla(0, 25%, 45%, 0.9);
+}
+
+.log-display .log-entry-movement:hover {
+  background-color: hsla(45, 25%, 45%, 0.9);
+}
+
+.log-display .log-entry-default:hover {
+  background-color: hsla(0, 0%, 45%, 0.9);
 }
