@@ -5,6 +5,6 @@ export { createMockEventBus } from './eventBus.mock.js';
 export { createMockInventoryService } from './inventoryService.mock.js';
 export { createMockItemFactory } from './itemFactory.mock.js';
 export { createMockCombatService } from './combatService.mock.js';
-export { createMockCombatCoordinationService } from './combatCoordinationService.mock.js';
+export { createMockCombatService } from './combatService.mock.js';
 export { createMockSpawnService } from './spawnService.mock.js';
 export { createMockLocalStorage } from './localStorage.mock.js';

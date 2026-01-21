@@ -12,7 +12,7 @@ import ProductionService from '../services/ProductionService';
 import { SaveService } from '../services/SaveService';
 import { NavigationService } from '../services/NavigationService';
 import { EnemyLifecycleService } from '../services/EnemyLifecycleService';
-import { CombatCoordinationService } from '../services/CombatCoordinationService';
+
 
 class GameEngine {
   constructor(dispatch, store, {
@@ -22,7 +22,7 @@ class GameEngine {
     saveService = SaveService,
     navigationService = NavigationService,
     enemyLifecycleService = EnemyLifecycleService,
-    combatCoordinationService = CombatCoordinationService,
+    combatService = CombatService,
     gameLoop = GameLoop,
     eventBusService = EventBusService,
     spawnService = SpawnService
@@ -41,14 +41,14 @@ class GameEngine {
     this.saveService = this.saveService || SaveService;
     this.navigationService = this.navigationService || NavigationService;
     this.enemyLifecycleService = this.enemyLifecycleService || EnemyLifecycleService;
-    this.combatCoordinationService = this.combatCoordinationService || CombatCoordinationService;
+    this.combatService = this.combatService || CombatService;
     this.eventBusService = this.eventBusService || new EventBusService();
     this.spawnService = SpawnService ? new SpawnService(this.eventBusService) : { spawners: {}, currentPlaceId: null };
     this.gameLoop = new GameLoop();
-    this.combatService = this.combatCoordinationService;
+
     
     // Initialize services
-    this.combatCoordinationService.initialize(this.store, this.eventBusService);
+    this.combatService.initialize(this.store, this.eventBusService);
 
     // Listen for spawn events and add enemies to store
     this.eventBusService.on('spawnEnemy', ({ placeId, enemy }) => {
@@ -187,8 +187,8 @@ class GameEngine {
       interval: 1000 // Update every second for production
     });
 
-    // Start combat system (now handled by CombatCoordinationService)
-    // this.combatCoordinationService.start(this.gameLoop);
+    // Start combat system (now handled by CombatService)
+    // this.combatService.start(this.gameLoop);
 
     // Initialize and hook lifecycle services
     if (this.enemyLifecycleService && this.enemyLifecycleService.initialize) {
@@ -201,16 +201,16 @@ class GameEngine {
       this.navigationService.subscribeToPlaceChanges(this.store);
     }
     // Subscribe to combat state changes
-    if (this.combatCoordinationService && this.combatCoordinationService.handleCombatStateChange) {
-      this.combatCoordinationService.eventBusService = this.eventBusService;
-      this.combatCoordinationService.store = this.store;
+    if (this.combatService && this.combatService.handleCombatStateChange) {
+      this.combatService.eventBusService = this.eventBusService;
+      this.combatService.store = this.store;
       let lastCombatState = this.store.getState().combat.isInCombat;
       this.store.subscribe(() => {
         const state = this.store.getState();
         const currentCombatState = state.combat.isInCombat;
         if (currentCombatState !== lastCombatState) {
           Logger.log('Combat state changed from' + lastCombatState + 'to' + currentCombatState, 0, 'game-loop');
-          this.combatCoordinationService.handleCombatStateChange(lastCombatState, currentCombatState, this.gameLoop);
+          this.combatService.handleCombatStateChange(lastCombatState, currentCombatState, this.gameLoop);
           lastCombatState = currentCombatState;
         }
       });
