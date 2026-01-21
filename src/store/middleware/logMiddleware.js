@@ -9,12 +9,12 @@ import {
 import { addLog } from '../slices/logSlice';
 
 const logMiddleware = store => next => action => {
-  const result = next(action);
-  
   // Don't process log actions to prevent recursion
-  if (action.type === 'logs/addLog') {
-    return result;
+  if (action.type && action.type.startsWith('logs/')) {
+    return next(action);
   }
+  
+  const result = next(action);
   
   switch (action.type) {
     case WORKER_CREATED_ITEM:
@@ -62,7 +62,7 @@ const logMiddleware = store => next => action => {
       if (damageType === 'dealt') {
         store.dispatch(
           addLog(
-            `Player dealt ${damage} damage to ${attackerType} ${attackerId}`
+            `Player dealt ${damage} damage to ${attackerType} ${targetId}`
           )
         );
       } else if (damageType === 'received') {
@@ -77,6 +77,7 @@ const logMiddleware = store => next => action => {
     default:
       break;
   }
+  
   return result;
 };
 
