@@ -25,10 +25,15 @@ const EquipmentDisplay = () => {
   return (
     <div className="equipment-flex">
       {EQUIPMENT_SLOTS.map(({ key, label }) => (
-        <div className={key} key={key} onClick={() => equipment[key] && handleUnequip(key)} style={{ cursor: equipment[key] ? 'pointer' : 'default' }}>
+        <div className={`${key} ${equipment[key] ? 'equipped' : ''}`} key={key} onClick={() => equipment[key] && handleUnequip(key)} style={{ cursor: equipment[key] ? 'pointer' : 'default' }}>
           {equipment[key] ? (
             <ItemInfo item={equipment[key]}>
-              <span>{equipment[key].name}</span>
+              <div>
+                {equipment[key].type === 'equipment' && (
+                  <div className="armor-sprite" id={equipment[key].id || 'empty'}></div>
+                )}
+                <span>{equipment[key].name}</span>
+              </div>
             </ItemInfo>
           ) : (
             <span>{label}</span>
