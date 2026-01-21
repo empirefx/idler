@@ -90,12 +90,8 @@ class GameEngine {
     return this.inventoryService.getInventoryForPlace(state, targetPlace);
   }
 
-  // Update game state if not already loaded
+  // Update game state
   update(state, deltaTime) {
-    // Load game state if not already loaded (now handled by SaveService)
-    if (!this.saveService.hasSavedState()) {
-      this.saveService.loadState(this.store);
-    }
 
     const currentState = state;
     const buildingsWithAssignedWorkers = listBuildingsWithAssignedWorkers(currentState);
