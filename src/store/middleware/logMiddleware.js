@@ -7,6 +7,7 @@ import {
   PLAYER_DAMAGED 
 } from '../../game/events';
 import { addLog } from '../slices/logSlice';
+import { getEnemyDisplayName, getEnemyTypeDisplayName } from '../../utils/enemyUtils';
 
 const logMiddleware = store => next => action => {
   // Don't process log actions to prevent recursion
@@ -26,10 +27,16 @@ const logMiddleware = store => next => action => {
       );
       break;
       
-    case ENEMY_ATTACKED:
+case ENEMY_ATTACKED:
+      const state = store.getState();
+      const { attackerId, targetId, damage: enemyDamage } = action.payload;
+      
+      const attackerName = getEnemyDisplayName(state, attackerId);
+      const targetName = getEnemyDisplayName(state, targetId);
+      
       store.dispatch(
         addLog({
-          message: `Enemy ${action.payload.attackerId} hit ${action.payload.targetId} for ${action.payload.damage} HP`,
+          message: `${attackerName} hit ${targetName} for ${enemyDamage} HP`,
           category: 'combat'
         })
       );
@@ -62,19 +69,23 @@ const logMiddleware = store => next => action => {
       );
       break;
       
-    case PLAYER_DAMAGED:
-      const { attackerId, attackerType, targetId, damage, damageType } = action.payload;
+case PLAYER_DAMAGED:
+      const { attackerId: playerAttackerId, attackerType, targetId: playerTargetId, damage, damageType } = action.payload;
+      const currentState = store.getState();
+      
       if (damageType === 'dealt') {
+        const targetName = getEnemyDisplayName(currentState, playerTargetId);
         store.dispatch(
           addLog({
-            message: `Player dealt ${damage} damage to ${attackerType} ${targetId}`,
+            message: `Player dealt ${damage} damage to ${targetName}`,
             category: 'combat'
           })
         );
       } else if (damageType === 'received') {
+        const attackerName = getEnemyDisplayName(currentState, playerAttackerId);
         store.dispatch(
           addLog({
-            message: `Player received ${damage} damage from ${attackerType} ${attackerId}`,
+            message: `Player received ${damage} damage from ${attackerName}`,
             category: 'combat'
           })
         );

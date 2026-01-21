@@ -67,13 +67,26 @@ describe('Event System Logging', () => {
   });
 
   it('should log enemy attacked events', () => {
+    // Setup enemies in state for name resolution
+    store = configureTestStore({
+      preloadedState: {
+        enemies: {
+          byId: {
+            'enemy1': { id: 'enemy1', name: 'Forest Beast', type: 'forest_beast' },
+            'player1': { id: 'player1', name: 'Player', type: 'player' }
+          },
+          allIds: ['enemy1', 'player1']
+        }
+      }
+    });
+    
     // Dispatch enemy attacked event
     store.dispatch(enemyAttacked('enemy1', 'player1', 15));
     
-    // Check if log was added
+    // Check if log was added with readable names
     const logs = store.getState().logs;
     expect(logs).toHaveLength(1);
-    expect(logs[0].message).toBe('Enemy enemy1 hit player1 for 15 HP');
+    expect(logs[0].message).toBe('Forest Beast hit Player for 15 HP');
   });
 
   it('should log worker assigned events', () => {
@@ -107,23 +120,47 @@ describe('Event System Logging', () => {
   });
 
   it('should log player damage dealt events', () => {
-    // Dispatch player damage dealt event
-    store.dispatch(playerDamaged('player1', 'enemy', 'enemy1', 20, 'dealt'));
+    // Setup enemy in state for name resolution
+    store = configureTestStore({
+      preloadedState: {
+        enemies: {
+          byId: {
+            'enemy1': { id: 'enemy1', name: 'Goblin', type: 'goblin' }
+          },
+          allIds: ['enemy1']
+        }
+      }
+    });
     
-    // Check if log was added
+    // Dispatch player damage dealt event
+    store.dispatch(playerDamaged('player', 'player', 'enemy1', 20, 'dealt'));
+    
+    // Check if log was added with readable name
     const logs = store.getState().logs;
     expect(logs).toHaveLength(1);
-    expect(logs[0].message).toBe('Player dealt 20 damage to enemy enemy1');
+    expect(logs[0].message).toBe('Player dealt 20 damage to Goblin');
   });
 
   it('should log player damage received events', () => {
-    // Dispatch player damage received event
-    store.dispatch(playerDamaged('enemy1', 'enemy', 'player1', 8, 'received'));
+    // Setup enemy in state for name resolution
+    store = configureTestStore({
+      preloadedState: {
+        enemies: {
+          byId: {
+            'enemy1': { id: 'enemy1', name: 'Woodland Predator', type: 'woodland_predator' }
+          },
+          allIds: ['enemy1']
+        }
+      }
+    });
     
-    // Check if log was added
+    // Dispatch player damage received event
+    store.dispatch(playerDamaged('enemy1', 'enemy', 'player', 8, 'received'));
+    
+    // Check if log was added with readable name
     const logs = store.getState().logs;
     expect(logs).toHaveLength(1);
-    expect(logs[0].message).toBe('Player received 8 damage from enemy enemy1');
+    expect(logs[0].message).toBe('Player received 8 damage from Woodland Predator');
   });
 
   it('should not log addLog actions to prevent recursion', () => {
@@ -137,17 +174,29 @@ describe('Event System Logging', () => {
   });
 
   it('should handle multiple events sequentially', () => {
+    // Setup enemy in state for name resolution
+    store = configureTestStore({
+      preloadedState: {
+        enemies: {
+          byId: {
+            'enemy1': { id: 'enemy1', name: 'Forest Beast', type: 'forest_beast' }
+          },
+          allIds: ['enemy1']
+        }
+      }
+    });
+    
     // Dispatch multiple events
     store.dispatch(workerAssigned('worker1', 'John', 'farm', 'Farm'));
     store.dispatch(locationChanged('village', 'forest'));
-    store.dispatch(playerDamaged('enemy1', 'enemy', 'player1', 5, 'received'));
+    store.dispatch(playerDamaged('enemy1', 'enemy', 'player', 5, 'received'));
     
     // Check if all logs were added in order
     const logs = store.getState().logs;
     expect(logs).toHaveLength(3);
     expect(logs[0].message).toBe('Worker John assigned to Farm');
     expect(logs[1].message).toBe('Moved from village to forest');
-    expect(logs[2].message).toBe('Player received 5 damage from enemy enemy1');
+    expect(logs[2].message).toBe('Player received 5 damage from Forest Beast');
   });
 
   it('should limit log history to 100 entries', () => {
@@ -161,5 +210,15 @@ describe('Event System Logging', () => {
     expect(logs).toHaveLength(100);
     expect(logs[0].message).toBe('Worker worker5 made a wood'); // First log should be trimmed
     expect(logs[99].message).toBe('Worker worker104 made a wood'); // Last log
+  });
+
+  it('should handle missing enemies with fallback to Unknown Enemy', () => {
+    // Dispatch enemy attacked event with non-existent enemy IDs
+    store.dispatch(enemyAttacked('nonexistent1', 'nonexistent2', 25));
+    
+    // Check if log was added with fallback names
+    const logs = store.getState().logs;
+    expect(logs).toHaveLength(1);
+    expect(logs[0].message).toBe('Unknown Enemy hit Unknown Enemy for 25 HP');
   });
 });
