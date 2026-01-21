@@ -7,6 +7,7 @@ import buildingsReducer from '../../src/store/slices/buildingsSlice';
 import placesReducer from '../../src/store/slices/placesSlice';
 import enemiesReducer from '../../src/store/slices/enemiesSlice';
 import combatReducer from '../../src/store/slices/combatSlice';
+import { playerData } from '../../src/data/player';
 
 import GameEngine from '../../src/game/engine/GameEngine';
 import { createMockLocalStorage } from '../mocks/localStorage.mock.js';
@@ -29,10 +30,10 @@ describe('GameEngine Integration Tests', () => {
         placeInventory: placeInventoryReducer,
       },
       preloadedState: {
-        player: { workers: [], gold: 100 },
+        player: { ...playerData, gold: 100 },
         buildings: {},
         places: { currentPlaceId: 'village_center' },
-        enemies: { byId: {} },
+        enemies: { byId: {}, allIds: [] },
         combat: { isInCombat: false }
       }
     });

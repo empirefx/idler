@@ -44,7 +44,6 @@ describe('GameEngine', () => {
 
     // Create GameEngine instance with mocked dependencies
     const MockGameLoopClass = createMockGameLoopConstructor();
-    const mockGameLoop = new MockGameLoopClass();
     
     gameEngine = new GameEngine(mockDispatch, mockStore, {
       gameLoop: MockGameLoopClass,
