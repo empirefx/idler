@@ -118,6 +118,17 @@
 
 .inventory-info b {
   color: var(--color-gray-light);
+  font-weight: bold;
+}
+
+.inventory-info .weight-warning {
+  color: #ff4e4e;
+  font-weight: bolder;
+  padding-left: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Cpath fill='%23ff4e4e' d='M36 6c-5.523 0-10 4.477-10 10v6H16v34h40V22H46v-6c0-5.523-4.477-10-10-10zm0 6c2.761 0 5 2.239 5 5v6H31v-6c0-2.761 2.239-5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  background-position: left center;
 }
 
 /* key bind styles (ui/components/common/KeyBind.js)*/

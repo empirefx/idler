@@ -106,7 +106,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
         {inventory.type === 'player' && <KeyBind value="LClick" info="Equip item" />}
         <span>{totalItems} / <b>{maxSlots} slots</b></span>
         {hasWeightLimit && (
-          <span style={{ marginLeft: '16px' }}>
+          <span className={currentWeight >= (maxWeight * 0.9) ? 'weight-warning' : ''} style={{ marginLeft: '16px' }}>
             {currentWeight} / <b>{maxWeight} lt</b>
           </span>
         )}
