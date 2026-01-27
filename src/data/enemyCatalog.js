@@ -6,7 +6,7 @@ export const enemyCatalog = {
     baseHealth: 50,
     baseAttack: 8,
     speed: 1.2,
-    attackDelayRange: [2000, 2000],
+    attackDelayRange: [100, 200],
     attackPattern: 'staggered'
   },
   woodland_predator: {
@@ -16,7 +16,7 @@ export const enemyCatalog = {
     baseHealth: 80,
     baseAttack: 12,
     speed: 1.5,
-    attackDelayRange: [2000, 2000],
+    attackDelayRange: [100, 600],
     attackPattern: 'staggered'
   },
   trained_hunters: {
@@ -26,7 +26,7 @@ export const enemyCatalog = {
     baseHealth: 60,
     baseAttack: 10,
     speed: 1.0,
-    attackDelayRange: [2000, 2000],
+    attackDelayRange: [300, 500],
     attackPattern: 'staggered'
   },
   ruins_undead: {
@@ -36,7 +36,7 @@ export const enemyCatalog = {
     baseHealth: 90,
     baseAttack: 20,
     speed: 0.8,
-    attackDelayRange: [2000, 2000],
+    attackDelayRange: [200, 600],
     attackPattern: 'staggered'
   }
 };

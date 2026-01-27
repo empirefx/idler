@@ -72,15 +72,6 @@ const enemiesSlice = createSlice({
         enemy.countdown = Math.max(0, enemy.countdown - (deltaTime * 1000));
       }
     },
-    // Reset enemy countdown after attack (generate new random delay)
-    resetEnemyCountdown(state, action) {
-      const { id } = action.payload;
-      const enemy = state.byId[id];
-      if (enemy && enemy.attackDelayRange) {
-        const [minDelay, maxDelay] = enemy.attackDelayRange;
-        enemy.countdown = Math.random() * (maxDelay - minDelay) + minDelay;
-      }
-    },
     // Set countdown activation state
     setCountdownActive(state, action) {
       const { id, isActive } = action.payload;

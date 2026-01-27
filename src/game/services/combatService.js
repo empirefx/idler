@@ -62,7 +62,7 @@ export const CombatService = {
         if (enemy.isCountdownActive && enemy.countdown > 0) {
           this.store.dispatch({
             type: 'enemies/updateEnemyCountdown',
-            payload: { id: enemy.id, deltaTime: deltaTime * 1000 }
+            payload: { id: enemy.id, deltaTime: deltaTime }
           });
         }
        });
@@ -74,7 +74,7 @@ export const CombatService = {
       this.handlePlayerAttack(currentEnemies);
     }, {
       priority: 0, // Highest priority
-      interval: 1000 // Update every second to match deltaTime timing
+      interval: 100 // Update every second to match deltaTime timing
     });
     Logger.log('Combat registration result:', 0, 'combat', result);
   },
@@ -189,16 +189,25 @@ export const CombatService = {
     const hasUninitializedEnemies = staggeredEnemies.some(enemy => enemy.countdown === 0);
 
     if (isInCombat && (hasInactiveEnemies || hasUninitializedEnemies)) {
-      // Synchronized initialization for all enemies at this place
-      const currentPlaceId = this.store.getState().places.currentPlaceId;
-      this.store.dispatch({
-        type: 'enemies/initializeCountdownsForPlace',
-        payload: {
-          placeId: currentPlaceId,
-          baseTimestamp: Date.now()
+      // Initialize each enemy with random delay
+      staggeredEnemies.forEach(enemy => {
+        if (!enemy.isCountdownActive || enemy.countdown === 0) {
+          // Get enemy's configured attack delay range from spawn initialization
+          // These values were set by SpawnService when the enemy was created
+          const [minDelay, maxDelay] = enemy.attackDelayRange || [1000, 4000];
+          const randomDelay = this.randomBetween(minDelay, maxDelay);
+
+          this.store.dispatch({
+            type: 'enemies/initializeCountdown',
+            payload: { id: enemy.id, countdown: randomDelay }
+          });
+          this.store.dispatch({
+            type: 'enemies/setCountdownActive',
+            payload: { id: enemy.id, isActive: true }
+          });
         }
       });
-      Logger.log(`Synchronized countdowns initialized for place: ${currentPlaceId}`, 0, 'combat');
+      Logger.log(`Individual countdowns initialized for place`, 0, 'combat');
     }
 
     // Deactivate countdowns when not in combat
@@ -220,34 +229,33 @@ export const CombatService = {
       enemy.isCountdownActive && enemy.countdown <= 0
     );
 
-    // Allow ALL ready enemies to attack simultaneously
     // Allow ALL ready enemies to attack simultaneously at diferent delay times
     batch(() => {
       readyEnemies.forEach(enemy => {
-
-        // Enemy attacks player (5 damage)
         // Get enemy's actual attack damage
         const enemyDamage = enemy.attack || enemy.baseAttack || 5;
 
         // Enemy attacks player with their actual damage
         this.store.dispatch({
           type: 'player/damagePlayer',
-          payload: { amount: 5 }
           payload: { amount: enemyDamage }
         });
-        this.store.dispatch(enemyAttacked(enemy.id, 'player', 5));
-        this.store.dispatch(playerDamaged(enemy.id, 'enemy', 'player', 5, 'received'));
         this.store.dispatch(enemyAttacked(enemy.id, 'player', enemyDamage));
         this.store.dispatch(playerDamaged(enemy.id, 'enemy', 'player', enemyDamage, 'received'));
 
-        Logger.log(`${enemy.id} attacks player (countdown-based)`, 0, 'combat');
         Logger.log(`${enemy.name || enemy.id} attacks player for ${enemyDamage} damage (countdown-based)`, 0, 'combat');
 
-        // Reset countdown for next attack (generate new random delay)
+        // Reset countdown with new random delay from enemy's configured range
+        // Each enemy gets an independent delay to create staggered attack patterns
+        const [minDelay, maxDelay] = enemy.attackDelayRange || [2000, 4000];
+        const nextRandomDelay = this.randomBetween(minDelay, maxDelay) + Math.random() * 200;
+
         this.store.dispatch({
-          type: 'enemies/resetEnemyCountdown',
-          payload: { id: enemy.id }
+          type: 'enemies/initializeCountdown',
+          payload: { id: enemy.id, countdown: nextRandomDelay }
         });
+
+        Logger.log(`${enemy.name || enemy.id} countdown reset to ${nextRandomDelay}ms`, 0, 'combat');
       });
     });
   },

@@ -41,8 +41,8 @@ export const placesData = {
       respawnDelay: 8,
       attackPattern: {
         type: 'staggered',
-        minDelay: 2000,
-        maxDelay: 2000,
+        minDelay: 100,
+        maxDelay: 200,
         attackOrder: 'random'
       },
       drops: [
@@ -107,8 +107,8 @@ export const placesData = {
       respawnDelay: 15,
       attackPattern: {
         type: 'staggered',
-        minDelay: 2000,
-        maxDelay: 2000,
+        minDelay: 200,
+        maxDelay: 700,
         attackOrder: 'random'
       },
       drops: [

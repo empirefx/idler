@@ -37,7 +37,7 @@ case ENEMY_ATTACKED:
       
       store.dispatch(
         addLog({
-          message: `${finalAttackerName} hit ${finalTargetName} for ${enemyDamage} HP`,
+          message: `${finalAttackerName} hit ${finalTargetName} for ${enemyDamage} damage`,
           category: 'combat'
         })
       );

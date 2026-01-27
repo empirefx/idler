@@ -96,11 +96,6 @@ export class WaveSpawner extends BaseSpawner {
     return this.config.pool;
   }
 
-  // Calculate random delay between min and max values
-  randomBetween(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
   // Calculate initial attack delay for staggered enemies (random between 2-5 seconds)
   calculateInitialAttackDelay(index) {
     if (!this.config.attackPattern || this.config.attackPattern.type !== 'staggered') {
@@ -145,6 +140,10 @@ export class WaveSpawner extends BaseSpawner {
         enemy.nextAttackTime = Date.now() + initialDelay;
         enemy.countdown = initialDelay;
         enemy.initialAttackDelay = initialDelay;
+
+        // Store attack delay range for staggered attacks
+        // These values determine the random delay between enemy attacks (in milliseconds)
+        // CombatService will read these values to generate random attack timings
         enemy.attackDelayRange = [
           this.config.attackPattern.minDelay || 2000,
           this.config.attackPattern.maxDelay || 5000
