@@ -13,6 +13,9 @@ export const EnemyLifecycleService = {
         
         Logger.log(`Enemy ${id} died at place ${placeId}`, 0, 'lifecycle');
         
+        // Clean up staggered attack timers for dead enemies
+        this.cleanupEnemyAttackTimers(enemy);
+        
         // Emit death event
         if (this.eventBusService && this.eventBusService.emit) {
           this.eventBusService.emit(`enemyDead:${placeId}`, { placeId, enemy });
@@ -22,6 +25,31 @@ export const EnemyLifecycleService = {
     
     // Update tracked state
     this.lastEnemyState = currentEnemyState;
+  },
+
+  // Clean up attack timers when enemy dies
+  cleanupEnemyAttackTimers(enemy) {
+    if (enemy.attackPattern === 'staggered') {
+      Logger.log(`Cleaning up attack timers for dead enemy ${enemy.id}`, 0, 'lifecycle');
+      
+      // Enemy is being removed from state, so no need to manually clean up timers
+      // The Redux store will handle the cleanup when enemy is removed
+      
+      // However, we can emit an event for other systems that might need to know
+      if (this.eventBusService && this.eventBusService.emit) {
+        this.eventBusService.emit('enemyAttackTimersCleanup', { enemyId: enemy.id });
+      }
+    }
+  },
+
+  // Handle enemy death in combat context (additional cleanup)
+  handleEnemyCombatDeath(enemy) {
+    if (enemy && enemy.attackPattern === 'staggered') {
+      Logger.log(`Handling combat death for staggered enemy ${enemy.id}`, 0, 'lifecycle');
+      
+      // Any additional combat-specific cleanup can go here
+      // For example, removing from attack queues, resetting combat state, etc.
+    }
   },
 
   // Initialize last enemy state

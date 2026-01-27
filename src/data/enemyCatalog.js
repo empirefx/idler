@@ -5,7 +5,9 @@ export const enemyCatalog = {
     avatar: '1.png',
     baseHealth: 50,
     baseAttack: 8,
-    speed: 1.2
+    speed: 1.2,
+    attackDelayRange: [100, 500],
+    attackPattern: 'staggered'
   },
   woodland_predator: {
     id: 'woodland_predator',
@@ -13,7 +15,9 @@ export const enemyCatalog = {
     avatar: '2.png',
     baseHealth: 80,
     baseAttack: 12,
-    speed: 1.5
+    speed: 1.5,
+    attackDelayRange: [100, 600],
+    attackPattern: 'staggered'
   },
   trained_hunters: {
     id: 'trained_hunters',
@@ -21,15 +25,19 @@ export const enemyCatalog = {
     avatar: '3.png',
     baseHealth: 60,
     baseAttack: 10,
-    speed: 1.0
+    speed: 1.0,
+    attackDelayRange: [300, 500],
+    attackPattern: 'staggered'
   },
   ruins_undead: {
     id: 'ruins_undead',
     name: 'Ruins Undead',
     avatar: '4.png',
-    baseHealth: 40,
-    baseAttack: 15,
-    speed: 0.8
+    baseHealth: 90,
+    baseAttack: 20,
+    speed: 0.8,
+    attackDelayRange: [200, 600],
+    attackPattern: 'staggered'
   }
 };
 

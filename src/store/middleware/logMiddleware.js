@@ -30,7 +30,7 @@ const logMiddleware = store => next => action => {
 case ENEMY_ATTACKED:
       const state = store.getState();
       const { attackerId, targetId, damage: enemyDamage } = action.payload;
-      
+
       const attackerName = getEnemyDisplayName(state, attackerId);
       const targetName = getEnemyDisplayName(state, targetId);
       

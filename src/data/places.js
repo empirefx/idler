@@ -35,9 +35,16 @@ export const placesData = {
     'background-image': 'deep_woods.jpg',
     buildings: [],
     spawn: {
-      type: 'single',
-      pool: 'woodland_predator',
+      type: 'wave',
+      pool: ['woodland_predator', 'forest_beast'], // Multiple enemy types - pool concept
+      waveSize: [2, 4],
       respawnDelay: 8,
+      attackPattern: {
+        type: 'staggered',
+        minDelay: 100,
+        maxDelay: 200,
+        attackOrder: 'random'
+      },
       drops: [
         { itemId: 'ore', dropRate: 0.3 }
       ]
@@ -95,9 +102,15 @@ export const placesData = {
     buildings: [],
     spawn: {
       type: 'wave',
-      pool: 'ruins_undead',
+      pool: ['ruins_undead', 'forest_beast'], // Multiple enemy types - pool concept
       waveSize: [3, 6],
       respawnDelay: 15,
+      attackPattern: {
+        type: 'staggered',
+        minDelay: 200,
+        maxDelay: 700,
+        attackOrder: 'random'
+      },
       drops: [
         { itemId: 'ore', dropRate: 0.5 },
         { itemId: 'apple', dropRate: 0.2 }

@@ -1,9 +1,11 @@
 // Combat Service - coordinates combat state with game loop
 import Logger from '../utils/Logger';
+import { batch } from 'react-redux';
 import { enemyAttacked, playerDamaged } from '../events';
 import { addItem } from '../../store/slices/playerInventorySlice';
-import { gainExp } from '../../store/slices/playerSlice';
+import { gainExp, updateLastAttackTime } from '../../store/slices/playerSlice';
 import { ItemFactory } from '../factory/itemFactory';
+import { placesData } from '../../data/places';
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.
@@ -45,6 +47,9 @@ export const CombatService = {
     const result = gameLoop.register('combat', (deltaTime) => {
       // Get current game state from store subscription
       const state = this.store.getState();
+      if (!state || !state.places) {
+        return; // Skip update if state not ready
+      }
       const currentPlaceId = state.places.currentPlaceId;
       
       // Get enemies at current place
@@ -52,44 +57,24 @@ export const CombatService = {
         enemy => enemy.placeId === currentPlaceId
       );
 
-      // Simple combat: player attacks first enemy, enemy attacks player
-      const targetEnemy = currentEnemies[0];
-      
-      // Player attacks enemy (10 damage)
-      this.store.dispatch({ 
-        type: 'enemies/damageEnemy', 
-        payload: { id: targetEnemy.id, amount: 10 } 
-      });
-      this.store.dispatch(playerDamaged('player', 'player', targetEnemy.id, 10, 'dealt'));
-      this.store.dispatch(enemyAttacked('player', targetEnemy.id, 10));
-      
-      // Check if enemy died and emit death event
-      setTimeout(() => {
-        const updatedEnemy = this.store.getState().enemies.byId[targetEnemy.id];
-        if (!updatedEnemy) {
-          // Enemy died, handle drops and emit death event for respawn
-          this.eventBusService.emit(`enemyDead:${targetEnemy.placeId}`, { 
-            placeId: targetEnemy.placeId, 
-            enemy: targetEnemy 
-          });
-          Logger.log(`${targetEnemy.id} died, emitting death event`, 0, 'combat');
-          
-          // Handle enemy drops and experience gain
-          this.handleEnemyDrops(targetEnemy);
-          this.handleEnemyExpGain(targetEnemy);
-        } else if (updatedEnemy.health > 0) {
-          // Enemy attacks player (5 damage) if enemy is still alive
-          this.store.dispatch({ 
-            type: 'player/damagePlayer', 
-            payload: { amount: 5 } 
-          });
-          this.store.dispatch(enemyAttacked(targetEnemy.id, 'player', 5));
-          this.store.dispatch(playerDamaged(targetEnemy.id, 'enemy', 'player', 5, 'received'));
-        }
-      }, 200);
+       // Update countdowns for all enemies at current place
+       currentEnemies.forEach(enemy => {
+         if (enemy.isCountdownActive && enemy.countdown > 0) {
+           this.store.dispatch({
+             type: 'enemies/updateEnemyCountdown',
+             payload: { id: enemy.id, deltaTime }
+           });
+         }
+       });
+
+        // Handle enemy attacks based on countdowns
+        this.handleStaggeredAttacks(currentEnemies);
+
+        // Player attacks with cooldown system
+        this.handlePlayerAttack(currentEnemies);
     }, {
       priority: 0, // Highest priority
-      interval: 500 // Every 500ms for combat
+      interval: 200 // More frequent updates for smooth countdown
     });
     Logger.log('Combat registration result:', 0, 'combat', result);
   },
@@ -123,8 +108,164 @@ export const CombatService = {
 
   // Handle experience gain on enemy death
   handleEnemyExpGain(enemy) {
-    // Grant experience for enemy kill (equal to enemy's max health)
-    this.store.dispatch(gainExp({ amount: enemy.maxHealth }));
+      // Grant experience for enemy kill (equal to enemy's max health)
+      this.store.dispatch(gainExp({ amount: enemy.maxHealth }));
+    },
+
+  // Handle player attack with cooldown system
+  handlePlayerAttack(enemies) {
+    if (enemies.length === 0) return;
+
+    // Filter for alive enemies only
+    const aliveEnemies = enemies.filter(enemy => enemy.health > 0);
+
+    if (aliveEnemies.length === 0) return;
+
+    const state = this.store.getState();
+    const player = state.player;
+    const now = Date.now();
+    const timeSinceLastAttack = now - (player.lastAttackTime || 0);
+
+    if (timeSinceLastAttack >= (player.attackCooldown || 1000)) {
+      // Target first ALIVE enemy
+      const targetEnemy = aliveEnemies[0];
+
+      // Capture enemy snapshot BEFORE attacking (for death event and logging)
+      const enemySnapshot = { ...targetEnemy };
+
+      // Player attacks first enemy (using baseAttack)
+      const damage = player.baseAttack || 10;
+
+      // Update timestamp FIRST to prevent double attacks
+      this.store.dispatch(updateLastAttackTime({ timestamp: now }));
+
+      // Dispatch all attack actions
+      this.store.dispatch({
+        type: 'enemies/damageEnemy',
+        payload: { id: targetEnemy.id, amount: damage }
+      });
+      this.store.dispatch(playerDamaged('player', 'player', targetEnemy.id, damage, 'dealt'));
+      this.store.dispatch(enemyAttacked('player', targetEnemy.id, damage));
+
+      Logger.log(`Player attacks ${enemySnapshot.name || targetEnemy.id} for ${damage} damage`, 0, 'combat');
+
+      // Check if enemy died and emit death event
+      setTimeout(() => {
+        const updatedEnemy = this.store.getState().enemies.byId[targetEnemy.id];
+        if (!updatedEnemy) {
+          // Enemy died, handle drops and emit death event for respawn
+          this.eventBusService.emit(`enemyDead:${enemySnapshot.placeId}`, {
+            placeId: enemySnapshot.placeId,
+            enemy: enemySnapshot  // Use snapshot with complete data
+          });
+          Logger.log(`${enemySnapshot.name || enemySnapshot.id} died, emitting death event`, 0, 'combat');
+
+          // Handle enemy drops and experience gain
+          this.handleEnemyDrops(enemySnapshot);
+          this.handleEnemyExpGain(enemySnapshot);
+        }
+      }, 50);
+    }
+  },
+
+  // Handle enemy attacks based on countdowns
+  handleStaggeredAttacks(enemies) {
+    // Get current combat state with safety checks
+    const currentState = this.store?.getState();
+    if (!currentState || !currentState.combat) {
+      console.error('CombatService: store state or combat state not available');
+      return;
+    }
+    const isInCombat = currentState.combat.isInCombat;
+
+    // Filter enemies that have staggered attack pattern and are alive
+    const staggeredEnemies = enemies.filter(enemy =>
+      enemy.attackPattern === 'staggered' &&
+      enemy.health > 0
+    );
+
+    // Check if we need to initialize countdowns for this place (synchronized start)
+    const hasInactiveEnemies = staggeredEnemies.some(enemy => !enemy.isCountdownActive);
+    const hasUninitializedEnemies = staggeredEnemies.some(enemy => enemy.countdown === 0);
+
+    if (isInCombat && (hasInactiveEnemies || hasUninitializedEnemies)) {
+      // Synchronized initialization for all enemies at this place
+      const currentPlaceId = this.store.getState().places.currentPlaceId;
+      this.store.dispatch({
+        type: 'enemies/initializeCountdownsForPlace',
+        payload: {
+          placeId: currentPlaceId,
+          baseTimestamp: Date.now()
+        }
+      });
+      Logger.log(`Synchronized countdowns initialized for place: ${currentPlaceId}`, 0, 'combat');
+    }
+
+    // Deactivate countdowns when not in combat
+    if (!isInCombat && staggeredEnemies.some(enemy => enemy.isCountdownActive)) {
+      staggeredEnemies.forEach(enemy => {
+        this.store.dispatch({
+          type: 'enemies/setCountdownActive',
+          payload: { id: enemy.id, isActive: false }
+        });
+        this.store.dispatch({
+         type: 'enemies/initializeCountdown',
+         payload: { id: enemy.id, countdown: 0 }
+        });
+      });
+    }
+
+    // Find enemies whose countdown has reached zero (ready to attack)
+    const readyEnemies = staggeredEnemies.filter(enemy =>
+      enemy.isCountdownActive && enemy.countdown <= 0
+    );
+
+    // Allow ALL ready enemies to attack simultaneously
+    batch(() => {
+      readyEnemies.forEach(enemy => {
+
+        // Enemy attacks player (5 damage)
+        this.store.dispatch({
+          type: 'player/damagePlayer',
+          payload: { amount: 5 }
+        });
+        this.store.dispatch(enemyAttacked(enemy.id, 'player', 5));
+        this.store.dispatch(playerDamaged(enemy.id, 'enemy', 'player', 5, 'received'));
+
+        Logger.log(`${enemy.id} attacks player (countdown-based)`, 0, 'combat');
+
+        // Reset countdown for next attack (generate new random delay)
+        this.store.dispatch({
+          type: 'enemies/resetEnemyCountdown',
+          payload: { id: enemy.id }
+        });
+      });
+    });
+  },
+
+  // Select which enemy should attack from ready enemies
+  selectAttackingEnemy(readyEnemies) {
+    if (readyEnemies.length === 0) return null;
+
+    // Get current place configuration to determine attack order
+    const state = this.store.getState();
+    const currentPlaceId = state.places.currentPlaceId;
+    const placeConfig = placesData[currentPlaceId];
+
+    if (placeConfig?.spawn?.attackPattern?.attackOrder === 'sequential') {
+      // Select enemy with oldest nextAttackTime (has been waiting longest)
+      return readyEnemies.reduce((oldest, enemy) =>
+        enemy.nextAttackTime < oldest.nextAttackTime ? enemy : oldest
+      );
+    } else {
+      // Default: random selection
+      return readyEnemies[Math.floor(Math.random() * readyEnemies.length)];
+    }
+  },
+
+  // Calculate random delay between min and max values
+  randomBetween(min, max) {
+    return Math.random() * (max - min) + min;
   },
 
   // Subscribe to combat state changes

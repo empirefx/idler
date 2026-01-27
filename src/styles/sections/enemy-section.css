@@ -53,6 +53,10 @@
   mask-image: linear-gradient(to top, transparent 11%, black 35%);
 }
 
+.entity-card .attack-indicator {
+  z-index: 10;
+}
+
 .entity-card .progress-bar {
   position: absolute;
   bottom: -40px;

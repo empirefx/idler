@@ -93,6 +93,11 @@ export const playerSlice = createSlice({
       state.stats.defense += defense;
       state.stats.agility += agility;
       state.stats.vitality += vitality;
+    },
+    // Update last attack time for cooldown tracking
+    updateLastAttackTime: (state, action) => {
+      const { timestamp } = action.payload;
+      state.lastAttackTime = timestamp;
     }
   },
 });
@@ -105,7 +110,8 @@ export const {
   healPlayer,
   setPlayerState,
   gainExp,
-  levelUp
+  levelUp,
+  updateLastAttackTime
 } = playerSlice.actions;
 
 // Selectors
@@ -156,6 +162,16 @@ export const selectMaxWorkers = state => state.player.MAX_WORKERS;
 export const selectIsReadyToLevelUp = createSelector(
   [state => state.player.level, state => state.player.exp],
   (level, exp) => exp >= (level * 100)
+);
+
+// Selector to check if player is ready to attack
+export const selectIsPlayerReadyToAttack = createSelector(
+  [state => state.player],
+  (player) => {
+    const now = Date.now();
+    const timeSinceLastAttack = now - (player.lastAttackTime || 0);
+    return timeSinceLastAttack >= (player.attackCooldown || 1000);
+  }
 );
 
 export default playerSlice.reducer;

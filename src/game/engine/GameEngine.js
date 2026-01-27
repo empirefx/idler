@@ -179,7 +179,7 @@ class GameEngine {
     this.gameLoop.register('production', (deltaTime) => {
       this.update(this.store.getState(), deltaTime);
     }, {
-      priority: 1,
+      priority: 2,
       interval: 1000 // Update every second for production
     });
 
@@ -205,7 +205,7 @@ class GameEngine {
         const state = this.store.getState();
         const currentCombatState = state.combat.isInCombat;
         if (currentCombatState !== lastCombatState) {
-          Logger.log('Combat state changed from' + lastCombatState + 'to' + currentCombatState, 0, 'game-loop');
+          Logger.log('Combat state changed from ' + lastCombatState + ' to ' + currentCombatState, 0, 'game-loop');
           this.combatService.handleCombatStateChange(lastCombatState, currentCombatState, this.gameLoop);
           lastCombatState = currentCombatState;
         }

@@ -1,23 +1,34 @@
+import Logger from '../utils/Logger';
 import { enemyCatalog } from '../../data/enemyCatalog';
 
 // Factory for creating enemy instances with base stats
 export class EnemyFactory {
   static create(type, options = {}) {
     const def = enemyCatalog[type];
-    if (!def) return null;
+
+    if (!def) {
+      Logger.log(`Enemy type not found in catalog: ${type}`, 2, 'factory');
+      return null;
+    }
+
     // Clone base definition
     const enemy = {
       id: null,           // to be set by spawner
       type,
-      name: def.name,
-      avatar: def.avatar,
-      health: def.baseHealth,
-      maxHealth: def.baseHealth,
-      attack: def.baseAttack,
-      speed: def.speed,
+      name: def.name || 'Unknown Enemy',
+      avatar: def.avatar || 'default.png',
+      health: def.baseHealth || 50,
+      maxHealth: def.baseHealth || 50,
+      attack: def.baseAttack || 5,
+      speed: def.speed || 1.0,
+      // Attack pattern and delay configuration
+      attackPattern: def.attackPattern || 'normal',
+      attackDelayRange: def.attackDelayRange || [2000, 5000],
       // additional properties can be added here
       ...options         // override or extend stats
     };
+
+    Logger.log(`Creating enemy type: ${type}`, 0, 'factory');
     return enemy;
   }
 }

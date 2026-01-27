@@ -7,6 +7,8 @@ export const playerData = {
   baseAttack: 16,
   health: 120,
   attack: 16,
+  attackCooldown: 2000, // Time in milliseconds between player attacks
+  lastAttackTime: 0, // Timestamp of last player attack
   level: 1,
   exp: 0,
   stats: {

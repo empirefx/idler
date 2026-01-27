@@ -1,7 +1,16 @@
 import React from 'react';
 
 const ProgressBar = ({ value, max }) => {
-  const percent = Math.round((value / max) * 100);
+  // Handle undefined/null values to prevent NaN
+  const safeValue = Number(value) || 0;
+  const safeMax = Number(max) || 100;
+  
+  // Prevent division by zero
+  if (safeMax <= 0) {
+    return <div className="progress-bar">Invalid max value</div>;
+  }
+  
+  const percent = Math.round((safeValue / safeMax) * 100);
   return (
     <div className="progress-bar">
       <div

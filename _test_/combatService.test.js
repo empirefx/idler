@@ -74,7 +74,7 @@ describe('CombatService', () => {
       expect.any(Function),
       {
         priority: 0, // Highest priority
-        interval: 500 // Every 500ms
+        interval: 100 // Every 100ms
       }
     );
   });
@@ -136,8 +136,106 @@ describe('CombatService', () => {
       expect.any(Function),
       {
         priority: 0, // Highest priority
-        interval: 500 // Every 500ms
+        interval: 100 // Every 100ms
       }
     );
+  });
+
+  describe('Player Attack Cooldown', () => {
+    beforeEach(() => {
+      mockStore.getState.mockReturnValue({
+        places: {
+          currentPlaceId: 'village_center',
+          village_center: {
+            spawn: {
+              drops: [
+                { itemId: 'apple', dropRate: 0.5 },
+                { itemId: 'wood', dropRate: 0.3 }
+              ]
+            }
+          }
+        },
+        enemies: {
+          byId: {
+            enemy1: {
+              id: 'enemy1',
+              placeId: 'village_center'
+            }
+          }
+        },
+        player: {
+          baseAttack: 16,
+          attackCooldown: 1000,
+          lastAttackTime: 0
+        }
+      });
+    });
+
+    it('should respect attack cooldown', () => {
+      const now = Date.now();
+      
+      // Update mock to return player with recent attack time
+      mockStore.getState.mockReturnValue({
+        player: {
+          baseAttack: 16,
+          attackCooldown: 1000,
+          lastAttackTime: now - 500 // 500ms ago (less than 1000ms cooldown)
+        }
+      });
+      
+      const enemies = [
+        { id: 'enemy1', placeId: 'village_center', health: 50 }
+      ];
+
+      CombatService.handlePlayerAttack(enemies);
+
+      // Should not attack since cooldown hasn't elapsed
+      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+        'enemies/damageEnemy',
+        expect.any(Object)
+      );
+    });
+
+    it('should attack when cooldown has elapsed', () => {
+      const now = Date.now();
+      
+      // Update mock to return player with old attack time
+      mockStore.getState.mockReturnValue({
+        player: {
+          baseAttack: 16,
+          attackCooldown: 1000,
+          lastAttackTime: now - 1500 // 1500ms ago (more than 1000ms cooldown)
+        }
+      });
+      
+      const enemies = [
+        { id: 'enemy1', placeId: 'village_center', health: 50 }
+      ];
+
+      CombatService.handlePlayerAttack(enemies);
+
+      // Should attack since cooldown has elapsed
+      expect(mockStore.dispatch).toHaveBeenCalledWith({
+        type: 'enemies/damageEnemy',
+        payload: { id: 'enemy1', amount: 16 }
+      });
+
+      // Should update last attack time
+      const updateCalls = mockStore.dispatch.mock.calls.filter(
+        call => call[0].type === 'player/updateLastAttackTime'
+      );
+      expect(updateCalls.length).toBe(1);
+    });
+
+    it('should not attack when no enemies present', () => {
+      const enemies = [];
+
+      CombatService.handlePlayerAttack(enemies);
+
+      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+        'enemies/damageEnemy',
+        expect.any(Object)
+      );
+    });
   });
 });

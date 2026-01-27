@@ -12,7 +12,16 @@ const enemiesSlice = createSlice({
   reducers: {
     addEnemy(state, action) {
       const { placeId, enemy } = action.payload;
-      state.byId[enemy.id] = { ...enemy, placeId };
+      state.byId[enemy.id] = {
+        ...enemy,
+        placeId,
+        nextAttackTime: enemy.nextAttackTime || 0,
+        attackDelayRange: enemy.attackDelayRange || [2000, 5000],
+        attackPattern: enemy.attackPattern || 'normal',
+        countdown: enemy.countdown || 0,
+        initialAttackDelay: enemy.initialAttackDelay || 0,
+        isCountdownActive: enemy.isCountdownActive || false
+      };
       state.allIds.push(enemy.id);
     },
     removeEnemy(state, action) {
@@ -46,10 +55,72 @@ const enemiesSlice = createSlice({
         }
       }
     },
+    // Update enemy's next attack time
+    updateEnemyAttackTime(state, action) {
+      const { id, nextAttackTime } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy) {
+        enemy.nextAttackTime = nextAttackTime;
+      }
+    },
+    // Update enemy countdown by deltaTime (in seconds from game loop)
+    updateEnemyCountdown(state, action) {
+      const { id, deltaTime } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy && enemy.isCountdownActive && enemy.countdown > 0) {
+        // Convert deltaTime from seconds to milliseconds
+        enemy.countdown = Math.max(0, enemy.countdown - (deltaTime * 1000));
+      }
+    },
+    // Reset enemy countdown after attack (generate new random delay)
+    resetEnemyCountdown(state, action) {
+      const { id } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy && enemy.attackDelayRange) {
+        const [minDelay, maxDelay] = enemy.attackDelayRange;
+        enemy.countdown = Math.random() * (maxDelay - minDelay) + minDelay;
+      }
+    },
+    // Set countdown activation state
+    setCountdownActive(state, action) {
+      const { id, isActive } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy) {
+        enemy.isCountdownActive = isActive;
+      }
+    },
+    // Initialize countdown with specific value
+    initializeCountdown(state, action) {
+      const { id, countdown } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy) {
+        enemy.countdown = countdown;
+      }
+    },
+    // Initialize countdowns for all enemies at a specific place
+    initializeCountdownsForPlace(state, action) {
+      const { placeId, baseTimestamp } = action.payload;
+      const placeEnemies = Object.values(state.byId).filter(
+        enemy => enemy.placeId === placeId &&
+                 enemy.attackPattern === 'staggered' &&
+                 !enemy.isCountdownActive
+      );
+
+      // Only initialize INACTIVE enemies
+      placeEnemies.forEach(enemy => {
+        if (enemy.attackDelayRange) {
+          const [minDelay, maxDelay] = enemy.attackDelayRange;
+          enemy.countdown = Math.random() * (maxDelay - minDelay) + minDelay;
+          enemy.isCountdownActive = true;
+          enemy.countdownStartTime = baseTimestamp;
+        }
+      });
+    },
+
   }
 });
 
-export const { addEnemy, removeEnemy, removeEnemiesByPlace, damageEnemy } = enemiesSlice.actions;
+export const { addEnemy, removeEnemy, removeEnemiesByPlace, damageEnemy, updateEnemyAttackTime, updateEnemyCountdown, resetEnemyCountdown, setCountdownActive, initializeCountdown, initializeCountdownsForPlace } = enemiesSlice.actions;
 
 // Selectors
 const selectEnemiesState = (state) => state.enemies;

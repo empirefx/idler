@@ -10,12 +10,30 @@ class BaseSpawner {
     this.config = config;
     this.eventBusService = eventBusService;
   }
-  createEnemy() {
+
+  createEnemy(enemyType = null) {
     // Unique ID: pool + timestamp + random suffix
     const suffix = Math.random().toString(36).substring(2, 8);
-    const id = `${this.config.pool}-${Date.now()}-${suffix}`;
+    const poolType = enemyType || this.config.pool;
+    const id = `${poolType}-${Date.now()}-${suffix}`;
+
     // Build stats from EnemyFactory, fallback to minimal if missing
-    const baseStats = EnemyFactory.create(this.config.pool) || { type: this.config.pool };
+    const baseStats = EnemyFactory.create(poolType);
+
+    if (!baseStats) {
+      Logger.log(`Failed to create enemy of type: ${poolType}`, 2, 'spawn');
+      return {
+        id,
+        type: poolType,
+        name: 'Unknown Enemy',
+        avatar: 'default.png',
+        health: 50,
+        maxHealth: 50,
+        attack: 5,
+        speed: 1.0
+      };
+    }
+
     return { ...baseStats, id };
   }
 }
@@ -68,6 +86,37 @@ export class WaveSpawner extends BaseSpawner {
     this.spawnWave();
   }
 
+  // Select enemy type from pool configuration
+  selectEnemyFromPool() {
+    if (Array.isArray(this.config.pool)) {
+      // Support multiple enemy types (pool concept)
+      return this.config.pool[Math.floor(Math.random() * this.config.pool.length)];
+    }
+    // Fallback to single pool type
+    return this.config.pool;
+  }
+
+  // Calculate random delay between min and max values
+  randomBetween(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  // Calculate initial attack delay for staggered enemies (random between 2-5 seconds)
+  calculateInitialAttackDelay(index) {
+    if (!this.config.attackPattern || this.config.attackPattern.type !== 'staggered') {
+      return 0;
+    }
+
+    // Generate random delay between minDelay and maxDelay (2-5 seconds default)
+    const [minDelay, maxDelay] = [
+      this.config.attackPattern.minDelay || 2000,
+      this.config.attackPattern.maxDelay || 5000
+    ];
+
+    // Random delay for each enemy
+    return Math.random() * (maxDelay - minDelay) + minDelay;
+  }
+
   spawnWave() {
     if (this.waveActive) return;
     this.waveActive = true;
@@ -84,8 +133,26 @@ export class WaveSpawner extends BaseSpawner {
       }
     };
     this.eventBusService.on(deathEvent, handler);
+
     for (let i = 0; i < count; i++) {
-      const enemy = this.createEnemy();
+      // Support multiple enemy types from pool
+      const enemyType = this.selectEnemyFromPool();
+      const enemy = this.createEnemy(enemyType);
+
+      // Initialize staggered attack timing
+      if (this.config.attackPattern?.type === 'staggered') {
+        const initialDelay = this.calculateInitialAttackDelay(i);
+        enemy.nextAttackTime = Date.now() + initialDelay;
+        enemy.countdown = initialDelay;
+        enemy.initialAttackDelay = initialDelay;
+        enemy.attackDelayRange = [
+          this.config.attackPattern.minDelay || 2000,
+          this.config.attackPattern.maxDelay || 5000
+        ];
+        enemy.attackPattern = 'staggered';
+        enemy.isCountdownActive = false; // Will be activated when combat starts
+      }
+
       Logger.log(`Spawned enemy ${enemy.id} at ${this.placeId}`, 0, 'spawn');
       this.eventBusService.emit('spawnEnemy', { placeId: this.placeId, enemy });
     }
@@ -108,6 +175,7 @@ export default class SpawnService {
     this.currentPlaceId = null; // Track current place
     this.eventBusService.on('enterPlace', (placeId) => this.onEnterPlace(placeId));
   }
+
   onEnterPlace(placeId) {
     Logger.log(`Entering place ${placeId}`, 0, 'spawn');
     if (placeId === this.currentPlaceId) return;          // No-op if same place
