@@ -221,18 +221,27 @@ export const CombatService = {
     );
 
     // Allow ALL ready enemies to attack simultaneously
+    // Allow ALL ready enemies to attack simultaneously at diferent delay times
     batch(() => {
       readyEnemies.forEach(enemy => {
 
         // Enemy attacks player (5 damage)
+        // Get enemy's actual attack damage
+        const enemyDamage = enemy.attack || enemy.baseAttack || 5;
+
+        // Enemy attacks player with their actual damage
         this.store.dispatch({
           type: 'player/damagePlayer',
           payload: { amount: 5 }
+          payload: { amount: enemyDamage }
         });
         this.store.dispatch(enemyAttacked(enemy.id, 'player', 5));
         this.store.dispatch(playerDamaged(enemy.id, 'enemy', 'player', 5, 'received'));
+        this.store.dispatch(enemyAttacked(enemy.id, 'player', enemyDamage));
+        this.store.dispatch(playerDamaged(enemy.id, 'enemy', 'player', enemyDamage, 'received'));
 
         Logger.log(`${enemy.id} attacks player (countdown-based)`, 0, 'combat');
+        Logger.log(`${enemy.name || enemy.id} attacks player for ${enemyDamage} damage (countdown-based)`, 0, 'combat');
 
         // Reset countdown for next attack (generate new random delay)
         this.store.dispatch({
