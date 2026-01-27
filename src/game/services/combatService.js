@@ -139,13 +139,13 @@ export const CombatService = {
       // Update timestamp FIRST to prevent double attacks
       this.store.dispatch(updateLastAttackTime({ timestamp: now }));
 
-      // Dispatch all attack actions
+      // Dispatch damage action
       this.store.dispatch({
         type: 'enemies/damageEnemy',
         payload: { id: targetEnemy.id, amount: damage }
       });
-      this.store.dispatch(playerDamaged('player', 'player', targetEnemy.id, damage, 'dealt'));
-      this.store.dispatch(enemyAttacked('player', targetEnemy.id, damage));
+      // Dispatch single consolidated player attack log with pre-captured enemy name
+      this.store.dispatch(playerDamaged('player', 'player', targetEnemy.id, damage, 'dealt', enemySnapshot.name));
 
       Logger.log(`Player attacks ${enemySnapshot.name || targetEnemy.id} for ${damage} damage`, 0, 'combat');
 

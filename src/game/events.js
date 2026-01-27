@@ -12,9 +12,9 @@ export const workerCreatedItem = (workerId, itemType) => ({
   payload: { workerId, itemType }
 });
 
-export const enemyAttacked = (attackerId, targetId, damage) => ({
+export const enemyAttacked = (attackerId, targetId, damage, attackerName = null, targetName = null) => ({
   type: ENEMY_ATTACKED,
-  payload: { attackerId, targetId, damage }
+  payload: { attackerId, targetId, damage, attackerName, targetName }
 });
 
 export const workerAssigned = (workerId, workerName, buildingId, buildingName) => ({
@@ -32,7 +32,7 @@ export const locationChanged = (fromPlace, toPlace) => ({
   payload: { fromPlace, toPlace }
 });
 
-export const playerDamaged = (attackerId, attackerType, targetId, damage, damageType) => ({
+export const playerDamaged = (attackerId, attackerType, targetId, damage, damageType, targetName = null) => ({
   type: PLAYER_DAMAGED,
-  payload: { attackerId, attackerType, targetId, damage, damageType }
+  payload: { attackerId, attackerType, targetId, damage, damageType, targetName }
 });

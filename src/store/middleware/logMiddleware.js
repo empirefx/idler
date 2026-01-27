@@ -29,14 +29,15 @@ const logMiddleware = store => next => action => {
       
 case ENEMY_ATTACKED:
       const state = store.getState();
-      const { attackerId, targetId, damage: enemyDamage } = action.payload;
+      const { attackerId, targetId, damage: enemyDamage, attackerName, targetName: enemyTargetName } = action.payload;
 
-      const attackerName = getEnemyDisplayName(state, attackerId);
-      const targetName = getEnemyDisplayName(state, targetId);
+      // Use pre-captured names or fallback to state lookup
+      const finalAttackerName = attackerName || getEnemyDisplayName(state, attackerId);
+      const finalTargetName = enemyTargetName || getEnemyDisplayName(state, targetId);
       
       store.dispatch(
         addLog({
-          message: `${attackerName} hit ${targetName} for ${enemyDamage} HP`,
+          message: `${finalAttackerName} hit ${finalTargetName} for ${enemyDamage} HP`,
           category: 'combat'
         })
       );
@@ -70,25 +71,21 @@ case ENEMY_ATTACKED:
       break;
       
 case PLAYER_DAMAGED:
-      const { attackerId: playerAttackerId, attackerType, targetId: playerTargetId, damage, damageType } = action.payload;
+      const { attackerId: playerAttackerId, attackerType, targetId: playerTargetId, damage, damageType, targetName: playerTargetName } = action.payload;
       const currentState = store.getState();
       
       if (damageType === 'dealt') {
-        const targetName = getEnemyDisplayName(currentState, playerTargetId);
+        // Use pre-captured name or fallback to state lookup
+        const finalTargetName = playerTargetName || getEnemyDisplayName(currentState, playerTargetId);
         store.dispatch(
           addLog({
-            message: `Player dealt ${damage} damage to ${targetName}`,
+            message: `Player dealt ${damage} damage to ${finalTargetName}`,
             category: 'combat'
           })
         );
       } else if (damageType === 'received') {
         const attackerName = getEnemyDisplayName(currentState, playerAttackerId);
-        store.dispatch(
-          addLog({
-            message: `Player received ${damage} damage from ${attackerName}`,
-            category: 'combat'
-          })
-        );
+        // do nothing for now...
       }
       break;
       
