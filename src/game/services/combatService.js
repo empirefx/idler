@@ -62,7 +62,7 @@ export const CombatService = {
         if (enemy.isCountdownActive && enemy.countdown > 0) {
           this.store.dispatch({
             type: 'enemies/updateEnemyCountdown',
-            payload: { id: enemy.id, deltaTime }
+            payload: { id: enemy.id, deltaTime: deltaTime * 1000 }
           });
         }
        });
