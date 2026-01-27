@@ -32,6 +32,7 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
 
   return (
     <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''}`}>
+    <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''}`} data-enemy-id={entity.id}>
       <div className="block-gradient"></div>
       <img src={`assets/avatars/${avatarFolder}/${avatar || 'default.png'}`} alt={name || 'Unknown Entity'} draggable="false"/>
       <h3>{name || 'Unknown Entity'}</h3>
