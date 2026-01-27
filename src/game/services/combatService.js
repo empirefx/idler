@@ -57,24 +57,24 @@ export const CombatService = {
         enemy => enemy.placeId === currentPlaceId
       );
 
-       // Update countdowns for all enemies at current place
-       currentEnemies.forEach(enemy => {
-         if (enemy.isCountdownActive && enemy.countdown > 0) {
-           this.store.dispatch({
-             type: 'enemies/updateEnemyCountdown',
-             payload: { id: enemy.id, deltaTime }
-           });
-         }
+      // Update countdowns for all enemies at current place
+      currentEnemies.forEach(enemy => {
+        if (enemy.isCountdownActive && enemy.countdown > 0) {
+          this.store.dispatch({
+            type: 'enemies/updateEnemyCountdown',
+            payload: { id: enemy.id, deltaTime }
+          });
+        }
        });
 
-        // Handle enemy attacks based on countdowns
-        this.handleStaggeredAttacks(currentEnemies);
+      // Handle enemy attacks based on countdowns
+      this.handleStaggeredAttacks(currentEnemies);
 
-        // Player attacks with cooldown system
-        this.handlePlayerAttack(currentEnemies);
+      // Player attacks with cooldown system
+      this.handlePlayerAttack(currentEnemies);
     }, {
       priority: 0, // Highest priority
-      interval: 200 // More frequent updates for smooth countdown
+      interval: 1000 // Update every second to match deltaTime timing
     });
     Logger.log('Combat registration result:', 0, 'combat', result);
   },
