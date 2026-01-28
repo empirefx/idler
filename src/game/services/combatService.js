@@ -149,20 +149,22 @@ export const CombatService = {
 
       Logger.log(`Player attacks ${enemySnapshot.name || targetEnemy.id} for ${damage} damage`, 0, 'combat');
 
-// Check if enemy died and emit death event
+      // Check if enemy died and emit death event
       setTimeout(() => {
         const updatedEnemy = this.store.getState().enemies.byId[targetEnemy.id];
         if (updatedEnemy && updatedEnemy.isDead) {
-          // Enemy died, handle drops and emit death event for respawn
-          this.eventBusService.emit(`enemyDead:${enemySnapshot.placeId}`, {
-            placeId: enemySnapshot.placeId,
-            enemy: enemySnapshot  // Use snapshot with complete data
-          });
+          // Enemy died, handle drops
           Logger.log(`${enemySnapshot.name || enemySnapshot.id} died, emitting death event`, 0, 'combat');
 
           // Handle enemy drops and experience gain
           this.handleEnemyDrops(enemySnapshot);
           this.handleEnemyExpGain(enemySnapshot);
+
+          // Only CombatService emits enemyDead
+          this.eventBusService.emit(`enemyDead:${enemySnapshot.placeId}`, {
+            placeId: enemySnapshot.placeId,
+            enemy: enemySnapshot
+          });
           
           // Check if all enemies in this place are dead and trigger cleanup
           this.checkAllEnemiesDead(enemySnapshot.placeId);
@@ -284,21 +286,21 @@ export const CombatService = {
   // Calculate random delay between min and max values
   randomBetween(min, max) {
     return Math.random() * (max - min) + min;
-},
+  },
 
-  // Check if all enemies in a place are dead and trigger cleanup
   checkAllEnemiesDead(placeId) {
     const state = this.store.getState();
-    const enemiesInPlace = Object.values(state.enemies.byId).filter(enemy => enemy.placeId === placeId);
-    const allDead = enemiesInPlace.length > 0 && enemiesInPlace.every(enemy => enemy.isDead);
-    
-    if (allDead) {
-      this.store.dispatch({
-        type: 'enemies/removeDeadEnemiesByPlace',
-        payload: { placeId }
-      });
-      Logger.log(`All enemies in place ${placeId} are dead, removing dead enemies`, 0, 'combat');
-    }
+    const enemiesInPlace = Object.values(state.enemies.byId).filter(e => e.placeId === placeId);
+    const allDead = enemiesInPlace.length > 0 && enemiesInPlace.every(e => e.isDead);
+
+    if (!allDead) return;
+
+    this.store.dispatch({
+      type: 'enemies/removeDeadEnemiesByPlace',
+      payload: { placeId }
+    });
+
+    Logger.log(`All enemies in place ${placeId} are dead`, 0, 'combat');
   },
 
   // Subscribe to combat state changes

@@ -1,4 +1,6 @@
-// Enemy Lifecycle Service - handles enemy death detection and event emission
+// Enemy Lifecycle Service - handles enemy death detection and cleanup
+import Logger from '../utils/Logger';
+
 export const EnemyLifecycleService = {
   // Track enemy state for death detection
   trackEnemyDeaths(state) {
@@ -10,16 +12,13 @@ export const EnemyLifecycleService = {
       if (!currentEnemyState[id]) {
         const enemy = lastEnemyState[id];
         const placeId = enemy.placeId;
-        
+
         Logger.log(`Enemy ${id} died at place ${placeId}`, 0, 'lifecycle');
         
         // Clean up staggered attack timers for dead enemies
         this.cleanupEnemyAttackTimers(enemy);
-        
-        // Emit death event
-        if (this.eventBusService && this.eventBusService.emit) {
-          this.eventBusService.emit(`enemyDead:${placeId}`, { placeId, enemy });
-        }
+
+        // Respawn logic is handled by CombatService when ALL are dead
       }
     });
     
@@ -27,16 +26,15 @@ export const EnemyLifecycleService = {
     this.lastEnemyState = currentEnemyState;
   },
 
-  // Clean up attack timers when enemy dies
   cleanupEnemyAttackTimers(enemy) {
     if (enemy.attackPattern === 'staggered') {
       Logger.log(`Cleaning up attack timers for dead enemy ${enemy.id}`, 0, 'lifecycle');
-      
+
       // Enemy is being removed from state, so no need to manually clean up timers
       // The Redux store will handle the cleanup when enemy is removed
-      
+
       // However, we can emit an event for other systems that might need to know
-      if (this.eventBusService && this.eventBusService.emit) {
+      if (this.eventBusService?.emit) {
         this.eventBusService.emit('enemyAttackTimersCleanup', { enemyId: enemy.id });
       }
     }
@@ -44,7 +42,7 @@ export const EnemyLifecycleService = {
 
   // Handle enemy death in combat context (additional cleanup)
   handleEnemyCombatDeath(enemy) {
-    if (enemy && enemy.attackPattern === 'staggered') {
+    if (enemy?.attackPattern === 'staggered') {
       Logger.log(`Handling combat death for staggered enemy ${enemy.id}`, 0, 'lifecycle');
       
       // Any additional combat-specific cleanup can go here

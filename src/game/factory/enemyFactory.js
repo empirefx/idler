@@ -11,9 +11,8 @@ export class EnemyFactory {
       return null;
     }
 
-    // Clone base definition
     const enemy = {
-      id: null,           // to be set by spawner
+      id: crypto.randomUUID(), // ALWAYS unique
       type,
       name: def.name || 'Unknown Enemy',
       avatar: def.avatar || 'default.png',
@@ -23,9 +22,9 @@ export class EnemyFactory {
       speed: def.speed || 1.0,
       // Attack pattern and delay configuration
       attackPattern: def.attackPattern || 'normal',
-      attackDelayRange: def.attackDelayRange || [2000, 5000],
+      attackDelayRange: [...(def.attackDelayRange || [2000, 5000])],
       // additional properties can be added here
-      ...options         // override or extend stats
+      ...options
     };
 
     Logger.log(`Creating enemy type: ${type}`, 0, 'factory');

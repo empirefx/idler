@@ -15,6 +15,8 @@ export const NavigationService = {
       // Emit location changed event for logging
       if (dispatch && typeof dispatch === 'function') {
         dispatch(locationChanged(previousPlaceId, currentPlaceId));
+
+        Logger.log(`Player moves from ${previousPlaceId} to ${currentPlaceId}`, 0, 'navigation');
         
         // Stop combat when moving to any different location
         const currentCombatState = state.combat?.isInCombat;
@@ -32,19 +34,12 @@ export const NavigationService = {
       Logger.log(`Checking for enemies to despawn from ${previousPlaceId}. Enemies found: ${enemiesToDespawn.length}`, 0, 'navigation');
       if (enemiesToDespawn.length > 0) {
         Logger.log(`Despawning ${enemiesToDespawn.length} enemies from place ${previousPlaceId}`, 0, 'navigation');
+
         // Dispatch action to remove enemies from previous place
         if (dispatch && typeof dispatch === 'function') {
           dispatch(removeEnemiesByPlace(previousPlaceId));
         }
-        
-        // Emit death events for each despawned enemy
-        enemiesToDespawn.forEach(id => {
-          const enemy = previousEnemyState[id];
-          const placeId = enemy.placeId;
-          if (this.eventBus && this.eventBus.emit) {
-            this.eventBus.emit(`enemyDead:${placeId}`, { placeId, enemy });
-          }
-        });
+
       } else {
         Logger.log(`No enemies to despawn from ${previousPlaceId}`, 0, 'navigation');
       }

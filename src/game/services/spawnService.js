@@ -2,200 +2,159 @@ import Logger from '../utils/Logger';
 import EnemyFactory from '../factory/enemyFactory';
 import { placesData } from '../../data/places';
 
-// Base spawner class for all spawner types
-// Handles the creation and management of enemies
 class BaseSpawner {
-  constructor(placeId, config, eventBusService) {
+  #isDestroyed = false; // Flag to track if the spawner is destroyed
+  #abortController = null; // Abort controller for cleanup
+
+  constructor(placeId, config, eventBus) {
     this.placeId = placeId;
     this.config = config;
-    this.eventBusService = eventBusService;
+    this.eventBus = eventBus;
   }
 
-  createEnemy(enemyType = null) {
-    // Unique ID: pool + timestamp + random suffix
-    const suffix = Math.random().toString(36).substring(2, 8);
-    const poolType = enemyType || this.config.pool;
-    const id = `${poolType}-${Date.now()}-${suffix}`;
+  // Create an enemy instance
+  createEnemy(type) {
+    // Generate a unique ID for the enemy
+    const id = `${type}-${Date.now()}-${crypto.randomUUID().slice(0, 6)}`;
+    const base = EnemyFactory.create(type);
 
-    // Build stats from EnemyFactory, fallback to minimal if missing
-    const baseStats = EnemyFactory.create(poolType);
+    // Create the enemy object
+    const enemy = base
+      ? { ...base, id }
+      : { id, type, name: 'Unknown', health: 50, maxHealth: 50, attack: 5, speed: 1 };
 
-    if (!baseStats) {
-      Logger.log(`Failed to create enemy of type: ${poolType}`, 2, 'spawn');
-      return {
-        id,
-        type: poolType,
-        name: 'Unknown Enemy',
-        avatar: 'default.png',
-        health: 50,
-        maxHealth: 50,
-        attack: 5,
-        speed: 1.0
-      };
+    if (enemy.attackPattern === 'staggered') {
+      const [min, max] = enemy.attackDelayRange || [1000, 2000];
+      const delay = Math.random() * (max - min) + min;
+      enemy.nextAttackTime = Date.now() + delay;
+      enemy.countdown = delay;
     }
 
-    return { ...baseStats, id };
+    return enemy;
+  }
+
+  /**
+   * Listen for enemy deaths and call the callback when all enemies are dead
+   * @param {Function} onAllDead - Callback function to call when all enemies are dead
+   * @returns {AbortController} Abort controller for cleanup
+   */
+  listenDeaths(onAllDead) {
+    this.#abortController?.abort();
+    this.#abortController = new AbortController();
+
+    return this.eventBus.on(
+      `enemyDead:${this.placeId}`,
+      onAllDead,
+      { signal: this.#abortController.signal }
+    );
+  }
+
+  // Destroy the spawner and clean up resources
+  destroy() {
+    this.#isDestroyed = true;
+    this.#abortController?.abort();
+  }
+
+  get isDestroyed() {
+    return this.#isDestroyed;
   }
 }
 
-// Single spawner class for single enemy spawns
-// Handles the creation and management of a single enemy
-export class SingleSpawner extends BaseSpawner {
-  constructor(placeId, config, eventBusService) {
-    super(placeId, config, eventBusService);
-    this.hasAlive = false;
-  }
-
-  start() {
-    this.spawnOne();
-  }
-
-  spawnOne() {
-    if (this.hasAlive) return;
-    this.hasAlive = true;
-    const enemy = this.createEnemy();
-    Logger.log(`Spawned enemy ${enemy.id} at ${this.placeId}`, 0, 'spawn');
-    this.eventBusService.emit('spawnEnemy', { placeId: this.placeId, enemy });
-    const deathEvent = `enemyDead:${this.placeId}`;
-    const handler = () => {
-      this.eventBusService.handlers[deathEvent] = (this.eventBusService.handlers[deathEvent] || []).filter(h => h !== handler);
-      this.hasAlive = false;
-      setTimeout(() => this.spawnOne(), this.config.respawnDelay * 1000);
-    };
-    this.eventBusService.on(deathEvent, handler);
-  }
-
-  stop() {
-    // Reset single-spawn flag and clear death handlers
-    this.hasAlive = false;
-    const deathEvent = `enemyDead:${this.placeId}`;
-    // Remove all handlers for this event
-    delete this.eventBusService.handlers[deathEvent];
-  }
-}
-
-// Wave spawner class for wave enemy spawns
-// Handles the creation and management of a wave of enemies
 export class WaveSpawner extends BaseSpawner {
-  constructor(placeId, config, eventBusService) {
-    super(placeId, config, eventBusService);
-    this.waveActive = false;
-  }
+  #active = false;
+  #respawnTimer = null;
+  #aliveIds = new Set(); // Set to track alive enemy IDs
 
   start() {
-    this.spawnWave();
+    if (this.#active || this.isDestroyed) return;
+    this.#active = true;
+    this.#spawnBatch();
   }
 
-  // Select enemy type from pool configuration
-  selectEnemyFromPool() {
-    if (Array.isArray(this.config.pool)) {
-      // Support multiple enemy types (pool concept)
-      return this.config.pool[Math.floor(Math.random() * this.config.pool.length)];
-    }
-    // Fallback to single pool type
-    return this.config.pool;
-  }
+  // Spawn a batch of enemies
+  #spawnBatch() {
+    const pool = Array.isArray(this.config.pool)
+      ? this.config.pool
+      : [this.config.pool];
 
-  // Calculate initial attack delay for staggered enemies (random between 2-5 seconds)
-  calculateInitialAttackDelay(index) {
-    if (!this.config.attackPattern || this.config.attackPattern.type !== 'staggered') {
-      return 0;
-    }
-
-    // Generate random delay between minDelay and maxDelay (2-5 seconds default)
-    const [minDelay, maxDelay] = [
-      this.config.attackPattern.minDelay || 2000,
-      this.config.attackPattern.maxDelay || 5000
-    ];
-
-    // Random delay for each enemy
-    return Math.random() * (maxDelay - minDelay) + minDelay;
-  }
-
-  spawnWave() {
-    if (this.waveActive) return;
-    this.waveActive = true;
-    const [min, max] = this.config.waveSize;
+    const [min, max] = this.config.waveSize || [1, 1];
     const count = Math.floor(Math.random() * (max - min + 1)) + min;
-    let killed = 0;
-    const deathEvent = `enemyDead:${this.placeId}`;
-    const handler = () => {
-      killed++;
-      if (killed >= count) {
-        this.eventBusService.handlers[deathEvent] = (this.eventBusService.handlers[deathEvent] || []).filter(h => h !== handler);
-        this.waveActive = false;
-        setTimeout(() => this.spawnWave(), this.config.respawnDelay * 1000);
-      }
-    };
-    this.eventBusService.on(deathEvent, handler);
 
+    this.#aliveIds.clear(); // Clear the set of alive enemy IDs
+
+    // Listen for enemy deaths and call the callback when all enemies are dead
+    this.listenDeaths(({ enemy }) => {
+      if (!enemy?.id) return; // Safety check
+
+      this.#aliveIds.delete(enemy.id);
+      if (this.#aliveIds.size > 0) return;
+      this.#active = false;
+      this.#scheduleRespawn();
+    });
+
+    // 1. Clear the set of alive enemy IDs
+    // 2. Listen for enemy deaths and call the callback when all enemies are dead
+    // 3. Spawn a batch of enemies
+    // 4. Add each enemy to the set of alive enemy IDs
+    // 5. Emit an event to notify other systems that an enemy has been spawned
     for (let i = 0; i < count; i++) {
-      // Support multiple enemy types from pool
-      const enemyType = this.selectEnemyFromPool();
-      const enemy = this.createEnemy(enemyType);
+      const type = pool[Math.floor(Math.random() * pool.length)];
+      const enemy = this.createEnemy(type);
+      this.#aliveIds.add(enemy.id);
 
-      // Initialize staggered attack timing
-      if (this.config.attackPattern?.type === 'staggered') {
-        const initialDelay = this.calculateInitialAttackDelay(i);
-        enemy.nextAttackTime = Date.now() + initialDelay;
-        enemy.countdown = initialDelay;
-        enemy.initialAttackDelay = initialDelay;
-
-        // Store attack delay range for staggered attacks
-        // These values determine the random delay between enemy attacks (in milliseconds)
-        // CombatService will read these values to generate random attack timings
-        enemy.attackDelayRange = [
-          this.config.attackPattern.minDelay || 2000,
-          this.config.attackPattern.maxDelay || 5000
-        ];
-        enemy.attackPattern = 'staggered';
-        enemy.isCountdownActive = false; // Will be activated when combat starts
-      }
-
-      Logger.log(`Spawned enemy ${enemy.id} at ${this.placeId}`, 0, 'spawn');
-      this.eventBusService.emit('spawnEnemy', { placeId: this.placeId, enemy });
+      Logger.log(`Spawned ${enemy.id} at ${this.placeId}`, 0, 'spawn');
+      this.eventBus.emit('spawnEnemy', { placeId: this.placeId, enemy });
     }
+  }
+
+  #scheduleRespawn() {
+    clearTimeout(this.#respawnTimer);
+    this.#respawnTimer = setTimeout(() => { // Schedule respawn after delay
+      if (!this.isDestroyed) this.start();
+    }, this.config.respawnDelay * 1000);
   }
 
   stop() {
-    // Reset wave state and clear death handlers
-    this.waveActive = false;
-    const deathEvent = `enemyDead:${this.placeId}`;
-    delete this.eventBusService.handlers[deathEvent];
+    this.#active = false;
+    clearTimeout(this.#respawnTimer);
   }
 }
 
-// Spawn service class for managing enemy spawns
-// Handles the creation and management of enemy spawns
 export default class SpawnService {
-  constructor(eventBusService) {
-    this.eventBusService = eventBusService;
-    this.spawners = {};        // Map placeId -> spawner
-    this.currentPlaceId = null; // Track current place
-    this.eventBusService.on('enterPlace', (placeId) => this.onEnterPlace(placeId));
+  #spawners = new Map();
+  #currentPlaceId = null;
+
+  constructor(eventBus) {
+    this.eventBus = eventBus;
+    this.eventBus.on('enterPlace', id => this.#onEnterPlace(id));
   }
 
-  onEnterPlace(placeId) {
-    Logger.log(`Entering place ${placeId}`, 0, 'spawn');
-    if (placeId === this.currentPlaceId) return;          // No-op if same place
-    // Stop previous place spawner
-    if (this.currentPlaceId && this.spawners[this.currentPlaceId]) {
-      this.spawners[this.currentPlaceId].stop();
-    }
-    this.currentPlaceId = placeId;
+  // Handle place entry
+  // 1. Stop the current spawner
+  // 2. Set the current place ID
+  // 3. Get the spawn configuration for the place
+  // 4. If the spawner doesn't exist, create it
+  // 5. Start the spawner
+  #onEnterPlace(placeId) {
+    if (placeId === this.#currentPlaceId) return;
+
+    this.#spawners.get(this.#currentPlaceId)?.stop();
+    this.#currentPlaceId = placeId;
+
     const config = placesData[placeId]?.spawn;
-    if (!config) {
-      Logger.log(`No spawn config found for place ${placeId}`, 0, 'spawn');
-      return;
+    if (!config) return;
+
+    if (!this.#spawners.has(placeId)) {
+      this.#spawners.set(placeId, new WaveSpawner(placeId, config, this.eventBus));
     }
-    Logger.log(`Creating spawner for place ${placeId} with config:`, 0, 'spawn', config);
-    // Lazy-create per-place spawner
-    if (!this.spawners[placeId]) {
-      this.spawners[placeId] = config.type === 'single'
-        ? new SingleSpawner(placeId, config, this.eventBusService)
-        : new WaveSpawner(placeId, config, this.eventBusService);
-    }
-    // Start (will no-op if already active)
-    this.spawners[placeId].start();
+
+    this.#spawners.get(placeId).start();
+  }
+
+  // Clean up all spawners
+  destroy() {
+    for (const s of this.#spawners.values()) s.destroy();
+    this.#spawners.clear();
+    this.#currentPlaceId = null;
   }
 }

@@ -18,8 +18,9 @@ export const placesData = {
     'background-image': 'forest_edge.jpg',
     buildings: [],
     spawn: {
-      type: 'single',
-      pool: 'forest_beast',
+      type: 'wave',
+      pool: ['forest_beast'],
+      waveSize: [1, 1],
       respawnDelay: 5,
       drops: [
         { itemId: 'apple', dropRate: 0.1 }
@@ -39,12 +40,6 @@ export const placesData = {
       pool: ['woodland_predator', 'forest_beast'], // Multiple enemy types - pool concept
       waveSize: [2, 4],
       respawnDelay: 8,
-      attackPattern: {
-        type: 'staggered',
-        minDelay: 100,
-        maxDelay: 200,
-        attackOrder: 'random'
-      },
       drops: [
         { itemId: 'ore', dropRate: 0.3 }
       ]
@@ -77,8 +72,9 @@ export const placesData = {
     'background-image': 'hunter_camp.jpg',
     buildings: [],
     spawn: {
-      type: 'single',
-      pool: 'trained_hunters',
+      type: 'wave',
+      pool: ['trained_hunters'],
+      waveSize: [1, 1],
       respawnDelay: 10,
       drops: []
     }
@@ -104,13 +100,7 @@ export const placesData = {
       type: 'wave',
       pool: ['ruins_undead', 'forest_beast'], // Multiple enemy types - pool concept
       waveSize: [3, 6],
-      respawnDelay: 15,
-      attackPattern: {
-        type: 'staggered',
-        minDelay: 200,
-        maxDelay: 700,
-        attackOrder: 'random'
-      },
+      respawnDelay: 10,
       drops: [
         { itemId: 'ore', dropRate: 0.5 },
         { itemId: 'apple', dropRate: 0.2 }
@@ -120,6 +110,6 @@ export const placesData = {
 };
 
 export const metadata = {
-  version: '1.0.9',
-  lastUpdated: '2025-04-23'
+  version: '2.0.0',
+  lastUpdated: '2025-01-28'
 }

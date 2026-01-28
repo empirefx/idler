@@ -13,6 +13,17 @@ import { SaveService } from '../services/SaveService';
 import { NavigationService } from '../services/NavigationService';
 import { EnemyLifecycleService } from '../services/EnemyLifecycleService';
 
+/**
+ * GameEngine: wires systems + runs game loop
+ * CombatService: controls combat state + wave end
+ * SpawnService: creates enemies + respawn timing
+ * EnemyLifecycleService: detects deaths + cleanup
+ * NavigationService: place changes
+ * ProductionService: building production
+ * InventoryService: item storage
+ * SaveService: persistence
+ * EventBusService: system messaging only
+ */
 class GameEngine {
   constructor(dispatch, store, {
     inventoryService = InventoryService,
@@ -183,19 +194,18 @@ class GameEngine {
       interval: 1000 // Update every second for production
     });
 
-    // Start combat system (now handled by CombatService)
-    // this.combatService.start(this.gameLoop);
-
     // Initialize and hook lifecycle services
     if (this.enemyLifecycleService && this.enemyLifecycleService.initialize) {
-      this.enemyLifecycleService.eventBusService = this.eventBusService;
+      this.enemyLifecycleService.eventBusService = null;
       this.enemyLifecycleService.initialize(this.store.getState());
       this.enemyLifecycleService.subscribeToEnemyChanges(this.store);
     }
+
     if (this.navigationService && this.navigationService.subscribeToPlaceChanges) {
       this.navigationService.eventBus = this.eventBusService;
       this.navigationService.subscribeToPlaceChanges(this.store);
     }
+
     // Subscribe to combat state changes
     if (this.combatService && this.combatService.handleCombatStateChange) {
       this.combatService.eventBusService = this.eventBusService;
