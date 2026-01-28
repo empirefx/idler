@@ -50,62 +50,71 @@ describe('WaveSpawner Staggered Attack Tests', () => {
     });
   });
 
-  describe('Random Delay Generation', () => {
-    it('should generate delays within specified range', () => {
-      const minDelay = 2000;
-      const maxDelay = 5000;
+  describe('Enemy Catalog Delay Integration', () => {
+    it('should use enemy catalog attackDelayRange instead of config values', () => {
+      const enemy = spawner.createEnemy('forest_beast');
       
-      for (let i = 0; i < 100; i++) {
-        const delay = spawner.randomBetween(minDelay, maxDelay);
-        expect(delay).toBeGreaterThanOrEqual(minDelay);
-        expect(delay).toBeLessThanOrEqual(maxDelay);
+      // Should use catalog values, not places.js attackPattern values
+      expect(enemy.attackDelayRange).toEqual(enemyCatalog.forest_beast.attackDelayRange);
+      expect(enemy.attackDelayRange).toEqual([100, 200]);
+    });
+
+    it('should calculate initial delays using enemy catalog ranges', () => {
+      vi.useFakeTimers({ now: 1000000 });
+      
+      const enemy = spawner.createEnemy('woodland_predator');
+      const [minDelay, maxDelay] = enemyCatalog.woodland_predator.attackDelayRange;
+      
+      expect(enemy.nextAttackTime).toBeGreaterThanOrEqual(1000000 + minDelay);
+      expect(enemy.nextAttackTime).toBeLessThanOrEqual(1000000 + maxDelay);
+      
+      vi.useRealTimers();
+    });
+  });
+
+  describe('Attack Delay Calculation with Enemy Catalog', () => {
+    it('should calculate delays based on enemy catalog ranges', () => {
+      vi.useFakeTimers({ now: 1000000 });
+      
+      // Test forest_beast delays
+      const forestBeast = spawner.createEnemy('forest_beast');
+      const [fbMin, fbMax] = enemyCatalog.forest_beast.attackDelayRange;
+      expect(forestBeast.nextAttackTime).toBeGreaterThanOrEqual(1000000 + fbMin);
+      expect(forestBeast.nextAttackTime).toBeLessThanOrEqual(1000000 + fbMax);
+      
+      // Test woodland_predator delays
+      const woodlandPredator = spawner.createEnemy('woodland_predator');
+      const [wpMin, wpMax] = enemyCatalog.woodland_predator.attackDelayRange;
+      expect(woodlandPredator.nextAttackTime).toBeGreaterThanOrEqual(1000000 + wpMin);
+      expect(woodlandPredator.nextAttackTime).toBeLessThanOrEqual(1000000 + wpMax);
+      
+      vi.useRealTimers();
+    });
+
+    it('should not override enemy catalog values', () => {
+      const enemy = spawner.createEnemy('forest_beast');
+      
+      // Should maintain catalog values, not fallback defaults
+      expect(enemy.attackDelayRange).not.toEqual([2000, 5000]);
+      expect(enemy.attackDelayRange).toEqual(enemyCatalog.forest_beast.attackDelayRange);
+    });
+
+    it('should handle enemies without staggered pattern', () => {
+      // Create an enemy without staggered pattern if available
+      const enemy = spawner.createEnemy('forest_beast');
+      
+      if (enemy.attackPattern !== 'staggered') {
+        expect(enemy.nextAttackTime).toBeUndefined();
+        expect(enemy.countdown).toBeUndefined();
+      } else {
+        // For staggered enemies, timing should be set
+        expect(enemy.nextAttackTime).toBeDefined();
+        expect(enemy.countdown).toBeDefined();
       }
     });
   });
 
-  describe('Initial Attack Delay Calculation', () => {
-    beforeEach(() => {
-      spawner.config = {
-        waveSize: [3, 6],
-        attackPattern: {
-          type: 'staggered',
-          minDelay: 2000,
-          maxDelay: 5000
-        }
-      };
-    });
-
-    it('should calculate staggered initial attack times', () => {
-      // Mock current time for predictable results
-      const mockTime = 1000000000000;
-      const originalDateNow = Date.now;
-      Date.now = vi.fn(() => mockTime);
-
-      try {
-        const enemyIndices = [0, 1, 2];
-        const attackTimes = enemyIndices.map(i => spawner.calculateInitialAttackDelay(i));
-        
-        // Should be different for each enemy index
-        expect(attackTimes[0]).not.toBe(attackTimes[1]);
-        expect(attackTimes[1]).not.toBe(attackTimes[2]);
-        
-        // Should be greater than or equal to mock time
-        attackTimes.forEach(time => {
-          expect(time).toBeGreaterThanOrEqual(mockTime);
-        });
-      } finally {
-        Date.now = originalDateNow;
-      }
-    });
-
-    it('should return 0 for non-staggered patterns', () => {
-      spawner.config.attackPattern = { type: 'normal' };
-      const delay = spawner.calculateInitialAttackDelay(0);
-      expect(delay).toBe(0);
-    });
-  });
-
-  describe('Enemy Creation with Staggered Configuration', () => {
+  describe('Enemy Creation with Enemy Catalog Integration', () => {
     beforeEach(() => {
       // Reset spawner config with simple single type for basic tests
       spawner.config = {
@@ -122,6 +131,46 @@ describe('WaveSpawner Staggered Attack Tests', () => {
       
       expect(enemy.attackDelayRange).toEqual(catalogEntry.attackDelayRange);
       expect(enemy.attackPattern).toBe(catalogEntry.attackPattern);
+    });
+
+    it('should not use places.js attackPattern overrides', () => {
+      // Ancient ruins used to have minDelay: 200, maxDelay: 700
+      // but now should use enemy catalog values
+      const enemy = spawner.createEnemy('ruins_undead');
+      
+      // Should use catalog values (200-600) not old places.js values (200-700)
+      expect(enemy.attackDelayRange).toEqual(enemyCatalog.ruins_undead.attackDelayRange);
+      expect(enemy.attackDelayRange).toEqual([200, 600]);
+    });
+
+    it('should handle single enemy mode correctly', () => {
+      // Test with single enemy pool
+      spawner.config = {
+        pool: ['trained_hunters'],
+        waveSize: [1, 1]
+      };
+      
+      expect(spawner.isSingleEnemy).toBe(true);
+      
+      const enemy = spawner.createEnemy('trained_hunters');
+      expect(enemy.type).toBe('trained_hunters');
+      expect(enemy.attackDelayRange).toEqual(enemyCatalog.trained_hunters.attackDelayRange);
+    });
+
+    it('should handle multiple enemy mode correctly', () => {
+      // Test with multiple enemy pool
+      spawner.config = {
+        pool: ['forest_beast', 'woodland_predator'],
+        waveSize: [2, 4]
+      };
+      
+      expect(spawner.isSingleEnemy).toBe(false);
+      
+      const enemy1 = spawner.createEnemy('forest_beast');
+      const enemy2 = spawner.createEnemy('woodland_predator');
+      
+      expect(enemy1.attackDelayRange).toEqual(enemyCatalog.forest_beast.attackDelayRange);
+      expect(enemy2.attackDelayRange).toEqual(enemyCatalog.woodland_predator.attackDelayRange);
     });
   });
 });

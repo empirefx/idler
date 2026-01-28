@@ -65,6 +65,25 @@ export class WaveSpawner extends BaseSpawner {
   #respawnTimer = null;
   #aliveIds = new Set(); // Set to track alive enemy IDs
 
+  // For testing purposes
+  constructor(placeId, config, eventBus) {
+    super(placeId, config, eventBus);
+  }
+
+  get isActive() {
+    return this.#active;
+  }
+
+  get isSingleEnemy() {
+    const pool = Array.isArray(this.config.pool) ? this.config.pool : [this.config.pool];
+    return pool.length === 1;
+  }
+
+  selectEnemyFromPool() {
+    const pool = Array.isArray(this.config.pool) ? this.config.pool : [this.config.pool];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
   start() {
     if (this.#active || this.isDestroyed) return;
     this.#active = true;
@@ -156,5 +175,22 @@ export default class SpawnService {
     for (const s of this.#spawners.values()) s.destroy();
     this.#spawners.clear();
     this.#currentPlaceId = null;
+  }
+
+  // Getters for testing purposes
+  get currentPlaceId() {
+    return this.#currentPlaceId;
+  }
+
+  get spawners() {
+    return Array.from(this.#spawners.keys());
+  }
+
+  getSpawner(placeId) {
+    return this.#spawners.get(placeId);
+  }
+
+  getCurrentSpawner() {
+    return this.#currentPlaceId ? this.#spawners.get(this.#currentPlaceId) : null;
   }
 }
