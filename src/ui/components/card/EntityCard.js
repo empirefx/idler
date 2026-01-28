@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ProgressBar from '../common/ProgressBar';
+import CircularProgressTimer from '../common/CircularProgressTimer';
 
 const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
 
@@ -16,48 +17,34 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
     );
   }
 
-  const { name, health = 0, maxHealth = 100, avatar = 'default.png', attackPattern, countdown, isCountdownActive } = entity;
+  // Memoize timer props to prevent unnecessary re-renders
+  const timerProps = useMemo(() => {
+    const { countdown, isCountdownActive, id } = entity;
+    return {
+      time: countdown || 0,
+      isRunning: Boolean(isCountdownActive && countdown > 0),
+      enemyId: id, // Track enemy for timer reset
+      onComplete: () => {
+        // Enemy is ready to attack - could trigger attack event here if needed
+      }
+    };
+  }, [entity.countdown, entity.isCountdownActive, entity.id]);
+
+  const { name, health = 0, maxHealth = 100, avatar = 'default.png', attackPattern } = entity;
 
   // Calculate display values based on countdown
   const isStaggered = attackPattern === 'staggered';
-  const canAttack = isStaggered && isCountdownActive && countdown !== undefined && countdown <= 0;
-  const displayTime = isStaggered && isCountdownActive && countdown > 0 ? (countdown / 1000).toFixed(1) : null;
-
-  // Color coding for countdown urgency
-  const getTimeColor = (time) => {
-    if (time <= 1) return '#ff4444'; // Red - very urgent
-    if (time <= 2) return '#ffaa00'; // Orange/Yellow - getting urgent
-    return '#44ff44'; // Green - safe
-  };
+  const canAttack = isStaggered && entity.isCountdownActive && entity.countdown !== undefined && entity.countdown <= 0;
 
   return (
-    <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''}`}>
     <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''}`} data-enemy-id={entity.id}>
       <div className="block-gradient"></div>
       <img src={`assets/avatars/${avatarFolder}/${avatar || 'default.png'}`} alt={name || 'Unknown Entity'} draggable="false"/>
       <h3>{name || 'Unknown Entity'}</h3>
       <ProgressBar value={Number(health)} max={Number(maxHealth)} />
 
-      {/* Attack indicator for staggered enemies with countdown display */}
-      {isStaggered && (
-        <div className="attack-indicator">
-          {canAttack ? (
-            <span className="attack-ready">⚔️ Ready to Attack</span>
-          ) : isCountdownActive && displayTime !== null ? (
-            <span className="attack-cooldown" style={{ color: getTimeColor(parseFloat(displayTime)) }}>
-              ⏱️ {displayTime}s
-            </span>
-          ) : isCountdownActive ? (
-            <span className="attack-preparing" style={{ color: '#44ff44' }}>
-              ⚡ Attacking...
-            </span>
-          ) : (
-            <span className="attack-waiting" style={{ color: '#888888' }}>
-              ⏸️ Waiting for combat...
-            </span>
-          )}
-        </div>
-      )}
+      {/* Attack timer for staggered enemies */}
+      {isStaggered && <CircularProgressTimer {...timerProps} />}
     </div>
   );
 };
