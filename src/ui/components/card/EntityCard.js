@@ -19,16 +19,18 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
 
   // Memoize timer props to prevent unnecessary re-renders
   const timerProps = useMemo(() => {
-    const { countdown, isCountdownActive, id } = entity;
+    const { countdown, isCountdownActive, id, maxCountdown } = entity;
+    console.log('COUNTDOWN: ' + countdown)
     return {
-      time: countdown || 0,
+      time: countdown,
+      maxTime: maxCountdown || countdown, // Use maxCountdown if available
       isRunning: Boolean(isCountdownActive && countdown > 0),
-      enemyId: id, // Track enemy for timer reset
+      enemyId: id,
       onComplete: () => {
         // Enemy is ready to attack - could trigger attack event here if needed
       }
     };
-  }, [entity.countdown, entity.isCountdownActive, entity.id]);
+  }, [entity.countdown, entity.isCountdownActive, entity.id, entity.maxCountdown]);
 
   const { name, health = 0, maxHealth = 100, avatar = 'default.png', attackPattern } = entity;
 

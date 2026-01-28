@@ -1,91 +1,16 @@
-/*
-Source - https://stackoverflow.com/questions/69481222/simple-countdown-circle-animation-with-pure-css
-Posted by Simon Tribus
-*/
 .timer {
-  background: -webkit-linear-gradient(left, var(--primary-color, #5081FF) 50%, var(--secondary-color, #eee) 50%);
-  border-radius: 100%;
-  height: calc(var(--size) * 1px);
-  width: calc(var(--size) * 1px);
-  position: relative;
-  animation: time calc(var(--duration) * 1s) steps(1000, start) forwards;
-  animation-play-state: var(--animation-state, running);
-  /*-webkit-mask: radial-gradient(transparent 50%,#000 50%);
-  mask: radial-gradient(transparent 50%,#000 50%);*/
-  z-index: 15;
-}
-
-.timer .mask {
-  border-radius: 100% 0 0 100% / 50% 0 0 50%;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 50%;
-  animation: mask calc(var(--duration) * 1s) steps(500, start) forwards;
-  animation-play-state: var(--animation-state, running);
-  transform-origin: 100% 50%;
-}
-
-@keyframes time {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes mask {
-  0% {
-    background: var(--secondary-color, #eee);
-    transform: rotate(0deg);
-  }
-  50% {
-    background: var(--secondary-color, #eee);
-    transform: rotate(-180deg);
-  }
-  50.01% {
-    background: var(--primary-color, #5081FF);
-    transform: rotate(0deg);
-  }
-  100% {
-    background: var(--primary-color, #5081FF);
-    transform: rotate(-180deg);
-  }
-}
-
-/* Static timer styling */
-.timer-static {
-  border-radius: 100%;
+  border-radius: calc(infinity * 1px);
   height: calc(var(--size) * 1px);
   width: calc(var(--size) * 1px);
   position: relative;
   background: conic-gradient(
-    var(--primary-color, #5081FF) 0deg,
-    var(--primary-color, #5081FF) calc(var(--fill-percentage) * 3.6deg),
-    var(--secondary-color, #eee) calc(var(--fill-percentage) * 3.6deg),
-    var(--secondary-color, #eee) 360deg
+    var(--primary-color, green),
+    calc(var(--progress) * 1% ),
+    var(--secondary-color) calc(var(--progress) * 1%)
   );
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.timer-static::before {
-  content: '';
-  position: absolute;
-  width: 70%;
-  height: 70%;
-  border-radius: 50%;
-  background: white;
-}
-
-.mask-static {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  border-radius: 100% 0 0 100% / 50% 0 0 50%;
-  transform-origin: 100% 50%;
 }
 
 /* Default container positioning */
