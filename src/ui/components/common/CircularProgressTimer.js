@@ -7,8 +7,9 @@ const CircularProgressTimer = ({
   enemyId,
   onComplete,
   size = 30,
+  displayText = true,
   primaryColor = '#5081FF',
-  secondaryColor = '#eee'
+  secondaryColor = '#eee0'
 }) => {
   const startTimeRef = useRef(time || 1);
   const prevTimeRef = useRef(time);
@@ -24,9 +25,6 @@ const CircularProgressTimer = ({
 
   const start = startTimeRef.current;
   const progress = Math.min(100, Math.max(0, ((start - time) / start) * 100));
-
-  console.log('PROGRESS:', progress);
-
   const active = isRunning && time > 0;
 
   return (
@@ -35,15 +33,18 @@ const CircularProgressTimer = ({
         className="timer"
         style={{
           "--size": size,
-          "--progress": active ? progress : 0,
+          "--progress": progress,
           "--primary-color": active ? primaryColor : '#eee',
           "--secondary-color": secondaryColor,
+          "displayText" : displayText,
           opacity: active ? 1 : 0.3
         }}
       />
+      {displayText && (
       <div style={{ fontSize: '10px', color: '#999', marginTop: '2px' }}>
         {Math.round(time)}ms
       </div>
+      )}
     </div>
   );
 };
