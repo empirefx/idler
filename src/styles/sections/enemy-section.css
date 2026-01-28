@@ -77,3 +77,24 @@
 .entity-card h3, .entity-card p, .entity-card .progress-bar {
   z-index: 10;
 }
+
+/* Death state styling */
+.entity-card.dead {
+  transition: all 1.5s ease-out;
+  transform: translateY(10px) rotate(2deg) scale(0.95);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.entity-card.dead .block-gradient {
+  background-image: linear-gradient(0deg, #808080 0%, #80808000 60%);
+}
+
+.entity-card.dead img {
+  filter: grayscale(100%) brightness(0.5);
+}
+
+.entity-card.dead .progress-bar,
+.entity-card.dead .circular-progress-timer {
+  display: none;
+}

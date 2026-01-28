@@ -20,7 +20,8 @@ const enemiesSlice = createSlice({
         attackPattern: enemy.attackPattern || 'normal',
         countdown: enemy.countdown || 0,
         initialAttackDelay: enemy.initialAttackDelay || 0,
-        isCountdownActive: enemy.isCountdownActive || false
+        isCountdownActive: enemy.isCountdownActive || false,
+        isDead: false
       };
       state.allIds.push(enemy.id);
     },
@@ -44,15 +45,29 @@ const enemiesSlice = createSlice({
     },
     // Damage an enemy by id
     damageEnemy(state, action) {
-      const { id, amount } = action.payload;
-      const enemy = state.byId[id];
-      if (enemy) {
-        enemy.health = Math.max(0, enemy.health - amount);
-        if (enemy.health === 0) {
+          const { id, amount } = action.payload;
+          const enemy = state.byId[id];
+          if (enemy) {
+            enemy.health = Math.max(0, enemy.health - amount);
+            if (enemy.health === 0) {
+              enemy.isDead = true;
+            }
+          }
+    },
+    // Remove all dead enemies when all enemies in a place are dead
+    removeDeadEnemiesByPlace(state, action) {
+      const { placeId } = action.payload;
+      const enemiesInPlace = state.allIds.filter(id =>
+        state.byId[id] && state.byId[id].placeId === placeId
+      );
+
+      const allDead = enemiesInPlace.every(id => state.byId[id].isDead);
+
+      if (allDead) {
+        enemiesInPlace.forEach(id => {
           delete state.byId[id];
-          // Also remove from allIds
-          state.allIds = state.allIds.filter(eid => eid !== id);
-        }
+        });
+        state.allIds = state.allIds.filter(id => !enemiesInPlace.includes(id));
       }
     },
     // Update enemy's next attack time
@@ -111,7 +126,7 @@ const enemiesSlice = createSlice({
   }
 });
 
-export const { addEnemy, removeEnemy, removeEnemiesByPlace, damageEnemy, updateEnemyAttackTime, updateEnemyCountdown, resetEnemyCountdown, setCountdownActive, initializeCountdown, initializeCountdownsForPlace } = enemiesSlice.actions;
+export const { addEnemy, removeEnemy, removeEnemiesByPlace, damageEnemy, removeDeadEnemiesByPlace, updateEnemyAttackTime, updateEnemyCountdown, resetEnemyCountdown, setCountdownActive, initializeCountdown, initializeCountdownsForPlace } = enemiesSlice.actions;
 
 // Selectors
 const selectEnemiesState = (state) => state.enemies;

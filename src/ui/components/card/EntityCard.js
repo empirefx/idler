@@ -38,16 +38,18 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
   // Calculate display values based on countdown
   const isStaggered = attackPattern === 'staggered';
   const canAttack = isStaggered && entity.isCountdownActive && entity.countdown !== undefined && entity.countdown <= 0;
+  const isDead = Number(health) <= 0 || entity.isDead;
 
   return (
-    <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''}`} data-enemy-id={entity.id}>
-      <div className="block-gradient"></div>
-      <img src={`assets/avatars/${avatarFolder}/${avatar || 'default.png'}`} alt={name || 'Unknown Entity'} draggable="false"/>
-      <h3>{name || 'Unknown Entity'}</h3>
-      <ProgressBar value={Number(health)} max={Number(maxHealth)} />
+    <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''} ${isDead ? 'dead' : ''}`}
+         data-enemy-id={entity.id}>
 
-      {/* Attack timer for staggered enemies */}
-      {isStaggered && <CircularProgressTimer {...timerProps} />}
+      <div className="block-gradient"></div>
+      <img src={`assets/avatars/${avatarFolder}/${avatar || 'default.png'}`} alt={name} draggable="false" />
+      <h3>{name}</h3>
+
+      {!isDead && <ProgressBar value={health} max={maxHealth} />}
+      {!isDead && isStaggered && <CircularProgressTimer {...timerProps} />}
     </div>
   );
 };
