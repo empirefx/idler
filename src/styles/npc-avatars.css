@@ -1,0 +1,256 @@
+/* NPC Avatar Sprite Sheet CSS - Automated with CSS Variables */
+
+:root {
+    /* Sprite sheet dimensions */
+    --sprite-width: 1024px;
+    --sprite-height: 1536px;
+    
+    /* Grid configuration */
+    --columns: 6;
+    --rows: 8;
+    
+    /* Calculated avatar dimensions */
+    --avatar-width: 170px;  /* 1024 / 6 ≈ 170.67, using 170 for cleaner display */
+    --avatar-height: 171px; /* 1536 / 8 = 192 */
+    
+    /* Display size (can be adjusted to scale avatars) */
+    --display-size: 170px;
+}
+
+/* Base avatar class with common properties */
+.avatar {
+    display: inline-block;
+    background-image: url('../assets/avatars/npc_avatar.png');
+    background-repeat: no-repeat;
+    width: var(--display-size);
+    height: var(--display-size);
+    background-size: var(--sprite-width) var(--sprite-height);
+    margin: 5px;
+    border: 2px solid #8b4513;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Row 1 - Avatars 1-6 */
+.avatar_1 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(0 * var(--avatar-height) * -1);
+}
+
+.avatar_2 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(0 * var(--avatar-height) * -1);
+}
+
+.avatar_3 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(0 * var(--avatar-height) * -1);
+}
+
+.avatar_4 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(0 * var(--avatar-height) * -1);
+}
+
+.avatar_5 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(0 * var(--avatar-height) * -1);
+}
+
+.avatar_6 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(0 * var(--avatar-height) * -1);
+}
+
+/* Row 2 - Avatars 7-12 */
+.avatar_7 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(1 * var(--avatar-height) * -1);
+}
+
+.avatar_8 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(1 * var(--avatar-height) * -1);
+}
+
+.avatar_9 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(1 * var(--avatar-height) * -1);
+}
+
+.avatar_10 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(1 * var(--avatar-height) * -1);
+}
+
+.avatar_11 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(1 * var(--avatar-height) * -1);
+}
+
+.avatar_12 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(1 * var(--avatar-height) * -1);
+}
+
+/* Row 3 - Avatars 13-18 */
+.avatar_13 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(2 * var(--avatar-height) * -1);
+}
+
+.avatar_14 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(2 * var(--avatar-height) * -1);
+}
+
+.avatar_15 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(2 * var(--avatar-height) * -1);
+}
+
+.avatar_16 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(2 * var(--avatar-height) * -1);
+}
+
+.avatar_17 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(2 * var(--avatar-height) * -1);
+}
+
+.avatar_18 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(2 * var(--avatar-height) * -1);
+}
+
+/* Row 4 - Avatars 19-24 */
+.avatar_19 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(3 * var(--avatar-height) * -1);
+}
+
+.avatar_20 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(3 * var(--avatar-height) * -1);
+}
+
+.avatar_21 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(3 * var(--avatar-height) * -1);
+}
+
+.avatar_22 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(3 * var(--avatar-height) * -1);
+}
+
+.avatar_23 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(3 * var(--avatar-height) * -1);
+}
+
+.avatar_24 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(3 * var(--avatar-height) * -1);
+}
+
+/* Row 5 - Avatars 25-30 */
+.avatar_25 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(4 * var(--avatar-height) * -1);
+}
+
+.avatar_26 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(4 * var(--avatar-height) * -1);
+}
+
+.avatar_27 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(4 * var(--avatar-height) * -1);
+}
+
+.avatar_28 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(4 * var(--avatar-height) * -1);
+}
+
+.avatar_29 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(4 * var(--avatar-height) * -1);
+}
+
+.avatar_30 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(4 * var(--avatar-height) * -1);
+}
+
+/* Row 6 - Avatars 31-36 */
+.avatar_31 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(5 * var(--avatar-height) * -1);
+}
+
+.avatar_32 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(5 * var(--avatar-height) * -1);
+}
+
+.avatar_33 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(5 * var(--avatar-height) * -1);
+}
+
+.avatar_34 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(5 * var(--avatar-height) * -1);
+}
+
+.avatar_35 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(5 * var(--avatar-height) * -1);
+}
+
+.avatar_36 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(5 * var(--avatar-height) * -1);
+}
+
+/* Row 7 - Avatars 37-42 */
+.avatar_37 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(6 * var(--avatar-height) * -1);
+}
+
+.avatar_38 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(6 * var(--avatar-height) * -1);
+}
+
+.avatar_39 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(6 * var(--avatar-height) * -1);
+}
+
+.avatar_40 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(6 * var(--avatar-height) * -1);
+}
+
+.avatar_41 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(6 * var(--avatar-height) * -1);
+}
+
+.avatar_42 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(6 * var(--avatar-height) * -1);
+}
+
+/* Row 8 - Avatars 43-48 */
+.avatar_43 {
+    background-position: calc(0 * var(--avatar-width) * -1) calc(7 * var(--avatar-height) * -1);
+}
+
+.avatar_44 {
+    background-position: calc(1 * var(--avatar-width) * -1) calc(7 * var(--avatar-height) * -1);
+}
+
+.avatar_45 {
+    background-position: calc(2 * var(--avatar-width) * -1) calc(7 * var(--avatar-height) * -1);
+}
+
+.avatar_46 {
+    background-position: calc(3 * var(--avatar-width) * -1) calc(7 * var(--avatar-height) * -1);
+}
+
+.avatar_47 {
+    background-position: calc(4 * var(--avatar-width) * -1) calc(7 * var(--avatar-height) * -1);
+}
+
+.avatar_48 {
+    background-position: calc(5 * var(--avatar-width) * -1) calc(7 * var(--avatar-height) * -1);
+}
+
+/* Hover effect */
+.avatar:hover {
+    transform: scale(1.1);
+    border-color: #ffd700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+/* Optional: Different display sizes */
+.avatar.small {
+    --display-size: 85px;
+}
+
+.avatar.medium {
+    --display-size: 170px;
+}
+
+.avatar.large {
+    --display-size: 256px;
+}

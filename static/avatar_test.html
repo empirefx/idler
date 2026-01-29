@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPC Avatar Sprite Sheet Test</title>
+    <link rel="stylesheet" href="../src/styles/npc-avatars.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #f0e6d2;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #c0a080;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(139, 69, 19, 0.2);
+            border-radius: 8px;
+        }
+        
+        .controls button {
+            background: #8b4513;
+            color: #ffd700;
+            border: 2px solid #654321;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .controls button:hover {
+            background: #a0522d;
+            border-color: #ffd700;
+            transform: translateY(-2px);
+        }
+        
+        .controls button.active {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+            justify-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar-item {
+            text-align: center;
+        }
+        
+        .avatar-label {
+            margin-top: 5px;
+            font-size: 0.85em;
+            color: #c0a080;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: rgba(139, 69, 19, 0.3);
+            border: 2px solid #8b4513;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-box h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .info-box h3 {
+            color: #ffcc00;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            line-height: 1.8;
+            color: #e0d0b0;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            color: #e0d0b0;
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: #ffcc00;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #ffd700;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            background: none;
+            display: block;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ NPC Avatar Collection ⚔️</h1>
+        <p class="subtitle">48 Unique Character Portraits | 1024×1536px Sprite Sheet (6×8 Grid)</p>
+        <div class="avatar-grid" id="avatarGrid">
+            <div class="avatar-item">
+                <div class="avatar avatar_1"></div>
+                <div class="avatar-label">Avatar 1</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_2"></div>
+                <div class="avatar-label">Avatar 2</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_3"></div>
+                <div class="avatar-label">Avatar 3</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_4"></div>
+                <div class="avatar-label">Avatar 4</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_5"></div>
+                <div class="avatar-label">Avatar 5</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_6"></div>
+                <div class="avatar-label">Avatar 6</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_7"></div>
+                <div class="avatar-label">Avatar 7</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_8"></div>
+                <div class="avatar-label">Avatar 8</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_9"></div>
+                <div class="avatar-label">Avatar 9</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_10"></div>
+                <div class="avatar-label">Avatar 10</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_11"></div>
+                <div class="avatar-label">Avatar 11</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_12"></div>
+                <div class="avatar-label">Avatar 12</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_13"></div>
+                <div class="avatar-label">Avatar 13</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_14"></div>
+                <div class="avatar-label">Avatar 14</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_15"></div>
+                <div class="avatar-label">Avatar 15</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_16"></div>
+                <div class="avatar-label">Avatar 16</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_17"></div>
+                <div class="avatar-label">Avatar 17</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_18"></div>
+                <div class="avatar-label">Avatar 18</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_19"></div>
+                <div class="avatar-label">Avatar 19</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_20"></div>
+                <div class="avatar-label">Avatar 20</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_21"></div>
+                <div class="avatar-label">Avatar 21</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_22"></div>
+                <div class="avatar-label">Avatar 22</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_23"></div>
+                <div class="avatar-label">Avatar 23</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_24"></div>
+                <div class="avatar-label">Avatar 24</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_25"></div>
+                <div class="avatar-label">Avatar 25</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_26"></div>
+                <div class="avatar-label">Avatar 26</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_27"></div>
+                <div class="avatar-label">Avatar 27</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_28"></div>
+                <div class="avatar-label">Avatar 28</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_29"></div>
+                <div class="avatar-label">Avatar 29</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_30"></div>
+                <div class="avatar-label">Avatar 30</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_31"></div>
+                <div class="avatar-label">Avatar 31</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_32"></div>
+                <div class="avatar-label">Avatar 32</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_33"></div>
+                <div class="avatar-label">Avatar 33</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_34"></div>
+                <div class="avatar-label">Avatar 34</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_35"></div>
+                <div class="avatar-label">Avatar 35</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_36"></div>
+                <div class="avatar-label">Avatar 36</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_37"></div>
+                <div class="avatar-label">Avatar 37</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_38"></div>
+                <div class="avatar-label">Avatar 38</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_39"></div>
+                <div class="avatar-label">Avatar 39</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_40"></div>
+                <div class="avatar-label">Avatar 40</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_41"></div>
+                <div class="avatar-label">Avatar 41</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_42"></div>
+                <div class="avatar-label">Avatar 42</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_43"></div>
+                <div class="avatar-label">Avatar 43</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_44"></div>
+                <div class="avatar-label">Avatar 44</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_45"></div>
+                <div class="avatar-label">Avatar 45</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_46"></div>
+                <div class="avatar-label">Avatar 46</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_47"></div>
+                <div class="avatar-label">Avatar 47</div>
+            </div>
+            <div class="avatar-item">
+                <div class="avatar avatar_48"></div>
+                <div class="avatar-label">Avatar 48</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h2>📜 Usage Instructions</h2>
+            
+            <h3>Basic Usage:</h3>
+            <p>Add two classes to use an avatar:</p>
+            <div class="code-block"><code>&lt;div class="avatar avatar_5"&gt;&lt;/div&gt;</code></div>
+            
+            <h3>Customization with CSS Variables:</h3>
+            <p>The CSS uses automated calculations with CSS custom properties. You can easily adjust dimensions in the <code>:root</code> selector:</p>
+            <div class="code-block"><code>:root {
+    --sprite-width: 1024px;   /* Total sprite sheet width */
+    --sprite-height: 1536px;  /* Total sprite sheet height */
+    --avatar-width: 170px;    /* Width of each avatar */
+    --avatar-height: 192px;   /* Height of each avatar */
+    --display-size: 170px;    /* Display size (can be scaled) */
+}</code></div>
+            
+            <h3>Technical Details:</h3>
+            <ul>
+                <li>Sprite sheet: 1024×1536 pixels</li>
+                <li>Grid: 6 columns × 8 rows = 48 avatars</li>
+                <li>Avatar dimensions: 170×192 pixels</li>
+                <li>Uses CSS <code>calc()</code> for automated positioning</li>
+                <li>Hover effect: zoom + gold border</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
