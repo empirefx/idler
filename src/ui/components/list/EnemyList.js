@@ -7,7 +7,7 @@ const EnemyList = ({ enemies }) => (
     {enemies.length > 0 ? (
       enemies.map(entity => <EntityCard key={entity.id} entity={entity} />)
     ) : (
-      <p>Respawning...</p>
+      <p className="spawn-alert">Respawning...</p>
     )}
   </div>
 );

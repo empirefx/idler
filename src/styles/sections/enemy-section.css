@@ -4,6 +4,11 @@
   gap: var(--spacing-sm);
   justify-content: center;
   align-items: center;
+  text-align: center;
+}
+
+.enemies-list p {
+  max-width: 300px;
 }
 
 .entity-card {
