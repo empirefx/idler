@@ -77,23 +77,23 @@
         
         .avatar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(171px, 1fr));
             gap: 10px;
             justify-items: center;
             margin-bottom: 20px;
         }
-        
+
         .avatar-item {
             text-align: center;
         }
-        
+
         .avatar-label {
             margin-top: 5px;
             font-size: 0.85em;
             color: #c0a080;
             font-weight: bold;
         }
-        
+
         .info-box {
             background: rgba(139, 69, 19, 0.3);
             border: 2px solid #8b4513;
@@ -101,31 +101,31 @@
             padding: 20px;
             margin-top: 30px;
         }
-        
+
         .info-box h2 {
             color: #ffd700;
             margin-bottom: 15px;
             font-size: 1.5em;
         }
-        
+
         .info-box h3 {
             color: #ffcc00;
             margin-top: 15px;
             margin-bottom: 10px;
         }
-        
+
         .info-box p {
             line-height: 1.8;
             color: #e0d0b0;
             margin-bottom: 10px;
         }
-        
+
         .info-box ul {
             color: #e0d0b0;
             margin-left: 20px;
             line-height: 1.8;
         }
-        
+
         code {
             background: rgba(0, 0, 0, 0.5);
             padding: 3px 8px;
@@ -134,7 +134,7 @@
             font-family: 'Courier New', monospace;
             font-size: 0.95em;
         }
-        
+
         .code-block {
             background: rgba(0, 0, 0, 0.7);
             padding: 15px;
@@ -143,7 +143,7 @@
             margin: 10px 0;
             overflow-x: auto;
         }
-        
+
         .code-block code {
             background: none;
             display: block;
@@ -154,7 +154,15 @@
 <body>
     <div class="container">
         <h1>⚔️ NPC Avatar Collection ⚔️</h1>
-        <p class="subtitle">48 Unique Character Portraits | 1024×1536px Sprite Sheet (6×8 Grid)</p>
+        <p class="subtitle">48 Unique Character Portraits | 1024×1536px Sprite Sheet (6×8 Grid) | 171×171px per avatar</p>
+
+        <div class="controls">
+            <strong>Avatar Size:</strong>
+            <button onclick="changeSize('small')">Small (85.5px)</button>
+            <button onclick="changeSize('medium')" class="active">Medium (171px)</button>
+            <button onclick="changeSize('large')">Large (256.5px)</button>
+        </div>
+
         <div class="avatar-grid" id="avatarGrid">
             <div class="avatar-item">
                 <div class="avatar avatar_1"></div>
@@ -349,33 +357,58 @@
                 <div class="avatar-label">Avatar 48</div>
             </div>
         </div>
-        
+
         <div class="info-box">
             <h2>📜 Usage Instructions</h2>
-            
+
             <h3>Basic Usage:</h3>
             <p>Add two classes to use an avatar:</p>
             <div class="code-block"><code>&lt;div class="avatar avatar_5"&gt;&lt;/div&gt;</code></div>
-            
+
+            <h3>Size Options:</h3>
+            <p>You can adjust avatar sizes by adding a size class:</p>
+            <div class="code-block"><code>&lt;div class="avatar avatar_10 small"&gt;&lt;/div&gt;   &lt;!-- 85.5px --&gt;
+&lt;div class="avatar avatar_10 medium"&gt;&lt;/div&gt;  &lt;!-- 171px (default) --&gt;
+&lt;div class="avatar avatar_10 large"&gt;&lt;/div&gt;   &lt;!-- 256.5px --&gt;</code></div>
+
             <h3>Customization with CSS Variables:</h3>
             <p>The CSS uses automated calculations with CSS custom properties. You can easily adjust dimensions in the <code>:root</code> selector:</p>
             <div class="code-block"><code>:root {
     --sprite-width: 1024px;   /* Total sprite sheet width */
     --sprite-height: 1536px;  /* Total sprite sheet height */
-    --avatar-width: 170px;    /* Width of each avatar */
-    --avatar-height: 192px;   /* Height of each avatar */
-    --display-size: 170px;    /* Display size (can be scaled) */
+    --avatar-width: 171px;    /* Width of each avatar */
+    --avatar-height: 171px;   /* Height of each avatar */
+    --display-size: 171px;    /* Display size (can be scaled) */
 }</code></div>
-            
+
             <h3>Technical Details:</h3>
             <ul>
                 <li>Sprite sheet: 1024×1536 pixels</li>
                 <li>Grid: 6 columns × 8 rows = 48 avatars</li>
-                <li>Avatar dimensions: 170×192 pixels</li>
+                <li>Avatar dimensions: 171×171 pixels (square)</li>
                 <li>Uses CSS <code>calc()</code> for automated positioning</li>
                 <li>Hover effect: zoom + gold border</li>
             </ul>
+
+            <p style="margin-top: 20px;"><strong>💡 Tip:</strong> Hover over any avatar to see the interactive effect!</p>
         </div>
     </div>
+
+    <script>
+        function changeSize(size) {
+            const avatars = document.querySelectorAll('.avatar');
+            const buttons = document.querySelectorAll('.controls button');
+
+            // Remove all size classes and active button state
+            avatars.forEach(avatar => {
+                avatar.classList.remove('small', 'medium', 'large');
+                avatar.classList.add(size);
+            });
+
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>
