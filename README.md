@@ -10,24 +10,26 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 - [ ] `Player` skills(ex powerful skill, AOE skill)
 
 #### Enemies
-- [ ] `Enemy` pool should attack(all at once) in different delay times 
-- [ ] `Enemy` pool should have different `enemies`
+- [x] `Enemy` pool should attack(all at once) in different delay times
+- [x] `Enemy` pool should have different `enemies`
 - [ ] `Enemy`(some) should have a chance to become a `worker`
 
 #### Mechanics
 - [ ] Calculate DMG/DEF with `stats`, `equipment`, `skills`(?)
-- [ ] `Inventory` should display a slider when item quantity is more than 1
-- [ ] `Recipies`(ex 10x apple's -> apple-pie)
-- [ ] Able to sell items for gold
+- [x] `Inventory` should display a slider when item quantity is more than 1
+- [ ] `Recipes` ex 10x apple's -> apple-pie, player needs to know recipe first to craft it
+- [ ] Able to sell items/enemies trash for gold(through `NPC`)
 - [ ] Melt equipment for crafting materials
-- [ ] Building can be upgraded by gold, unlocking new mats
-- [ ] `Crafting` equipment(cost gold/crafting materials)
-- [ ] `NPC` dialog
+- [ ] `Building` can be upgraded by gold, unlocking new mats
+- [ ] `Crafting` equipment(cost gold/crafting materials) or know items recipe(ex apple-pie)
+- [ ] `NPC` able to talk to them, sell stuff, buy recipes, give/complete quest
+- [ ] `Dialog` ui
+- [ ] `Quest` log
 
 #### Other
-- [ ] `Log` better format for better readability
-- [ ] Alert `player` he cant carry that much `weight`
-- [ ] `Engine` better performance iterations, maybe abstract to a class? for re-use
+- [x] `Log` better format for better readability
+- [x] Alert `player` he cant carry that much `weight`
+- [x] `Engine` better performance iterations, maybe abstract to a class? for re-use
 - [ ] Icons
 
 ## Setup
