@@ -11,6 +11,19 @@
   max-width: 300px;
 }
 
+.entity-card.targeted {
+  outline: 2px solid #5081ff;
+  box-shadow: 0 0 10px #5081ff;
+}
+
+.entity-card.targeted::after {
+  content: "◉";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  color: #ff2323;
+}
+
 .entity-card {
   position: relative;
   display: flex;

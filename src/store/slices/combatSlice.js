@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isInCombat: false
+  isInCombat: false,
+  targetEnemyId: null
 };
 
 const combatSlice = createSlice({
@@ -9,13 +10,21 @@ const combatSlice = createSlice({
   initialState,
   reducers: {
     startCombat: state => { state.isInCombat = true; },
-    stopCombat: state => { state.isInCombat = false; }
+    stopCombat: state => {
+      state.isInCombat = false;
+    },
+    setTarget: (state, action) => {
+      state.targetEnemyId = action.payload;
+    },
+    clearTarget: state => {
+      state.targetEnemyId = null;
+    }
   }
 });
 
-export const { startCombat, stopCombat } = combatSlice.actions;
+export const { startCombat, stopCombat, setTarget, clearTarget } = combatSlice.actions;
 
-// Selectors
 export const selectIsInCombat = state => state.combat.isInCombat;
+export const selectTargetEnemyId = state => state.combat.targetEnemyId;
 
 export default combatSlice.reducer;

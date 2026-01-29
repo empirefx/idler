@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ProgressBar from '../common/ProgressBar';
 import CircularProgressTimer from '../common/CircularProgressTimer';
 
 const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
+  const dispatch = useDispatch();
+  const targetId = useSelector(s => s.combat?.targetEnemyId);
+  const isTargeted = entity?.id === targetId;
 
   // Handle case where entity is null/undefined (still loading)
-  if (!entity ||
-      typeof entity !== 'object' ||
-      entity.health === undefined ||
-      entity.maxHealth === undefined) {
+  if (!entity || typeof entity !== 'object' || entity.health === undefined) {
     return (
       <div className="entity-card error">
         <div className="block-gradient"></div>
@@ -17,13 +18,17 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
     );
   }
 
+  const handleClick = () => {
+    if (isDead) return;
+    dispatch({ type: 'combat/setTarget', payload: entity.id });
+  };
+
   // Memoize timer props to prevent unnecessary re-renders
   const timerProps = useMemo(() => {
     const { countdown, isCountdownActive, maxCountdown } = entity;
-
     return {
       time: countdown,
-      maxTime: maxCountdown || countdown, // Use maxCountdown if available
+      maxTime: maxCountdown || countdown,
       isRunning: Boolean(isCountdownActive && countdown > 0),
       size: 20,
       displayText: false,
@@ -35,17 +40,18 @@ const EntityCard = ({ entity, avatarFolder = 'enemies' }) => {
 
   const { name, health = 0, maxHealth = 100, avatar = 'default.png', attackPattern } = entity;
 
-  // Calculate display values based on countdown
   const isStaggered = attackPattern === 'staggered';
-  const canAttack = isStaggered && entity.isCountdownActive && entity.countdown !== undefined && entity.countdown <= 0;
-  const isDead = Number(health) <= 0 || entity.isDead;
+  const canAttack = isStaggered && entity.isCountdownActive && entity.countdown <= 0;
+  const isDead = health <= 0 || entity.isDead;
 
   return (
-    <div className={`entity-card ${canAttack ? 'ready-to-attack' : ''} ${isDead ? 'dead' : ''}`}
-         data-enemy-id={entity.id}>
-
+    <div
+      onClick={handleClick}
+      className={`entity-card ${canAttack ? 'ready-to-attack' : ''} ${isDead ? 'dead' : ''} ${isTargeted ? 'targeted' : ''}`}
+      data-enemy-id={entity.id}
+    >
       <div className="block-gradient"></div>
-      <img src={`assets/avatars/${avatarFolder}/${avatar || 'default.png'}`} alt={name} draggable="false" />
+      <img src={`assets/avatars/${avatarFolder}/${avatar}`} alt={name} draggable="false" />
       <h3>{name}</h3>
 
       {!isDead && <ProgressBar value={health} max={maxHealth} />}
