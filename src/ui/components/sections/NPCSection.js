@@ -10,25 +10,15 @@ import { selectNPCsForCurrentPlace, selectAllNPCs } from '../../../store/slices/
 const NPCSection = () => {
   const npcs = useSelector(selectNPCsForCurrentPlace);
   const allNpcs = useSelector(selectAllNPCs);
-  const { openNPCDialog } = useUIVisibility();
+  const { openNPCDialog, npcSection } = useUIVisibility();
 
   const handleNPCClick = (npcId) => {
     openNPCDialog(npcId);
   };
 
-  useEffect(() => {
-    console.log('=== NPCSection Debug ===');
-    console.log('All NPCs:', allNpcs);
-    console.log('NPCs for current place:', npcs);
-    console.log('=========================');
-  }, [npcs, allNpcs]);
-
-  if (npcs.length === 0) {
-    console.log('NPCSection: No NPCs, returning null');
+  if (npcs.length === 0 || !npcSection) {
     return null;
   }
-
-  console.log('NPCSection: Rendering section with', npcs.length, 'NPCs');
   return (
     <section className="npc-section">
       <div className="npc-section-content">

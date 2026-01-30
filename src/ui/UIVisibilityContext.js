@@ -8,6 +8,7 @@ export const UIVisibilityProvider = ({ children }) => {
   const [visible, setVisible] = useState({
     playerCard: false,
     workerCard: false,
+    npcSection: true,
     npcDialog: {
       isOpen: false,
       npcId: null,
@@ -21,7 +22,16 @@ export const UIVisibilityProvider = ({ children }) => {
   }, []);
 
   const toggleWorkerCard = useCallback(() => {
-    setVisible(v => ({ ...v, workerCard: !v.workerCard }));
+    setVisible(v => {
+      const newWorkerCard = !v.workerCard;
+      // Auto-toggle NPC section: show NPC when worker is hidden
+      const newNpcSection = !newWorkerCard;
+      return { ...v, workerCard: newWorkerCard, npcSection: newNpcSection };
+    });
+  }, []);
+
+  const toggleNpcSection = useCallback(() => {
+    setVisible(v => ({ ...v, npcSection: !v.npcSection }));
   }, []);
 
   const openNPCDialog = useCallback((npcId) => {
@@ -61,6 +71,7 @@ export const UIVisibilityProvider = ({ children }) => {
       ...visible, 
       togglePlayerCard, 
       toggleWorkerCard,
+      toggleNpcSection,
       openNPCDialog,
       selectNPCOption,
       closeNPCDialog
