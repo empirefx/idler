@@ -1,48 +1,15 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { npcCatalog } from '../../data/npcCatalog';
 
+// Merge catalog data with runtime state
 const initialState = {
-  npcs: {
-    village_elder: {
-      id: 'village_elder',
-      name: 'Village Elder',
-      description: 'The wise leader of the settlement, with years of knowledge about the region.',
-      avatar: 1,
-      location: 'village_center',
-      hasInventory: false
-    },
-    blacksmith: {
-      id: 'blacksmith',
-      name: 'Grum the Blacksmith',
-      description: 'A burly man with soot-covered hands and a warm heart.',
-      avatar: 2,
-      location: 'village_center',
-      hasInventory: true
-    },
-    trader: {
-      id: 'trader',
-      name: 'Traveling Merchant',
-      description: 'A well-traveled merchant with goods from distant lands.',
-      avatar: 3,
-      location: 'river_crossing',
-      hasInventory: true
-    },
-    hunter_leader: {
-      id: 'hunter_leader',
-      name: 'Captain Vorn',
-      description: 'Leader of the hunting party, skilled in tracking and survival.',
-      avatar: 4,
-      location: 'hunter_camp',
-      hasInventory: false
-    },
-    hermit: {
-      id: 'hermit',
-      name: 'Old Hermit',
-      description: 'A mysterious figure who lives in solitude by the ruins.',
-      avatar: 5,
-      location: 'ancient_ruins',
-      hasInventory: false
-    }
-  }
+  npcs: Object.keys(npcCatalog).reduce((acc, npcId) => {
+    acc[npcId] = {
+      ...npcCatalog[npcId],
+      hasInventory: npcCatalog[npcId].hasInventory || false
+    };
+    return acc;
+  }, {})
 };
 
 const npcSlice = createSlice({

@@ -8,6 +8,11 @@ export const UIVisibilityProvider = ({ children }) => {
   const [visible, setVisible] = useState({
     playerCard: false,
     workerCard: false,
+    npcDialog: {
+      isOpen: false,
+      npcId: null,
+      selectedOption: null
+    }
   });
 
   // Toggle functions
@@ -19,8 +24,47 @@ export const UIVisibilityProvider = ({ children }) => {
     setVisible(v => ({ ...v, workerCard: !v.workerCard }));
   }, []);
 
+  const openNPCDialog = useCallback((npcId) => {
+    setVisible(v => ({ 
+      ...v, 
+      npcDialog: {
+        isOpen: true,
+        npcId,
+        selectedOption: null
+      }
+    }));
+  }, []);
+
+  const selectNPCOption = useCallback((optionIndex) => {
+    setVisible(v => ({ 
+      ...v, 
+      npcDialog: {
+        ...v.npcDialog,
+        selectedOption: optionIndex
+      }
+    }));
+  }, []);
+
+  const closeNPCDialog = useCallback(() => {
+    setVisible(v => ({ 
+      ...v, 
+      npcDialog: {
+        isOpen: false,
+        npcId: null,
+        selectedOption: null
+      }
+    }));
+  }, []);
+
   return (
-    <UIVisibilityContext.Provider value={{ ...visible, togglePlayerCard, toggleWorkerCard }}>
+    <UIVisibilityContext.Provider value={{ 
+      ...visible, 
+      togglePlayerCard, 
+      toggleWorkerCard,
+      openNPCDialog,
+      selectNPCOption,
+      closeNPCDialog
+    }}>
       {children}
     </UIVisibilityContext.Provider>
   );

@@ -1,0 +1,210 @@
+/* NPC Dialog Component Styles */
+
+.npc-dialog {
+  /* Remove default limits */
+  max-width: none;
+  max-height: none;
+  border: none;
+  padding: 0;
+  margin-top: auto; /* Align to bottom */
+  margin-bottom: 0;
+  width: 100vw;
+  background: none;
+  z-index: 1000;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+.npc-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.npc-dialog-content {
+  height: auto;
+  width: auto;
+}
+
+.dialog-bottom-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.dialog-bottom-section > div {
+  width: 600px;
+}
+
+.key-bind-container {
+  position: absolute;
+  right: 20px;
+  top: -40px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.key-bind-container span:last-child {
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-light);
+}
+
+/* Player Profile Styles */
+.player-profile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: #000;
+}
+
+.player-avatar-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.player-avatar-name h3 {
+  margin: 0;
+  color: var(--color-primary);
+  font-family: var(--font-family-secondary);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.player-text {
+  flex: 1;
+  padding: var(--spacing-md);
+  background: rgba(44, 44, 44, 0.8);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-gray-light);
+  font-style: italic;
+  min-height: 60px;
+}
+
+/* NPC Profile Styles */
+.npc-profile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: #000;
+}
+
+.npc-avatar-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.npc-avatar-name h3 {
+  margin: 0;
+  color: var(--color-secondary);
+  font-family: var(--font-family-secondary);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.npc-response {
+  flex: 1;
+  padding: var(--spacing-md);
+  background: rgba(44, 44, 44, 0.8);
+  border-radius: var(--border-radius-sm);
+  color: white;
+  min-height: 60px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Dialog Options Styles */
+.dialog-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.dialog-option-btn {
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-gray-dark), var(--color-gray));
+  color: white;
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family-base);
+  font-size: 0.9rem;
+  text-align: left;
+  min-height: 44px;
+}
+
+.dialog-option-btn:hover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(191, 158, 42, 0.3);
+}
+
+.dialog-option-btn:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.dialog-option-btn:active {
+  transform: translateX(2px);
+}
+
+/* Avatar sizes for dialog */
+.avatar.large {
+  width: 80px;
+  height: 80px;
+  transform: scale(1.2);
+}
+
+.npc-avatar.large {
+  width: 80px;
+  height: 80px;
+  transform: scale(1.2);
+  clip-path: circle();
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dialog-bottom-section {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 60vh;
+    gap: var(--spacing-md);
+  }
+  
+  .player-avatar-name,
+  .npc-avatar-name {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .dialog-option-btn {
+    font-size: 0.8rem;
+    padding: var(--spacing-sm);
+  }
+  
+  .avatar.large,
+  .npc-avatar.large {
+    width: 60px;
+    height: 60px;
+    transform: scale(1);
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useUIVisibility } from '../../UIVisibilityContext';
 
 import '../../../styles/sections/npc-section.css';
 import NPCList from '../list/NPCList';
@@ -9,6 +10,11 @@ import { selectNPCsForCurrentPlace, selectAllNPCs } from '../../../store/slices/
 const NPCSection = () => {
   const npcs = useSelector(selectNPCsForCurrentPlace);
   const allNpcs = useSelector(selectAllNPCs);
+  const { openNPCDialog } = useUIVisibility();
+
+  const handleNPCClick = (npcId) => {
+    openNPCDialog(npcId);
+  };
 
   useEffect(() => {
     console.log('=== NPCSection Debug ===');
@@ -27,7 +33,7 @@ const NPCSection = () => {
     <section className="npc-section">
       <div className="npc-section-content">
         <div className="npcs-grid">
-          <NPCList npcs={npcs} />
+          <NPCList npcs={npcs} onNPCClick={handleNPCClick} />
         </div>
       </div>
     </section>

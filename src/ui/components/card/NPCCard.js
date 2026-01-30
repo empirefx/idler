@@ -1,14 +1,20 @@
 import React from 'react';
 
-const NPCCard = ({ npc }) => {
+const NPCCard = ({ npc, onClick }) => {
   if (!npc || typeof npc !== 'object') {
     return null;
   }
 
   const { name, description, avatar } = npc;
 
+  const handleClick = () => {
+    if (onClick && npc.id) {
+      onClick(npc.id);
+    }
+  };
+
   return (
-    <div className="npc-card">
+    <div className="npc-card" onClick={handleClick}>
       <div className={`npc-avatar avatar avatar_${avatar} small`}>
       </div>
       <div className="npc-info">

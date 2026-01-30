@@ -7,6 +7,7 @@ import './styles/components.css';
 import './styles/global.css';
 import './styles/armory-set.css';
 import './styles/npc-avatars.css';
+import './styles/components/npc-dialog.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

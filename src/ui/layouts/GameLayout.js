@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useUIVisibility } from '../UIVisibilityContext';
 
 import CurrentPlaceDisplay from '../components/display/CurrentPlaceDisplay';
 import PlayerSection from '../components/sections/PlayerSection';
@@ -12,11 +13,13 @@ import PlayerEntitySection from '../components/sections/PlayerEntitySection';
 import PlacesSection from '../components/sections/PlacesSection';
 import LogSection from '../components/sections/LogSection';
 import NotificationContainer from '../components/common/NotificationContainer';
+import NPCDialog from '../components/common/NPCDialog';
 
 import { selectBackgroundImage } from '../../store/slices/placesSlice';
 
 const GameLayout = ({ clearCache }) => {
   const currentPlaceBackgroundImage = useSelector(selectBackgroundImage);
+  const { npcDialog, selectNPCOption, closeNPCDialog } = useUIVisibility();
   const styles = {
     backgroundImage: currentPlaceBackgroundImage ? `
       radial-gradient(circle, rgba(0,0,0,0.053) 64%, rgba(0,0,0,0.7) 93%),
@@ -44,6 +47,13 @@ const GameLayout = ({ clearCache }) => {
         <PlacesSection />
         <LogSection />
       </main>
+      <NPCDialog 
+        isOpen={npcDialog?.isOpen}
+        npcId={npcDialog?.npcId}
+        selectedOption={npcDialog?.selectedOption}
+        onClose={closeNPCDialog}
+        onOptionSelect={selectNPCOption}
+      />
     </div>
   );
 };
