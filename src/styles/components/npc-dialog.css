@@ -11,12 +11,14 @@
   width: 100vw;
   background: none;
   z-index: 1000;
-  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: visible;
 }
 
 .npc-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.8);
+  background-size: 100% 100%;
+  background-position: 0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px;
+  background-image: linear-gradient(0deg, #00A3FF52 2%, #0090FF00 27%),radial-gradient(50% 20% at 34% 106%, #FFA900FF 0%, #FFDC0000 100%),radial-gradient(75% 140% at 42% 10%, #00000000 81%, #0074FF94 100%),linear-gradient(0deg, #253444f7 0%, #0000008F 100%);
 }
 
 @keyframes slideUp {
@@ -87,7 +89,7 @@
 .player-text {
   flex: 1;
   padding: var(--spacing-md);
-  background: rgba(44, 44, 44, 0.8);
+  background: rgba(44, 44, 44, 1);
   border-radius: var(--border-radius-sm);
   color: var(--color-gray-light);
   font-style: italic;
@@ -100,7 +102,6 @@
   flex-direction: column;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: #000;
 }
 
 .npc-avatar-name {
@@ -120,11 +121,11 @@
 .npc-response {
   flex: 1;
   padding: var(--spacing-md);
-  background: rgba(44, 44, 44, 0.8);
+  background: #0f131c;
   border-radius: var(--border-radius-sm);
-  color: white;
+  color: #acb6ce;
   min-height: 60px;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   line-height: 1.4;
 }
 
@@ -138,9 +139,10 @@
 
 .dialog-option-btn {
   padding: var(--spacing-md);
-  background: linear-gradient(135deg, var(--color-gray-dark), var(--color-gray));
+  margin: 0;
+  background: linear-gradient(135deg, #9fb0c1, #aaa0);
   color: white;
-  border: 1px solid var(--color-gray-light);
+  border: 0;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -151,15 +153,16 @@
 }
 
 .dialog-option-btn:hover {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  border-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), #00000000);
   transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(191, 158, 42, 0.3);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(47, 50, 97, 0.3);
 }
 
 .dialog-option-btn:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  background: linear-gradient(135deg, #ffffff, #aaa0);
+  color: #484e70;
+  font-weight: bold;
 }
 
 .dialog-option-btn:active {

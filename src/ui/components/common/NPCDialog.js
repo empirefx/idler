@@ -53,6 +53,8 @@ const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) =
       className="npc-dialog"
       onClick={handleBackdropClick}
     >
+      {/* Hidden focus trap */}
+      <div style={{ position: 'absolute', opacity: 0, height: 0 }} tabIndex={0}></div>
       <div className="key-bind-container">
         <span className="key-bind">ESC</span>
         <span>escape</span>
