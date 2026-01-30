@@ -4,6 +4,8 @@ import buildingsReducer from './slices/buildingsSlice';
 import placesReducer from './slices/placesSlice';
 import playerInventoryReducer from './slices/playerInventorySlice';
 import placeInventoryReducer from './slices/placeInventorySlice';
+import npcInventoryReducer from './slices/npcInventorySlice';
+import npcReducer from './slices/npcSlice';
 import enemiesReducer from './slices/enemiesSlice';
 import combatReducer from './slices/combatSlice';
 import logReducer from './slices/logSlice';
@@ -18,6 +20,8 @@ export const store = configureStore({
     places: placesReducer,
     playerInventory: playerInventoryReducer,
     placeInventory: placeInventoryReducer,
+    npcInventory: npcInventoryReducer,
+    npcs: npcReducer,
     enemies: enemiesReducer,
     combat: combatReducer,
     logs: logReducer,

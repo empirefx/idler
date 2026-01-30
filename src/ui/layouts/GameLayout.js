@@ -6,6 +6,7 @@ import PlayerSection from '../components/sections/PlayerSection';
 import WorkersSection from '../components/sections/WorkersSection';
 import BuildingsSection from '../components/sections/BuildingsSection';
 import EnemySection from '../components/sections/EnemySection';
+import NPCSection from '../components/sections/NPCSection';
 import ControlSection from '../components/sections/ControlSection';
 import PlayerEntitySection from '../components/sections/PlayerEntitySection';
 import PlacesSection from '../components/sections/PlacesSection';
@@ -37,6 +38,7 @@ const GameLayout = ({ clearCache }) => {
         <WorkersSection />
         <BuildingsSection />
         <EnemySection />
+        <NPCSection />
         <ControlSection clearCache={clearCache}/>
         <PlayerEntitySection />
         <PlacesSection />
