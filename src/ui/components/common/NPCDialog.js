@@ -44,7 +44,7 @@ const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) =
     if (selectedOption !== null && npc.dialogue.options[selectedOption]) {
       return npc.dialogue.options[selectedOption].text;
     }
-    return '';
+    return '...';
   };
 
   return (
@@ -63,13 +63,18 @@ const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) =
         {/* Bottom section with 2 columns */}
         <div className="dialog-bottom-section">
           {/* Left: Player Profile */}
-          <div className="player-profile">
-            <div className="player-avatar-name">
-              <div className={`avatar avatar_${player.avatar} large`}></div>
-              <h3>{player.name}</h3>
-            </div>
-            <div className="player-text">
-              {getPlayerText()}
+          <div
+            className="player-profile"
+            style={{'--player-avatar-url': `url(./assets/avatars/players/${player.avatar})`}}
+          >
+            <div className="player-background-image"></div>
+            <div className="player-content-overlay">
+              <div className="player-avatar-name">
+                <h3>{player.name}</h3>
+              </div>
+              <div className="player-text">
+                {getPlayerText()}
+              </div>
             </div>
           </div>
           

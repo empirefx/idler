@@ -65,35 +65,53 @@
 
 /* Player Profile Styles */
 .player-profile {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
-  background: #000;
+  width: 600px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
 }
 
-.player-avatar-name {
+.player-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(75% 75% at 3% 101%, #248eff6e 0%, #00BEFF00 83%), var(--player-avatar-url);
+  background-repeat: no-repeat, no-repeat;
+  z-index: 1;
+}
+
+.player-content-overlay {
+  position: relative;
+  z-index: 2;
+  height: 90%;
+  padding: var(--spacing-md);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
   gap: var(--spacing-md);
 }
 
 .player-avatar-name h3 {
+  text-align: right;
   margin: 0;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   font-family: var(--font-family-secondary);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .player-text {
-  flex: 1;
   padding: var(--spacing-md);
-  background: rgba(44, 44, 44, 1);
+  background: #3f4759e3;
   border-radius: var(--border-radius-sm);
   color: var(--color-gray-light);
   font-style: italic;
   min-height: 60px;
+  backdrop-filter: blur(4px);
+  border: 1px solid #00000026;
 }
 
 /* NPC Profile Styles */
@@ -186,19 +204,26 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .dialog-bottom-section {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    flex-direction: column;
     height: 60vh;
     gap: var(--spacing-md);
   }
   
-  .player-avatar-name,
+  .player-profile {
+    width: 100%;
+    height: 200px;
+  }
+
   .npc-avatar-name {
     flex-direction: column;
     text-align: center;
     gap: var(--spacing-sm);
   }
   
+  .player-avatar-name h3 {
+    font-size: 1.2rem;
+  }
+
   .dialog-option-btn {
     font-size: 0.8rem;
     padding: var(--spacing-sm);
