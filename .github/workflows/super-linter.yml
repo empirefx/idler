@@ -50,7 +50,6 @@ jobs:
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_CSS: false
 
-          FIX_HTML_PRETTIER: true
           FIX_MARKDOWN_PRETTIER: true
           FIX_YAML_PRETTIER: true
           FIX_SHELL_SHFMT: true
