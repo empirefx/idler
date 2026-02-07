@@ -31,7 +31,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785178713)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785210719)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -40,7 +40,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 300ms. Fixed 139 files.
+Formatted 141 files in 313ms. Fixed 139 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -123,7 +123,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1202ms. No fixes applied.
+Checked 145 files in 1197ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2935,9 +2935,9 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 
 ```text
 .release-please-manifest.json 10ms
-github_conf/branch_protection_rules.json 2ms
+github_conf/branch_protection_rules.json 1ms
 jsconfig.json 3ms
-[90mpackage-lock.json[39m 70ms (unchanged)
+[90mpackage-lock.json[39m 77ms (unchanged)
 package.json 2ms
 release-please-config.json 3ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
 [[31merror[39m] [0m [90m 47 |[39m         [32m"id"[39m[33m:[39m [32m"sawmill"[39m[33m,[39m
