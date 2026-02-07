@@ -33,6 +33,7 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_EXCLUDE: '(.release-please-manifest.json|CHANGELOG.md)'
           # Enable Biome Fixes
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
@@ -71,8 +72,11 @@ jobs:
           # lint job without duplicating it, see
           # https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md#share-environment-variables-between-environments
       - name: Commit and push linting fixes
+        if: always()
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
+          # Only commit changed files that are NOT in the output directory
+          file_pattern: ':!super-linter-output/*'
           commit_message: "chore: fix linting issues"
           commit_user_name: super-linter
           commit_user_email: super-linter@super-linter.dev
