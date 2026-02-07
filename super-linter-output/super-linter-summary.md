@@ -31,7 +31,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21784972591)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785008776)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -40,7 +40,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 365ms. Fixed 139 files.
+Formatted 141 files in 301ms. Fixed 139 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -123,7 +123,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1331ms. No fixes applied.
+Checked 145 files in 1197ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -229,27 +229,6 @@ _test_/integration/gameEngine.integration.test.js:95:43 lint/complexity/useLiter
          95 │ + → → → const·inventory·=·state.placeInventory.village_center;
      96  96 │
      97  97 │   			expect(inventory).toBeDefined();
-
-
-_test_/integration/gameEngine.integration.test.js:139:22 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-    137 │ 			// Verify enemy still exists (enemies persist across navigation)
-    138 │ 			const enemyState = store.getState().enemies.byId;
-  > 139 │ 			expect(enemyState["test_enemy"]).toBeDefined();
-        │ 			                  ^^^^^^^^^^^^
-    140 │ 			expect(enemyState["test_enemy"].placeId).toBe("village_center");
-    141 │
-
-  i Unsafe fix: Use a literal key instead.
-
-    137 137 │   			// Verify enemy still exists (enemies persist across navigation)
-    138 138 │   			const enemyState = store.getState().enemies.byId;
-    139     │ - → → → expect(enemyState["test_enemy"]).toBeDefined();
-        139 │ + → → → expect(enemyState.test_enemy).toBeDefined();
-    140 140 │   			expect(enemyState["test_enemy"].placeId).toBe("village_center");
-    141 141 │
 
 
 _test_/combatService.staggered.test.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
@@ -374,6 +353,22 @@ _test_/gameLoop.test.js:12:7 lint/complexity/useOptionalChain  FIXABLE  ━━�
      13  13 │   			gameLoop.stop();
      14  14 │   		}
 
+
+src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │ import { useUIVisibility } from "../UIVisibilityContext";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
 
 static/avatar_test.html:419:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -911,11 +906,11 @@ src/styles/components.css
   [2m115:1[22m  [31m[31m✖[39m  Expected selector ".inventory-info span" to come before selector ".inventory-flex > div span", at line 99  [2mno-descending-specificity[22m
 
 src/styles/sections/places-section.css
-  [2m124:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
-  [2m135:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info", first used at line 110        [2mno-duplicate-selectors[22m
-  [2m139:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info h3", first used at line 114     [2mno-duplicate-selectors[22m
-  [2m149:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
-  [2m154:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-id", first used at line 129          [2mno-duplicate-selectors[22m
+  [2m123:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
+  [2m134:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info", first used at line 110        [2mno-duplicate-selectors[22m
+  [2m138:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info h3", first used at line 114     [2mno-duplicate-selectors[22m
+  [2m147:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
+  [2m152:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-id", first used at line 128          [2mno-duplicate-selectors[22m
 
 src/styles/sections/player-section.css
    [2m22:2[22m  [31m[31m✖[39m  Expected shorthand property "grid-template"                                                                            [2mdeclaration-block-no-redundant-longhand-properties[22m
@@ -1335,7 +1330,7 @@ src/styles/sections/notifications.css
 [37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
 [37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
-Scanned 4 files, found 122 errors in 2 files (49 ms)
+Scanned 4 files, found 122 errors in 2 files (44 ms)
 ```
 
 </details>
@@ -2941,8 +2936,8 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 ```text
 .release-please-manifest.json 10ms
 github_conf/branch_protection_rules.json 2ms
-jsconfig.json 4ms
-[90mpackage-lock.json[39m 79ms (unchanged)
+jsconfig.json 3ms
+[90mpackage-lock.json[39m 71ms (unchanged)
 package.json 2ms
 release-please-config.json 4ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
 [[31merror[39m] [0m [90m 47 |[39m         [32m"id"[39m[33m:[39m [32m"sawmill"[39m[33m,[39m
