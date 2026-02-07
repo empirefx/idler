@@ -1,8 +1,8 @@
 export const playerData = {
   id: 1,
-  name: 'John Doe',
+  name: "John Doe",
   MAX_WORKERS: 5,
-  avatar: '1.png',
+  avatar: "1.png",
   baseHealth: 120,
   baseAttack: 16,
   health: 120,
@@ -15,19 +15,32 @@ export const playerData = {
     strength: 10,
     defense: 5,
     agility: 7,
-    vitality: 12
+    vitality: 12,
   },
-  resources: [
-    { name: 'gold', amount: 0 }
-  ],
+  resources: [{ name: "gold", amount: 0 }],
   workers: [
-    { id: 1, name: 'Milo Bladovan', avatar: 'worker_m.jpg', assignedBuildingId: null },
-    { id: 2, name: 'Silik Ludorin', avatar: 'worker_f.jpg', assignedBuildingId: null },
-    { id: 3, name: 'Kresibrin Dobronimir', avatar: 'worker_m.jpg', assignedBuildingId: null }
-  ]
+    {
+      id: 1,
+      name: "Milo Bladovan",
+      avatar: "worker_m.jpg",
+      assignedBuildingId: null,
+    },
+    {
+      id: 2,
+      name: "Silik Ludorin",
+      avatar: "worker_f.jpg",
+      assignedBuildingId: null,
+    },
+    {
+      id: 3,
+      name: "Kresibrin Dobronimir",
+      avatar: "worker_m.jpg",
+      assignedBuildingId: null,
+    },
+  ],
 };
 
 export const metadata = {
-  version: '1.0.12',
-  lastUpdated: '2025-04-23'
-}
+  version: "1.0.12",
+  lastUpdated: "2025-04-23",
+};

@@ -1,4 +1,4 @@
-import { itemCatalog } from '../../data/itemCatalog';
+import { itemCatalog } from "../../data/itemCatalog";
 
 // Handles item creation logic, including randomization, upgrades, etc.
 export class ItemFactory {
@@ -7,9 +7,9 @@ export class ItemFactory {
     const itemDef = itemCatalog[productionType];
     if (!itemDef) return null;
     // Example: add random quality if requested
-    let item = {
+    const item = {
       ...itemDef,
-      quantity
+      quantity,
     };
     if (options.randomQuality) {
       item.quality = Math.floor(Math.random() * 5) + 1; // 1-5

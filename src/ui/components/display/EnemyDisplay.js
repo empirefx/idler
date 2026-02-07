@@ -1,5 +1,5 @@
-import React from 'react';
-import EnemyList from '../list/EnemyList';
+import React from "react";
+import EnemyList from "../list/EnemyList";
 
 const EnemyDisplay = ({ enemies }) => (
   <section className="enemies-section">

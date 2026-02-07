@@ -23,8 +23,7 @@
   display: flex;
   flex-direction: column;
   max-height: 200px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-dark) #00000034;
   position: relative;
@@ -40,7 +39,7 @@
   background-color: #d0d0d0;
   border: 2px solid #585858;
   cursor: pointer;
-  border-radius:var(--border-radius-sm);
+  border-radius: var(--border-radius-sm);
   transition: opacity 0.2s ease;
 }
 
@@ -56,7 +55,7 @@
   border-radius: var(--border-radius-sm);
   padding: var(--spacing-sm);
   min-width: 150px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 50%);
   z-index: 20;
 }
 
@@ -87,23 +86,23 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgb(255 255 255 / 30%);
 }
 
 .log-filter-color-indicator.log-entry-default {
-  background-color: hsla(0, 0%, 40%, 0.8);
+  background-color: hsl(0deg 0% 40% / 80%);
 }
 
 .log-filter-color-indicator.log-entry-worker {
-  background-color: hsla(200, 20%, 40%, 0.8);
+  background-color: hsl(200deg 20% 40% / 80%);
 }
 
 .log-filter-color-indicator.log-entry-combat {
-  background-color: hsla(0, 20%, 40%, 0.8);
+  background-color: hsl(0deg 20% 40% / 80%);
 }
 
 .log-filter-color-indicator.log-entry-movement {
-  background-color: hsla(45, 20%, 40%, 0.8);
+  background-color: hsl(45deg 20% 40% / 80%);
 }
 
 .log-entries {
@@ -127,33 +126,33 @@
 }
 
 .log-display .log-entry-default {
-  background-color: hsla(0, 0%, 40%, 0.8);
+  background-color: hsl(0deg 0% 40% / 80%);
 }
 
 .log-display .log-entry-worker {
-  background-color: hsla(200, 20%, 40%, 0.8);
+  background-color: hsl(200deg 20% 40% / 80%);
 }
 
 .log-display .log-entry-combat {
-  background-color: hsla(0, 20%, 40%, 0.8);
+  background-color: hsl(0deg 20% 40% / 80%);
 }
 
 .log-display .log-entry-movement {
-  background-color: hsla(45, 20%, 40%, 0.8);
+  background-color: hsl(45deg 20% 40% / 80%);
 }
 
 .log-display .log-entry-worker:hover {
-  background-color: hsla(200, 25%, 45%, 0.9);
+  background-color: hsl(200deg 25% 45% / 90%);
 }
 
 .log-display .log-entry-combat:hover {
-  background-color: hsla(0, 25%, 45%, 0.9);
+  background-color: hsl(0deg 25% 45% / 90%);
 }
 
 .log-display .log-entry-movement:hover {
-  background-color: hsla(45, 25%, 45%, 0.9);
+  background-color: hsl(45deg 25% 45% / 90%);
 }
 
 .log-display .log-entry-default:hover {
-  background-color: hsla(0, 0%, 45%, 0.9);
+  background-color: hsl(0deg 0% 45% / 90%);
 }

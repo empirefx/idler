@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const NPCCard = ({ npc, onClick }) => {
-  if (!npc || typeof npc !== 'object') {
+  if (!npc || typeof npc !== "object") {
     return null;
   }
 
@@ -15,13 +15,15 @@ const NPCCard = ({ npc, onClick }) => {
 
   return (
     <div className="npc-card" onClick={handleClick}>
-      <div className={`npc-avatar avatar avatar_${avatar} small`}>
-      </div>
+      <div className={`npc-avatar avatar avatar_${avatar} small`}></div>
       <div className="npc-info">
         <h3>{name}</h3>
         <p>{description}</p>
         {npc.hasInventory && (
-          <><h4>Actions</h4><span className="npc-inventory-badge">⇆ Shop</span></>
+          <>
+            <h4>Actions</h4>
+            <span className="npc-inventory-badge">⇆ Shop</span>
+          </>
         )}
       </div>
     </div>

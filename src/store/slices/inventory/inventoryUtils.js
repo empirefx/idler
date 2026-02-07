@@ -16,15 +16,18 @@ export const canItemsStack = (item1, item2) => {
 // Calculate total weight of items
 export const calculateWeight = (items) => {
   if (!Array.isArray(items)) return 0;
-  return items.reduce((total, item) => total + item.weight * (item.quantity || 1), 0);
+  return items.reduce(
+    (total, item) => total + item.weight * (item.quantity || 1),
+    0,
+  );
 };
 
 // Calculate total carried weight (inventory + equipped items)
 export const calculateTotalPlayerWeight = (playerInventory) => {
   if (!playerInventory) return 0;
-  
+
   let total = calculateWeight(playerInventory.items || []);
-  
+
   if (playerInventory.equipment) {
     for (const slot of Object.keys(playerInventory.equipment)) {
       const equipment = playerInventory.equipment[slot];
@@ -33,7 +36,7 @@ export const calculateTotalPlayerWeight = (playerInventory) => {
       }
     }
   }
-  
+
   return total;
 };
 
@@ -46,13 +49,13 @@ export const countSlots = (items) => {
 // Find item in inventory by ID
 export const findItemById = (inventory, itemId) => {
   if (!inventory || !Array.isArray(inventory.items)) return null;
-  return inventory.items.find(item => item.id === itemId) || null;
+  return inventory.items.find((item) => item.id === itemId) || null;
 };
 
 // Get item index in inventory by ID
 export const getItemIndex = (inventory, itemId) => {
   if (!inventory || !Array.isArray(inventory.items)) return -1;
-  return inventory.items.findIndex(item => item.id === itemId);
+  return inventory.items.findIndex((item) => item.id === itemId);
 };
 
 // Create a deep copy of an item
@@ -62,36 +65,40 @@ export const cloneItem = (item) => {
 
 // Generate unique ID for items
 export const generateItemId = (baseId = null) => {
-  return baseId ? `${baseId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}` 
-                : `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return baseId
+    ? `${baseId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    : `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
 // Validate item structure
 export const isValidItem = (item) => {
-  return item && 
-         typeof item === 'object' &&
-         typeof item.id !== 'undefined' &&
-         typeof item.name === 'string' &&
-         typeof item.type === 'string' &&
-         typeof item.weight === 'number';
+  return (
+    item &&
+    typeof item === "object" &&
+    typeof item.id !== "undefined" &&
+    typeof item.name === "string" &&
+    typeof item.type === "string" &&
+    typeof item.weight === "number"
+  );
 };
 
 // Sort items by name and type
-export const sortItems = (items, sortBy = 'name') => {
+export const sortItems = (items, sortBy = "name") => {
   if (!Array.isArray(items)) return [];
-  
+
   return [...items].sort((a, b) => {
     switch (sortBy) {
-      case 'type':
+      case "type":
         if (a.type !== b.type) {
           return a.type.localeCompare(b.type);
         }
         return a.name.localeCompare(b.name);
-      case 'weight':
+      case "weight": {
         const weightA = a.weight * (a.quantity || 1);
         const weightB = b.weight * (b.quantity || 1);
         return weightA - weightB;
-      case 'name':
+      }
+      case "name":
       default:
         return a.name.localeCompare(b.name);
     }
@@ -101,7 +108,7 @@ export const sortItems = (items, sortBy = 'name') => {
 // Filter items by type
 export const filterItemsByType = (items, itemType) => {
   if (!Array.isArray(items)) return [];
-  return items.filter(item => item.type === itemType);
+  return items.filter((item) => item.type === itemType);
 };
 
 // Get total value of items (if items have value property)
@@ -121,7 +128,7 @@ export const hasSpaceForItems = (inventory, additionalItemCount = 1) => {
 
 // Check if player can carry additional weight
 export const canCarryWeight = (playerInventory, additionalWeight = 0) => {
-  if (!playerInventory || playerInventory.type !== 'player') return true;
+  if (!playerInventory || playerInventory.type !== "player") return true;
   const currentWeight = calculateTotalPlayerWeight(playerInventory);
   return currentWeight + additionalWeight <= playerInventory.maxWeight;
 };
@@ -129,51 +136,55 @@ export const canCarryWeight = (playerInventory, additionalWeight = 0) => {
 // Get inventory summary information
 export const getInventorySummary = (inventory) => {
   if (!inventory) return null;
-  
+
   const items = inventory.items || [];
   const slotsUsed = countSlots(items);
   const totalWeight = calculateWeight(items);
   const totalValue = calculateTotalValue(items);
-  
+
   const summary = {
     slotsUsed,
     slotsAvailable: inventory.maxSlots - slotsUsed,
     totalWeight,
     totalValue,
     itemCount: items.length,
-    stackCount: items.filter(item => item.quantity > 1).length
+    stackCount: items.filter((item) => item.quantity > 1).length,
   };
-  
+
   // Add equipment weight for player inventories
-  if (inventory.type === 'player' && inventory.equipment) {
+  if (inventory.type === "player" && inventory.equipment) {
     const equipmentWeight = Object.values(inventory.equipment)
-      .filter(equipment => equipment && equipment.weight)
+      .filter((equipment) => equipment && equipment.weight)
       .reduce((total, equipment) => total + equipment.weight, 0);
-    
+
     summary.totalWeightWithEquipment = totalWeight + equipmentWeight;
     summary.equipmentWeight = equipmentWeight;
   }
-  
+
   return summary;
 };
 
 // Calculate maximum number of items that can be moved based on weight
-export const calculateMaxMovableItems = (item, targetInventory, currentQuantity = 1) => {
+export const calculateMaxMovableItems = (
+  item,
+  targetInventory,
+  currentQuantity = 1,
+) => {
   if (!item || !targetInventory) return currentQuantity;
-  
+
   // Only player inventories have weight limits
-  if (targetInventory.type !== 'player') return currentQuantity;
-  
+  if (targetInventory.type !== "player") return currentQuantity;
+
   const itemWeight = item.weight || 0;
   if (itemWeight <= 0) return currentQuantity; // No weight restriction for weightless items
-  
+
   const currentTotalWeight = calculateTotalPlayerWeight(targetInventory);
   const maxWeight = targetInventory.maxWeight || 0;
   const remainingWeight = maxWeight - currentTotalWeight;
-  
+
   // Calculate how many items can fit in remaining weight capacity
   const maxByWeight = Math.floor(remainingWeight / itemWeight);
-  
+
   // Return the lesser of current quantity and weight-limited quantity
   return Math.max(0, Math.min(currentQuantity, maxByWeight));
 };
@@ -181,16 +192,16 @@ export const calculateMaxMovableItems = (item, targetInventory, currentQuantity 
 // Check if a specific quantity of items can be moved without exceeding weight limit
 export const canMoveItemsByWeight = (item, targetInventory, quantity = 1) => {
   if (!item || !targetInventory) return false;
-  
+
   // Only player inventories have weight limits
-  if (targetInventory.type !== 'player') return true;
-  
+  if (targetInventory.type !== "player") return true;
+
   const itemWeight = item.weight || 0;
   if (itemWeight <= 0) return true; // No weight restriction for weightless items
-  
+
   const currentTotalWeight = calculateTotalPlayerWeight(targetInventory);
   const maxWeight = targetInventory.maxWeight || 0;
-  const totalWeightAfterMove = currentTotalWeight + (itemWeight * quantity);
-  
+  const totalWeightAfterMove = currentTotalWeight + itemWeight * quantity;
+
   return totalWeightAfterMove <= maxWeight;
 };

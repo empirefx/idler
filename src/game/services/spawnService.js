@@ -1,6 +1,6 @@
-import Logger from '../utils/Logger';
-import EnemyFactory from '../factory/enemyFactory';
-import { placesData } from '../../data/places';
+import Logger from "../utils/Logger";
+import EnemyFactory from "../factory/enemyFactory";
+import { placesData } from "../../data/places";
 
 class BaseSpawner {
   #isDestroyed = false; // Flag to track if the spawner is destroyed
@@ -21,9 +21,17 @@ class BaseSpawner {
     // Create the enemy object
     const enemy = base
       ? { ...base, id }
-      : { id, type, name: 'Unknown', health: 50, maxHealth: 50, attack: 5, speed: 1 };
+      : {
+          id,
+          type,
+          name: "Unknown",
+          health: 50,
+          maxHealth: 50,
+          attack: 5,
+          speed: 1,
+        };
 
-    if (enemy.attackPattern === 'staggered') {
+    if (enemy.attackPattern === "staggered") {
       const [min, max] = enemy.attackDelayRange || [1000, 2000];
       const delay = Math.random() * (max - min) + min;
       enemy.nextAttackTime = Date.now() + delay;
@@ -42,11 +50,9 @@ class BaseSpawner {
     this.#abortController?.abort();
     this.#abortController = new AbortController();
 
-    return this.eventBus.on(
-      `enemyDead:${this.placeId}`,
-      onAllDead,
-      { signal: this.#abortController.signal }
-    );
+    return this.eventBus.on(`enemyDead:${this.placeId}`, onAllDead, {
+      signal: this.#abortController.signal,
+    });
   }
 
   // Destroy the spawner and clean up resources
@@ -75,12 +81,16 @@ export class WaveSpawner extends BaseSpawner {
   }
 
   get isSingleEnemy() {
-    const pool = Array.isArray(this.config.pool) ? this.config.pool : [this.config.pool];
+    const pool = Array.isArray(this.config.pool)
+      ? this.config.pool
+      : [this.config.pool];
     return pool.length === 1;
   }
 
   selectEnemyFromPool() {
-    const pool = Array.isArray(this.config.pool) ? this.config.pool : [this.config.pool];
+    const pool = Array.isArray(this.config.pool)
+      ? this.config.pool
+      : [this.config.pool];
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
@@ -121,14 +131,15 @@ export class WaveSpawner extends BaseSpawner {
       const enemy = this.createEnemy(type);
       this.#aliveIds.add(enemy.id);
 
-      Logger.log(`Spawned ${enemy.id} at ${this.placeId}`, 0, 'spawn');
-      this.eventBus.emit('spawnEnemy', { placeId: this.placeId, enemy });
+      Logger.log(`Spawned ${enemy.id} at ${this.placeId}`, 0, "spawn");
+      this.eventBus.emit("spawnEnemy", { placeId: this.placeId, enemy });
     }
   }
 
   #scheduleRespawn() {
     clearTimeout(this.#respawnTimer);
-    this.#respawnTimer = setTimeout(() => { // Schedule respawn after delay
+    this.#respawnTimer = setTimeout(() => {
+      // Schedule respawn after delay
       if (!this.isDestroyed) this.start();
     }, this.config.respawnDelay * 1000);
   }
@@ -145,7 +156,7 @@ export default class SpawnService {
 
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.eventBus.on('enterPlace', id => this.#onEnterPlace(id));
+    this.eventBus.on("enterPlace", (id) => this.#onEnterPlace(id));
   }
 
   // Handle place entry
@@ -164,7 +175,10 @@ export default class SpawnService {
     if (!config) return;
 
     if (!this.#spawners.has(placeId)) {
-      this.#spawners.set(placeId, new WaveSpawner(placeId, config, this.eventBus));
+      this.#spawners.set(
+        placeId,
+        new WaveSpawner(placeId, config, this.eventBus),
+      );
     }
 
     this.#spawners.get(placeId).start();
@@ -191,6 +205,8 @@ export default class SpawnService {
   }
 
   getCurrentSpawner() {
-    return this.#currentPlaceId ? this.#spawners.get(this.#currentPlaceId) : null;
+    return this.#currentPlaceId
+      ? this.#spawners.get(this.#currentPlaceId)
+      : null;
   }
 }

@@ -1,12 +1,12 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
   byId: {},
-  allIds: []
+  allIds: [],
 };
 
 const enemiesSlice = createSlice({
-  name: 'enemies',
+  name: "enemies",
   initialState,
   reducers: {
     addEnemy(state, action) {
@@ -17,11 +17,11 @@ const enemiesSlice = createSlice({
           placeId,
           nextAttackTime: enemy.nextAttackTime || 0,
           attackDelayRange: enemy.attackDelayRange || [2000, 5000],
-          attackPattern: enemy.attackPattern || 'normal',
+          attackPattern: enemy.attackPattern || "normal",
           countdown: enemy.countdown || 0,
           initialAttackDelay: enemy.initialAttackDelay || 0,
           isCountdownActive: enemy.isCountdownActive || false,
-          isDead: false
+          isDead: false,
         };
         state.allIds.push(enemy.id);
       }
@@ -31,14 +31,14 @@ const enemiesSlice = createSlice({
       const { id } = action.payload;
       if (state.byId[id]) {
         delete state.byId[id];
-        state.allIds = state.allIds.filter(eid => eid !== id);
+        state.allIds = state.allIds.filter((eid) => eid !== id);
       }
     },
 
     // Remove all enemies in a specific place
     removeEnemiesByPlace(state, action) {
       const placeId = action.payload;
-      state.allIds = state.allIds.filter(id => {
+      state.allIds = state.allIds.filter((id) => {
         if (state.byId[id]?.placeId === placeId) {
           delete state.byId[id];
           return false;
@@ -63,22 +63,22 @@ const enemiesSlice = createSlice({
     removeDeadEnemiesByPlace(state, action) {
       const { placeId } = action.payload;
 
-      const enemiesInPlace = state.allIds.filter(id =>
-        state.byId[id]?.placeId === placeId
+      const enemiesInPlace = state.allIds.filter(
+        (id) => state.byId[id]?.placeId === placeId,
       );
 
       const allDead =
         enemiesInPlace.length > 0 &&
-        enemiesInPlace.every(id => state.byId[id].isDead);
+        enemiesInPlace.every((id) => state.byId[id].isDead);
 
       if (!allDead) return;
 
       // remove one-by-one so lifecycle detects every death
-      enemiesInPlace.forEach(id => {
+      enemiesInPlace.forEach((id) => {
         delete state.byId[id];
       });
 
-      state.allIds = state.allIds.filter(id => !enemiesInPlace.includes(id));
+      state.allIds = state.allIds.filter((id) => !enemiesInPlace.includes(id));
     },
 
     // Update enemy's next attack time
@@ -96,7 +96,7 @@ const enemiesSlice = createSlice({
       const enemy = state.byId[id];
       if (enemy && enemy.isCountdownActive && enemy.countdown > 0) {
         // Convert deltaTime from seconds to milliseconds
-        enemy.countdown = Math.max(0, enemy.countdown - (deltaTime * 1000));
+        enemy.countdown = Math.max(0, enemy.countdown - deltaTime * 1000);
       }
     },
 
@@ -122,14 +122,14 @@ const enemiesSlice = createSlice({
     initializeCountdownsForPlace(state, action) {
       const { placeId, baseTimestamp } = action.payload;
       const placeEnemies = Object.values(state.byId).filter(
-        enemy =>
+        (enemy) =>
           enemy.placeId === placeId &&
-          enemy.attackPattern === 'staggered' &&
-          !enemy.isCountdownActive
+          enemy.attackPattern === "staggered" &&
+          !enemy.isCountdownActive,
       );
 
       // Only initialize INACTIVE enemies
-      placeEnemies.forEach(enemy => {
+      placeEnemies.forEach((enemy) => {
         if (enemy.attackDelayRange) {
           const [minDelay, maxDelay] = enemy.attackDelayRange;
           enemy.countdown = Math.random() * (maxDelay - minDelay) + minDelay;
@@ -137,8 +137,8 @@ const enemiesSlice = createSlice({
           enemy.countdownStartTime = baseTimestamp;
         }
       });
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -151,7 +151,7 @@ export const {
   updateEnemyCountdown,
   setCountdownActive,
   initializeCountdown,
-  initializeCountdownsForPlace
+  initializeCountdownsForPlace,
 } = enemiesSlice.actions;
 
 // Selectors
@@ -161,13 +161,13 @@ const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 // Memoized selectors
 export const selectAllEnemies = createSelector(
   [selectEnemiesState],
-  (enemiesState) => enemiesState.allIds.map(id => enemiesState.byId[id])
+  (enemiesState) => enemiesState.allIds.map((id) => enemiesState.byId[id]),
 );
 
 export const selectEnemiesForCurrentPlace = createSelector(
   [selectAllEnemies, selectCurrentPlaceId],
   (enemiesList, currentPlaceId) =>
-    enemiesList.filter(enemy => enemy.placeId === currentPlaceId)
+    enemiesList.filter((enemy) => enemy.placeId === currentPlaceId),
 );
 
 export default enemiesSlice.reducer;

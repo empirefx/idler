@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { removeNotification } from '../../../store/slices/notificationSlice';
-import { NOTIFICATION_TYPES } from '../../../store/slices/notificationSlice';
-import '../../../styles/sections/notifications.css';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { removeNotification } from "../../../store/slices/notificationSlice";
+import { NOTIFICATION_TYPES } from "../../../store/slices/notificationSlice";
+import "../../../styles/sections/notifications.css";
 
 const Notification = ({ notification }) => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Notification = ({ notification }) => {
   };
 
   const getNotificationClass = () => {
-    const baseClass = 'notification';
+    const baseClass = "notification";
     const typeClass = `notification-${type}`;
     return `${baseClass} ${typeClass}`;
   };
@@ -30,7 +30,11 @@ const Notification = ({ notification }) => {
   return (
     <div className={getNotificationClass()} onClick={handleDismiss}>
       <span className="notification-message">{message}</span>
-      <button className="notification-close" onClick={handleDismiss} aria-label="Close">
+      <button
+        className="notification-close"
+        onClick={handleDismiss}
+        aria-label="Close"
+      >
         ×
       </button>
     </div>

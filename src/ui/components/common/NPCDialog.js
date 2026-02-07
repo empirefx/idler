@@ -1,9 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { selectPlayer } from '../../../store/slices/playerSlice';
-import { selectNPCById } from '../../../store/slices/npcSlice';
+import React, { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { selectPlayer } from "../../../store/slices/playerSlice";
+import { selectNPCById } from "../../../store/slices/npcSlice";
 
-const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) => {
+const NPCDialog = ({
+  isOpen,
+  npcId,
+  selectedOption,
+  onClose,
+  onOptionSelect,
+}) => {
   const player = useSelector(selectPlayer);
   const npc = useSelector((state) => selectNPCById(state, npcId));
   const dialogRef = useRef(null);
@@ -30,31 +36,38 @@ const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) =
   if (!npc || !isOpen) return null;
 
   const getResponseText = () => {
-    if (!npc.dialogue) return 'This NPC has nothing to say.';
-    
-    if (selectedOption !== null && npc.dialogue.options && npc.dialogue.options[selectedOption]) {
+    if (!npc.dialogue) return "This NPC has nothing to say.";
+
+    if (
+      selectedOption !== null &&
+      npc.dialogue.options &&
+      npc.dialogue.options[selectedOption]
+    ) {
       return npc.dialogue.options[selectedOption].response;
     }
-    return npc.dialogue.initial || 'Hello, traveler.';
+    return npc.dialogue.initial || "Hello, traveler.";
   };
 
   const getPlayerText = () => {
-    if (!npc.dialogue || !npc.dialogue.options) return '';
-    
+    if (!npc.dialogue || !npc.dialogue.options) return "";
+
     if (selectedOption !== null && npc.dialogue.options[selectedOption]) {
       return npc.dialogue.options[selectedOption].text;
     }
-    return '...';
+    return "...";
   };
 
   return (
-    <dialog 
-      ref={dialogRef} 
+    <dialog
+      ref={dialogRef}
       className="npc-dialog"
       onClick={handleBackdropClick}
     >
       {/* Hidden focus trap */}
-      <div style={{ position: 'absolute', opacity: 0, height: 0 }} tabIndex={0}></div>
+      <div
+        style={{ position: "absolute", opacity: 0, height: 0 }}
+        tabIndex={0}
+      ></div>
       <div className="key-bind-container">
         <span className="key-bind">ESC</span>
         <span>escape</span>
@@ -65,32 +78,32 @@ const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) =
           {/* Left: Player Profile */}
           <div
             className="player-profile"
-            style={{'--player-avatar-url': `url(./assets/avatars/players/${player.avatar})`}}
+            style={{
+              "--player-avatar-url": `url(./assets/avatars/players/${player.avatar})`,
+            }}
           >
             <div className="player-background-image"></div>
             <div className="player-content-overlay">
               <div className="player-avatar-name">
                 <h3>{player.name}</h3>
               </div>
-              <div className="player-text">
-                {getPlayerText()}
-              </div>
+              <div className="player-text">{getPlayerText()}</div>
             </div>
           </div>
-          
+
           {/* Right: NPC Profile with Options */}
           <div className="npc-profile">
             <div className="npc-avatar-name">
-              <div className={`npc-avatar avatar avatar_${npc.avatar} small`}></div>
+              <div
+                className={`npc-avatar avatar avatar_${npc.avatar} small`}
+              ></div>
               <h3>{npc.name}</h3>
             </div>
-            <div className="npc-response">
-              {getResponseText()}
-            </div>
+            <div className="npc-response">{getResponseText()}</div>
             <div className="dialog-options">
               {npc.dialogue && npc.dialogue.options ? (
                 npc.dialogue.options.map((option, index) => (
-                  <button 
+                  <button
                     key={index}
                     onClick={() => onOptionSelect(index)}
                     className="dialog-option-btn"
@@ -99,7 +112,11 @@ const NPCDialog = ({ isOpen, npcId, selectedOption, onClose, onOptionSelect }) =
                   </button>
                 ))
               ) : (
-                <button disabled className="dialog-option-btn" style={{ opacity: 0.5 }}>
+                <button
+                  disabled
+                  className="dialog-option-btn"
+                  style={{ opacity: 0.5 }}
+                >
                   No dialogue options available
                 </button>
               )}

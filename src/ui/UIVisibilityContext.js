@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from "react";
 
 // Manages the visibility of UI panels/cards
 const UIVisibilityContext = createContext();
@@ -12,17 +12,17 @@ export const UIVisibilityProvider = ({ children }) => {
     npcDialog: {
       isOpen: false,
       npcId: null,
-      selectedOption: null
-    }
+      selectedOption: null,
+    },
   });
 
   // Toggle functions
   const togglePlayerCard = useCallback(() => {
-    setVisible(v => ({ ...v, playerCard: !v.playerCard }));
+    setVisible((v) => ({ ...v, playerCard: !v.playerCard }));
   }, []);
 
   const toggleWorkerCard = useCallback(() => {
-    setVisible(v => {
+    setVisible((v) => {
       const newWorkerCard = !v.workerCard;
       // Auto-toggle NPC section: show NPC when worker is hidden
       const newNpcSection = !newWorkerCard;
@@ -31,51 +31,53 @@ export const UIVisibilityProvider = ({ children }) => {
   }, []);
 
   const toggleNpcSection = useCallback(() => {
-    setVisible(v => ({ ...v, npcSection: !v.npcSection }));
+    setVisible((v) => ({ ...v, npcSection: !v.npcSection }));
   }, []);
 
   const openNPCDialog = useCallback((npcId) => {
-    setVisible(v => ({ 
-      ...v, 
+    setVisible((v) => ({
+      ...v,
       npcDialog: {
         isOpen: true,
         npcId,
-        selectedOption: null
-      }
+        selectedOption: null,
+      },
     }));
   }, []);
 
   const selectNPCOption = useCallback((optionIndex) => {
-    setVisible(v => ({ 
-      ...v, 
+    setVisible((v) => ({
+      ...v,
       npcDialog: {
         ...v.npcDialog,
-        selectedOption: optionIndex
-      }
+        selectedOption: optionIndex,
+      },
     }));
   }, []);
 
   const closeNPCDialog = useCallback(() => {
-    setVisible(v => ({ 
-      ...v, 
+    setVisible((v) => ({
+      ...v,
       npcDialog: {
         isOpen: false,
         npcId: null,
-        selectedOption: null
-      }
+        selectedOption: null,
+      },
     }));
   }, []);
 
   return (
-    <UIVisibilityContext.Provider value={{ 
-      ...visible, 
-      togglePlayerCard, 
-      toggleWorkerCard,
-      toggleNpcSection,
-      openNPCDialog,
-      selectNPCOption,
-      closeNPCDialog
-    }}>
+    <UIVisibilityContext.Provider
+      value={{
+        ...visible,
+        togglePlayerCard,
+        toggleWorkerCard,
+        toggleNpcSection,
+        openNPCDialog,
+        selectNPCOption,
+        closeNPCDialog,
+      }}
+    >
       {children}
     </UIVisibilityContext.Provider>
   );

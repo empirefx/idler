@@ -29,7 +29,7 @@
   font-size: 1.2rem;
   text-align: center;
   color: var(--color-gray);
-  background: rgba(255,255,255,0.1);
+  background: rgb(255 255 255 / 10%);
   padding: var(--spacing-md);
   margin: var(--spacing-lg);
   border-radius: var(--border-radius-md);
@@ -40,7 +40,9 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .npc-card:hover {
@@ -58,16 +60,18 @@
   right: 100px;
   top: 50%;
   transform: translateY(-30%);
-  background-color:black;
+  background-color: black;
   color: var(--color-dark);
   padding: var(--spacing-sm);
   border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
   width: 300px;
   z-index: 10;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s, visibility 0.2s;
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
   pointer-events: none;
 }
 
@@ -87,7 +91,7 @@
 
 .npc-info h4 {
   margin: 0;
-  padding: 10px 0px;
+  padding: 10px 0;
   text-align: left;
   color: var(--color-primary);
   font-family: var(--font-family-secondary);

@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useDispatch, useStore } from 'react-redux';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useDispatch, useStore } from "react-redux";
 
-import GameEngine from '../../game/engine/GameEngine';
-import Logger from '../../game/utils/Logger';
+import GameEngine from "../../game/engine/GameEngine";
+import Logger from "../../game/utils/Logger";
 
 export const useGameState = () => {
   const dispatch = useDispatch(); // Get dispatch function from Redux and pass it to GameEngine
@@ -22,71 +22,71 @@ export const useGameState = () => {
     const initializeGame = async () => {
       // Prevent double initialization
       if (isInitialized.current) {
-        Logger.log('Game already initialized, skipping', 0, 'game-loop');
+        Logger.log("Game already initialized, skipping", 0, "game-loop");
         return;
       }
-      
-      Logger.log('Initializing game...', 0, 'game-loop');
+
+      Logger.log("Initializing game...", 0, "game-loop");
       isInitialized.current = true;
-      
+
       try {
         // Use the ref directly
         const gameEngine = gameEngineRef.current;
-        Logger.log('GameEngine instance:', 0, 'game-loop', gameEngine);
-        
+        Logger.log("GameEngine instance:", 0, "game-loop", gameEngine);
+
         // Load saved game state if exists
         try {
           gameEngine.load();
-          Logger.log('Game state loaded', 0, 'game-loop');
+          Logger.log("Game state loaded", 0, "game-loop");
         } catch (loadError) {
-          Logger.error('Error loading game state:', 0, 'game-loop', loadError);
+          Logger.error("Error loading game state:", 0, "game-loop", loadError);
         }
-        
+
         // Start the game loop
-        Logger.log('Starting game loop', 0, 'game-loop');
+        Logger.log("Starting game loop", 0, "game-loop");
         gameEngine.start();
-        Logger.log('Game loop started', 0, 'game-loop');
+        Logger.log("Game loop started", 0, "game-loop");
       } catch (err) {
-        Logger.error('Error initializing game:', 0, 'game-loop', err);
-        Logger.error('Error stack:', 0, 'game-loop', err.stack);
+        Logger.error("Error initializing game:", 0, "game-loop", err);
+        Logger.error("Error stack:", 0, "game-loop", err.stack);
         setError(`Game initialization failed: ${err.message}`);
       }
     };
-    
+
     initializeGame();
-    
+
     return () => {
-      Logger.log('Cleanup function called', 0, 'game-loop');
+      Logger.log("Cleanup function called", 0, "game-loop");
       const gameEngine = gameEngineRef.current;
       gameEngine.stop();
       try {
         gameEngine.save();
-        Logger.log('Game state saved', 0, 'game-loop');
+        Logger.log("Game state saved", 0, "game-loop");
       } catch (saveError) {
-        Logger.error('Failed to save game state:', 0, 'game-loop', saveError);
+        Logger.error("Failed to save game state:", 0, "game-loop", saveError);
       }
     };
   }, []);
 
   const clearCache = useCallback(() => {
     try {
-      localStorage.removeItem('gameState');
+      localStorage.removeItem("gameState");
       window.location.reload();
     } catch (err) {
-      Logger.error('Failed to clear cache:', 0, 'game-loop', err);
-      setError('Failed to clear cache');
+      Logger.error("Failed to clear cache:", 0, "game-loop", err);
+      setError("Failed to clear cache");
     }
   }, []);
 
   if (error) {
     return {
       error,
-      clearCache: () => {}
+      clearCache: () => {},
     };
   }
 
   return {
     error,
-    clearCache
+    clearCache,
   };
 };

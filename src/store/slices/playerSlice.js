@@ -1,17 +1,21 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
-import { playerData } from '../../data/player';
-import { workerAssigned, workerUnassigned } from '../../game/events';
+import { playerData } from "../../data/player";
+import { workerAssigned, workerUnassigned } from "../../game/events";
 
 // Thunks for worker operations that also emit events
-export const assignWorkerToBuildingWithEvent = (workerId, buildingId, buildingName) => {
+export const assignWorkerToBuildingWithEvent = (
+  workerId,
+  buildingId,
+  buildingName,
+) => {
   return (dispatch, getState) => {
     // First dispatch the original action to update state
     dispatch(assignWorkerToBuilding({ workerId, buildingId, buildingName }));
-    
+
     // Then dispatch the event for logging
     const state = getState();
-    const worker = state.player.workers.find(w => w.id === workerId);
+    const worker = state.player.workers.find((w) => w.id === workerId);
     if (worker) {
       dispatch(workerAssigned(workerId, worker.name, buildingId, buildingName));
     }
@@ -22,12 +26,19 @@ export const unassignWorkerWithEvent = (workerId, buildingName) => {
   return (dispatch, getState) => {
     // First dispatch the original action to update state
     dispatch(unassignWorker({ workerId, buildingName }));
-    
+
     // Then dispatch the event for logging
     const state = getState();
-    const worker = state.player.workers.find(w => w.id === workerId);
+    const worker = state.player.workers.find((w) => w.id === workerId);
     if (worker) {
-      dispatch(workerUnassigned(workerId, worker.name, worker.assignedBuildingId, buildingName));
+      dispatch(
+        workerUnassigned(
+          workerId,
+          worker.name,
+          worker.assignedBuildingId,
+          buildingName,
+        ),
+      );
     }
   };
 };
@@ -35,12 +46,12 @@ export const unassignWorkerWithEvent = (workerId, buildingName) => {
 const initialState = { ...playerData };
 
 export const playerSlice = createSlice({
-  name: 'player',
+  name: "player",
   initialState,
   reducers: {
     unassignWorker: (state, action) => {
       const { workerId, buildingName } = action.payload;
-      const worker = state.workers.find(worker => worker.id === workerId);
+      const worker = state.workers.find((worker) => worker.id === workerId);
       if (worker) {
         const previousBuildingId = worker.assignedBuildingId;
         worker.assignedBuildingId = null; // Set to null rather than removing the worker
@@ -53,7 +64,7 @@ export const playerSlice = createSlice({
     },
     assignWorkerToBuilding: (state, action) => {
       const { workerId, buildingId, buildingName } = action.payload;
-      const worker = state.workers.find(worker => worker.id === workerId);
+      const worker = state.workers.find((worker) => worker.id === workerId);
       if (worker) {
         const previousBuildingId = worker.assignedBuildingId;
         worker.assignedBuildingId = buildingId;
@@ -88,7 +99,12 @@ export const playerSlice = createSlice({
       if (state.exp < required) return;
       state.exp -= required;
       state.level += 1;
-      const { strength = 0, defense = 0, agility = 0, vitality = 0 } = action.payload;
+      const {
+        strength = 0,
+        defense = 0,
+        agility = 0,
+        vitality = 0,
+      } = action.payload;
       state.stats.strength += strength;
       state.stats.defense += defense;
       state.stats.agility += agility;
@@ -98,12 +114,12 @@ export const playerSlice = createSlice({
     updateLastAttackTime: (state, action) => {
       const { timestamp } = action.payload;
       state.lastAttackTime = timestamp;
-    }
+    },
   },
 });
 
 // Action creators
-export const { 
+export const {
   unassignWorker,
   assignWorkerToBuilding,
   damagePlayer,
@@ -111,17 +127,17 @@ export const {
   setPlayerState,
   gainExp,
   levelUp,
-  updateLastAttackTime
+  updateLastAttackTime,
 } = playerSlice.actions;
 
 // Selectors
-export const selectWorkers = state => state.player.workers;
-export const selectResources = state => state.player.resources;
+export const selectWorkers = (state) => state.player.workers;
+export const selectResources = (state) => state.player.resources;
 
 // Memoized selectors
 export const selectPlayer = createSelector(
-  state => state.player,
-  player => ({
+  (state) => state.player,
+  (player) => ({
     id: player.id,
     avatar: player.avatar,
     name: player.name,
@@ -131,47 +147,50 @@ export const selectPlayer = createSelector(
     attack: player.baseAttack,
     level: player.level,
     exp: player.exp,
-    expToNext: player.level * 100
-  })
+    expToNext: player.level * 100,
+  }),
 );
 export const listBuildingsWithAssignedWorkers = createSelector(
   [selectWorkers],
-  (workers) => workers.filter(worker => worker.assignedBuildingId).map(worker => worker.assignedBuildingId)
+  (workers) =>
+    workers
+      .filter((worker) => worker.assignedBuildingId)
+      .map((worker) => worker.assignedBuildingId),
 );
 export const selectAssignedWorkers = createSelector(
   [selectWorkers],
-  (workers) => workers.filter(worker => worker.assignedBuildingId)
+  (workers) => workers.filter((worker) => worker.assignedBuildingId),
 );
 export const selectUnassignedWorkers = createSelector(
   [selectWorkers],
-  workers => workers.filter(worker => !worker.assignedBuildingId)
+  (workers) => workers.filter((worker) => !worker.assignedBuildingId),
 );
 
 // Centralized selectors for player resources and workers
 export const selectGold = createSelector(
   [selectResources],
-  resources => resources.find(r => r.name === 'gold')?.amount || 0
+  (resources) => resources.find((r) => r.name === "gold")?.amount || 0,
 );
 export const selectWorkerCount = createSelector(
   [selectWorkers],
-  workers => workers.length
+  (workers) => workers.length,
 );
-export const selectMaxWorkers = state => state.player.MAX_WORKERS;
+export const selectMaxWorkers = (state) => state.player.MAX_WORKERS;
 
 // Selector to check if player is ready to level up
 export const selectIsReadyToLevelUp = createSelector(
-  [state => state.player.level, state => state.player.exp],
-  (level, exp) => exp >= (level * 100)
+  [(state) => state.player.level, (state) => state.player.exp],
+  (level, exp) => exp >= level * 100,
 );
 
 // Selector to check if player is ready to attack
 export const selectIsPlayerReadyToAttack = createSelector(
-  [state => state.player],
+  [(state) => state.player],
   (player) => {
     const now = Date.now();
     const timeSinceLastAttack = now - (player.lastAttackTime || 0);
     return timeSinceLastAttack >= (player.attackCooldown || 1000);
-  }
+  },
 );
 
 export default playerSlice.reducer;

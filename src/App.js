@@ -1,8 +1,8 @@
-import React from 'react';
-import { UIVisibilityProvider } from './ui/UIVisibilityContext';
-import InputManager from './ui/InputManager';
-import { useGameState } from './ui/hooks/useGameState';
-import GameLayout from './ui/layouts/GameLayout';
+import React from "react";
+import { UIVisibilityProvider } from "./ui/UIVisibilityContext";
+import InputManager from "./ui/InputManager";
+import { useGameState } from "./ui/hooks/useGameState";
+import GameLayout from "./ui/layouts/GameLayout";
 
 const App = () => {
   const { clearCache, error } = useGameState();

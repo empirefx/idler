@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-function QuantitySlider({ 
-  value, 
-  onChange, 
-  min = 1, 
-  max, 
+function QuantitySlider({
+  value,
+  onChange,
+  min = 1,
+  max,
   disabled = false,
-  className = ''
+  className = "",
 }) {
   const handleChange = (e) => {
     const newValue = parseInt(e.target.value, 10);
@@ -24,9 +24,7 @@ function QuantitySlider({
         disabled={disabled}
         className="slider-input"
       />
-      <div className="slider-value">
-        {value}
-      </div>
+      <div className="slider-value">{value}</div>
     </div>
   );
 }

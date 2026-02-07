@@ -1,7 +1,7 @@
 // Mock localStorage for testing
 export const createMockLocalStorage = () => {
   let store = {};
-  
+
   return {
     getItem: vi.fn((key) => store[key] || null),
     setItem: vi.fn((key, value) => {
@@ -24,6 +24,6 @@ export const createMockLocalStorage = () => {
       createMockLocalStorage().setItem.mockReset();
       createMockLocalStorage().removeItem.mockReset();
       createMockLocalStorage().clear.mockReset();
-    }
+    },
   };
 };

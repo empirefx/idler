@@ -1,16 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { createSelector } from '@reduxjs/toolkit';
+import React from "react";
+import { useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
 
-import { selectResources, selectWorkers } from '../../../store/slices/playerSlice';
+import {
+  selectResources,
+  selectWorkers,
+} from "../../../store/slices/playerSlice";
 
 // selectors
-const selectMaxWorkers = state => state.player.MAX_WORKERS || 0;
+const selectMaxWorkers = (state) => state.player.MAX_WORKERS || 0;
 
 // Memoized selector
 const selectWorkerCount = createSelector(
   [selectWorkers],
-  (workers) => workers.length
+  (workers) => workers.length,
 );
 
 const ResourceDisplay = () => {
@@ -19,7 +22,7 @@ const ResourceDisplay = () => {
   const workerCount = useSelector(selectWorkerCount);
   const maxWorkers = useSelector(selectMaxWorkers);
 
-  const gold = resources.find(r => r.name === 'gold').amount;
+  const gold = resources.find((r) => r.name === "gold").amount;
 
   return (
     <div className="resource-display">

@@ -1,7 +1,7 @@
 .player-section {
   margin: auto;
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  inset: 0;
   max-height: 480px;
   max-width: 970px;
   background: var(--color-dark);
@@ -19,7 +19,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 8px;
-  grid-template-areas: 
+  grid-template-areas:
     "display equipment stats"
     "display inventory inventory";
   width: 100%;
@@ -32,8 +32,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-image: url(../../assets/ui/player_frame.png);
-  background-size:contain;
+  background-image: url("../../assets/ui/player_frame.png");
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -41,7 +41,7 @@
 .player-display h1 {
   font-size: 1.8rem;
   font-weight: bold;
-  text-transform:initial;
+  text-transform: initial;
   text-align: center;
   z-index: 1;
 }
@@ -52,8 +52,8 @@
 
 .player-avatar {
   position: absolute;
-  background-image: url(../../assets/avatars/players/1.png);
-  background-size:contain;
+  background-image: url("../../assets/avatars/players/1.png");
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   mask-image: linear-gradient(to top, transparent 11%, black 35%);
@@ -118,7 +118,7 @@
   margin-top: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
   text-indent: var(--spacing-sm);
-  text-transform:initial;
+  text-transform: initial;
 }
 
 .equipment-flex {

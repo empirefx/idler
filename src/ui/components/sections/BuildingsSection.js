@@ -1,10 +1,10 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import '../../../styles/sections/buildings-section.css';
-import BuildingCard from '../card/BuildingCard';
-import { selectAllBuildings } from '../../../store/slices/buildingsSlice';
-import { selectCurrentPlaceBuildings } from '../../../store/slices/placesSlice';
+import "../../../styles/sections/buildings-section.css";
+import BuildingCard from "../card/BuildingCard";
+import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
+import { selectCurrentPlaceBuildings } from "../../../store/slices/placesSlice";
 
 const BuildingsSection = () => {
   const buildings = useSelector(selectAllBuildings);
@@ -13,9 +13,11 @@ const BuildingsSection = () => {
   return (
     <section className="buildings-section">
       <div className="buildings-grid">
-        {currentBuildings.map(id => {
+        {currentBuildings.map((id) => {
           const building = buildings[id];
-          return building ? <BuildingCard key={id} building={building} /> : null;
+          return building ? (
+            <BuildingCard key={id} building={building} />
+          ) : null;
         })}
       </div>
     </section>

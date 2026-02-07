@@ -5,16 +5,20 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 ![screenshot](static/screenshot.png)
 
 ## TO-DO
+
 #### Player
+
 - [ ] `Player` death & punishment(15% lost EXP)
 - [ ] `Player` skills(ex powerful skill, AOE skill)
 
 #### Enemies
+
 - [x] `Enemy` pool should attack(all at once) in different delay times
 - [x] `Enemy` pool should have different `enemies`
 - [ ] `Enemy`(some) should have a chance to become a `worker`
 
 #### Mechanics
+
 - [ ] Calculate DMG/DEF with `stats`, `equipment`, `skills`(?)
 - [x] `Inventory` should display a slider when item quantity is more than 1
 - [ ] `Recipes` ex 10x apple's -> apple-pie, player needs to know recipe first to craft it
@@ -27,30 +31,36 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 - [ ] `Quest` log
 
 #### Other
+
 - [x] `Log` better format for better readability
-- [x] Alert `player` he cant carry that much `weight`
-- [x] `Engine` better performance iterations, maybe abstract to a class? for re-use
+- [x] Alert `player` he can't carry that much `weight`
+- [x] `Engine` better performance iterations, maybe abstract to a class? for reuse
 - [ ] Icons
 
 ## Setup
 
 ### Install
+
 ```bash
 npm install
 ```
 
 ### Environments
+
 Create `.env.development` and `.env.production` at project root:
+
 ```env
 API_URL=...
 ```
 
 ### Scripts
+
 - `npm start` → dev server (Parcel)
 - `npm run build` → production build
 - `npm test` → run tests (Vitest)
 
 ## Project Structure
+
 ```text
 src/
   game/
@@ -87,16 +97,18 @@ The app is bundled by Parcel, renders a React application, and uses Redux for st
 
 ### Backgrounds/avatars/icons
 
-- **Perchance**: https://perchance.org/ai-text-to-image-generator
-- **Idylwilds Armory**: https://idylwild.itch.io/idylwilds-armory
+- **Perchance**: <https://perchance.org/ai-text-to-image-generator>
+- **Idylwilds Armory**: <https://idylwild.itch.io/idylwilds-armory>
 
 ## Libraries & Packages
 
 ### Production dependencies
+
 - **react**, **react-dom**: UI framework
 - **redux**, **react-redux**, **@reduxjs/toolkit**: state management
 
 ### Dev dependencies
+
 - **parcel**, **@parcel/config-default**, **@parcel/plugin**, **@parcel/resolver-glob**, **@parcel/transformer-image**: bundler & plugins
 - **cross-env**: cross-platform environment variables
 - **vitest**: testing framework
@@ -104,4 +116,5 @@ The app is bundled by Parcel, renders a React application, and uses Redux for st
 - **process**, **sharp**: polyfills & image transformations
 
 ## License
+
 MIT

@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
 const ControlDisplay = ({ isInCombat, onToggleCombat }) => (
   <div className="combat">
     <button
       onClick={onToggleCombat}
-      className={`combat-btn ${isInCombat ? 'stop' : 'engage'}`}
+      className={`combat-btn ${isInCombat ? "stop" : "engage"}`}
     >
-      {isInCombat ? 'Stop Combat' : 'Engage Combat'}
+      {isInCombat ? "Stop Combat" : "Engage Combat"}
     </button>
   </div>
 );

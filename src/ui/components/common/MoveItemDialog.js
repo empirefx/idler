@@ -1,18 +1,21 @@
 // src/ui/components/MoveItemDialog.js
-import React, { useState, useEffect, useMemo } from 'react';
-import QuantitySlider from './QuantitySlider.js';
-import { calculateTotalPlayerWeight, calculateMaxMovableItems } from '../../../store/slices/inventory/inventoryUtils.js';
+import React, { useState, useEffect, useMemo } from "react";
+import QuantitySlider from "./QuantitySlider.js";
+import {
+  calculateTotalPlayerWeight,
+  calculateMaxMovableItems,
+} from "../../../store/slices/inventory/inventoryUtils.js";
 
-function MoveItemDialog({ 
-  item, 
-  onConfirm, 
-  onCancel, 
+function MoveItemDialog({
+  item,
+  onConfirm,
+  onCancel,
   sourceInventory,
-  targetInventory 
+  targetInventory,
 }) {
   const [quantity, setQuantity] = useState(1);
   const availableQuantity = item?.quantity || 1;
-  const isPlayerTarget = targetInventory?.type === 'player';
+  const isPlayerTarget = targetInventory?.type === "player";
 
   // Calculate weight information for player inventories
   const weightInfo = useMemo(() => {
@@ -23,7 +26,11 @@ function MoveItemDialog({
     const currentWeight = calculateTotalPlayerWeight(targetInventory);
     const maxWeight = targetInventory.maxWeight || 0;
     const itemWeight = item?.weight || 0;
-    const maxMovable = calculateMaxMovableItems(item, targetInventory, availableQuantity);
+    const maxMovable = calculateMaxMovableItems(
+      item,
+      targetInventory,
+      availableQuantity,
+    );
 
     return {
       currentWeight,
@@ -31,14 +38,17 @@ function MoveItemDialog({
       itemWeight,
       maxMovable,
       canMoveAny: maxMovable > 0,
-      remainingWeight: maxWeight - currentWeight
+      remainingWeight: maxWeight - currentWeight,
     };
   }, [isPlayerTarget, targetInventory, item, availableQuantity]);
 
   // Set initial quantity to max movable items
   useEffect(() => {
     if (weightInfo) {
-      const initialQuantity = Math.min(availableQuantity, weightInfo.maxMovable);
+      const initialQuantity = Math.min(
+        availableQuantity,
+        weightInfo.maxMovable,
+      );
       setQuantity(Math.max(1, initialQuantity));
     } else {
       setQuantity(availableQuantity);
@@ -53,15 +63,15 @@ function MoveItemDialog({
     if (!weightInfo) return null;
 
     const { currentWeight, maxWeight, itemWeight } = weightInfo;
-    const newWeight = currentWeight + (itemWeight * quantity);
-    const isNearLimit = newWeight >= (maxWeight * 0.9);
+    const newWeight = currentWeight + itemWeight * quantity;
+    const isNearLimit = newWeight >= maxWeight * 0.9;
 
     return (
       <div className="weight-info">
         <div className="current-weight">
           Current: {currentWeight} / {maxWeight} lt
         </div>
-        <div className={`new-weight ${isNearLimit ? 'weight-warning' : ''}`}>
+        <div className={`new-weight ${isNearLimit ? "weight-warning" : ""}`}>
           After move: {newWeight} / {maxWeight} lt
         </div>
       </div>
@@ -69,9 +79,9 @@ function MoveItemDialog({
   };
 
   const getTargetName = () => {
-    if (targetInventory?.type === 'player') return 'inventory';
-    if (item?.isVault) return 'inventory';
-    return 'vault';
+    if (targetInventory?.type === "player") return "inventory";
+    if (item?.isVault) return "inventory";
+    return "vault";
   };
 
   const maxSliderValue = weightInfo ? weightInfo.maxMovable : availableQuantity;
@@ -83,7 +93,7 @@ function MoveItemDialog({
         <div className="dialog-header">
           Move {quantity} "{item?.name}" to {getTargetName()}?
         </div>
-        
+
         <div className="quantity-section">
           <label>Quantity:</label>
           <QuantitySlider
@@ -106,16 +116,14 @@ function MoveItemDialog({
         {getWeightDisplay()}
 
         <div className="dialog-buttons">
-          <button 
+          <button
             onClick={handleConfirm}
             disabled={!canConfirm}
-            className={!canConfirm ? 'disabled' : ''}
+            className={!canConfirm ? "disabled" : ""}
           >
             Move {quantity}
           </button>
-          <button onClick={onCancel}>
-            Cancel
-          </button>
+          <button onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>

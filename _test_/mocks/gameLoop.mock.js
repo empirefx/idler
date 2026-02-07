@@ -10,7 +10,7 @@ export const createMockGameLoopConstructor = () => {
       this.systems.set(name, {
         callback,
         priority: options.priority || 0,
-        interval: options.interval || 0
+        interval: options.interval || 0,
       });
     }
 

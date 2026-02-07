@@ -5,5 +5,5 @@ export const createMockInventoryService = () => ({
   _reset: () => {
     createMockInventoryService().addItemToInventory.mockReset();
     createMockInventoryService().getInventoryForPlace.mockReset();
-  }
+  },
 });

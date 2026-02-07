@@ -17,8 +17,14 @@
   box-shadow: var(--shadow-sm);
   padding: 5px;
   background-size: 100% 100%;
-  background-position: 0px 0px,0px 0px,0px 0px;
-  background-image: radial-gradient(50% 75% at 60% -10%, #FFFEEB8F 0%, #EAB40045 100%),linear-gradient(0deg, #997B0080 0%, #FFDC00FF 100%),linear-gradient(73deg, #FFD22BFF 0%, #FFCB42FF 100%);
+  background-position:
+    0 0,
+    0 0,
+    0 0;
+  background-image:
+    radial-gradient(50% 75% at 60% -10%, #fffeeb8f 0%, #eab40045 100%),
+    linear-gradient(0deg, #997b0080 0%, #ffdc00ff 100%),
+    linear-gradient(73deg, #ffd22bff 0%, #ffcb42ff 100%);
 }
 
 .building-card img {
@@ -27,10 +33,10 @@
   object-fit: cover;
   border-radius: 100px;
   user-select: none;
-  box-shadow: inset 10px 0px 10px 10px red;
+  box-shadow: inset 10px 0 10px 10px red;
 }
 
-.building-card:hover > img{
-  box-shadow:  0px 5px 10px 6px #ff4444;
+.building-card:hover > img {
+  box-shadow: 0 5px 10px 6px #f44;
   cursor: pointer;
 }

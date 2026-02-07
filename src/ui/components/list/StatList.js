@@ -1,17 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import { selectPlayerInventoryById } from '../../../store/slices/playerInventorySlice';
+import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
 
 // Displays base stats and equipment bonuses
 const StatList = ({ baseStats }) => {
   // Get equipped items from player inventory
-  const playerInventory = useSelector(state => selectPlayerInventoryById(state, 'player'));
+  const playerInventory = useSelector((state) =>
+    selectPlayerInventoryById(state, "player"),
+  );
   const equipment = playerInventory?.equipment || {};
 
   // Aggregate equipment bonuses for each stat
   const equipmentBonus = {};
-  Object.values(equipment).forEach(item => {
+  Object.values(equipment).forEach((item) => {
     if (item && item.stats) {
       Object.entries(item.stats).forEach(([stat, value]) => {
         equipmentBonus[stat] = (equipmentBonus[stat] || 0) + value;
@@ -29,9 +31,7 @@ const StatList = ({ baseStats }) => {
             <span>{key}</span>
             <b>
               {value}
-              {bonus > 0 && (
-                <span className="bonus"> (+{bonus})</span>
-              )}
+              {bonus > 0 && <span className="bonus"> (+{bonus})</span>}
             </b>
           </li>
         );

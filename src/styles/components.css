@@ -38,7 +38,7 @@
 }
 
 .clear-cache-btn {
-  background-color: #ff4444;
+  background-color: #f44;
   color: white;
 }
 
@@ -55,17 +55,17 @@
   background-color: var(--color-dark);
 }
 
-/* current place styles (ui/components/display/CurrentPlaceDisplay.js)*/
+/* current place styles (ui/components/display/CurrentPlaceDisplay.js) */
 
 .current-place {
   padding: 1rem;
 }
 
 .current-place h2 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1rem;
 }
 
-/* inventory styles (ui/components/display/InventoryDisplay.js)*/
+/* inventory styles (ui/components/display/InventoryDisplay.js) */
 
 .inventory-flex {
   display: flex;
@@ -84,7 +84,7 @@
   height: 50px;
   border-radius: var(--border-radius-sm);
   background-color: var(--color-gray-light);
-  text-shadow: 0px 0px 3px black;
+  text-shadow: 0 0 3px black;
 }
 
 .inventory-flex > .filled:hover {
@@ -98,7 +98,7 @@
 
 .inventory-flex > div span {
   position: absolute;
-  bottom:0;
+  bottom: 0;
   right: 5px;
   font-weight: bold;
 }
@@ -113,7 +113,7 @@
 }
 
 .inventory-info span {
-  font-weight:normal;
+  font-weight: normal;
 }
 
 .inventory-info b {
@@ -131,7 +131,7 @@
   background-position: left center;
 }
 
-/* key bind styles (ui/components/common/KeyBind.js)*/
+/* key bind styles (ui/components/common/KeyBind.js) */
 
 .key-bind {
   position: relative;
@@ -142,7 +142,7 @@
   border-radius: 6px;
   font-size: var(--font-size-sm);
   background-color: var(--color-gray);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 30%);
 }
 
 .key-bind b {
@@ -153,7 +153,7 @@
   cursor: default;
 }
 
-/* tooltip text (ui/components/common/ToolTip.js)*/
+/* tooltip text (ui/components/common/ToolTip.js) */
 
 .tooltip {
   visibility: hidden;
@@ -181,7 +181,7 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #4579bd6e transparent transparent transparent;
+  border-color: #4579bd6e transparent transparent;
 }
 
 .key-bind:hover > .tooltip {

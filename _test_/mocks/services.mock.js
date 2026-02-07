@@ -2,28 +2,30 @@
 export const createMockStore = (initialState = {}) => {
   let state = { ...initialState };
   const listeners = [];
-  
+
   return {
     getState: vi.fn(() => state),
     dispatch: vi.fn((action) => {
       // Simulate state changes for known actions
-      if (action.type === 'player/setPlayerState') {
+      if (action.type === "player/setPlayerState") {
         state.player = { ...state.player, ...action.payload };
       }
-      if (action.type === 'buildings/setBuildings') {
+      if (action.type === "buildings/setBuildings") {
         state.buildings = { ...state.buildings, ...action.payload };
       }
-      if (action.type === 'places/setPlaces') {
+      if (action.type === "places/setPlaces") {
         state.places = { ...state.places, ...action.payload };
       }
-      if (action.type === 'enemies/addEnemy') {
+      if (action.type === "enemies/addEnemy") {
         state.enemies = state.enemies || { byId: {} };
         state.enemies.byId[action.payload.placeId] = action.payload.enemy;
       }
-      if (action.type === 'enemies/damageEnemy') {
+      if (action.type === "enemies/damageEnemy") {
         if (state.enemies && state.enemies.byId[action.payload.id]) {
-          state.enemies.byId[action.payload.id].health = Math.max(0, 
-            state.enemies.byId[action.payload.id].health - action.payload.amount
+          state.enemies.byId[action.payload.id].health = Math.max(
+            0,
+            state.enemies.byId[action.payload.id].health -
+              action.payload.amount,
           );
         }
       }
@@ -39,11 +41,11 @@ export const createMockStore = (initialState = {}) => {
     }),
     // Helper method to trigger subscriptions in tests
     _triggerListeners: () => {
-      listeners.forEach(listener => listener());
+      listeners.forEach((listener) => listener());
     },
     // Helper method to update state for tests
     _updateState: (newState) => {
       state = { ...state, ...newState };
-    }
+    },
   };
 };

@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import {buildingsData} from '../../data/buildings';
+import { createSlice } from "@reduxjs/toolkit";
+import { buildingsData } from "../../data/buildings";
 
 const initialState = { ...buildingsData };
 
 export const buildingsSlice = createSlice({
-  name: 'buildings',
+  name: "buildings",
   initialState,
   reducers: {
     updateBuilding: (state, action) => {
@@ -12,7 +12,7 @@ export const buildingsSlice = createSlice({
       if (state[buildingId]) {
         state[buildingId] = {
           ...state[buildingId],
-          ...data
+          ...data,
         };
       }
     },
@@ -23,7 +23,7 @@ export const buildingsSlice = createSlice({
       }
     },
     // Set entire buildings state (used for loading saved state)
-    setBuildings: (state, action) => action.payload
+    setBuildings: (state, action) => action.payload,
   },
 });
 
@@ -31,7 +31,8 @@ export const { updateBuilding, setBuildings } = buildingsSlice.actions;
 
 // Selectors
 export const selectAllBuildings = (state) => state.buildings;
-export const selectBuildingById = (state, buildingId) => state.buildings[buildingId];
+export const selectBuildingById = (state, buildingId) =>
+  state.buildings[buildingId];
 
 // Memoized selectors
 

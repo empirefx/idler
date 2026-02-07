@@ -1,11 +1,14 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useUIVisibility } from '../../UIVisibilityContext';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useUIVisibility } from "../../UIVisibilityContext";
 
-import '../../../styles/sections/npc-section.css';
-import NPCList from '../list/NPCList';
-import { selectNPCsForCurrentPlace, selectAllNPCs } from '../../../store/slices/npcSlice';
+import "../../../styles/sections/npc-section.css";
+import NPCList from "../list/NPCList";
+import {
+  selectNPCsForCurrentPlace,
+  selectAllNPCs,
+} from "../../../store/slices/npcSlice";
 
 const NPCSection = () => {
   const npcs = useSelector(selectNPCsForCurrentPlace);

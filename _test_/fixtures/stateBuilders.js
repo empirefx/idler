@@ -1,13 +1,13 @@
 // State builders for creating test fixtures
 export const createBaseState = (overrides = {}) => ({
   enemies: { byId: {} },
-  places: { currentPlaceId: 'village_center' },
+  places: { currentPlaceId: "village_center" },
   player: { workers: [], gold: 100 },
   buildings: {},
   playerInventory: {
     player: {
-      id: 'player',
-      type: 'player',
+      id: "player",
+      type: "player",
       maxSlots: 20,
       maxWeight: 100,
       items: [],
@@ -15,53 +15,57 @@ export const createBaseState = (overrides = {}) => ({
         head: null,
         body: null,
         pants: null,
-        'main-weapon': null,
-        'second-weapon': null
-      }
-    }
+        "main-weapon": null,
+        "second-weapon": null,
+      },
+    },
   },
   placeInventory: {
     village_center: {
-      id: 'village_center',
-      placeId: 'village_center',
-      type: 'place',
+      id: "village_center",
+      placeId: "village_center",
+      type: "place",
       maxSlots: 30,
-      items: []
-    }
+      items: [],
+    },
   },
-  ...overrides
+  ...overrides,
 });
 
 export const createStateWithBuilding = (building, overrides = {}) => ({
   ...createBaseState(),
   buildings: {
-    [building.id]: building
+    [building.id]: building,
   },
-  ...overrides
+  ...overrides,
 });
 
 export const createStateWithWorkers = (workers, overrides = {}) => ({
   ...createBaseState(),
   player: {
     ...createBaseState().player,
-    workers
+    workers,
   },
-  ...overrides
+  ...overrides,
 });
 
 export const createStateWithEnemies = (enemies, overrides = {}) => ({
   ...createBaseState(),
   enemies: { byId: enemies },
-  ...overrides
+  ...overrides,
 });
 
-export const createStateWithInventory = (inventoryId, items, overrides = {}) => {
+export const createStateWithInventory = (
+  inventoryId,
+  items,
+  overrides = {},
+) => {
   const state = { ...createBaseState() };
   if (state.placeInventory[inventoryId]) {
     state.placeInventory[inventoryId].items = items;
   }
   return {
     ...state,
-    ...overrides
+    ...overrides,
   };
 };

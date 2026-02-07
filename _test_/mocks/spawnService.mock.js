@@ -12,11 +12,11 @@ export const createMockSpawnService = () => {
     getCurrentSpawner: vi.fn(() => null),
     destroy: vi.fn(),
     // Backward compatibility
-    onEnterPlace: vi.fn()
+    onEnterPlace: vi.fn(),
   };
 
   // Mock constructor
   const MockSpawnService = vi.fn(() => mockInstance);
-  
+
   return MockSpawnService;
 };

@@ -1,7 +1,7 @@
 // Mock EventBusService for testing
 export const createMockEventBus = () => {
   const events = new Map();
-  
+
   return {
     on: vi.fn((event, callback) => {
       if (!events.has(event)) {
@@ -11,7 +11,7 @@ export const createMockEventBus = () => {
     }),
     emit: vi.fn((event, data) => {
       const callbacks = events.get(event) || [];
-      callbacks.forEach(callback => callback(data));
+      callbacks.forEach((callback) => callback(data));
     }),
     off: vi.fn((event, callback) => {
       const callbacks = events.get(event) || [];
@@ -30,7 +30,7 @@ export const createMockEventBus = () => {
           callbacks.splice(index, 1);
         }
       };
-      
+
       if (!events.has(event)) {
         events.set(event, []);
       }
@@ -38,6 +38,6 @@ export const createMockEventBus = () => {
     }),
     // Helper for testing
     _getEventCount: (event) => (events.get(event) || []).length,
-    _clearAllEvents: () => events.clear()
+    _clearAllEvents: () => events.clear(),
   };
 };

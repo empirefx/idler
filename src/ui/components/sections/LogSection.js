@@ -1,46 +1,48 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
-import '../../../styles/sections/log-section.css';
-import LogDisplay from '../display/LogDisplay';
+import "../../../styles/sections/log-section.css";
+import LogDisplay from "../display/LogDisplay";
 
 const LOG_CATEGORIES = {
-  worker: { label: 'Workers', color: 'worker' },
-  combat: { label: 'Combat', color: 'combat' },
-  movement: { label: 'Movement', color: 'movement' },
-  default: { label: 'Default', color: 'default' }
+  worker: { label: "Workers", color: "worker" },
+  combat: { label: "Combat", color: "combat" },
+  movement: { label: "Movement", color: "movement" },
+  default: { label: "Default", color: "default" },
 };
 
 const LogSection = () => {
-  const logs = useSelector(state => state.logs);
+  const logs = useSelector((state) => state.logs);
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState({
     worker: true,
     combat: true,
     movement: true,
-    default: true
+    default: true,
   });
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showFilter && !event.target.closest('.log-filter-container')) {
+      if (showFilter && !event.target.closest(".log-filter-container")) {
         setShowFilter(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [showFilter]);
 
   const toggleCategory = (category) => {
-    setSelectedCategories(prev => ({
+    setSelectedCategories((prev) => ({
       ...prev,
-      [category]: !prev[category]
+      [category]: !prev[category],
     }));
   };
 
-  const filteredLogs = logs.filter(log => selectedCategories[log.category || 'default']);
+  const filteredLogs = logs.filter(
+    (log) => selectedCategories[log.category || "default"],
+  );
 
   return (
     <section className="log-section">
@@ -52,7 +54,7 @@ const LogSection = () => {
             onClick={() => setShowFilter(!showFilter)}
             title="Filter logs"
           >
-          ≡
+            ≡
           </button>
 
           {showFilter && (
@@ -65,7 +67,9 @@ const LogSection = () => {
                     checked={selectedCategories[key]}
                     onChange={() => toggleCategory(key)}
                   />
-                  <span className={`log-filter-color-indicator log-entry-${category.color}`}></span>
+                  <span
+                    className={`log-filter-color-indicator log-entry-${category.color}`}
+                  ></span>
                   {category.label}
                 </label>
               ))}

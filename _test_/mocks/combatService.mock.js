@@ -15,6 +15,5 @@ export const createMockCombatService = () => ({
     createMockCombatService().handleEnemyDrops.mockReset();
     createMockCombatService().handleEnemyExpGain.mockReset();
     createMockCombatService().subscribeToCombatChanges.mockReset();
-  }
+  },
 });
-

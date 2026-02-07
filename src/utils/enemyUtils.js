@@ -1,4 +1,4 @@
-import { enemyCatalog } from '../data/enemyCatalog';
+import { enemyCatalog } from "../data/enemyCatalog";
 
 /**
  * Get enemy display name from Redux state by enemy ID
@@ -7,12 +7,12 @@ import { enemyCatalog } from '../data/enemyCatalog';
  * @returns {string} - Enemy display name or 'Unknown Enemy'
  */
 export const getEnemyDisplayName = (state, enemyId) => {
-  if (!enemyId || enemyId === 'player') {
-    return 'Player';
+  if (!enemyId || enemyId === "player") {
+    return "Player";
   }
-  
+
   const enemy = state.enemies?.byId?.[enemyId];
-  return enemy?.name || 'Unknown Enemy';
+  return enemy?.name || "Unknown Enemy";
 };
 
 /**
@@ -21,9 +21,9 @@ export const getEnemyDisplayName = (state, enemyId) => {
  * @returns {string} - Enemy display name or 'Unknown Enemy'
  */
 export const getEnemyTypeDisplayName = (enemyType) => {
-  if (!enemyType || enemyType === 'player') {
-    return 'Player';
+  if (!enemyType || enemyType === "player") {
+    return "Player";
   }
-  
-  return enemyCatalog[enemyType]?.name || 'Unknown Enemy';
+
+  return enemyCatalog[enemyType]?.name || "Unknown Enemy";
 };

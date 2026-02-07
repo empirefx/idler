@@ -1,45 +1,95 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { 
-  validateSlotLimit, 
-  validateItemExists
-} from './inventory/inventoryValidators.js';
-import { 
-  canItemsStack, 
+import { createSlice, createSelector } from "@reduxjs/toolkit";
+import {
+  validateSlotLimit,
+  validateItemExists,
+} from "./inventory/inventoryValidators.js";
+import {
+  canItemsStack,
   findItemById,
   getItemIndex,
-  cloneItem
-} from './inventory/inventoryUtils.js';
+  cloneItem,
+} from "./inventory/inventoryUtils.js";
 
 // Initial NPC inventory state
 const initialState = {
   blacksmith: {
-    id: 'blacksmith',
-    npcId: 'blacksmith',
-    type: 'npc',
+    id: "blacksmith",
+    npcId: "blacksmith",
+    type: "npc",
     maxSlots: 20,
     maxWeight: 200,
     items: [
-      { id: 'iron_sword', name: 'Iron Sword', description: 'A sturdy iron sword', type: 'equipment', piece: 'main-weapon', quantity: 3, stats: { attack: 15 }, weight: 5 },
-      { id: 'iron_helmet', name: 'Iron Helmet', description: 'Protective headgear', type: 'equipment', piece: 'head', quantity: 2, stats: { defense: 8 }, weight: 4 },
-      { id: 'iron_chestplate', name: 'Iron Chestplate', description: 'Strong chest armor', type: 'equipment', piece: 'body', quantity: 2, stats: { defense: 15 }, weight: 12 }
-    ]
+      {
+        id: "iron_sword",
+        name: "Iron Sword",
+        description: "A sturdy iron sword",
+        type: "equipment",
+        piece: "main-weapon",
+        quantity: 3,
+        stats: { attack: 15 },
+        weight: 5,
+      },
+      {
+        id: "iron_helmet",
+        name: "Iron Helmet",
+        description: "Protective headgear",
+        type: "equipment",
+        piece: "head",
+        quantity: 2,
+        stats: { defense: 8 },
+        weight: 4,
+      },
+      {
+        id: "iron_chestplate",
+        name: "Iron Chestplate",
+        description: "Strong chest armor",
+        type: "equipment",
+        piece: "body",
+        quantity: 2,
+        stats: { defense: 15 },
+        weight: 12,
+      },
+    ],
   },
   trader: {
-    id: 'trader',
-    npcId: 'trader',
-    type: 'npc',
+    id: "trader",
+    npcId: "trader",
+    type: "npc",
     maxSlots: 25,
     maxWeight: 150,
     items: [
-      { id: 'apple', name: 'apple', description: 'A fresh apple', type: 'consumable', quantity: 15, weight: 0.5, consumable: { heal: 10 } },
-      { id: 'banana', name: 'banana', description: 'A ripe banana', type: 'consumable', quantity: 10, weight: 0.5, consumable: { heal: 12 } },
-      { id: 'ore', name: 'ore', description: 'A piece of ore', type: 'material', quantity: 20, weight: 2 }
-    ]
-  }
+      {
+        id: "apple",
+        name: "apple",
+        description: "A fresh apple",
+        type: "consumable",
+        quantity: 15,
+        weight: 0.5,
+        consumable: { heal: 10 },
+      },
+      {
+        id: "banana",
+        name: "banana",
+        description: "A ripe banana",
+        type: "consumable",
+        quantity: 10,
+        weight: 0.5,
+        consumable: { heal: 12 },
+      },
+      {
+        id: "or",
+        name: "or",
+        description: "A piece of or",
+        type: "material",
+        quantity: 20,
+        weight: 2,
+      },
+    ],
+  },
 };
 
 const npcInventorySlice = createSlice({
-  name: 'npcInventory',
+  name: "npcInventory",
   initialState,
   reducers: {
     // Add item to NPC inventory
@@ -59,7 +109,7 @@ const npcInventorySlice = createSlice({
       }
 
       // Try to stack with existing items
-      const existingItem = inventory.items.find(i => canItemsStack(i, item));
+      const existingItem = inventory.items.find((i) => canItemsStack(i, item));
       if (existingItem && item.quantity) {
         existingItem.quantity = (existingItem.quantity || 1) + item.quantity;
       } else {
@@ -79,7 +129,9 @@ const npcInventorySlice = createSlice({
 
       const itemValidation = validateItemExists(inventory, itemId);
       if (!itemValidation.isValid) {
-        console.warn(`Item ${itemId} not found in NPC inventory ${inventoryId}`);
+        console.warn(
+          `Item ${itemId} not found in NPC inventory ${inventoryId}`,
+        );
         return;
       }
 
@@ -96,8 +148,9 @@ const npcInventorySlice = createSlice({
 
     // Move item from NPC inventory to another inventory
     moveItem(state, action) {
-      const { fromInventoryId, toInventoryId, itemId, quantity } = action.payload;
-      
+      const { fromInventoryId, toInventoryId, itemId, quantity } =
+        action.payload;
+
       const inventory = state[fromInventoryId];
       if (!inventory) return;
 
@@ -119,7 +172,7 @@ const npcInventorySlice = createSlice({
     // Update entire NPC inventory state
     updateInventory(state, action) {
       const { inventoryId, inventoryData } = action.payload;
-      if (inventoryData && inventoryData.type === 'npc') {
+      if (inventoryData && inventoryData.type === "npc") {
         state[inventoryId] = inventoryData;
       }
     },
@@ -127,7 +180,7 @@ const npcInventorySlice = createSlice({
     // Add or update NPC inventory
     addNpcInventory(state, action) {
       const { npcId, inventoryData } = action.payload;
-      if (inventoryData && inventoryData.type === 'npc') {
+      if (inventoryData && inventoryData.type === "npc") {
         state[npcId] = inventoryData;
       }
     },
@@ -142,53 +195,56 @@ const npcInventorySlice = createSlice({
     updateConfiguration(state, action) {
       const { inventoryId, maxSlots, maxWeight } = action.payload;
       const inventory = state[inventoryId];
-      if (inventory && inventory.type === 'npc') {
-        if (typeof maxSlots === 'number' && maxSlots > 0) {
+      if (inventory && inventory.type === "npc") {
+        if (typeof maxSlots === "number" && maxSlots > 0) {
           inventory.maxSlots = maxSlots;
         }
-        if (typeof maxWeight === 'number' && maxWeight > 0) {
+        if (typeof maxWeight === "number" && maxWeight > 0) {
           inventory.maxWeight = maxWeight;
         }
       }
-    }
+    },
   },
 });
 
-export const { 
-  addItem, 
-  removeItem, 
-  moveItem, 
+export const {
+  addItem,
+  removeItem,
+  moveItem,
   updateInventory,
   addNpcInventory,
   removeNpcInventory,
-  updateConfiguration
+  updateConfiguration,
 } = npcInventorySlice.actions;
 
 // Memoized selectors
 export const selectNpcInventoryById = createSelector(
   [(state) => state.npcInventory, (state, npcId) => npcId],
-  (npcInventory, npcId) => npcInventory ? npcInventory[npcId] : undefined
+  (npcInventory, npcId) => (npcInventory ? npcInventory[npcId] : undefined),
 );
 
 export const selectNpcInventoryItems = createSelector(
   [selectNpcInventoryById],
-  (inventory) => inventory ? inventory.items : []
+  (inventory) => (inventory ? inventory.items : []),
 );
 
 export const selectNpcInventoryStats = createSelector(
   [selectNpcInventoryById],
   (inventory) => {
     if (!inventory) return null;
-    
+
     return {
       slotsUsed: inventory.items.length,
       maxSlots: inventory.maxSlots,
       itemCount: inventory.items.length,
       npcId: inventory.npcId,
-      totalWeight: inventory.items.reduce((total, item) => total + (item.weight || 0) * (item.quantity || 1), 0),
-      maxWeight: inventory.maxWeight
+      totalWeight: inventory.items.reduce(
+        (total, item) => total + (item.weight || 0) * (item.quantity || 1),
+        0,
+      ),
+      maxWeight: inventory.maxWeight,
     };
-  }
+  },
 );
 
 export const selectCanAddItemToNpc = createSelector(
@@ -196,15 +252,15 @@ export const selectCanAddItemToNpc = createSelector(
   (inventory) => {
     if (!inventory) return false;
     return inventory.items.length < inventory.maxSlots;
-  }
+  },
 );
 
 export const selectItemCountByType = createSelector(
   [selectNpcInventoryItems, (state, itemType) => itemType],
   (items, itemType) => {
     if (!Array.isArray(items)) return 0;
-    return items.filter(item => item.type === itemType).length;
-  }
+    return items.filter((item) => item.type === itemType).length;
+  },
 );
 
 export const selectTotalQuantityByItemType = createSelector(
@@ -212,9 +268,9 @@ export const selectTotalQuantityByItemType = createSelector(
   (items, itemType) => {
     if (!Array.isArray(items)) return 0;
     return items
-      .filter(item => item.type === itemType)
+      .filter((item) => item.type === itemType)
       .reduce((total, item) => total + (item.quantity || 1), 0);
-  }
+  },
 );
 
 export default npcInventorySlice.reducer;
