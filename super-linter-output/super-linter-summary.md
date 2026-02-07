@@ -31,7 +31,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785076625)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785110775)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -40,7 +40,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 293ms. Fixed 139 files.
+Formatted 141 files in 316ms. Fixed 139 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -123,7 +123,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1200ms. No fixes applied.
+Checked 145 files in 1219ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -529,6 +529,23 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 src/styles/components/npc-dialog.css
   [2m34:12[22m  [31m[31m✖[39m  Expected keyframe name "slideUp" to be kebab-case  [2mkeyframes-name-pattern[22m
 
+src/styles/sections/places-section.css
+  [2m123:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
+  [2m134:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info", first used at line 110        [2mno-duplicate-selectors[22m
+  [2m138:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info h3", first used at line 114     [2mno-duplicate-selectors[22m
+  [2m147:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
+  [2m152:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-id", first used at line 128          [2mno-duplicate-selectors[22m
+
+src/styles/sections/player-section.css
+   [2m22:2[22m  [31m[31m✖[39m  Expected shorthand property "grid-template"                                                                            [2mdeclaration-block-no-redundant-longhand-properties[22m
+   [2m90:1[22m  [31m[31m✖[39m  Expected class selector ".player-Equipment" to be kebab-case                                                           [2mselector-class-pattern[22m
+  [2m111:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".player-inventory, .place-vault", first used at line 98                                 [2mno-duplicate-selectors[22m
+  [2m192:1[22m  [31m[31m✖[39m  Expected selector ".player-stats ul li span" to come before selector ".equipment-flex .main-weapon span", at line 153  [2mno-descending-specificity[22m
+
+src/styles/sections/notifications.css
+  [2m117:12[22m  [31m[31m✖[39m  Expected keyframe name "slideIn" to be kebab-case   [2mkeyframes-name-pattern[22m
+  [2m129:12[22m  [31m[31m✖[39m  Expected keyframe name "slideOut" to be kebab-case  [2mkeyframes-name-pattern[22m
+
 src/styles/global.css
    [2m32:1[22m   [31m[31m✖[39m  Expected class selector ".App" to be kebab-case                                                                         [2mselector-class-pattern[22m
   [2m107:1[22m   [31m[31m✖[39m  Expected class selector ".progress-bar__fill" to be kebab-case                                                          [2mselector-class-pattern[22m
@@ -904,23 +921,6 @@ src/styles/npc-portraits.css
 
 src/styles/components.css
   [2m115:1[22m  [31m[31m✖[39m  Expected selector ".inventory-info span" to come before selector ".inventory-flex > div span", at line 99  [2mno-descending-specificity[22m
-
-src/styles/sections/places-section.css
-  [2m123:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
-  [2m134:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info", first used at line 110        [2mno-duplicate-selectors[22m
-  [2m138:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info h3", first used at line 114     [2mno-duplicate-selectors[22m
-  [2m147:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
-  [2m152:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-id", first used at line 128          [2mno-duplicate-selectors[22m
-
-src/styles/sections/player-section.css
-   [2m22:2[22m  [31m[31m✖[39m  Expected shorthand property "grid-template"                                                                            [2mdeclaration-block-no-redundant-longhand-properties[22m
-   [2m90:1[22m  [31m[31m✖[39m  Expected class selector ".player-Equipment" to be kebab-case                                                           [2mselector-class-pattern[22m
-  [2m111:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".player-inventory, .place-vault", first used at line 98                                 [2mno-duplicate-selectors[22m
-  [2m192:1[22m  [31m[31m✖[39m  Expected selector ".player-stats ul li span" to come before selector ".equipment-flex .main-weapon span", at line 153  [2mno-descending-specificity[22m
-
-src/styles/sections/notifications.css
-  [2m117:12[22m  [31m[31m✖[39m  Expected keyframe name "slideIn" to be kebab-case   [2mkeyframes-name-pattern[22m
-  [2m129:12[22m  [31m[31m✖[39m  Expected keyframe name "slideOut" to be kebab-case  [2mkeyframes-name-pattern[22m
 
 [31m✖[39m 380 problems ([31m380 errors[39m, [33m0 warnings[39m)
   1 error potentially fixable with the "--fix" option.
@@ -2934,10 +2934,10 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 <summary>JSON_PRETTIER</summary>
 
 ```text
-.release-please-manifest.json 10ms
+.release-please-manifest.json 9ms
 github_conf/branch_protection_rules.json 2ms
-jsconfig.json 3ms
-[90mpackage-lock.json[39m 71ms (unchanged)
+jsconfig.json 4ms
+[90mpackage-lock.json[39m 78ms (unchanged)
 package.json 2ms
 release-please-config.json 3ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
 [[31merror[39m] [0m [90m 47 |[39m         [32m"id"[39m[33m:[39m [32m"sawmill"[39m[33m,[39m
