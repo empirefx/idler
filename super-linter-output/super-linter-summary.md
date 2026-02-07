@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21786232271)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21786263430)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -114,7 +114,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1194ms. No fixes applied.
+Checked 145 files in 1183ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
