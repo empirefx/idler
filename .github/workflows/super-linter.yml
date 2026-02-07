@@ -50,6 +50,8 @@ jobs:
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_CSS: false
+          VALIDATE_JSX_PRETTIER: false
+          VALIDATE_VUE_PRETTIER: false
 
           # Other
           FIX_MARKDOWN_PRETTIER: true
