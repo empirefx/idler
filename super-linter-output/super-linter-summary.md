@@ -12,7 +12,6 @@
 | HTML                       | Fail ❌           |
 | JSCPD                      | Fail ❌           |
 | JSON                       | Fail ❌           |
-| JSX                        | Fail ❌           |
 | JSX_PRETTIER               | Fail ❌           |
 | MARKDOWN                   | Fail ❌           |
 | MARKDOWN_PRETTIER          | Pass ✅           |
@@ -25,7 +24,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785681908)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785735911)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -34,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 295ms. Fixed 1 file.
+Formatted 141 files in 286ms. Fixed 1 file.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -117,7 +116,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1204ms. No fixes applied.
+Checked 145 files in 1206ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -921,7 +920,7 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 [37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
 [37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
-Scanned 4 files, found 122 errors in 2 files (50 ms)
+Scanned 4 files, found 122 errors in 2 files (52 ms)
 ```
 
 </details>
@@ -2160,27 +2159,6 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
   49:32  error  Parsing error: Unexpected token '('
 
 ✖ 1 problem (1 error, 0 warnings)
-```
-
-</details>
-
-<details>
-
-<summary>JSX</summary>
-
-```text
-
-/github/workspace/_test_/notificationSystem.test.jsx
-  32:4  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  33:5  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  50:4  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  51:5  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  71:4  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  72:5  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  94:4  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-  95:5  error  'React' must be in scope when using JSX  react/react-in-jsx-scope
-
-✖ 8 problems (8 errors, 0 warnings)Warning: React version not specified in eslint-plugin-react settings. See https://github.com/jsx-eslint/eslint-plugin-react#configuration .
 ```
 
 </details>
