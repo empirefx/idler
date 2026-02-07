@@ -8,61 +8,61 @@ export const PLAYER_DAMAGED = "game/PLAYER_DAMAGED";
 
 // Action creators
 export const workerCreatedItem = (workerId, itemType) => ({
-  type: WORKER_CREATED_ITEM,
-  payload: { workerId, itemType },
+	type: WORKER_CREATED_ITEM,
+	payload: { workerId, itemType },
 });
 
 export const enemyAttacked = (
-  attackerId,
-  targetId,
-  damage,
-  attackerName = null,
-  targetName = null,
+	attackerId,
+	targetId,
+	damage,
+	attackerName = null,
+	targetName = null,
 ) => ({
-  type: ENEMY_ATTACKED,
-  payload: { attackerId, targetId, damage, attackerName, targetName },
+	type: ENEMY_ATTACKED,
+	payload: { attackerId, targetId, damage, attackerName, targetName },
 });
 
 export const workerAssigned = (
-  workerId,
-  workerName,
-  buildingId,
-  buildingName,
+	workerId,
+	workerName,
+	buildingId,
+	buildingName,
 ) => ({
-  type: WORKER_ASSIGNED,
-  payload: { workerId, workerName, buildingId, buildingName },
+	type: WORKER_ASSIGNED,
+	payload: { workerId, workerName, buildingId, buildingName },
 });
 
 export const workerUnassigned = (
-  workerId,
-  workerName,
-  buildingId,
-  buildingName,
+	workerId,
+	workerName,
+	buildingId,
+	buildingName,
 ) => ({
-  type: WORKER_UNASSIGNED,
-  payload: { workerId, workerName, buildingId, buildingName },
+	type: WORKER_UNASSIGNED,
+	payload: { workerId, workerName, buildingId, buildingName },
 });
 
 export const locationChanged = (fromPlace, toPlace) => ({
-  type: LOCATION_CHANGED,
-  payload: { fromPlace, toPlace },
+	type: LOCATION_CHANGED,
+	payload: { fromPlace, toPlace },
 });
 
 export const playerDamaged = (
-  attackerId,
-  attackerType,
-  targetId,
-  damage,
-  damageType,
-  targetName = null,
+	attackerId,
+	attackerType,
+	targetId,
+	damage,
+	damageType,
+	targetName = null,
 ) => ({
-  type: PLAYER_DAMAGED,
-  payload: {
-    attackerId,
-    attackerType,
-    targetId,
-    damage,
-    damageType,
-    targetName,
-  },
+	type: PLAYER_DAMAGED,
+	payload: {
+		attackerId,
+		attackerType,
+		targetId,
+		damage,
+		damageType,
+		targetName,
+	},
 });

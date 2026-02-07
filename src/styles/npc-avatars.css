@@ -1,673 +1,673 @@
 /* NPC Avatar Sprite Sheet CSS - Automated with CSS Variables */
 
 :root {
-  /* Sprite sheet dimensions */
-  --sprite-width: 1024px;
-  --sprite-height: 1536px;
+	/* Sprite sheet dimensions */
+	--sprite-width: 1024px;
+	--sprite-height: 1536px;
 
-  /* Grid configuration */
-  --columns: 6;
-  --rows: 8;
+	/* Grid configuration */
+	--columns: 6;
+	--rows: 8;
 
-  /* Calculated avatar dimensions */
-  --avatar-width: 171px; /* Perfect alignment */
-  --avatar-height: 171px; /* Perfect alignment (square avatars) */
+	/* Calculated avatar dimensions */
+	--avatar-width: 171px; /* Perfect alignment */
+	--avatar-height: 171px; /* Perfect alignment (square avatars) */
 
-  /* Display size (can be adjusted to scale avatars) */
-  --display-size: 171px;
+	/* Display size (can be adjusted to scale avatars) */
+	--display-size: 171px;
 }
 
 /* Base avatar class with common properties */
 .avatar {
-  display: inline-block;
-  background-image: url("../assets/avatars/npc_avatar.png");
-  background-repeat: no-repeat;
-  width: var(--display-size);
-  height: var(--display-size);
-  background-size: var(--sprite-width) var(--sprite-height);
+	display: inline-block;
+	background-image: url("../assets/avatars/npc_avatar.png");
+	background-repeat: no-repeat;
+	width: var(--display-size);
+	height: var(--display-size);
+	background-size: var(--sprite-width) var(--sprite-height);
 }
 
 /* Row 1 - Avatars 1-6 */
 .avatar_1 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(0 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(0 * var(--avatar-height) * -1);
 }
 
 .avatar_2 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(0 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(0 * var(--avatar-height) * -1);
 }
 
 .avatar_3 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(0 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(0 * var(--avatar-height) * -1);
 }
 
 .avatar_4 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(0 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(0 * var(--avatar-height) * -1);
 }
 
 .avatar_5 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(0 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(0 * var(--avatar-height) * -1);
 }
 
 .avatar_6 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(0 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(0 * var(--avatar-height) * -1);
 }
 
 /* Row 2 - Avatars 7-12 */
 .avatar_7 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(1 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(1 * var(--avatar-height) * -1);
 }
 
 .avatar_8 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(1 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(1 * var(--avatar-height) * -1);
 }
 
 .avatar_9 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(1 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(1 * var(--avatar-height) * -1);
 }
 
 .avatar_10 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(1 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(1 * var(--avatar-height) * -1);
 }
 
 .avatar_11 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(1 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(1 * var(--avatar-height) * -1);
 }
 
 .avatar_12 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(1 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(1 * var(--avatar-height) * -1);
 }
 
 /* Row 3 - Avatars 13-18 */
 .avatar_13 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(2 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(2 * var(--avatar-height) * -1);
 }
 
 .avatar_14 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(2 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(2 * var(--avatar-height) * -1);
 }
 
 .avatar_15 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(2 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(2 * var(--avatar-height) * -1);
 }
 
 .avatar_16 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(2 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(2 * var(--avatar-height) * -1);
 }
 
 .avatar_17 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(2 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(2 * var(--avatar-height) * -1);
 }
 
 .avatar_18 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(2 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(2 * var(--avatar-height) * -1);
 }
 
 /* Row 4 - Avatars 19-24 */
 .avatar_19 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(3 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(3 * var(--avatar-height) * -1);
 }
 
 .avatar_20 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(3 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(3 * var(--avatar-height) * -1);
 }
 
 .avatar_21 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(3 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(3 * var(--avatar-height) * -1);
 }
 
 .avatar_22 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(3 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(3 * var(--avatar-height) * -1);
 }
 
 .avatar_23 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(3 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(3 * var(--avatar-height) * -1);
 }
 
 .avatar_24 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(3 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(3 * var(--avatar-height) * -1);
 }
 
 /* Row 5 - Avatars 25-30 */
 .avatar_25 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(4 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(4 * var(--avatar-height) * -1);
 }
 
 .avatar_26 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(4 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(4 * var(--avatar-height) * -1);
 }
 
 .avatar_27 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(4 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(4 * var(--avatar-height) * -1);
 }
 
 .avatar_28 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(4 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(4 * var(--avatar-height) * -1);
 }
 
 .avatar_29 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(4 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(4 * var(--avatar-height) * -1);
 }
 
 .avatar_30 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(4 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(4 * var(--avatar-height) * -1);
 }
 
 /* Row 6 - Avatars 31-36 */
 .avatar_31 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(5 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(5 * var(--avatar-height) * -1);
 }
 
 .avatar_32 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(5 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(5 * var(--avatar-height) * -1);
 }
 
 .avatar_33 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(5 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(5 * var(--avatar-height) * -1);
 }
 
 .avatar_34 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(5 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(5 * var(--avatar-height) * -1);
 }
 
 .avatar_35 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(5 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(5 * var(--avatar-height) * -1);
 }
 
 .avatar_36 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(5 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(5 * var(--avatar-height) * -1);
 }
 
 /* Row 7 - Avatars 37-42 */
 .avatar_37 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(6 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(6 * var(--avatar-height) * -1);
 }
 
 .avatar_38 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(6 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(6 * var(--avatar-height) * -1);
 }
 
 .avatar_39 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(6 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(6 * var(--avatar-height) * -1);
 }
 
 .avatar_40 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(6 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(6 * var(--avatar-height) * -1);
 }
 
 .avatar_41 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(6 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(6 * var(--avatar-height) * -1);
 }
 
 .avatar_42 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(6 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(6 * var(--avatar-height) * -1);
 }
 
 /* Row 8 - Avatars 43-48 */
 .avatar_43 {
-  background-position: calc(0 * var(--avatar-width) * -1)
-    calc(7 * var(--avatar-height) * -1);
+	background-position: calc(0 * var(--avatar-width) * -1)
+		calc(7 * var(--avatar-height) * -1);
 }
 
 .avatar_44 {
-  background-position: calc(1 * var(--avatar-width) * -1)
-    calc(7 * var(--avatar-height) * -1);
+	background-position: calc(1 * var(--avatar-width) * -1)
+		calc(7 * var(--avatar-height) * -1);
 }
 
 .avatar_45 {
-  background-position: calc(2 * var(--avatar-width) * -1)
-    calc(7 * var(--avatar-height) * -1);
+	background-position: calc(2 * var(--avatar-width) * -1)
+		calc(7 * var(--avatar-height) * -1);
 }
 
 .avatar_46 {
-  background-position: calc(3 * var(--avatar-width) * -1)
-    calc(7 * var(--avatar-height) * -1);
+	background-position: calc(3 * var(--avatar-width) * -1)
+		calc(7 * var(--avatar-height) * -1);
 }
 
 .avatar_47 {
-  background-position: calc(4 * var(--avatar-width) * -1)
-    calc(7 * var(--avatar-height) * -1);
+	background-position: calc(4 * var(--avatar-width) * -1)
+		calc(7 * var(--avatar-height) * -1);
 }
 
 .avatar_48 {
-  background-position: calc(5 * var(--avatar-width) * -1)
-    calc(7 * var(--avatar-height) * -1);
+	background-position: calc(5 * var(--avatar-width) * -1)
+		calc(7 * var(--avatar-height) * -1);
 }
 
 /* Optional: Different display sizes */
 .avatar.small {
-  width: 85.5px;
-  height: 85.5px;
-  background-size: 513px 768px; /* 171*6*0.5=513, 171*8*0.5=684... let's recalc: 1024*0.5=512, 1536*0.5=768 */
+	width: 85.5px;
+	height: 85.5px;
+	background-size: 513px 768px; /* 171*6*0.5=513, 171*8*0.5=684... let's recalc: 1024*0.5=512, 1536*0.5=768 */
 }
 
 .avatar.small.avatar_1 {
-  background-position: 0 0;
+	background-position: 0 0;
 }
 
 .avatar.small.avatar_2 {
-  background-position: -85.5px 0;
+	background-position: -85.5px 0;
 }
 
 .avatar.small.avatar_3 {
-  background-position: -171px 0;
+	background-position: -171px 0;
 }
 
 .avatar.small.avatar_4 {
-  background-position: -256.5px 0;
+	background-position: -256.5px 0;
 }
 
 .avatar.small.avatar_5 {
-  background-position: -342px 0;
+	background-position: -342px 0;
 }
 
 .avatar.small.avatar_6 {
-  background-position: -427.5px 0;
+	background-position: -427.5px 0;
 }
 
 .avatar.small.avatar_7 {
-  background-position: 0 -85.5px;
+	background-position: 0 -85.5px;
 }
 
 .avatar.small.avatar_8 {
-  background-position: -85.5px -85.5px;
+	background-position: -85.5px -85.5px;
 }
 
 .avatar.small.avatar_9 {
-  background-position: -171px -85.5px;
+	background-position: -171px -85.5px;
 }
 
 .avatar.small.avatar_10 {
-  background-position: -256.5px -85.5px;
+	background-position: -256.5px -85.5px;
 }
 
 .avatar.small.avatar_11 {
-  background-position: -342px -85.5px;
+	background-position: -342px -85.5px;
 }
 
 .avatar.small.avatar_12 {
-  background-position: -427.5px -85.5px;
+	background-position: -427.5px -85.5px;
 }
 
 .avatar.small.avatar_13 {
-  background-position: 0 -171px;
+	background-position: 0 -171px;
 }
 
 .avatar.small.avatar_14 {
-  background-position: -85.5px -171px;
+	background-position: -85.5px -171px;
 }
 
 .avatar.small.avatar_15 {
-  background-position: -171px -171px;
+	background-position: -171px -171px;
 }
 
 .avatar.small.avatar_16 {
-  background-position: -256.5px -171px;
+	background-position: -256.5px -171px;
 }
 
 .avatar.small.avatar_17 {
-  background-position: -342px -171px;
+	background-position: -342px -171px;
 }
 
 .avatar.small.avatar_18 {
-  background-position: -427.5px -171px;
+	background-position: -427.5px -171px;
 }
 
 .avatar.small.avatar_19 {
-  background-position: 0 -256.5px;
+	background-position: 0 -256.5px;
 }
 
 .avatar.small.avatar_20 {
-  background-position: -85.5px -256.5px;
+	background-position: -85.5px -256.5px;
 }
 
 .avatar.small.avatar_21 {
-  background-position: -171px -256.5px;
+	background-position: -171px -256.5px;
 }
 
 .avatar.small.avatar_22 {
-  background-position: -256.5px -256.5px;
+	background-position: -256.5px -256.5px;
 }
 
 .avatar.small.avatar_23 {
-  background-position: -342px -256.5px;
+	background-position: -342px -256.5px;
 }
 
 .avatar.small.avatar_24 {
-  background-position: -427.5px -256.5px;
+	background-position: -427.5px -256.5px;
 }
 
 .avatar.small.avatar_25 {
-  background-position: 0 -342px;
+	background-position: 0 -342px;
 }
 
 .avatar.small.avatar_26 {
-  background-position: -85.5px -342px;
+	background-position: -85.5px -342px;
 }
 
 .avatar.small.avatar_27 {
-  background-position: -171px -342px;
+	background-position: -171px -342px;
 }
 
 .avatar.small.avatar_28 {
-  background-position: -256.5px -342px;
+	background-position: -256.5px -342px;
 }
 
 .avatar.small.avatar_29 {
-  background-position: -342px -342px;
+	background-position: -342px -342px;
 }
 
 .avatar.small.avatar_30 {
-  background-position: -427.5px -342px;
+	background-position: -427.5px -342px;
 }
 
 .avatar.small.avatar_31 {
-  background-position: 0 -427.5px;
+	background-position: 0 -427.5px;
 }
 
 .avatar.small.avatar_32 {
-  background-position: -85.5px -427.5px;
+	background-position: -85.5px -427.5px;
 }
 
 .avatar.small.avatar_33 {
-  background-position: -171px -427.5px;
+	background-position: -171px -427.5px;
 }
 
 .avatar.small.avatar_34 {
-  background-position: -256.5px -427.5px;
+	background-position: -256.5px -427.5px;
 }
 
 .avatar.small.avatar_35 {
-  background-position: -342px -427.5px;
+	background-position: -342px -427.5px;
 }
 
 .avatar.small.avatar_36 {
-  background-position: -427.5px -427.5px;
+	background-position: -427.5px -427.5px;
 }
 
 .avatar.small.avatar_37 {
-  background-position: 0 -513px;
+	background-position: 0 -513px;
 }
 
 .avatar.small.avatar_38 {
-  background-position: -85.5px -513px;
+	background-position: -85.5px -513px;
 }
 
 .avatar.small.avatar_39 {
-  background-position: -171px -513px;
+	background-position: -171px -513px;
 }
 
 .avatar.small.avatar_40 {
-  background-position: -256.5px -513px;
+	background-position: -256.5px -513px;
 }
 
 .avatar.small.avatar_41 {
-  background-position: -342px -513px;
+	background-position: -342px -513px;
 }
 
 .avatar.small.avatar_42 {
-  background-position: -427.5px -513px;
+	background-position: -427.5px -513px;
 }
 
 .avatar.small.avatar_43 {
-  background-position: 0 -598.5px;
+	background-position: 0 -598.5px;
 }
 
 .avatar.small.avatar_44 {
-  background-position: -85.5px -598.5px;
+	background-position: -85.5px -598.5px;
 }
 
 .avatar.small.avatar_45 {
-  background-position: -171px -598.5px;
+	background-position: -171px -598.5px;
 }
 
 .avatar.small.avatar_46 {
-  background-position: -256.5px -598.5px;
+	background-position: -256.5px -598.5px;
 }
 
 .avatar.small.avatar_47 {
-  background-position: -342px -598.5px;
+	background-position: -342px -598.5px;
 }
 
 .avatar.small.avatar_48 {
-  background-position: -427.5px -598.5px;
+	background-position: -427.5px -598.5px;
 }
 
 .avatar.large {
-  width: 256.5px;
-  height: 256.5px;
-  background-size: 1536px 2304px; /* 1024*1.5=1536, 1536*1.5=2304 */
+	width: 256.5px;
+	height: 256.5px;
+	background-size: 1536px 2304px; /* 1024*1.5=1536, 1536*1.5=2304 */
 }
 
 .avatar.large.avatar_1 {
-  background-position: 0 0;
+	background-position: 0 0;
 }
 
 .avatar.large.avatar_2 {
-  background-position: -256.5px 0;
+	background-position: -256.5px 0;
 }
 
 .avatar.large.avatar_3 {
-  background-position: -513px 0;
+	background-position: -513px 0;
 }
 
 .avatar.large.avatar_4 {
-  background-position: -769.5px 0;
+	background-position: -769.5px 0;
 }
 
 .avatar.large.avatar_5 {
-  background-position: -1026px 0;
+	background-position: -1026px 0;
 }
 
 .avatar.large.avatar_6 {
-  background-position: -1282.5px 0;
+	background-position: -1282.5px 0;
 }
 
 .avatar.large.avatar_7 {
-  background-position: 0 -256.5px;
+	background-position: 0 -256.5px;
 }
 
 .avatar.large.avatar_8 {
-  background-position: -256.5px -256.5px;
+	background-position: -256.5px -256.5px;
 }
 
 .avatar.large.avatar_9 {
-  background-position: -513px -256.5px;
+	background-position: -513px -256.5px;
 }
 
 .avatar.large.avatar_10 {
-  background-position: -769.5px -256.5px;
+	background-position: -769.5px -256.5px;
 }
 
 .avatar.large.avatar_11 {
-  background-position: -1026px -256.5px;
+	background-position: -1026px -256.5px;
 }
 
 .avatar.large.avatar_12 {
-  background-position: -1282.5px -256.5px;
+	background-position: -1282.5px -256.5px;
 }
 
 .avatar.large.avatar_13 {
-  background-position: 0 -513px;
+	background-position: 0 -513px;
 }
 
 .avatar.large.avatar_14 {
-  background-position: -256.5px -513px;
+	background-position: -256.5px -513px;
 }
 
 .avatar.large.avatar_15 {
-  background-position: -513px -513px;
+	background-position: -513px -513px;
 }
 
 .avatar.large.avatar_16 {
-  background-position: -769.5px -513px;
+	background-position: -769.5px -513px;
 }
 
 .avatar.large.avatar_17 {
-  background-position: -1026px -513px;
+	background-position: -1026px -513px;
 }
 
 .avatar.large.avatar_18 {
-  background-position: -1282.5px -513px;
+	background-position: -1282.5px -513px;
 }
 
 .avatar.large.avatar_19 {
-  background-position: 0 -769.5px;
+	background-position: 0 -769.5px;
 }
 
 .avatar.large.avatar_20 {
-  background-position: -256.5px -769.5px;
+	background-position: -256.5px -769.5px;
 }
 
 .avatar.large.avatar_21 {
-  background-position: -513px -769.5px;
+	background-position: -513px -769.5px;
 }
 
 .avatar.large.avatar_22 {
-  background-position: -769.5px -769.5px;
+	background-position: -769.5px -769.5px;
 }
 
 .avatar.large.avatar_23 {
-  background-position: -1026px -769.5px;
+	background-position: -1026px -769.5px;
 }
 
 .avatar.large.avatar_24 {
-  background-position: -1282.5px -769.5px;
+	background-position: -1282.5px -769.5px;
 }
 
 .avatar.large.avatar_25 {
-  background-position: 0 -1026px;
+	background-position: 0 -1026px;
 }
 
 .avatar.large.avatar_26 {
-  background-position: -256.5px -1026px;
+	background-position: -256.5px -1026px;
 }
 
 .avatar.large.avatar_27 {
-  background-position: -513px -1026px;
+	background-position: -513px -1026px;
 }
 
 .avatar.large.avatar_28 {
-  background-position: -769.5px -1026px;
+	background-position: -769.5px -1026px;
 }
 
 .avatar.large.avatar_29 {
-  background-position: -1026px -1026px;
+	background-position: -1026px -1026px;
 }
 
 .avatar.large.avatar_30 {
-  background-position: -1282.5px -1026px;
+	background-position: -1282.5px -1026px;
 }
 
 .avatar.large.avatar_31 {
-  background-position: 0 -1282.5px;
+	background-position: 0 -1282.5px;
 }
 
 .avatar.large.avatar_32 {
-  background-position: -256.5px -1282.5px;
+	background-position: -256.5px -1282.5px;
 }
 
 .avatar.large.avatar_33 {
-  background-position: -513px -1282.5px;
+	background-position: -513px -1282.5px;
 }
 
 .avatar.large.avatar_34 {
-  background-position: -769.5px -1282.5px;
+	background-position: -769.5px -1282.5px;
 }
 
 .avatar.large.avatar_35 {
-  background-position: -1026px -1282.5px;
+	background-position: -1026px -1282.5px;
 }
 
 .avatar.large.avatar_36 {
-  background-position: -1282.5px -1282.5px;
+	background-position: -1282.5px -1282.5px;
 }
 
 .avatar.large.avatar_37 {
-  background-position: 0 -1539px;
+	background-position: 0 -1539px;
 }
 
 .avatar.large.avatar_38 {
-  background-position: -256.5px -1539px;
+	background-position: -256.5px -1539px;
 }
 
 .avatar.large.avatar_39 {
-  background-position: -513px -1539px;
+	background-position: -513px -1539px;
 }
 
 .avatar.large.avatar_40 {
-  background-position: -769.5px -1539px;
+	background-position: -769.5px -1539px;
 }
 
 .avatar.large.avatar_41 {
-  background-position: -1026px -1539px;
+	background-position: -1026px -1539px;
 }
 
 .avatar.large.avatar_42 {
-  background-position: -1282.5px -1539px;
+	background-position: -1282.5px -1539px;
 }
 
 .avatar.large.avatar_43 {
-  background-position: 0 -1795.5px;
+	background-position: 0 -1795.5px;
 }
 
 .avatar.large.avatar_44 {
-  background-position: -256.5px -1795.5px;
+	background-position: -256.5px -1795.5px;
 }
 
 .avatar.large.avatar_45 {
-  background-position: -513px -1795.5px;
+	background-position: -513px -1795.5px;
 }
 
 .avatar.large.avatar_46 {
-  background-position: -769.5px -1795.5px;
+	background-position: -769.5px -1795.5px;
 }
 
 .avatar.large.avatar_47 {
-  background-position: -1026px -1795.5px;
+	background-position: -1026px -1795.5px;
 }
 
 .avatar.large.avatar_48 {
-  background-position: -1282.5px -1795.5px;
+	background-position: -1282.5px -1795.5px;
 }

@@ -1,87 +1,87 @@
 .control-section {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  gap: 30px;
-  bottom: 40px;
-  left: 900px;
-  width: auto;
-  height: auto;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+	gap: 30px;
+	bottom: 40px;
+	left: 900px;
+	width: auto;
+	height: auto;
 }
 
 .control-section .control-top,
 .control-section .control-bottom {
-  display: flex;
-  justify-content: left;
-  align-items: stretch;
-  gap: var(--spacing-md);
+	display: flex;
+	justify-content: left;
+	align-items: stretch;
+	gap: var(--spacing-md);
 }
 
 .control-section .control-top {
-  flex-direction: row;
+	flex-direction: row;
 }
 
 .control-section .control-bottom {
-  flex-direction: column;
+	flex-direction: column;
 }
 
 .keys-bindings {
-  display: flex;
-  justify-content: left;
-  align-items: stretch;
-  gap: var(--spacing-md);
-  color: var(--color-gray);
+	display: flex;
+	justify-content: left;
+	align-items: stretch;
+	gap: var(--spacing-md);
+	color: var(--color-gray);
 }
 
 .keys-bindings > span {
-  text-transform: uppercase;
-  font-size: var(--font-size-sm);
-  border-radius: var(--border-radius-sm);
+	text-transform: uppercase;
+	font-size: var(--font-size-sm);
+	border-radius: var(--border-radius-sm);
 }
 
 .keys-bindings > span .key-bind {
-  margin-right: var(--spacing-sm);
+	margin-right: var(--spacing-sm);
 }
 
 .resources {
-  display: flex;
-  justify-content: left;
-  align-items: stretch;
-  gap: var(--spacing-md);
-  color: var(--color-gray);
+	display: flex;
+	justify-content: left;
+	align-items: stretch;
+	gap: var(--spacing-md);
+	color: var(--color-gray);
 }
 
 .resources .resource-item {
-  color: white;
+	color: white;
 }
 
 .control-section .combat button {
-  max-width: 100px;
-  font-weight: bold;
-  color: white;
-  padding: 20px 10px;
-  border-radius: var(--spacing-sm);
-  border: none;
+	max-width: 100px;
+	font-weight: bold;
+	color: white;
+	padding: 20px 10px;
+	border-radius: var(--spacing-sm);
+	border: none;
 }
 
 .combat-btn.engage {
-  background-image: linear-gradient(0deg, #5081ff 18%, #799efbff 77%);
+	background-image: linear-gradient(0deg, #5081ff 18%, #799efbff 77%);
 }
 
 .combat-btn.engage:hover {
-  background-image: linear-gradient(0deg, #5081ff 60%, #799efbff 100%);
+	background-image: linear-gradient(0deg, #5081ff 60%, #799efbff 100%);
 }
 
 .combat-btn.stop {
-  background-image: linear-gradient(0deg, #f00f 0%, #dc3545ff 100%);
+	background-image: linear-gradient(0deg, #f00f 0%, #dc3545ff 100%);
 }
 
 .combat-btn.stop:hover {
-  background-image: linear-gradient(0deg, #f00f 80%, #dc3545ff 100%);
+	background-image: linear-gradient(0deg, #f00f 80%, #dc3545ff 100%);
 }
 
 .combat-btn.engage:hover,
 .combat-btn.stop:hover {
-  cursor: pointer;
+	cursor: pointer;
 }

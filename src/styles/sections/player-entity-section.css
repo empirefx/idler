@@ -1,16 +1,16 @@
 .player-entity-section {
-  position: absolute;
-  bottom: 80px;
-  left: 710px;
-  width: auto;
-  height: auto;
+	position: absolute;
+	bottom: 80px;
+	left: 710px;
+	width: auto;
+	height: auto;
 }
 
 .player-entity-section img {
-  width: 110%;
-  max-height: 210px;
-  object-fit: cover;
-  object-position: 100% 0;
-  overflow: hidden;
-  margin-bottom: 20px;
+	width: 110%;
+	max-height: 210px;
+	object-fit: cover;
+	object-position: 100% 0;
+	overflow: hidden;
+	margin-bottom: 20px;
 }

@@ -1,53 +1,53 @@
 {
-  "name": "idler",
-  "version": "2.0.0",
-  "description": "RPG-idler game",
-  "homepage": "https://empirefx.github.io/idler",
-  "source": "src/index.html",
-  "targets": {
-    "images": {
-      "distDir": "./public/assets",
-      "source": "./src/assets/**"
-    },
-    "default": {
-      "distDir": "./public",
-      "source": "./src/index.html"
-    }
-  },
-  "scripts": {
-    "clean": "rimraf dist public .parcel-cache",
-    "prestart": "npm run clean",
-    "start": "cross-env NODE_ENV=development parcel",
-    "build": "npm run clean && cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
-    "process-images": "parcel build --target images --public-url ./ --no-source-maps --no-cache",
-    "test": "vitest",
-    "public": "npm run build && parcel serve --dist-dir public --no-hmr --no-autoinstall --no-cache"
-  },
-  "parcel": {
-    "plugins": [
-      "./image-transform.js"
-    ]
-  },
-  "dependencies": {
-    "@reduxjs/toolkit": "^2.6.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-redux": "^9.2.0",
-    "redux": "^5.0.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.26.10",
-    "@babel/preset-react": "^7.26.3",
-    "@parcel/config-default": "^2.14.4",
-    "@parcel/plugin": "^2.14.4",
-    "@parcel/resolver-glob": "^2.14.4",
-    "@parcel/transformer-image": "^2.14.4",
-    "cross-env": "^7.0.3",
-    "parcel": "^2.14.4",
-    "process": "^0.11.10",
-    "rimraf": "^6.0.1",
-    "sharp": "^0.33.5",
-    "vitest": "^3.1.2"
-  },
-  "browserslist": "> 0.5%, last 2 versions, not dead"
+	"name": "idler",
+	"version": "2.0.0",
+	"description": "RPG-idler game",
+	"homepage": "https://empirefx.github.io/idler",
+	"source": "src/index.html",
+	"targets": {
+		"images": {
+			"distDir": "./public/assets",
+			"source": "./src/assets/**"
+		},
+		"default": {
+			"distDir": "./public",
+			"source": "./src/index.html"
+		}
+	},
+	"scripts": {
+		"clean": "rimraf dist public .parcel-cache",
+		"prestart": "npm run clean",
+		"start": "cross-env NODE_ENV=development parcel",
+		"build": "npm run clean && cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
+		"process-images": "parcel build --target images --public-url ./ --no-source-maps --no-cache",
+		"test": "vitest",
+		"public": "npm run build && parcel serve --dist-dir public --no-hmr --no-autoinstall --no-cache"
+	},
+	"parcel": {
+		"plugins": [
+			"./image-transform.js"
+		]
+	},
+	"dependencies": {
+		"@reduxjs/toolkit": "^2.6.1",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"react-redux": "^9.2.0",
+		"redux": "^5.0.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.26.10",
+		"@babel/preset-react": "^7.26.3",
+		"@parcel/config-default": "^2.14.4",
+		"@parcel/plugin": "^2.14.4",
+		"@parcel/resolver-glob": "^2.14.4",
+		"@parcel/transformer-image": "^2.14.4",
+		"cross-env": "^7.0.3",
+		"parcel": "^2.14.4",
+		"process": "^0.11.10",
+		"rimraf": "^6.0.1",
+		"sharp": "^0.33.5",
+		"vitest": "^3.1.2"
+	},
+	"browserslist": "> 0.5%, last 2 versions, not dead"
 }

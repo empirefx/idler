@@ -1,20 +1,20 @@
 .timer {
-  border-radius: calc(infinity * 1px);
-  height: calc(var(--size) * 1px);
-  width: calc(var(--size) * 1px);
-  position: relative;
-  background: conic-gradient(
-    var(--primary-color, green),
-    calc(var(--progress) * 1%),
-    var(--secondary-color) calc(var(--progress) * 1%)
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	border-radius: calc(infinity * 1px);
+	height: calc(var(--size) * 1px);
+	width: calc(var(--size) * 1px);
+	position: relative;
+	background: conic-gradient(
+		var(--primary-color, green),
+		calc(var(--progress) * 1%),
+		var(--secondary-color) calc(var(--progress) * 1%)
+	);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /* Default container positioning */
 .circular-progress-timer {
-  position: relative;
-  display: inline-block;
+	position: relative;
+	display: inline-block;
 }

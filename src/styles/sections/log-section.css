@@ -1,158 +1,158 @@
 .log-section {
-  position: absolute;
-  top: 20px;
-  left: 40px;
-  width: 400px;
-  height: auto;
+	position: absolute;
+	top: 20px;
+	left: 40px;
+	width: 400px;
+	height: auto;
 }
 
 .log-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-md);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--spacing-md);
 }
 
 .log-section h2 {
-  margin: 0;
-  color: var(--color-primary);
-  text-transform: uppercase;
+	margin: 0;
+	color: var(--color-primary);
+	text-transform: uppercase;
 }
 
 .log-section .log-display {
-  display: flex;
-  flex-direction: column;
-  max-height: 200px;
-  overflow: hidden auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-dark) #00000034;
-  position: relative;
+	display: flex;
+	flex-direction: column;
+	max-height: 200px;
+	overflow: hidden auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-dark) #00000034;
+	position: relative;
 }
 
 .log-filter-container {
-  position: relative;
-  z-index: 10;
+	position: relative;
+	z-index: 10;
 }
 
 .log-filter-toggle {
-  font-size: 20px;
-  background-color: #d0d0d0;
-  border: 2px solid #585858;
-  cursor: pointer;
-  border-radius: var(--border-radius-sm);
-  transition: opacity 0.2s ease;
+	font-size: 20px;
+	background-color: #d0d0d0;
+	border: 2px solid #585858;
+	cursor: pointer;
+	border-radius: var(--border-radius-sm);
+	transition: opacity 0.2s ease;
 }
 
 .log-filter-toggle:hover {
-  opacity: 0.9;
+	opacity: 0.9;
 }
 
 .log-filter-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: var(--color-dark);
-  border-radius: var(--border-radius-sm);
-  padding: var(--spacing-sm);
-  min-width: 150px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 50%);
-  z-index: 20;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	background-color: var(--color-dark);
+	border-radius: var(--border-radius-sm);
+	padding: var(--spacing-sm);
+	min-width: 150px;
+	box-shadow: 0 4px 12px rgb(0 0 0 / 50%);
+	z-index: 20;
 }
 
 .log-filter-header {
-  font-size: var(--font-size-sm);
-  font-weight: bold;
-  color: white;
-  margin-bottom: var(--spacing-sm);
-  padding-bottom: var(--spacing-xs);
+	font-size: var(--font-size-sm);
+	font-weight: bold;
+	color: white;
+	margin-bottom: var(--spacing-sm);
+	padding-bottom: var(--spacing-xs);
 }
 
 .log-filter-option {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  cursor: pointer;
-  padding: var(--spacing-xs) 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-light);
-  transition: color 0.2s ease;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	cursor: pointer;
+	padding: var(--spacing-xs) 0;
+	font-size: var(--font-size-sm);
+	color: var(--color-gray-light);
+	transition: color 0.2s ease;
 }
 
 .log-filter-option:hover {
-  color: var(--color-primary);
+	color: var(--color-primary);
 }
 
 .log-filter-color-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 1px solid rgb(255 255 255 / 30%);
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	border: 1px solid rgb(255 255 255 / 30%);
 }
 
 .log-filter-color-indicator.log-entry-default {
-  background-color: hsl(0deg 0% 40% / 80%);
+	background-color: hsl(0deg 0% 40% / 80%);
 }
 
 .log-filter-color-indicator.log-entry-worker {
-  background-color: hsl(200deg 20% 40% / 80%);
+	background-color: hsl(200deg 20% 40% / 80%);
 }
 
 .log-filter-color-indicator.log-entry-combat {
-  background-color: hsl(0deg 20% 40% / 80%);
+	background-color: hsl(0deg 20% 40% / 80%);
 }
 
 .log-filter-color-indicator.log-entry-movement {
-  background-color: hsl(45deg 20% 40% / 80%);
+	background-color: hsl(45deg 20% 40% / 80%);
 }
 
 .log-entries {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 
 .log-display .log-entry {
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-light);
-  font-family: var(--font-family-secondary);
-  margin: 0 var(--spacing-sm) var(--spacing-xs) 0;
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  transition: background-color 0.2s ease;
+	font-size: var(--font-size-sm);
+	color: var(--color-gray-light);
+	font-family: var(--font-family-secondary);
+	margin: 0 var(--spacing-sm) var(--spacing-xs) 0;
+	padding: var(--spacing-xs) var(--spacing-md);
+	border-radius: var(--border-radius-sm);
+	transition: background-color 0.2s ease;
 }
 
 .log-display .log-entry:last-child {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .log-display .log-entry-default {
-  background-color: hsl(0deg 0% 40% / 80%);
+	background-color: hsl(0deg 0% 40% / 80%);
 }
 
 .log-display .log-entry-worker {
-  background-color: hsl(200deg 20% 40% / 80%);
+	background-color: hsl(200deg 20% 40% / 80%);
 }
 
 .log-display .log-entry-combat {
-  background-color: hsl(0deg 20% 40% / 80%);
+	background-color: hsl(0deg 20% 40% / 80%);
 }
 
 .log-display .log-entry-movement {
-  background-color: hsl(45deg 20% 40% / 80%);
+	background-color: hsl(45deg 20% 40% / 80%);
 }
 
 .log-display .log-entry-worker:hover {
-  background-color: hsl(200deg 25% 45% / 90%);
+	background-color: hsl(200deg 25% 45% / 90%);
 }
 
 .log-display .log-entry-combat:hover {
-  background-color: hsl(0deg 25% 45% / 90%);
+	background-color: hsl(0deg 25% 45% / 90%);
 }
 
 .log-display .log-entry-movement:hover {
-  background-color: hsl(45deg 25% 45% / 90%);
+	background-color: hsl(45deg 25% 45% / 90%);
 }
 
 .log-display .log-entry-default:hover {
-  background-color: hsl(0deg 0% 45% / 90%);
+	background-color: hsl(0deg 0% 45% / 90%);
 }

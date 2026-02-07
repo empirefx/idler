@@ -1,251 +1,251 @@
 /* NPC Dialog Component Styles */
 
 .npc-dialog {
-  /* Remove default limits */
-  max-width: none;
-  max-height: none;
-  border: none;
-  padding: 0;
-  margin-top: auto; /* Align to bottom */
-  margin-bottom: 0;
-  width: 100vw;
-  background: none;
-  z-index: 1000;
-  animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: visible;
+	/* Remove default limits */
+	max-width: none;
+	max-height: none;
+	border: none;
+	padding: 0;
+	margin-top: auto; /* Align to bottom */
+	margin-bottom: 0;
+	width: 100vw;
+	background: none;
+	z-index: 1000;
+	animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	overflow: visible;
 }
 
 .npc-dialog::backdrop {
-  background-size: 100% 100%;
-  background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0;
-  background-image:
-    linear-gradient(0deg, #00a3ff52 2%, #0090ff00 27%),
-    radial-gradient(50% 20% at 34% 106%, #ffa900ff 0%, #ffdc0000 100%),
-    radial-gradient(75% 140% at 42% 10%, #0000 81%, #0074ff94 100%),
-    linear-gradient(0deg, #253444f7 0%, #0000008f 100%);
+	background-size: 100% 100%;
+	background-position:
+		0 0,
+		0 0,
+		0 0,
+		0 0,
+		0 0,
+		0 0;
+	background-image:
+		linear-gradient(0deg, #00a3ff52 2%, #0090ff00 27%),
+		radial-gradient(50% 20% at 34% 106%, #ffa900ff 0%, #ffdc0000 100%),
+		radial-gradient(75% 140% at 42% 10%, #0000 81%, #0074ff94 100%),
+		linear-gradient(0deg, #253444f7 0%, #0000008f 100%);
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
+	from {
+		transform: translateY(100%);
+		opacity: 0;
+	}
 
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 .npc-dialog-content {
-  height: auto;
-  width: auto;
+	height: auto;
+	width: auto;
 }
 
 .dialog-bottom-section {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-end;
 }
 
 .dialog-bottom-section > div {
-  width: 600px;
+	width: 600px;
 }
 
 .key-bind-container {
-  position: absolute;
-  right: 20px;
-  top: -40px;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+	position: absolute;
+	right: 20px;
+	top: -40px;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
 }
 
 .key-bind-container span:last-child {
-  text-transform: uppercase;
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-light);
+	text-transform: uppercase;
+	font-size: var(--font-size-sm);
+	color: var(--color-gray-light);
 }
 
 /* Player Profile Styles */
 .player-profile {
-  width: 600px;
-  height: 400px;
-  position: relative;
-  overflow: hidden;
+	width: 600px;
+	height: 400px;
+	position: relative;
+	overflow: hidden;
 }
 
 .player-background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    radial-gradient(75% 75% at 3% 101%, #248eff6e 0%, #00beff00 83%),
-    var(--player-avatar-url);
-  background-repeat: no-repeat, no-repeat;
-  z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image:
+		radial-gradient(75% 75% at 3% 101%, #248eff6e 0%, #00beff00 83%),
+		var(--player-avatar-url);
+	background-repeat: no-repeat, no-repeat;
+	z-index: 1;
 }
 
 .player-content-overlay {
-  position: relative;
-  z-index: 2;
-  height: 90%;
-  padding: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: var(--spacing-md);
+	position: relative;
+	z-index: 2;
+	height: 90%;
+	padding: var(--spacing-md);
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	gap: var(--spacing-md);
 }
 
 .player-avatar-name h3 {
-  text-align: right;
-  margin: 0;
-  color: var(--color-secondary);
-  font-family: var(--font-family-secondary);
-  font-size: 1.4rem;
-  text-transform: uppercase;
-  text-shadow: 2px 2px 4px rgb(0 0 0 / 80%);
+	text-align: right;
+	margin: 0;
+	color: var(--color-secondary);
+	font-family: var(--font-family-secondary);
+	font-size: 1.4rem;
+	text-transform: uppercase;
+	text-shadow: 2px 2px 4px rgb(0 0 0 / 80%);
 }
 
 .player-text {
-  padding: var(--spacing-md);
-  background: #3f4759e3;
-  border-radius: var(--border-radius-sm);
-  color: var(--color-gray-light);
-  font-style: italic;
-  min-height: 60px;
-  backdrop-filter: blur(4px);
-  border: 1px solid #00000026;
+	padding: var(--spacing-md);
+	background: #3f4759e3;
+	border-radius: var(--border-radius-sm);
+	color: var(--color-gray-light);
+	font-style: italic;
+	min-height: 60px;
+	backdrop-filter: blur(4px);
+	border: 1px solid #00000026;
 }
 
 /* NPC Profile Styles */
 .npc-profile {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+	padding: var(--spacing-md);
 }
 
 .npc-avatar-name {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-md);
 }
 
 .npc-avatar-name h3 {
-  margin: 0;
-  color: var(--color-secondary);
-  font-family: var(--font-family-secondary);
-  font-size: 1.2rem;
-  text-transform: uppercase;
+	margin: 0;
+	color: var(--color-secondary);
+	font-family: var(--font-family-secondary);
+	font-size: 1.2rem;
+	text-transform: uppercase;
 }
 
 .npc-response {
-  flex: 1;
-  padding: var(--spacing-md);
-  background: #0f131c;
-  border-radius: var(--border-radius-sm);
-  color: #acb6ce;
-  min-height: 60px;
-  font-size: 1.1rem;
-  line-height: 1.4;
+	flex: 1;
+	padding: var(--spacing-md);
+	background: #0f131c;
+	border-radius: var(--border-radius-sm);
+	color: #acb6ce;
+	min-height: 60px;
+	font-size: 1.1rem;
+	line-height: 1.4;
 }
 
 /* Dialog Options Styles */
 .dialog-options {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+	margin-top: var(--spacing-sm);
 }
 
 .dialog-option-btn {
-  padding: var(--spacing-md);
-  margin: 0;
-  background: linear-gradient(135deg, #9fb0c1, #aaa0);
-  color: white;
-  border: 0;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: var(--font-family-base);
-  font-size: 0.9rem;
-  text-align: left;
-  min-height: 44px;
+	padding: var(--spacing-md);
+	margin: 0;
+	background: linear-gradient(135deg, #9fb0c1, #aaa0);
+	color: white;
+	border: 0;
+	border-radius: var(--border-radius-sm);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-family: var(--font-family-base);
+	font-size: 0.9rem;
+	text-align: left;
+	min-height: 44px;
 }
 
 .dialog-option-btn:hover {
-  background: linear-gradient(135deg, var(--color-primary), #0000);
-  transform: translateX(4px);
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgb(47 50 97 / 30%);
+	background: linear-gradient(135deg, var(--color-primary), #0000);
+	transform: translateX(4px);
+	font-weight: bold;
+	box-shadow: 0 2px 8px rgb(47 50 97 / 30%);
 }
 
 .dialog-option-btn:focus {
-  background: linear-gradient(135deg, #fff, #aaa0);
-  color: #484e70;
-  font-weight: bold;
+	background: linear-gradient(135deg, #fff, #aaa0);
+	color: #484e70;
+	font-weight: bold;
 }
 
 .dialog-option-btn:active {
-  transform: translateX(2px);
+	transform: translateX(2px);
 }
 
 /* Avatar sizes for dialog */
 .avatar.large {
-  width: 80px;
-  height: 80px;
-  transform: scale(1.2);
+	width: 80px;
+	height: 80px;
+	transform: scale(1.2);
 }
 
 .npc-avatar.large {
-  width: 80px;
-  height: 80px;
-  transform: scale(1.2);
-  clip-path: circle();
+	width: 80px;
+	height: 80px;
+	transform: scale(1.2);
+	clip-path: circle();
 }
 
 /* Responsive design */
 @media (width <= 768px) {
-  .dialog-bottom-section {
-    flex-direction: column;
-    height: 60vh;
-    gap: var(--spacing-md);
-  }
+	.dialog-bottom-section {
+		flex-direction: column;
+		height: 60vh;
+		gap: var(--spacing-md);
+	}
 
-  .player-profile {
-    width: 100%;
-    height: 200px;
-  }
+	.player-profile {
+		width: 100%;
+		height: 200px;
+	}
 
-  .npc-avatar-name {
-    flex-direction: column;
-    text-align: center;
-    gap: var(--spacing-sm);
-  }
+	.npc-avatar-name {
+		flex-direction: column;
+		text-align: center;
+		gap: var(--spacing-sm);
+	}
 
-  .player-avatar-name h3 {
-    font-size: 1.2rem;
-  }
+	.player-avatar-name h3 {
+		font-size: 1.2rem;
+	}
 
-  .dialog-option-btn {
-    font-size: 0.8rem;
-    padding: var(--spacing-sm);
-  }
+	.dialog-option-btn {
+		font-size: 0.8rem;
+		padding: var(--spacing-sm);
+	}
 
-  .avatar.large,
-  .npc-avatar.large {
-    width: 60px;
-    height: 60px;
-    transform: scale(1);
-  }
+	.avatar.large,
+	.npc-avatar.large {
+		width: 60px;
+		height: 60px;
+		transform: scale(1);
+	}
 }

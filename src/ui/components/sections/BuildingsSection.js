@@ -7,21 +7,21 @@ import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
 import { selectCurrentPlaceBuildings } from "../../../store/slices/placesSlice";
 
 const BuildingsSection = () => {
-  const buildings = useSelector(selectAllBuildings);
-  const currentBuildings = useSelector(selectCurrentPlaceBuildings);
+	const buildings = useSelector(selectAllBuildings);
+	const currentBuildings = useSelector(selectCurrentPlaceBuildings);
 
-  return (
-    <section className="buildings-section">
-      <div className="buildings-grid">
-        {currentBuildings.map((id) => {
-          const building = buildings[id];
-          return building ? (
-            <BuildingCard key={id} building={building} />
-          ) : null;
-        })}
-      </div>
-    </section>
-  );
+	return (
+		<section className="buildings-section">
+			<div className="buildings-grid">
+				{currentBuildings.map((id) => {
+					const building = buildings[id];
+					return building ? (
+						<BuildingCard key={id} building={building} />
+					) : null;
+				})}
+			</div>
+		</section>
+	);
 };
 
 export default BuildingsSection;

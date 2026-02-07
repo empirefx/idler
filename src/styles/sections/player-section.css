@@ -1,199 +1,199 @@
 .player-section {
-  margin: auto;
-  position: absolute;
-  inset: 0;
-  max-height: 480px;
-  max-width: 970px;
-  background: var(--color-dark);
-  color: white;
-  z-index: 11;
+	margin: auto;
+	position: absolute;
+	inset: 0;
+	max-height: 480px;
+	max-width: 970px;
+	background: var(--color-dark);
+	color: white;
+	z-index: 11;
 }
 
 .player-card {
-  height: 100%;
-  width: 100%;
+	height: 100%;
+	width: 100%;
 }
 
 .player-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 8px;
-  grid-template-areas:
-    "display equipment stats"
-    "display inventory inventory";
-  width: 100%;
-  height: 100%;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	gap: 8px;
+	grid-template-areas:
+		"display equipment stats"
+		"display inventory inventory";
+	width: 100%;
+	height: 100%;
 }
 
 .player-display {
-  position: relative;
-  grid-area: display;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background-image: url("../../assets/ui/player_frame.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+	position: relative;
+	grid-area: display;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	background-image: url("../../assets/ui/player_frame.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 .player-display h1 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-transform: initial;
-  text-align: center;
-  z-index: 1;
+	font-size: 1.8rem;
+	font-weight: bold;
+	text-transform: initial;
+	text-align: center;
+	z-index: 1;
 }
 
 .player-display h1:last-child {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .player-avatar {
-  position: absolute;
-  background-image: url("../../assets/avatars/players/1.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  mask-image: linear-gradient(to top, transparent 11%, black 35%);
-  width: 300px;
-  height: 380px;
-  margin-top: 40px;
-  z-index: 1;
+	position: absolute;
+	background-image: url("../../assets/avatars/players/1.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	mask-image: linear-gradient(to top, transparent 11%, black 35%);
+	width: 300px;
+	height: 380px;
+	margin-top: 40px;
+	z-index: 1;
 }
 
 .player-options {
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacing-sm);
-  margin: 0;
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  z-index: 10;
+	display: flex;
+	flex-direction: row;
+	gap: var(--spacing-sm);
+	margin: 0;
+	padding: var(--spacing-sm);
+	border-radius: var(--border-radius-sm);
+	z-index: 10;
 }
 
 .player-options .select-btn {
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: none;
-  border-radius: var(--border-radius-sm);
-  background: var(--color-red);
-  color: white;
-  cursor: pointer;
-  transition: opacity 0.2s;
+	padding: var(--spacing-sm) var(--spacing-md);
+	border: none;
+	border-radius: var(--border-radius-sm);
+	background: var(--color-red);
+	color: white;
+	cursor: pointer;
+	transition: opacity 0.2s;
 }
 
 .player-options .select-btn:hover {
-  background-color: var(--color-danger);
+	background-color: var(--color-danger);
 }
 
 .player-Equipment {
-  grid-area: equipment;
+	grid-area: equipment;
 }
 
 .player-stats {
-  grid-area: stats;
+	grid-area: stats;
 }
 
 .player-inventory,
 .place-vault {
-  padding: var(--spacing-md) var(--spacing-sm);
-  grid-area: inventory;
-  border-radius: var(--border-radius-lg);
-  background-color: var(--color-gray-dark);
+	padding: var(--spacing-md) var(--spacing-sm);
+	grid-area: inventory;
+	border-radius: var(--border-radius-lg);
+	background-color: var(--color-gray-dark);
 }
 
 .place-vault {
-  margin-bottom: 20px;
-  color: white;
+	margin-bottom: 20px;
+	color: white;
 }
 
 .player-inventory,
 .place-vault {
-  position: relative;
+	position: relative;
 }
 
 .player-inventory h3,
 .place-vault h3 {
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-  text-indent: var(--spacing-sm);
-  text-transform: initial;
+	margin-top: var(--spacing-md);
+	margin-bottom: var(--spacing-lg);
+	text-indent: var(--spacing-sm);
+	text-transform: initial;
 }
 
 .equipment-flex {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xl);
-  justify-content: space-between;
-  height: 90%;
-  width: 90%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xl);
+	justify-content: space-between;
+	height: 90%;
+	width: 90%;
 }
 
 .equipment-flex > div {
-  position: relative;
-  flex: 0 0 33.3333%;
-  max-width: 50px;
-  height: 50px;
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-red-dark);
-  border: 2px solid var(--color-red);
-  cursor: pointer;
+	position: relative;
+	flex: 0 0 33.3333%;
+	max-width: 50px;
+	height: 50px;
+	border-radius: var(--border-radius-sm);
+	background-color: var(--color-red-dark);
+	border: 2px solid var(--color-red);
+	cursor: pointer;
 }
 
 .equipment-flex > div span {
-  position: absolute;
-  top: 55px;
-  left: -4px;
-  width: 55px;
-  text-align: center;
-  font-size: var(--font-size-sm);
+	position: absolute;
+	top: 55px;
+	left: -4px;
+	width: 55px;
+	text-align: center;
+	font-size: var(--font-size-sm);
 }
 
 .equipment-flex .main-weapon span,
 .equipment-flex .second-weapon span {
-  cursor: default;
+	cursor: default;
 }
 
 .equipment-flex .armor-sprite {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.5);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(1.5);
 }
 
 .equipment-flex > div.equipped {
-  background-color: var(--color-gray-dark);
-  border: 2px solid var(--color-gray);
+	background-color: var(--color-gray-dark);
+	border: 2px solid var(--color-gray);
 }
 
 .equipment-flex > div.equipped:hover {
-  background-color: var(--color-gray);
+	background-color: var(--color-gray);
 }
 
 .player-stats > p {
-  color: var(--color-gray-dark);
-  text-transform: uppercase;
+	color: var(--color-gray-dark);
+	text-transform: uppercase;
 }
 
 .player-stats ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 150px;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	width: 150px;
 }
 
 .player-stats ul li {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-xs);
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: var(--spacing-xs);
 }
 
 .player-stats ul li span {
-  text-transform: capitalize;
-  color: var(--color-gray);
+	text-transform: capitalize;
+	color: var(--color-gray);
 }
 
 .player-stats .bonus {
-  color: var(--color-green);
+	color: var(--color-green);
 }

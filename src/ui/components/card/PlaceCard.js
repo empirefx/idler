@@ -4,37 +4,37 @@ import { useDispatch } from "react-redux";
 import { navigateToPlace } from "../../../store/slices/placesSlice";
 
 const PlaceCard = ({ place }) => {
-  if (!place) return null;
+	if (!place) return null;
 
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const handleMove = () => {
-    dispatch(navigateToPlace(place.id));
-  };
+	const handleMove = () => {
+		dispatch(navigateToPlace(place.id));
+	};
 
-  return (
-    <div
-      className="place-card"
-      style={{
-        backgroundImage: `url('assets/background/${place["background-image"]}')`,
-        backgroundSize: "cover",
-        backgroundPosition: "bottom",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="place-top">
-        <div className="place-top-left">
-          <h3>{place.name}</h3>
-        </div>
+	return (
+		<div
+			className="place-card"
+			style={{
+				backgroundImage: `url('assets/background/${place["background-image"]}')`,
+				backgroundSize: "cover",
+				backgroundPosition: "bottom",
+				backgroundRepeat: "no-repeat",
+			}}
+		>
+			<div className="place-top">
+				<div className="place-top-left">
+					<h3>{place.name}</h3>
+				</div>
 
-        <div className="place-top-right">
-          <button className="action-btn" onClick={handleMove}>
-            Move
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+				<div className="place-top-right">
+					<button className="action-btn" onClick={handleMove}>
+						Move
+					</button>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default PlaceCard;

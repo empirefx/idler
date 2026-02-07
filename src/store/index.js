@@ -14,21 +14,21 @@ import logMiddleware from "./middleware/logMiddleware";
 import gameEventMiddleware from "./middleware/gameEventMiddleware";
 
 export const store = configureStore({
-  reducer: {
-    player: playerReducer,
-    buildings: buildingsReducer,
-    places: placesReducer,
-    playerInventory: playerInventoryReducer,
-    placeInventory: placeInventoryReducer,
-    npcInventory: npcInventoryReducer,
-    npcs: npcReducer,
-    enemies: enemiesReducer,
-    combat: combatReducer,
-    logs: logReducer,
-    notifications: notificationReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(logMiddleware, gameEventMiddleware),
+	reducer: {
+		player: playerReducer,
+		buildings: buildingsReducer,
+		places: placesReducer,
+		playerInventory: playerInventoryReducer,
+		placeInventory: placeInventoryReducer,
+		npcInventory: npcInventoryReducer,
+		npcs: npcReducer,
+		enemies: enemiesReducer,
+		combat: combatReducer,
+		logs: logReducer,
+		notifications: notificationReducer,
+	},
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(logMiddleware, gameEventMiddleware),
 });
 
 export default store;

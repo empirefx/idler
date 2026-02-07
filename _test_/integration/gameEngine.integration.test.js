@@ -13,239 +13,239 @@ import GameEngine from "../../src/game/engine/GameEngine";
 import { createMockLocalStorage } from "../mocks/localStorage.mock.js";
 
 describe("GameEngine Integration Tests", () => {
-  let store;
-  let gameEngine;
-  let originalLocalStorage;
+	let store;
+	let gameEngine;
+	let originalLocalStorage;
 
-  beforeEach(() => {
-    // Setup real Redux store for integration tests
-    store = configureStore({
-      reducer: {
-        player: playerReducer,
-        buildings: buildingsReducer,
-        places: placesReducer,
-        enemies: enemiesReducer,
-        combat: combatReducer,
-        playerInventory: playerInventoryReducer,
-        placeInventory: placeInventoryReducer,
-      },
-      preloadedState: {
-        player: {
-          ...playerData,
-          resources: [{ name: "gold", amount: 100 }],
-        },
-        buildings: {},
-        places: { currentPlaceId: "village_center" },
-        enemies: { byId: {}, allIds: [] },
-        combat: { isInCombat: false },
-      },
-    });
+	beforeEach(() => {
+		// Setup real Redux store for integration tests
+		store = configureStore({
+			reducer: {
+				player: playerReducer,
+				buildings: buildingsReducer,
+				places: placesReducer,
+				enemies: enemiesReducer,
+				combat: combatReducer,
+				playerInventory: playerInventoryReducer,
+				placeInventory: placeInventoryReducer,
+			},
+			preloadedState: {
+				player: {
+					...playerData,
+					resources: [{ name: "gold", amount: 100 }],
+				},
+				buildings: {},
+				places: { currentPlaceId: "village_center" },
+				enemies: { byId: {}, allIds: [] },
+				combat: { isInCombat: false },
+			},
+		});
 
-    // Setup real GameEngine with mocked localStorage
-    originalLocalStorage = global.localStorage;
-    global.localStorage = createMockLocalStorage();
+		// Setup real GameEngine with mocked localStorage
+		originalLocalStorage = global.localStorage;
+		global.localStorage = createMockLocalStorage();
 
-    gameEngine = new GameEngine(store.dispatch, store);
+		gameEngine = new GameEngine(store.dispatch, store);
 
-    // Mock Logger to avoid console output
-    vi.spyOn(console, "log").mockImplementation(() => {});
-    vi.spyOn(console, "error").mockImplementation(() => {});
-  });
+		// Mock Logger to avoid console output
+		vi.spyOn(console, "log").mockImplementation(() => {});
+		vi.spyOn(console, "error").mockImplementation(() => {});
+	});
 
-  afterEach(() => {
-    if (gameEngine) {
-      gameEngine.stop();
-    }
-    global.localStorage = originalLocalStorage;
-    vi.restoreAllMocks();
-  });
+	afterEach(() => {
+		if (gameEngine) {
+			gameEngine.stop();
+		}
+		global.localStorage = originalLocalStorage;
+		vi.restoreAllMocks();
+	});
 
-  describe("Full Game Loop Integration", () => {
-    it("should complete production cycle from start to save", () => {
-      // Setup building with worker - use existing building type
-      store.dispatch({
-        type: "buildings/updateBuilding",
-        payload: {
-          buildingId: "farm",
-          data: {
-            calculateProduction: () => 5,
-            baseProductionRate: 3,
-            productionType: "apple", // Farm produces apples
-          },
-        },
-      });
+	describe("Full Game Loop Integration", () => {
+		it("should complete production cycle from start to save", () => {
+			// Setup building with worker - use existing building type
+			store.dispatch({
+				type: "buildings/updateBuilding",
+				payload: {
+					buildingId: "farm",
+					data: {
+						calculateProduction: () => 5,
+						baseProductionRate: 3,
+						productionType: "apple", // Farm produces apples
+					},
+				},
+			});
 
-      // Assign an existing worker to the building
-      store.dispatch({
-        type: "player/assignWorkerToBuilding",
-        payload: {
-          workerId: 1, // Use existing worker from playerData
-          buildingId: "farm",
-        },
-      });
+			// Assign an existing worker to the building
+			store.dispatch({
+				type: "player/assignWorkerToBuilding",
+				payload: {
+					workerId: 1, // Use existing worker from playerData
+					buildingId: "farm",
+				},
+			});
 
-      // Start game engine
-      gameEngine.start();
+			// Start game engine
+			gameEngine.start();
 
-      // Manually trigger production update (normally done by GameLoop)
-      gameEngine.update(store.getState(), 1000);
+			// Manually trigger production update (normally done by GameLoop)
+			gameEngine.update(store.getState(), 1000);
 
-      // Verify the production cycle ran without errors
-      const state = store.getState();
-      const inventory = state.placeInventory["village_center"];
+			// Verify the production cycle ran without errors
+			const state = store.getState();
+			const inventory = state.placeInventory["village_center"];
 
-      expect(inventory).toBeDefined();
-      expect(inventory.items).toBeDefined();
-      // Check that we have the initial apple item and production didn't crash
-      expect(inventory.items.length).toBeGreaterThan(0);
+			expect(inventory).toBeDefined();
+			expect(inventory.items).toBeDefined();
+			// Check that we have the initial apple item and production didn't crash
+			expect(inventory.items.length).toBeGreaterThan(0);
 
-      // Save and verify persistence
-      gameEngine.save();
+			// Save and verify persistence
+			gameEngine.save();
 
-      const savedState = JSON.parse(
-        global.localStorage.setItem.mock.calls.find(
-          (call) => call[0] === "gameState",
-        )[1],
-      );
-      expect(savedState).toHaveProperty("player");
-      expect(savedState).toHaveProperty("buildings");
-      expect(savedState).toHaveProperty("places");
-    });
+			const savedState = JSON.parse(
+				global.localStorage.setItem.mock.calls.find(
+					(call) => call[0] === "gameState",
+				)[1],
+			);
+			expect(savedState).toHaveProperty("player");
+			expect(savedState).toHaveProperty("buildings");
+			expect(savedState).toHaveProperty("places");
+		});
 
-    it("should handle navigation and enemy lifecycle", () => {
-      // Start game engine
-      gameEngine.start();
+		it("should handle navigation and enemy lifecycle", () => {
+			// Start game engine
+			gameEngine.start();
 
-      // Add an enemy
-      const enemy = {
-        id: "test_enemy",
-        name: "Test Enemy",
-        placeId: "village_center",
-        health: 50,
-      };
-      store.dispatch({
-        type: "enemies/addEnemy",
-        payload: { placeId: "village_center", enemy },
-      });
+			// Add an enemy
+			const enemy = {
+				id: "test_enemy",
+				name: "Test Enemy",
+				placeId: "village_center",
+				health: 50,
+			};
+			store.dispatch({
+				type: "enemies/addEnemy",
+				payload: { placeId: "village_center", enemy },
+			});
 
-      // Navigate to different place
-      store.dispatch({
-        type: "places/setCurrentPlace",
-        payload: "forest",
-      });
+			// Navigate to different place
+			store.dispatch({
+				type: "places/setCurrentPlace",
+				payload: "forest",
+			});
 
-      // Verify enemy still exists (enemies persist across navigation)
-      const enemyState = store.getState().enemies.byId;
-      expect(enemyState["test_enemy"]).toBeDefined();
-      expect(enemyState["test_enemy"].placeId).toBe("village_center");
+			// Verify enemy still exists (enemies persist across navigation)
+			const enemyState = store.getState().enemies.byId;
+			expect(enemyState["test_enemy"]).toBeDefined();
+			expect(enemyState["test_enemy"].placeId).toBe("village_center");
 
-      // Stop game engine
-      gameEngine.stop();
-    });
-  });
+			// Stop game engine
+			gameEngine.stop();
+		});
+	});
 
-  describe("Service Coordination", () => {
-    it("should coordinate combat service with game loop", () => {
-      gameEngine.start();
+	describe("Service Coordination", () => {
+		it("should coordinate combat service with game loop", () => {
+			gameEngine.start();
 
-      // Enter combat
-      store.dispatch({
-        type: "combat/startCombat",
-      });
+			// Enter combat
+			store.dispatch({
+				type: "combat/startCombat",
+			});
 
-      // Verify combat service was notified (indirectly tested through game loop integration)
-      const combatState = store.getState().combat;
-      expect(combatState.isInCombat).toBe(true);
+			// Verify combat service was notified (indirectly tested through game loop integration)
+			const combatState = store.getState().combat;
+			expect(combatState.isInCombat).toBe(true);
 
-      // Exit combat
-      store.dispatch({
-        type: "combat/stopCombat",
-      });
+			// Exit combat
+			store.dispatch({
+				type: "combat/stopCombat",
+			});
 
-      gameEngine.stop();
-    });
+			gameEngine.stop();
+		});
 
-    it("should maintain state consistency across operations", () => {
-      gameEngine.start();
+		it("should maintain state consistency across operations", () => {
+			gameEngine.start();
 
-      // Perform multiple operations
-      gameEngine.update(store.getState(), 1000); // Production
-      gameEngine.save(); // Persistence
-      gameEngine.load(); // Loading (will create new state)
+			// Perform multiple operations
+			gameEngine.update(store.getState(), 1000); // Production
+			gameEngine.save(); // Persistence
+			gameEngine.load(); // Loading (will create new state)
 
-      // Verify store is still functional
-      const state = store.getState();
-      expect(state).toHaveProperty("player");
-      expect(state).toHaveProperty("buildings");
-      expect(state).toHaveProperty("places");
-      expect(state).toHaveProperty("playerInventory");
-      expect(state).toHaveProperty("placeInventory");
+			// Verify store is still functional
+			const state = store.getState();
+			expect(state).toHaveProperty("player");
+			expect(state).toHaveProperty("buildings");
+			expect(state).toHaveProperty("places");
+			expect(state).toHaveProperty("playerInventory");
+			expect(state).toHaveProperty("placeInventory");
 
-      gameEngine.stop();
-    });
-  });
+			gameEngine.stop();
+		});
+	});
 
-  describe("Error Handling Integration", () => {
-    it("should handle localStorage errors gracefully", () => {
-      // Mock localStorage to throw
-      global.localStorage.setItem.mockImplementation(() => {
-        throw new Error("Storage quota exceeded");
-      });
+	describe("Error Handling Integration", () => {
+		it("should handle localStorage errors gracefully", () => {
+			// Mock localStorage to throw
+			global.localStorage.setItem.mockImplementation(() => {
+				throw new Error("Storage quota exceeded");
+			});
 
-      gameEngine.start();
-      gameEngine.save();
+			gameEngine.start();
+			gameEngine.save();
 
-      // Should not crash
-      expect(gameEngine).toBeDefined();
+			// Should not crash
+			expect(gameEngine).toBeDefined();
 
-      // Error should be logged
-      expect(console.error).toHaveBeenCalled();
-    });
+			// Error should be logged
+			expect(console.error).toHaveBeenCalled();
+		});
 
-    it("should handle invalid saved state", () => {
-      // Mock invalid saved state
-      global.localStorage.getItem.mockReturnValue('{ "invalid": json }');
+		it("should handle invalid saved state", () => {
+			// Mock invalid saved state
+			global.localStorage.getItem.mockReturnValue('{ "invalid": json }');
 
-      gameEngine.load();
+			gameEngine.load();
 
-      // Should handle error gracefully
-      expect(console.error).toHaveBeenCalled();
-      expect(console.error.mock.calls[0][0]).toBe(
-        "Error parsing saved game state:",
-      );
-      expect(global.localStorage.removeItem).toHaveBeenCalledWith("gameState");
-    });
-  });
+			// Should handle error gracefully
+			expect(console.error).toHaveBeenCalled();
+			expect(console.error.mock.calls[0][0]).toBe(
+				"Error parsing saved game state:",
+			);
+			expect(global.localStorage.removeItem).toHaveBeenCalledWith("gameState");
+		});
+	});
 
-  describe("Performance Integration", () => {
-    it("should not cause memory leaks in subscriptions", () => {
-      // Start and stop multiple times
-      for (let i = 0; i < 10; i++) {
-        gameEngine.start();
-        gameEngine.stop();
-      }
+	describe("Performance Integration", () => {
+		it("should not cause memory leaks in subscriptions", () => {
+			// Start and stop multiple times
+			for (let i = 0; i < 10; i++) {
+				gameEngine.start();
+				gameEngine.stop();
+			}
 
-      // GameEngine should still be functional
-      expect(() => {
-        gameEngine.start();
-        gameEngine.update(store.getState(), 1000);
-        gameEngine.stop();
-      }).not.toThrow();
-    });
+			// GameEngine should still be functional
+			expect(() => {
+				gameEngine.start();
+				gameEngine.update(store.getState(), 1000);
+				gameEngine.stop();
+			}).not.toThrow();
+		});
 
-    it("should handle rapid state changes", () => {
-      gameEngine.start();
+		it("should handle rapid state changes", () => {
+			gameEngine.start();
 
-      // Simulate rapid updates
-      for (let i = 0; i < 100; i++) {
-        gameEngine.update(store.getState(), 100); // Faster updates
-      }
+			// Simulate rapid updates
+			for (let i = 0; i < 100; i++) {
+				gameEngine.update(store.getState(), 100); // Faster updates
+			}
 
-      // Should not crash or degrade
-      const state = store.getState();
-      expect(state).toBeDefined();
+			// Should not crash or degrade
+			const state = store.getState();
+			expect(state).toBeDefined();
 
-      gameEngine.stop();
-    });
-  });
+			gameEngine.stop();
+		});
+	});
 });

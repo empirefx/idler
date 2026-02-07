@@ -1,120 +1,120 @@
 .npc-section {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: auto;
-  z-index: 11;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	width: auto;
+	z-index: 11;
 }
 
 .npc-section-content {
-  padding: var(--spacing-lg);
+	padding: var(--spacing-lg);
 }
 
 .npcs-grid {
-  display: grid;
+	display: grid;
 }
 
 .npcs-grid h3 {
-  color: var(--color-secondary);
-  text-transform: uppercase;
+	color: var(--color-secondary);
+	text-transform: uppercase;
 }
 
 .npc-list {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .no-npcs-message {
-  font-size: 1.2rem;
-  text-align: center;
-  color: var(--color-gray);
-  background: rgb(255 255 255 / 10%);
-  padding: var(--spacing-md);
-  margin: var(--spacing-lg);
-  border-radius: var(--border-radius-md);
+	font-size: 1.2rem;
+	text-align: center;
+	color: var(--color-gray);
+	background: rgb(255 255 255 / 10%);
+	padding: var(--spacing-md);
+	margin: var(--spacing-lg);
+	border-radius: var(--border-radius-md);
 }
 
 .npc-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+	position: relative;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
 }
 
 .npc-card:hover {
-  transform: translateY(-2px);
+	transform: translateY(-2px);
 }
 
 .npc-avatar {
-  transform: scale(0.8);
-  clip-path: circle();
-  margin: 0;
+	transform: scale(0.8);
+	clip-path: circle();
+	margin: 0;
 }
 
 .npc-info {
-  position: absolute;
-  right: 100px;
-  top: 50%;
-  transform: translateY(-30%);
-  background-color: black;
-  color: var(--color-dark);
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
-  width: 300px;
-  z-index: 10;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.2s,
-    visibility 0.2s;
-  pointer-events: none;
+	position: absolute;
+	right: 100px;
+	top: 50%;
+	transform: translateY(-30%);
+	background-color: black;
+	color: var(--color-dark);
+	padding: var(--spacing-sm);
+	border-radius: var(--border-radius-sm);
+	box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+	width: 300px;
+	z-index: 10;
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.2s,
+		visibility 0.2s;
+	pointer-events: none;
 }
 
 .npc-card:hover .npc-info {
-  opacity: 1;
-  visibility: visible;
+	opacity: 1;
+	visibility: visible;
 }
 
 .npc-info h3 {
-  margin: 0;
-  padding: 10px 20px;
-  text-align: center;
-  color: white;
-  font-family: var(--font-family-secondary);
-  font-size: 1.1rem;
+	margin: 0;
+	padding: 10px 20px;
+	text-align: center;
+	color: white;
+	font-family: var(--font-family-secondary);
+	font-size: 1.1rem;
 }
 
 .npc-info h4 {
-  margin: 0;
-  padding: 10px 0;
-  text-align: left;
-  color: var(--color-primary);
-  font-family: var(--font-family-secondary);
-  font-size: 0.8rem;
+	margin: 0;
+	padding: 10px 0;
+	text-align: left;
+	color: var(--color-primary);
+	font-family: var(--font-family-secondary);
+	font-size: 0.8rem;
 }
 
 .npc-info p {
-  margin: var(--spacing-xs) 0 0 0;
-  color: var(--color-gray-dark);
-  font-size: 0.9rem;
-  line-height: 1.3;
-  background-color: #222;
-  border-radius: 5px;
-  padding: 15px 12px;
+	margin: var(--spacing-xs) 0 0 0;
+	color: var(--color-gray-dark);
+	font-size: 0.9rem;
+	line-height: 1.3;
+	background-color: #222;
+	border-radius: 5px;
+	padding: 15px 12px;
 }
 
 .npc-inventory-badge {
-  display: inline-block;
-  margin: 0;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: #4a4943;
-  color: white;
-  border-radius: var(--border-radius-sm);
-  font-size: 0.8rem;
-  font-weight: bold;
+	display: inline-block;
+	margin: 0;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	background: #4a4943;
+	color: white;
+	border-radius: var(--border-radius-sm);
+	font-size: 0.8rem;
+	font-weight: bold;
 }

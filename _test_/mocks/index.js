@@ -1,8 +1,8 @@
 // Central export for all mocks
 export { createMockStore } from "./services.mock.js";
 export {
-  createMockGameLoopConstructor,
-  createMockGameLoop,
+	createMockGameLoopConstructor,
+	createMockGameLoop,
 } from "./gameLoop.mock.js";
 export { createMockEventBus } from "./eventBus.mock.js";
 export { createMockInventoryService } from "./inventoryService.mock.js";

@@ -1,60 +1,60 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  unequipItem,
-  selectPlayerInventoryById,
+	unequipItem,
+	selectPlayerInventoryById,
 } from "../../../store/slices/playerInventorySlice";
 import ItemInfo from "../common/ItemInfo";
 
 const EQUIPMENT_SLOTS = [
-  { key: "head", label: "Head" },
-  { key: "body", label: "Body" },
-  { key: "pants", label: "Pants" },
-  { key: "main-weapon", label: "Main Weapon" },
-  { key: "second-weapon", label: "Second Weapon" },
+	{ key: "head", label: "Head" },
+	{ key: "body", label: "Body" },
+	{ key: "pants", label: "Pants" },
+	{ key: "main-weapon", label: "Main Weapon" },
+	{ key: "second-weapon", label: "Second Weapon" },
 ];
 
 const EquipmentDisplay = () => {
-  const dispatch = useDispatch();
-  const playerInventory = useSelector((state) =>
-    selectPlayerInventoryById(state, "player"),
-  );
-  const equipment = playerInventory?.equipment || {};
+	const dispatch = useDispatch();
+	const playerInventory = useSelector((state) =>
+		selectPlayerInventoryById(state, "player"),
+	);
+	const equipment = playerInventory?.equipment || {};
 
-  const handleUnequip = (slot) => {
-    if (equipment[slot]) {
-      dispatch(unequipItem({ inventoryId: "player", slot }));
-    }
-  };
+	const handleUnequip = (slot) => {
+		if (equipment[slot]) {
+			dispatch(unequipItem({ inventoryId: "player", slot }));
+		}
+	};
 
-  return (
-    <div className="equipment-flex">
-      {EQUIPMENT_SLOTS.map(({ key, label }) => (
-        <div
-          className={`${key} ${equipment[key] ? "equipped" : ""}`}
-          key={key}
-          onClick={() => equipment[key] && handleUnequip(key)}
-          style={{ cursor: equipment[key] ? "pointer" : "default" }}
-        >
-          {equipment[key] ? (
-            <ItemInfo item={equipment[key]}>
-              <div>
-                {equipment[key].type === "equipment" && (
-                  <div
-                    className="armor-sprite"
-                    id={equipment[key].id || "empty"}
-                  ></div>
-                )}
-                <span>{equipment[key].name}</span>
-              </div>
-            </ItemInfo>
-          ) : (
-            <span>{label}</span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
+	return (
+		<div className="equipment-flex">
+			{EQUIPMENT_SLOTS.map(({ key, label }) => (
+				<div
+					className={`${key} ${equipment[key] ? "equipped" : ""}`}
+					key={key}
+					onClick={() => equipment[key] && handleUnequip(key)}
+					style={{ cursor: equipment[key] ? "pointer" : "default" }}
+				>
+					{equipment[key] ? (
+						<ItemInfo item={equipment[key]}>
+							<div>
+								{equipment[key].type === "equipment" && (
+									<div
+										className="armor-sprite"
+										id={equipment[key].id || "empty"}
+									></div>
+								)}
+								<span>{equipment[key].name}</span>
+							</div>
+						</ItemInfo>
+					) : (
+						<span>{label}</span>
+					)}
+				</div>
+			))}
+		</div>
+	);
 };
 
 export default EquipmentDisplay;

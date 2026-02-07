@@ -5,19 +5,19 @@ import { selectVisibleNotifications } from "../../../store/slices/notificationSl
 import "../../../styles/sections/notifications.css";
 
 const NotificationContainer = () => {
-  const notifications = useSelector(selectVisibleNotifications);
+	const notifications = useSelector(selectVisibleNotifications);
 
-  if (notifications.length === 0) {
-    return null;
-  }
+	if (notifications.length === 0) {
+		return null;
+	}
 
-  return (
-    <div className="notification-container">
-      {notifications.map((notification) => (
-        <Notification key={notification.id} notification={notification} />
-      ))}
-    </div>
-  );
+	return (
+		<div className="notification-container">
+			{notifications.map((notification) => (
+				<Notification key={notification.id} notification={notification} />
+			))}
+		</div>
+	);
 };
 
 export default NotificationContainer;

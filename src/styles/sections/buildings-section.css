@@ -1,42 +1,42 @@
 .buildings-section {
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-md);
+	border-radius: var(--border-radius-md);
+	padding: var(--spacing-md);
 }
 
 .buildings-grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-md);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-md);
 }
 
 .building-card {
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
-  box-shadow: var(--shadow-sm);
-  padding: 5px;
-  background-size: 100% 100%;
-  background-position:
-    0 0,
-    0 0,
-    0 0;
-  background-image:
-    radial-gradient(50% 75% at 60% -10%, #fffeeb8f 0%, #eab40045 100%),
-    linear-gradient(0deg, #997b0080 0%, #ffdc00ff 100%),
-    linear-gradient(73deg, #ffd22bff 0%, #ffcb42ff 100%);
+	width: 100px;
+	height: 100px;
+	border-radius: 100px;
+	box-shadow: var(--shadow-sm);
+	padding: 5px;
+	background-size: 100% 100%;
+	background-position:
+		0 0,
+		0 0,
+		0 0;
+	background-image:
+		radial-gradient(50% 75% at 60% -10%, #fffeeb8f 0%, #eab40045 100%),
+		linear-gradient(0deg, #997b0080 0%, #ffdc00ff 100%),
+		linear-gradient(73deg, #ffd22bff 0%, #ffcb42ff 100%);
 }
 
 .building-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 100px;
-  user-select: none;
-  box-shadow: inset 10px 0 10px 10px red;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 100px;
+	user-select: none;
+	box-shadow: inset 10px 0 10px 10px red;
 }
 
 .building-card:hover > img {
-  box-shadow: 0 5px 10px 6px #f44;
-  cursor: pointer;
+	box-shadow: 0 5px 10px 6px #f44;
+	cursor: pointer;
 }
