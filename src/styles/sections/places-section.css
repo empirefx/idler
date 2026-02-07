@@ -116,7 +116,6 @@
   text-align: center;
   background: linear-gradient(0deg, #a18624 10%, #bf9e2a 90%);
   background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 2px rgb(0 0 0 / 25%));
 }
@@ -140,7 +139,6 @@
   font-size: 2.8rem;
   text-align: center;
   background: linear-gradient(0deg, #a18624 10%, #bf9e2a 90%);
-  background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 2px rgb(0 0 0 / 25%));

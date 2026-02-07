@@ -31,7 +31,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21784696601)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21784972591)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -40,7 +40,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 140 files in 319ms. Fixed 139 files.
+Formatted 141 files in 365ms. Fixed 139 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -123,7 +123,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 144 files in 1275ms. Fixed 8 files.
+Checked 145 files in 1331ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -229,6 +229,27 @@ _test_/integration/gameEngine.integration.test.js:95:43 lint/complexity/useLiter
          95 │ + → → → const·inventory·=·state.placeInventory.village_center;
      96  96 │
      97  97 │   			expect(inventory).toBeDefined();
+
+
+_test_/integration/gameEngine.integration.test.js:139:22 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━
+
+  i The computed expression can be simplified without the use of a string literal.
+
+    137 │ 			// Verify enemy still exists (enemies persist across navigation)
+    138 │ 			const enemyState = store.getState().enemies.byId;
+  > 139 │ 			expect(enemyState["test_enemy"]).toBeDefined();
+        │ 			                  ^^^^^^^^^^^^
+    140 │ 			expect(enemyState["test_enemy"].placeId).toBe("village_center");
+    141 │
+
+  i Unsafe fix: Use a literal key instead.
+
+    137 137 │   			// Verify enemy still exists (enemies persist across navigation)
+    138 138 │   			const enemyState = store.getState().enemies.byId;
+    139     │ - → → → expect(enemyState["test_enemy"]).toBeDefined();
+        139 │ + → → → expect(enemyState.test_enemy).toBeDefined();
+    140 140 │   			expect(enemyState["test_enemy"].placeId).toBe("village_center");
+    141 141 │
 
 
 _test_/combatService.staggered.test.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
@@ -354,62 +375,46 @@ _test_/gameLoop.test.js:12:7 lint/complexity/useOptionalChain  FIXABLE  ━━�
      14  14 │   		}
 
 
-src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import { useUIVisibility } from "../UIVisibilityContext";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-static/avatar_test.html:398:18 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
+static/avatar_test.html:419:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
 
   ! This function changeSize is unused.
 
-    397 │     <script>
-  > 398 │         function changeSize(size) {
-        │                  ^^^^^^^^^^
-    399 │             const avatars = document.querySelectorAll('.avatar');
-    400 │             const buttons = document.querySelectorAll('.controls button');
+    418 │     <script>
+  > 419 │       function changeSize(size) {
+        │                ^^^^^^^^^^
+    420 │         const avatars = document.querySelectorAll(".avatar");
+    421 │         const buttons = document.querySelectorAll(".controls button");
 
   i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
   i Unsafe fix: If this is intentional, prepend changeSize with an underscore.
 
      1  1 │
-     2    │ - ········function·changeSize(size)·{
-        2 │ + ········function·_changeSize(size)·{
-     3  3 │               const avatars = document.querySelectorAll('.avatar');
-     4  4 │               const buttons = document.querySelectorAll('.controls button');
+     2    │ - ······function·changeSize(size)·{
+        2 │ + ······function·_changeSize(size)·{
+     3  3 │           const avatars = document.querySelectorAll(".avatar");
+     4  4 │           const buttons = document.querySelectorAll(".controls button");
 
 
-static/portrait_test.html:288:18 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
+static/portrait_test.html:523:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
 
   ! This function changeSize is unused.
 
-    287 │     <script>
-  > 288 │         function changeSize(size) {
-        │                  ^^^^^^^^^^
-    289 │             const portraits = document.querySelectorAll('.portrait');
-    290 │             const buttons = document.querySelectorAll('.controls button');
+    522 │     <script>
+  > 523 │       function changeSize(size) {
+        │                ^^^^^^^^^^
+    524 │         const portraits = document.querySelectorAll(".portrait");
+    525 │         const buttons = document.querySelectorAll(".controls button");
 
   i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
   i Unsafe fix: If this is intentional, prepend changeSize with an underscore.
 
      1  1 │
-     2    │ - ········function·changeSize(size)·{
-        2 │ + ········function·_changeSize(size)·{
-     3  3 │               const portraits = document.querySelectorAll('.portrait');
-     4  4 │               const buttons = document.querySelectorAll('.controls button');
+     2    │ - ······function·changeSize(size)·{
+        2 │ + ······function·_changeSize(size)·{
+     3  3 │           const portraits = document.querySelectorAll(".portrait");
+     4  4 │           const buttons = document.querySelectorAll(".controls button");
 
 
 _test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -474,42 +479,42 @@ _test_/fixtures/gameStates/testStates.json:49:38 parse ━━━━━━━━�
   i Remove 10
 
 
-static/avatar_test.html:409:21 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+static/avatar_test.html:430:17 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × This callback passed to forEach() iterable method should not return a value.
 
-    408 │             // Update active button
-  > 409 │             buttons.forEach(btn => btn.classList.remove('active'));
-        │                     ^^^^^^^
-    410 │             event.target.classList.add('active');
-    411 │         }
+    429 │         // Update active button
+  > 430 │         buttons.forEach((btn) => btn.classList.remove("active"));
+        │                 ^^^^^^^
+    431 │         event.target.classList.add("active");
+    432 │       }
 
   i Either remove this return or remove the returned value.
 
-    408 │             // Update active button
-  > 409 │             buttons.forEach(btn => btn.classList.remove('active'));
-        │                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    410 │             event.target.classList.add('active');
-    411 │         }
+    429 │         // Update active button
+  > 430 │         buttons.forEach((btn) => btn.classList.remove("active"));
+        │                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    431 │         event.target.classList.add("active");
+    432 │       }
 
 
-static/portrait_test.html:306:21 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━━━━━━━━━━━
+static/portrait_test.html:541:17 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × This callback passed to forEach() iterable method should not return a value.
 
-    305 │             // Update active button
-  > 306 │             buttons.forEach(btn => btn.classList.remove('active'));
-        │                     ^^^^^^^
-    307 │             event.target.classList.add('active');
-    308 │         }
+    540 │         // Update active button
+  > 541 │         buttons.forEach((btn) => btn.classList.remove("active"));
+        │                 ^^^^^^^
+    542 │         event.target.classList.add("active");
+    543 │       }
 
   i Either remove this return or remove the returned value.
 
-    305 │             // Update active button
-  > 306 │             buttons.forEach(btn => btn.classList.remove('active'));
-        │                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    307 │             event.target.classList.add('active');
-    308 │         }
+    540 │         // Update active button
+  > 541 │         buttons.forEach((btn) => btn.classList.remove("active"));
+        │                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    542 │         event.target.classList.add("active");
+    543 │       }
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -525,6 +530,9 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 <summary>CSS</summary>
 
 ```text
+
+src/styles/components/npc-dialog.css
+  [2m34:12[22m  [31m[31m✖[39m  Expected keyframe name "slideUp" to be kebab-case  [2mkeyframes-name-pattern[22m
 
 src/styles/global.css
    [2m32:1[22m   [31m[31m✖[39m  Expected class selector ".App" to be kebab-case                                                                         [2mselector-class-pattern[22m
@@ -585,342 +593,339 @@ src/styles/npc-avatars.css
   [2m268:1[22m   [31m[31m✖[39m  Expected class selector ".avatar_47" to be kebab-case  [2mselector-class-pattern[22m
   [2m273:1[22m   [31m[31m✖[39m  Expected class selector ".avatar_48" to be kebab-case  [2mselector-class-pattern[22m
   [2m285:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_1" to be kebab-case   [2mselector-class-pattern[22m
-  [2m288:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_2" to be kebab-case   [2mselector-class-pattern[22m
-  [2m291:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_3" to be kebab-case   [2mselector-class-pattern[22m
-  [2m294:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_4" to be kebab-case   [2mselector-class-pattern[22m
-  [2m297:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_5" to be kebab-case   [2mselector-class-pattern[22m
-  [2m300:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_6" to be kebab-case   [2mselector-class-pattern[22m
-  [2m303:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_7" to be kebab-case   [2mselector-class-pattern[22m
-  [2m306:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_8" to be kebab-case   [2mselector-class-pattern[22m
-  [2m309:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_9" to be kebab-case   [2mselector-class-pattern[22m
-  [2m312:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_10" to be kebab-case  [2mselector-class-pattern[22m
-  [2m315:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_11" to be kebab-case  [2mselector-class-pattern[22m
-  [2m318:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_12" to be kebab-case  [2mselector-class-pattern[22m
-  [2m321:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_13" to be kebab-case  [2mselector-class-pattern[22m
-  [2m324:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_14" to be kebab-case  [2mselector-class-pattern[22m
-  [2m327:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_15" to be kebab-case  [2mselector-class-pattern[22m
-  [2m330:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_16" to be kebab-case  [2mselector-class-pattern[22m
-  [2m333:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_17" to be kebab-case  [2mselector-class-pattern[22m
-  [2m336:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_18" to be kebab-case  [2mselector-class-pattern[22m
-  [2m339:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_19" to be kebab-case  [2mselector-class-pattern[22m
-  [2m342:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_20" to be kebab-case  [2mselector-class-pattern[22m
-  [2m345:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_21" to be kebab-case  [2mselector-class-pattern[22m
-  [2m348:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_22" to be kebab-case  [2mselector-class-pattern[22m
-  [2m351:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_23" to be kebab-case  [2mselector-class-pattern[22m
-  [2m354:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_24" to be kebab-case  [2mselector-class-pattern[22m
-  [2m357:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_25" to be kebab-case  [2mselector-class-pattern[22m
-  [2m360:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_26" to be kebab-case  [2mselector-class-pattern[22m
-  [2m363:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_27" to be kebab-case  [2mselector-class-pattern[22m
-  [2m366:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_28" to be kebab-case  [2mselector-class-pattern[22m
-  [2m369:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_29" to be kebab-case  [2mselector-class-pattern[22m
-  [2m372:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_30" to be kebab-case  [2mselector-class-pattern[22m
-  [2m375:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_31" to be kebab-case  [2mselector-class-pattern[22m
-  [2m378:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_32" to be kebab-case  [2mselector-class-pattern[22m
-  [2m381:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_33" to be kebab-case  [2mselector-class-pattern[22m
-  [2m384:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_34" to be kebab-case  [2mselector-class-pattern[22m
-  [2m387:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_35" to be kebab-case  [2mselector-class-pattern[22m
-  [2m390:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_36" to be kebab-case  [2mselector-class-pattern[22m
-  [2m393:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_37" to be kebab-case  [2mselector-class-pattern[22m
-  [2m396:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_38" to be kebab-case  [2mselector-class-pattern[22m
-  [2m399:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_39" to be kebab-case  [2mselector-class-pattern[22m
-  [2m402:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_40" to be kebab-case  [2mselector-class-pattern[22m
-  [2m405:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_41" to be kebab-case  [2mselector-class-pattern[22m
-  [2m408:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_42" to be kebab-case  [2mselector-class-pattern[22m
-  [2m411:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_43" to be kebab-case  [2mselector-class-pattern[22m
-  [2m414:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_44" to be kebab-case  [2mselector-class-pattern[22m
-  [2m417:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_45" to be kebab-case  [2mselector-class-pattern[22m
-  [2m420:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_46" to be kebab-case  [2mselector-class-pattern[22m
-  [2m423:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_47" to be kebab-case  [2mselector-class-pattern[22m
-  [2m426:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_48" to be kebab-case  [2mselector-class-pattern[22m
-  [2m436:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_1" to be kebab-case   [2mselector-class-pattern[22m
-  [2m439:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_2" to be kebab-case   [2mselector-class-pattern[22m
-  [2m442:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_3" to be kebab-case   [2mselector-class-pattern[22m
-  [2m445:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_4" to be kebab-case   [2mselector-class-pattern[22m
-  [2m448:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_5" to be kebab-case   [2mselector-class-pattern[22m
-  [2m451:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_6" to be kebab-case   [2mselector-class-pattern[22m
-  [2m454:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_7" to be kebab-case   [2mselector-class-pattern[22m
-  [2m457:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_8" to be kebab-case   [2mselector-class-pattern[22m
-  [2m460:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_9" to be kebab-case   [2mselector-class-pattern[22m
-  [2m463:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_10" to be kebab-case  [2mselector-class-pattern[22m
-  [2m466:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_11" to be kebab-case  [2mselector-class-pattern[22m
-  [2m469:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_12" to be kebab-case  [2mselector-class-pattern[22m
-  [2m472:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_13" to be kebab-case  [2mselector-class-pattern[22m
-  [2m475:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_14" to be kebab-case  [2mselector-class-pattern[22m
-  [2m478:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_15" to be kebab-case  [2mselector-class-pattern[22m
-  [2m481:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_16" to be kebab-case  [2mselector-class-pattern[22m
-  [2m484:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_17" to be kebab-case  [2mselector-class-pattern[22m
-  [2m487:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_18" to be kebab-case  [2mselector-class-pattern[22m
-  [2m490:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_19" to be kebab-case  [2mselector-class-pattern[22m
-  [2m493:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_20" to be kebab-case  [2mselector-class-pattern[22m
-  [2m496:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_21" to be kebab-case  [2mselector-class-pattern[22m
-  [2m499:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_22" to be kebab-case  [2mselector-class-pattern[22m
-  [2m502:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_23" to be kebab-case  [2mselector-class-pattern[22m
-  [2m505:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_24" to be kebab-case  [2mselector-class-pattern[22m
-  [2m508:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_25" to be kebab-case  [2mselector-class-pattern[22m
-  [2m511:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_26" to be kebab-case  [2mselector-class-pattern[22m
-  [2m514:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_27" to be kebab-case  [2mselector-class-pattern[22m
-  [2m517:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_28" to be kebab-case  [2mselector-class-pattern[22m
-  [2m520:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_29" to be kebab-case  [2mselector-class-pattern[22m
-  [2m523:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_30" to be kebab-case  [2mselector-class-pattern[22m
-  [2m526:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_31" to be kebab-case  [2mselector-class-pattern[22m
-  [2m529:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_32" to be kebab-case  [2mselector-class-pattern[22m
-  [2m532:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_33" to be kebab-case  [2mselector-class-pattern[22m
-  [2m535:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_34" to be kebab-case  [2mselector-class-pattern[22m
-  [2m538:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_35" to be kebab-case  [2mselector-class-pattern[22m
-  [2m541:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_36" to be kebab-case  [2mselector-class-pattern[22m
-  [2m544:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_37" to be kebab-case  [2mselector-class-pattern[22m
-  [2m547:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_38" to be kebab-case  [2mselector-class-pattern[22m
-  [2m550:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_39" to be kebab-case  [2mselector-class-pattern[22m
-  [2m553:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_40" to be kebab-case  [2mselector-class-pattern[22m
-  [2m556:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_41" to be kebab-case  [2mselector-class-pattern[22m
-  [2m559:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_42" to be kebab-case  [2mselector-class-pattern[22m
-  [2m562:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_43" to be kebab-case  [2mselector-class-pattern[22m
-  [2m565:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_44" to be kebab-case  [2mselector-class-pattern[22m
-  [2m568:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_45" to be kebab-case  [2mselector-class-pattern[22m
-  [2m571:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_46" to be kebab-case  [2mselector-class-pattern[22m
-  [2m574:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_47" to be kebab-case  [2mselector-class-pattern[22m
-  [2m577:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_48" to be kebab-case  [2mselector-class-pattern[22m
+  [2m289:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_2" to be kebab-case   [2mselector-class-pattern[22m
+  [2m293:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_3" to be kebab-case   [2mselector-class-pattern[22m
+  [2m297:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_4" to be kebab-case   [2mselector-class-pattern[22m
+  [2m301:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_5" to be kebab-case   [2mselector-class-pattern[22m
+  [2m305:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_6" to be kebab-case   [2mselector-class-pattern[22m
+  [2m309:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_7" to be kebab-case   [2mselector-class-pattern[22m
+  [2m313:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_8" to be kebab-case   [2mselector-class-pattern[22m
+  [2m317:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_9" to be kebab-case   [2mselector-class-pattern[22m
+  [2m321:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_10" to be kebab-case  [2mselector-class-pattern[22m
+  [2m325:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_11" to be kebab-case  [2mselector-class-pattern[22m
+  [2m329:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_12" to be kebab-case  [2mselector-class-pattern[22m
+  [2m333:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_13" to be kebab-case  [2mselector-class-pattern[22m
+  [2m337:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_14" to be kebab-case  [2mselector-class-pattern[22m
+  [2m341:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_15" to be kebab-case  [2mselector-class-pattern[22m
+  [2m345:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_16" to be kebab-case  [2mselector-class-pattern[22m
+  [2m349:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_17" to be kebab-case  [2mselector-class-pattern[22m
+  [2m353:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_18" to be kebab-case  [2mselector-class-pattern[22m
+  [2m357:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_19" to be kebab-case  [2mselector-class-pattern[22m
+  [2m361:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_20" to be kebab-case  [2mselector-class-pattern[22m
+  [2m365:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_21" to be kebab-case  [2mselector-class-pattern[22m
+  [2m369:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_22" to be kebab-case  [2mselector-class-pattern[22m
+  [2m373:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_23" to be kebab-case  [2mselector-class-pattern[22m
+  [2m377:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_24" to be kebab-case  [2mselector-class-pattern[22m
+  [2m381:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_25" to be kebab-case  [2mselector-class-pattern[22m
+  [2m385:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_26" to be kebab-case  [2mselector-class-pattern[22m
+  [2m389:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_27" to be kebab-case  [2mselector-class-pattern[22m
+  [2m393:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_28" to be kebab-case  [2mselector-class-pattern[22m
+  [2m397:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_29" to be kebab-case  [2mselector-class-pattern[22m
+  [2m401:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_30" to be kebab-case  [2mselector-class-pattern[22m
+  [2m405:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_31" to be kebab-case  [2mselector-class-pattern[22m
+  [2m409:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_32" to be kebab-case  [2mselector-class-pattern[22m
+  [2m413:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_33" to be kebab-case  [2mselector-class-pattern[22m
+  [2m417:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_34" to be kebab-case  [2mselector-class-pattern[22m
+  [2m421:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_35" to be kebab-case  [2mselector-class-pattern[22m
+  [2m425:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_36" to be kebab-case  [2mselector-class-pattern[22m
+  [2m429:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_37" to be kebab-case  [2mselector-class-pattern[22m
+  [2m433:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_38" to be kebab-case  [2mselector-class-pattern[22m
+  [2m437:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_39" to be kebab-case  [2mselector-class-pattern[22m
+  [2m441:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_40" to be kebab-case  [2mselector-class-pattern[22m
+  [2m445:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_41" to be kebab-case  [2mselector-class-pattern[22m
+  [2m449:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_42" to be kebab-case  [2mselector-class-pattern[22m
+  [2m453:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_43" to be kebab-case  [2mselector-class-pattern[22m
+  [2m457:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_44" to be kebab-case  [2mselector-class-pattern[22m
+  [2m461:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_45" to be kebab-case  [2mselector-class-pattern[22m
+  [2m465:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_46" to be kebab-case  [2mselector-class-pattern[22m
+  [2m469:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_47" to be kebab-case  [2mselector-class-pattern[22m
+  [2m473:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_48" to be kebab-case  [2mselector-class-pattern[22m
+  [2m483:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_1" to be kebab-case   [2mselector-class-pattern[22m
+  [2m487:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_2" to be kebab-case   [2mselector-class-pattern[22m
+  [2m491:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_3" to be kebab-case   [2mselector-class-pattern[22m
+  [2m495:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_4" to be kebab-case   [2mselector-class-pattern[22m
+  [2m499:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_5" to be kebab-case   [2mselector-class-pattern[22m
+  [2m503:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_6" to be kebab-case   [2mselector-class-pattern[22m
+  [2m507:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_7" to be kebab-case   [2mselector-class-pattern[22m
+  [2m511:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_8" to be kebab-case   [2mselector-class-pattern[22m
+  [2m515:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_9" to be kebab-case   [2mselector-class-pattern[22m
+  [2m519:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_10" to be kebab-case  [2mselector-class-pattern[22m
+  [2m523:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_11" to be kebab-case  [2mselector-class-pattern[22m
+  [2m527:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_12" to be kebab-case  [2mselector-class-pattern[22m
+  [2m531:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_13" to be kebab-case  [2mselector-class-pattern[22m
+  [2m535:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_14" to be kebab-case  [2mselector-class-pattern[22m
+  [2m539:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_15" to be kebab-case  [2mselector-class-pattern[22m
+  [2m543:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_16" to be kebab-case  [2mselector-class-pattern[22m
+  [2m547:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_17" to be kebab-case  [2mselector-class-pattern[22m
+  [2m551:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_18" to be kebab-case  [2mselector-class-pattern[22m
+  [2m555:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_19" to be kebab-case  [2mselector-class-pattern[22m
+  [2m559:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_20" to be kebab-case  [2mselector-class-pattern[22m
+  [2m563:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_21" to be kebab-case  [2mselector-class-pattern[22m
+  [2m567:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_22" to be kebab-case  [2mselector-class-pattern[22m
+  [2m571:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_23" to be kebab-case  [2mselector-class-pattern[22m
+  [2m575:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_24" to be kebab-case  [2mselector-class-pattern[22m
+  [2m579:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_25" to be kebab-case  [2mselector-class-pattern[22m
+  [2m583:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_26" to be kebab-case  [2mselector-class-pattern[22m
+  [2m587:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_27" to be kebab-case  [2mselector-class-pattern[22m
+  [2m591:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_28" to be kebab-case  [2mselector-class-pattern[22m
+  [2m595:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_29" to be kebab-case  [2mselector-class-pattern[22m
+  [2m599:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_30" to be kebab-case  [2mselector-class-pattern[22m
+  [2m603:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_31" to be kebab-case  [2mselector-class-pattern[22m
+  [2m607:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_32" to be kebab-case  [2mselector-class-pattern[22m
+  [2m611:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_33" to be kebab-case  [2mselector-class-pattern[22m
+  [2m615:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_34" to be kebab-case  [2mselector-class-pattern[22m
+  [2m619:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_35" to be kebab-case  [2mselector-class-pattern[22m
+  [2m623:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_36" to be kebab-case  [2mselector-class-pattern[22m
+  [2m627:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_37" to be kebab-case  [2mselector-class-pattern[22m
+  [2m631:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_38" to be kebab-case  [2mselector-class-pattern[22m
+  [2m635:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_39" to be kebab-case  [2mselector-class-pattern[22m
+  [2m639:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_40" to be kebab-case  [2mselector-class-pattern[22m
+  [2m643:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_41" to be kebab-case  [2mselector-class-pattern[22m
+  [2m647:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_42" to be kebab-case  [2mselector-class-pattern[22m
+  [2m651:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_43" to be kebab-case  [2mselector-class-pattern[22m
+  [2m655:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_44" to be kebab-case  [2mselector-class-pattern[22m
+  [2m659:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_45" to be kebab-case  [2mselector-class-pattern[22m
+  [2m663:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_46" to be kebab-case  [2mselector-class-pattern[22m
+  [2m667:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_47" to be kebab-case  [2mselector-class-pattern[22m
+  [2m671:14[22m  [31m[31m✖[39m  Expected class selector ".avatar_48" to be kebab-case  [2mselector-class-pattern[22m
 
 src/styles/npc-portraits.css
-   [2m37:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_1" to be kebab-case   [2mselector-class-pattern[22m
-   [2m42:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_2" to be kebab-case   [2mselector-class-pattern[22m
-   [2m47:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_3" to be kebab-case   [2mselector-class-pattern[22m
-   [2m52:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_4" to be kebab-case   [2mselector-class-pattern[22m
-   [2m57:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_5" to be kebab-case   [2mselector-class-pattern[22m
-   [2m62:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_6" to be kebab-case   [2mselector-class-pattern[22m
-   [2m68:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_7" to be kebab-case   [2mselector-class-pattern[22m
-   [2m73:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_8" to be kebab-case   [2mselector-class-pattern[22m
-   [2m78:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_9" to be kebab-case   [2mselector-class-pattern[22m
-   [2m83:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_10" to be kebab-case  [2mselector-class-pattern[22m
-   [2m88:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_11" to be kebab-case  [2mselector-class-pattern[22m
-   [2m93:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_12" to be kebab-case  [2mselector-class-pattern[22m
-   [2m99:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_13" to be kebab-case  [2mselector-class-pattern[22m
-  [2m104:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_14" to be kebab-case  [2mselector-class-pattern[22m
-  [2m109:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_15" to be kebab-case  [2mselector-class-pattern[22m
-  [2m114:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_16" to be kebab-case  [2mselector-class-pattern[22m
-  [2m119:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_17" to be kebab-case  [2mselector-class-pattern[22m
-  [2m124:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_18" to be kebab-case  [2mselector-class-pattern[22m
-  [2m130:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_19" to be kebab-case  [2mselector-class-pattern[22m
-  [2m135:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_20" to be kebab-case  [2mselector-class-pattern[22m
-  [2m140:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_21" to be kebab-case  [2mselector-class-pattern[22m
-  [2m145:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_22" to be kebab-case  [2mselector-class-pattern[22m
-  [2m150:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_23" to be kebab-case  [2mselector-class-pattern[22m
-  [2m155:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_24" to be kebab-case  [2mselector-class-pattern[22m
-  [2m161:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_25" to be kebab-case  [2mselector-class-pattern[22m
-  [2m166:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_26" to be kebab-case  [2mselector-class-pattern[22m
-  [2m171:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_27" to be kebab-case  [2mselector-class-pattern[22m
-  [2m176:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_28" to be kebab-case  [2mselector-class-pattern[22m
-  [2m181:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_29" to be kebab-case  [2mselector-class-pattern[22m
-  [2m186:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_30" to be kebab-case  [2mselector-class-pattern[22m
-  [2m192:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_31" to be kebab-case  [2mselector-class-pattern[22m
-  [2m197:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_32" to be kebab-case  [2mselector-class-pattern[22m
-  [2m202:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_33" to be kebab-case  [2mselector-class-pattern[22m
-  [2m207:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_34" to be kebab-case  [2mselector-class-pattern[22m
-  [2m212:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_35" to be kebab-case  [2mselector-class-pattern[22m
-  [2m217:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_36" to be kebab-case  [2mselector-class-pattern[22m
-  [2m223:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_37" to be kebab-case  [2mselector-class-pattern[22m
-  [2m228:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_38" to be kebab-case  [2mselector-class-pattern[22m
-  [2m233:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_39" to be kebab-case  [2mselector-class-pattern[22m
-  [2m238:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_40" to be kebab-case  [2mselector-class-pattern[22m
-  [2m243:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_41" to be kebab-case  [2mselector-class-pattern[22m
-  [2m248:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_42" to be kebab-case  [2mselector-class-pattern[22m
-  [2m254:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_43" to be kebab-case  [2mselector-class-pattern[22m
-  [2m259:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_44" to be kebab-case  [2mselector-class-pattern[22m
-  [2m264:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_45" to be kebab-case  [2mselector-class-pattern[22m
-  [2m269:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_46" to be kebab-case  [2mselector-class-pattern[22m
-  [2m274:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_47" to be kebab-case  [2mselector-class-pattern[22m
-  [2m279:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_48" to be kebab-case  [2mselector-class-pattern[22m
-  [2m285:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_49" to be kebab-case  [2mselector-class-pattern[22m
-  [2m290:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_50" to be kebab-case  [2mselector-class-pattern[22m
-  [2m295:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_51" to be kebab-case  [2mselector-class-pattern[22m
-  [2m300:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_52" to be kebab-case  [2mselector-class-pattern[22m
-  [2m305:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_53" to be kebab-case  [2mselector-class-pattern[22m
-  [2m310:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_54" to be kebab-case  [2mselector-class-pattern[22m
-  [2m316:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_55" to be kebab-case  [2mselector-class-pattern[22m
-  [2m321:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_56" to be kebab-case  [2mselector-class-pattern[22m
-  [2m326:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_57" to be kebab-case  [2mselector-class-pattern[22m
-  [2m331:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_58" to be kebab-case  [2mselector-class-pattern[22m
-  [2m336:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_59" to be kebab-case  [2mselector-class-pattern[22m
-  [2m341:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_60" to be kebab-case  [2mselector-class-pattern[22m
-  [2m347:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_61" to be kebab-case  [2mselector-class-pattern[22m
-  [2m352:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_62" to be kebab-case  [2mselector-class-pattern[22m
-  [2m357:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_63" to be kebab-case  [2mselector-class-pattern[22m
-  [2m362:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_64" to be kebab-case  [2mselector-class-pattern[22m
-  [2m367:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_65" to be kebab-case  [2mselector-class-pattern[22m
-  [2m372:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_66" to be kebab-case  [2mselector-class-pattern[22m
-  [2m378:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_67" to be kebab-case  [2mselector-class-pattern[22m
-  [2m383:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_68" to be kebab-case  [2mselector-class-pattern[22m
-  [2m388:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_69" to be kebab-case  [2mselector-class-pattern[22m
-  [2m393:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_70" to be kebab-case  [2mselector-class-pattern[22m
-  [2m398:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_71" to be kebab-case  [2mselector-class-pattern[22m
-  [2m403:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_72" to be kebab-case  [2mselector-class-pattern[22m
-  [2m424:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_1" to be kebab-case   [2mselector-class-pattern[22m
-  [2m427:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_2" to be kebab-case   [2mselector-class-pattern[22m
-  [2m430:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_3" to be kebab-case   [2mselector-class-pattern[22m
-  [2m433:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_4" to be kebab-case   [2mselector-class-pattern[22m
-  [2m436:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_5" to be kebab-case   [2mselector-class-pattern[22m
-  [2m439:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_6" to be kebab-case   [2mselector-class-pattern[22m
-  [2m442:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_7" to be kebab-case   [2mselector-class-pattern[22m
-  [2m445:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_8" to be kebab-case   [2mselector-class-pattern[22m
-  [2m448:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_9" to be kebab-case   [2mselector-class-pattern[22m
-  [2m451:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_10" to be kebab-case  [2mselector-class-pattern[22m
-  [2m454:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_11" to be kebab-case  [2mselector-class-pattern[22m
-  [2m457:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_12" to be kebab-case  [2mselector-class-pattern[22m
-  [2m460:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_13" to be kebab-case  [2mselector-class-pattern[22m
-  [2m463:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_14" to be kebab-case  [2mselector-class-pattern[22m
-  [2m466:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_15" to be kebab-case  [2mselector-class-pattern[22m
-  [2m469:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_16" to be kebab-case  [2mselector-class-pattern[22m
-  [2m472:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_17" to be kebab-case  [2mselector-class-pattern[22m
-  [2m475:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_18" to be kebab-case  [2mselector-class-pattern[22m
-  [2m478:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_19" to be kebab-case  [2mselector-class-pattern[22m
-  [2m481:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_20" to be kebab-case  [2mselector-class-pattern[22m
-  [2m484:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_21" to be kebab-case  [2mselector-class-pattern[22m
-  [2m487:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_22" to be kebab-case  [2mselector-class-pattern[22m
-  [2m490:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_23" to be kebab-case  [2mselector-class-pattern[22m
-  [2m493:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_24" to be kebab-case  [2mselector-class-pattern[22m
-  [2m496:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_25" to be kebab-case  [2mselector-class-pattern[22m
-  [2m499:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_26" to be kebab-case  [2mselector-class-pattern[22m
-  [2m502:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_27" to be kebab-case  [2mselector-class-pattern[22m
-  [2m505:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_28" to be kebab-case  [2mselector-class-pattern[22m
-  [2m508:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_29" to be kebab-case  [2mselector-class-pattern[22m
-  [2m511:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_30" to be kebab-case  [2mselector-class-pattern[22m
-  [2m514:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_31" to be kebab-case  [2mselector-class-pattern[22m
-  [2m517:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_32" to be kebab-case  [2mselector-class-pattern[22m
-  [2m520:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_33" to be kebab-case  [2mselector-class-pattern[22m
-  [2m523:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_34" to be kebab-case  [2mselector-class-pattern[22m
-  [2m526:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_35" to be kebab-case  [2mselector-class-pattern[22m
-  [2m529:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_36" to be kebab-case  [2mselector-class-pattern[22m
-  [2m532:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_37" to be kebab-case  [2mselector-class-pattern[22m
-  [2m535:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_38" to be kebab-case  [2mselector-class-pattern[22m
-  [2m538:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_39" to be kebab-case  [2mselector-class-pattern[22m
-  [2m541:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_40" to be kebab-case  [2mselector-class-pattern[22m
-  [2m544:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_41" to be kebab-case  [2mselector-class-pattern[22m
-  [2m547:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_42" to be kebab-case  [2mselector-class-pattern[22m
-  [2m550:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_43" to be kebab-case  [2mselector-class-pattern[22m
-  [2m553:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_44" to be kebab-case  [2mselector-class-pattern[22m
-  [2m556:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_45" to be kebab-case  [2mselector-class-pattern[22m
-  [2m559:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_46" to be kebab-case  [2mselector-class-pattern[22m
-  [2m562:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_47" to be kebab-case  [2mselector-class-pattern[22m
-  [2m565:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_48" to be kebab-case  [2mselector-class-pattern[22m
-  [2m568:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_49" to be kebab-case  [2mselector-class-pattern[22m
-  [2m571:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_50" to be kebab-case  [2mselector-class-pattern[22m
-  [2m574:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_51" to be kebab-case  [2mselector-class-pattern[22m
-  [2m577:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_52" to be kebab-case  [2mselector-class-pattern[22m
-  [2m580:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_53" to be kebab-case  [2mselector-class-pattern[22m
-  [2m583:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_54" to be kebab-case  [2mselector-class-pattern[22m
-  [2m586:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_55" to be kebab-case  [2mselector-class-pattern[22m
-  [2m589:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_56" to be kebab-case  [2mselector-class-pattern[22m
-  [2m592:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_57" to be kebab-case  [2mselector-class-pattern[22m
-  [2m595:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_58" to be kebab-case  [2mselector-class-pattern[22m
-  [2m598:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_59" to be kebab-case  [2mselector-class-pattern[22m
-  [2m601:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_60" to be kebab-case  [2mselector-class-pattern[22m
-  [2m604:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_61" to be kebab-case  [2mselector-class-pattern[22m
-  [2m607:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_62" to be kebab-case  [2mselector-class-pattern[22m
-  [2m610:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_63" to be kebab-case  [2mselector-class-pattern[22m
-  [2m613:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_64" to be kebab-case  [2mselector-class-pattern[22m
-  [2m616:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_65" to be kebab-case  [2mselector-class-pattern[22m
-  [2m619:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_66" to be kebab-case  [2mselector-class-pattern[22m
-  [2m622:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_67" to be kebab-case  [2mselector-class-pattern[22m
-  [2m625:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_68" to be kebab-case  [2mselector-class-pattern[22m
-  [2m628:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_69" to be kebab-case  [2mselector-class-pattern[22m
-  [2m631:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_70" to be kebab-case  [2mselector-class-pattern[22m
-  [2m634:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_71" to be kebab-case  [2mselector-class-pattern[22m
-  [2m637:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_72" to be kebab-case  [2mselector-class-pattern[22m
-  [2m647:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_1" to be kebab-case   [2mselector-class-pattern[22m
-  [2m650:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_2" to be kebab-case   [2mselector-class-pattern[22m
-  [2m653:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_3" to be kebab-case   [2mselector-class-pattern[22m
-  [2m656:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_4" to be kebab-case   [2mselector-class-pattern[22m
-  [2m659:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_5" to be kebab-case   [2mselector-class-pattern[22m
-  [2m662:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_6" to be kebab-case   [2mselector-class-pattern[22m
-  [2m665:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_7" to be kebab-case   [2mselector-class-pattern[22m
-  [2m668:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_8" to be kebab-case   [2mselector-class-pattern[22m
-  [2m671:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_9" to be kebab-case   [2mselector-class-pattern[22m
-  [2m674:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_10" to be kebab-case  [2mselector-class-pattern[22m
-  [2m677:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_11" to be kebab-case  [2mselector-class-pattern[22m
-  [2m680:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_12" to be kebab-case  [2mselector-class-pattern[22m
-  [2m683:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_13" to be kebab-case  [2mselector-class-pattern[22m
-  [2m686:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_14" to be kebab-case  [2mselector-class-pattern[22m
-  [2m689:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_15" to be kebab-case  [2mselector-class-pattern[22m
-  [2m692:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_16" to be kebab-case  [2mselector-class-pattern[22m
-  [2m695:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_17" to be kebab-case  [2mselector-class-pattern[22m
-  [2m698:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_18" to be kebab-case  [2mselector-class-pattern[22m
-  [2m701:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_19" to be kebab-case  [2mselector-class-pattern[22m
-  [2m704:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_20" to be kebab-case  [2mselector-class-pattern[22m
-  [2m707:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_21" to be kebab-case  [2mselector-class-pattern[22m
-  [2m710:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_22" to be kebab-case  [2mselector-class-pattern[22m
-  [2m713:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_23" to be kebab-case  [2mselector-class-pattern[22m
-  [2m716:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_24" to be kebab-case  [2mselector-class-pattern[22m
-  [2m719:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_25" to be kebab-case  [2mselector-class-pattern[22m
-  [2m722:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_26" to be kebab-case  [2mselector-class-pattern[22m
-  [2m725:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_27" to be kebab-case  [2mselector-class-pattern[22m
-  [2m728:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_28" to be kebab-case  [2mselector-class-pattern[22m
-  [2m731:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_29" to be kebab-case  [2mselector-class-pattern[22m
-  [2m734:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_30" to be kebab-case  [2mselector-class-pattern[22m
-  [2m737:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_31" to be kebab-case  [2mselector-class-pattern[22m
-  [2m740:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_32" to be kebab-case  [2mselector-class-pattern[22m
-  [2m743:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_33" to be kebab-case  [2mselector-class-pattern[22m
-  [2m746:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_34" to be kebab-case  [2mselector-class-pattern[22m
-  [2m749:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_35" to be kebab-case  [2mselector-class-pattern[22m
-  [2m752:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_36" to be kebab-case  [2mselector-class-pattern[22m
-  [2m755:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_37" to be kebab-case  [2mselector-class-pattern[22m
-  [2m758:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_38" to be kebab-case  [2mselector-class-pattern[22m
-  [2m761:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_39" to be kebab-case  [2mselector-class-pattern[22m
-  [2m764:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_40" to be kebab-case  [2mselector-class-pattern[22m
-  [2m767:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_41" to be kebab-case  [2mselector-class-pattern[22m
-  [2m770:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_42" to be kebab-case  [2mselector-class-pattern[22m
-  [2m773:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_43" to be kebab-case  [2mselector-class-pattern[22m
-  [2m776:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_44" to be kebab-case  [2mselector-class-pattern[22m
-  [2m779:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_45" to be kebab-case  [2mselector-class-pattern[22m
-  [2m782:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_46" to be kebab-case  [2mselector-class-pattern[22m
-  [2m785:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_47" to be kebab-case  [2mselector-class-pattern[22m
-  [2m788:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_48" to be kebab-case  [2mselector-class-pattern[22m
-  [2m791:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_49" to be kebab-case  [2mselector-class-pattern[22m
-  [2m794:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_50" to be kebab-case  [2mselector-class-pattern[22m
-  [2m797:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_51" to be kebab-case  [2mselector-class-pattern[22m
-  [2m800:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_52" to be kebab-case  [2mselector-class-pattern[22m
-  [2m803:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_53" to be kebab-case  [2mselector-class-pattern[22m
-  [2m806:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_54" to be kebab-case  [2mselector-class-pattern[22m
-  [2m809:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_55" to be kebab-case  [2mselector-class-pattern[22m
-  [2m812:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_56" to be kebab-case  [2mselector-class-pattern[22m
-  [2m815:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_57" to be kebab-case  [2mselector-class-pattern[22m
-  [2m818:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_58" to be kebab-case  [2mselector-class-pattern[22m
-  [2m821:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_59" to be kebab-case  [2mselector-class-pattern[22m
-  [2m824:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_60" to be kebab-case  [2mselector-class-pattern[22m
-  [2m827:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_61" to be kebab-case  [2mselector-class-pattern[22m
-  [2m830:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_62" to be kebab-case  [2mselector-class-pattern[22m
-  [2m833:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_63" to be kebab-case  [2mselector-class-pattern[22m
-  [2m836:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_64" to be kebab-case  [2mselector-class-pattern[22m
-  [2m839:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_65" to be kebab-case  [2mselector-class-pattern[22m
-  [2m842:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_66" to be kebab-case  [2mselector-class-pattern[22m
-  [2m845:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_67" to be kebab-case  [2mselector-class-pattern[22m
-  [2m848:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_68" to be kebab-case  [2mselector-class-pattern[22m
-  [2m851:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_69" to be kebab-case  [2mselector-class-pattern[22m
-  [2m854:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_70" to be kebab-case  [2mselector-class-pattern[22m
-  [2m857:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_71" to be kebab-case  [2mselector-class-pattern[22m
-  [2m860:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_72" to be kebab-case  [2mselector-class-pattern[22m
+    [2m37:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_1" to be kebab-case   [2mselector-class-pattern[22m
+    [2m42:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_2" to be kebab-case   [2mselector-class-pattern[22m
+    [2m47:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_3" to be kebab-case   [2mselector-class-pattern[22m
+    [2m52:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_4" to be kebab-case   [2mselector-class-pattern[22m
+    [2m57:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_5" to be kebab-case   [2mselector-class-pattern[22m
+    [2m62:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_6" to be kebab-case   [2mselector-class-pattern[22m
+    [2m68:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_7" to be kebab-case   [2mselector-class-pattern[22m
+    [2m73:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_8" to be kebab-case   [2mselector-class-pattern[22m
+    [2m78:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_9" to be kebab-case   [2mselector-class-pattern[22m
+    [2m83:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_10" to be kebab-case  [2mselector-class-pattern[22m
+    [2m88:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_11" to be kebab-case  [2mselector-class-pattern[22m
+    [2m93:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_12" to be kebab-case  [2mselector-class-pattern[22m
+    [2m99:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_13" to be kebab-case  [2mselector-class-pattern[22m
+   [2m104:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_14" to be kebab-case  [2mselector-class-pattern[22m
+   [2m109:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_15" to be kebab-case  [2mselector-class-pattern[22m
+   [2m114:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_16" to be kebab-case  [2mselector-class-pattern[22m
+   [2m119:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_17" to be kebab-case  [2mselector-class-pattern[22m
+   [2m124:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_18" to be kebab-case  [2mselector-class-pattern[22m
+   [2m130:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_19" to be kebab-case  [2mselector-class-pattern[22m
+   [2m135:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_20" to be kebab-case  [2mselector-class-pattern[22m
+   [2m140:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_21" to be kebab-case  [2mselector-class-pattern[22m
+   [2m145:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_22" to be kebab-case  [2mselector-class-pattern[22m
+   [2m150:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_23" to be kebab-case  [2mselector-class-pattern[22m
+   [2m155:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_24" to be kebab-case  [2mselector-class-pattern[22m
+   [2m161:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_25" to be kebab-case  [2mselector-class-pattern[22m
+   [2m166:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_26" to be kebab-case  [2mselector-class-pattern[22m
+   [2m171:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_27" to be kebab-case  [2mselector-class-pattern[22m
+   [2m176:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_28" to be kebab-case  [2mselector-class-pattern[22m
+   [2m181:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_29" to be kebab-case  [2mselector-class-pattern[22m
+   [2m186:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_30" to be kebab-case  [2mselector-class-pattern[22m
+   [2m192:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_31" to be kebab-case  [2mselector-class-pattern[22m
+   [2m197:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_32" to be kebab-case  [2mselector-class-pattern[22m
+   [2m202:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_33" to be kebab-case  [2mselector-class-pattern[22m
+   [2m207:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_34" to be kebab-case  [2mselector-class-pattern[22m
+   [2m212:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_35" to be kebab-case  [2mselector-class-pattern[22m
+   [2m217:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_36" to be kebab-case  [2mselector-class-pattern[22m
+   [2m223:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_37" to be kebab-case  [2mselector-class-pattern[22m
+   [2m228:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_38" to be kebab-case  [2mselector-class-pattern[22m
+   [2m233:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_39" to be kebab-case  [2mselector-class-pattern[22m
+   [2m238:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_40" to be kebab-case  [2mselector-class-pattern[22m
+   [2m243:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_41" to be kebab-case  [2mselector-class-pattern[22m
+   [2m248:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_42" to be kebab-case  [2mselector-class-pattern[22m
+   [2m254:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_43" to be kebab-case  [2mselector-class-pattern[22m
+   [2m259:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_44" to be kebab-case  [2mselector-class-pattern[22m
+   [2m264:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_45" to be kebab-case  [2mselector-class-pattern[22m
+   [2m269:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_46" to be kebab-case  [2mselector-class-pattern[22m
+   [2m274:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_47" to be kebab-case  [2mselector-class-pattern[22m
+   [2m279:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_48" to be kebab-case  [2mselector-class-pattern[22m
+   [2m285:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_49" to be kebab-case  [2mselector-class-pattern[22m
+   [2m290:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_50" to be kebab-case  [2mselector-class-pattern[22m
+   [2m295:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_51" to be kebab-case  [2mselector-class-pattern[22m
+   [2m300:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_52" to be kebab-case  [2mselector-class-pattern[22m
+   [2m305:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_53" to be kebab-case  [2mselector-class-pattern[22m
+   [2m310:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_54" to be kebab-case  [2mselector-class-pattern[22m
+   [2m316:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_55" to be kebab-case  [2mselector-class-pattern[22m
+   [2m321:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_56" to be kebab-case  [2mselector-class-pattern[22m
+   [2m326:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_57" to be kebab-case  [2mselector-class-pattern[22m
+   [2m331:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_58" to be kebab-case  [2mselector-class-pattern[22m
+   [2m336:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_59" to be kebab-case  [2mselector-class-pattern[22m
+   [2m341:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_60" to be kebab-case  [2mselector-class-pattern[22m
+   [2m347:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_61" to be kebab-case  [2mselector-class-pattern[22m
+   [2m352:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_62" to be kebab-case  [2mselector-class-pattern[22m
+   [2m357:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_63" to be kebab-case  [2mselector-class-pattern[22m
+   [2m362:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_64" to be kebab-case  [2mselector-class-pattern[22m
+   [2m367:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_65" to be kebab-case  [2mselector-class-pattern[22m
+   [2m372:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_66" to be kebab-case  [2mselector-class-pattern[22m
+   [2m378:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_67" to be kebab-case  [2mselector-class-pattern[22m
+   [2m383:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_68" to be kebab-case  [2mselector-class-pattern[22m
+   [2m388:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_69" to be kebab-case  [2mselector-class-pattern[22m
+   [2m393:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_70" to be kebab-case  [2mselector-class-pattern[22m
+   [2m398:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_71" to be kebab-case  [2mselector-class-pattern[22m
+   [2m403:1[22m   [31m[31m✖[39m  Expected class selector ".portrait_72" to be kebab-case  [2mselector-class-pattern[22m
+   [2m424:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_1" to be kebab-case   [2mselector-class-pattern[22m
+   [2m428:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_2" to be kebab-case   [2mselector-class-pattern[22m
+   [2m432:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_3" to be kebab-case   [2mselector-class-pattern[22m
+   [2m436:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_4" to be kebab-case   [2mselector-class-pattern[22m
+   [2m440:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_5" to be kebab-case   [2mselector-class-pattern[22m
+   [2m444:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_6" to be kebab-case   [2mselector-class-pattern[22m
+   [2m448:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_7" to be kebab-case   [2mselector-class-pattern[22m
+   [2m452:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_8" to be kebab-case   [2mselector-class-pattern[22m
+   [2m456:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_9" to be kebab-case   [2mselector-class-pattern[22m
+   [2m460:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_10" to be kebab-case  [2mselector-class-pattern[22m
+   [2m464:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_11" to be kebab-case  [2mselector-class-pattern[22m
+   [2m468:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_12" to be kebab-case  [2mselector-class-pattern[22m
+   [2m472:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_13" to be kebab-case  [2mselector-class-pattern[22m
+   [2m476:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_14" to be kebab-case  [2mselector-class-pattern[22m
+   [2m480:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_15" to be kebab-case  [2mselector-class-pattern[22m
+   [2m484:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_16" to be kebab-case  [2mselector-class-pattern[22m
+   [2m488:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_17" to be kebab-case  [2mselector-class-pattern[22m
+   [2m492:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_18" to be kebab-case  [2mselector-class-pattern[22m
+   [2m496:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_19" to be kebab-case  [2mselector-class-pattern[22m
+   [2m500:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_20" to be kebab-case  [2mselector-class-pattern[22m
+   [2m504:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_21" to be kebab-case  [2mselector-class-pattern[22m
+   [2m508:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_22" to be kebab-case  [2mselector-class-pattern[22m
+   [2m512:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_23" to be kebab-case  [2mselector-class-pattern[22m
+   [2m516:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_24" to be kebab-case  [2mselector-class-pattern[22m
+   [2m520:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_25" to be kebab-case  [2mselector-class-pattern[22m
+   [2m524:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_26" to be kebab-case  [2mselector-class-pattern[22m
+   [2m528:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_27" to be kebab-case  [2mselector-class-pattern[22m
+   [2m532:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_28" to be kebab-case  [2mselector-class-pattern[22m
+   [2m536:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_29" to be kebab-case  [2mselector-class-pattern[22m
+   [2m540:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_30" to be kebab-case  [2mselector-class-pattern[22m
+   [2m544:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_31" to be kebab-case  [2mselector-class-pattern[22m
+   [2m548:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_32" to be kebab-case  [2mselector-class-pattern[22m
+   [2m552:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_33" to be kebab-case  [2mselector-class-pattern[22m
+   [2m556:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_34" to be kebab-case  [2mselector-class-pattern[22m
+   [2m560:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_35" to be kebab-case  [2mselector-class-pattern[22m
+   [2m564:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_36" to be kebab-case  [2mselector-class-pattern[22m
+   [2m568:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_37" to be kebab-case  [2mselector-class-pattern[22m
+   [2m572:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_38" to be kebab-case  [2mselector-class-pattern[22m
+   [2m576:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_39" to be kebab-case  [2mselector-class-pattern[22m
+   [2m580:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_40" to be kebab-case  [2mselector-class-pattern[22m
+   [2m584:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_41" to be kebab-case  [2mselector-class-pattern[22m
+   [2m588:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_42" to be kebab-case  [2mselector-class-pattern[22m
+   [2m592:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_43" to be kebab-case  [2mselector-class-pattern[22m
+   [2m596:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_44" to be kebab-case  [2mselector-class-pattern[22m
+   [2m600:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_45" to be kebab-case  [2mselector-class-pattern[22m
+   [2m604:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_46" to be kebab-case  [2mselector-class-pattern[22m
+   [2m608:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_47" to be kebab-case  [2mselector-class-pattern[22m
+   [2m612:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_48" to be kebab-case  [2mselector-class-pattern[22m
+   [2m616:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_49" to be kebab-case  [2mselector-class-pattern[22m
+   [2m620:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_50" to be kebab-case  [2mselector-class-pattern[22m
+   [2m624:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_51" to be kebab-case  [2mselector-class-pattern[22m
+   [2m628:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_52" to be kebab-case  [2mselector-class-pattern[22m
+   [2m632:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_53" to be kebab-case  [2mselector-class-pattern[22m
+   [2m636:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_54" to be kebab-case  [2mselector-class-pattern[22m
+   [2m640:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_55" to be kebab-case  [2mselector-class-pattern[22m
+   [2m644:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_56" to be kebab-case  [2mselector-class-pattern[22m
+   [2m648:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_57" to be kebab-case  [2mselector-class-pattern[22m
+   [2m652:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_58" to be kebab-case  [2mselector-class-pattern[22m
+   [2m656:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_59" to be kebab-case  [2mselector-class-pattern[22m
+   [2m660:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_60" to be kebab-case  [2mselector-class-pattern[22m
+   [2m664:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_61" to be kebab-case  [2mselector-class-pattern[22m
+   [2m668:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_62" to be kebab-case  [2mselector-class-pattern[22m
+   [2m672:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_63" to be kebab-case  [2mselector-class-pattern[22m
+   [2m676:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_64" to be kebab-case  [2mselector-class-pattern[22m
+   [2m680:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_65" to be kebab-case  [2mselector-class-pattern[22m
+   [2m684:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_66" to be kebab-case  [2mselector-class-pattern[22m
+   [2m688:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_67" to be kebab-case  [2mselector-class-pattern[22m
+   [2m692:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_68" to be kebab-case  [2mselector-class-pattern[22m
+   [2m696:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_69" to be kebab-case  [2mselector-class-pattern[22m
+   [2m700:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_70" to be kebab-case  [2mselector-class-pattern[22m
+   [2m704:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_71" to be kebab-case  [2mselector-class-pattern[22m
+   [2m708:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_72" to be kebab-case  [2mselector-class-pattern[22m
+   [2m718:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_1" to be kebab-case   [2mselector-class-pattern[22m
+   [2m722:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_2" to be kebab-case   [2mselector-class-pattern[22m
+   [2m726:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_3" to be kebab-case   [2mselector-class-pattern[22m
+   [2m730:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_4" to be kebab-case   [2mselector-class-pattern[22m
+   [2m734:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_5" to be kebab-case   [2mselector-class-pattern[22m
+   [2m738:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_6" to be kebab-case   [2mselector-class-pattern[22m
+   [2m742:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_7" to be kebab-case   [2mselector-class-pattern[22m
+   [2m746:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_8" to be kebab-case   [2mselector-class-pattern[22m
+   [2m750:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_9" to be kebab-case   [2mselector-class-pattern[22m
+   [2m754:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_10" to be kebab-case  [2mselector-class-pattern[22m
+   [2m758:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_11" to be kebab-case  [2mselector-class-pattern[22m
+   [2m762:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_12" to be kebab-case  [2mselector-class-pattern[22m
+   [2m766:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_13" to be kebab-case  [2mselector-class-pattern[22m
+   [2m770:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_14" to be kebab-case  [2mselector-class-pattern[22m
+   [2m774:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_15" to be kebab-case  [2mselector-class-pattern[22m
+   [2m778:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_16" to be kebab-case  [2mselector-class-pattern[22m
+   [2m782:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_17" to be kebab-case  [2mselector-class-pattern[22m
+   [2m786:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_18" to be kebab-case  [2mselector-class-pattern[22m
+   [2m790:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_19" to be kebab-case  [2mselector-class-pattern[22m
+   [2m794:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_20" to be kebab-case  [2mselector-class-pattern[22m
+   [2m798:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_21" to be kebab-case  [2mselector-class-pattern[22m
+   [2m802:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_22" to be kebab-case  [2mselector-class-pattern[22m
+   [2m806:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_23" to be kebab-case  [2mselector-class-pattern[22m
+   [2m810:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_24" to be kebab-case  [2mselector-class-pattern[22m
+   [2m814:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_25" to be kebab-case  [2mselector-class-pattern[22m
+   [2m818:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_26" to be kebab-case  [2mselector-class-pattern[22m
+   [2m822:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_27" to be kebab-case  [2mselector-class-pattern[22m
+   [2m826:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_28" to be kebab-case  [2mselector-class-pattern[22m
+   [2m830:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_29" to be kebab-case  [2mselector-class-pattern[22m
+   [2m834:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_30" to be kebab-case  [2mselector-class-pattern[22m
+   [2m838:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_31" to be kebab-case  [2mselector-class-pattern[22m
+   [2m842:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_32" to be kebab-case  [2mselector-class-pattern[22m
+   [2m846:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_33" to be kebab-case  [2mselector-class-pattern[22m
+   [2m850:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_34" to be kebab-case  [2mselector-class-pattern[22m
+   [2m854:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_35" to be kebab-case  [2mselector-class-pattern[22m
+   [2m858:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_36" to be kebab-case  [2mselector-class-pattern[22m
+   [2m862:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_37" to be kebab-case  [2mselector-class-pattern[22m
+   [2m866:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_38" to be kebab-case  [2mselector-class-pattern[22m
+   [2m870:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_39" to be kebab-case  [2mselector-class-pattern[22m
+   [2m874:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_40" to be kebab-case  [2mselector-class-pattern[22m
+   [2m878:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_41" to be kebab-case  [2mselector-class-pattern[22m
+   [2m882:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_42" to be kebab-case  [2mselector-class-pattern[22m
+   [2m886:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_43" to be kebab-case  [2mselector-class-pattern[22m
+   [2m890:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_44" to be kebab-case  [2mselector-class-pattern[22m
+   [2m894:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_45" to be kebab-case  [2mselector-class-pattern[22m
+   [2m898:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_46" to be kebab-case  [2mselector-class-pattern[22m
+   [2m902:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_47" to be kebab-case  [2mselector-class-pattern[22m
+   [2m906:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_48" to be kebab-case  [2mselector-class-pattern[22m
+   [2m910:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_49" to be kebab-case  [2mselector-class-pattern[22m
+   [2m914:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_50" to be kebab-case  [2mselector-class-pattern[22m
+   [2m918:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_51" to be kebab-case  [2mselector-class-pattern[22m
+   [2m922:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_52" to be kebab-case  [2mselector-class-pattern[22m
+   [2m926:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_53" to be kebab-case  [2mselector-class-pattern[22m
+   [2m930:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_54" to be kebab-case  [2mselector-class-pattern[22m
+   [2m934:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_55" to be kebab-case  [2mselector-class-pattern[22m
+   [2m938:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_56" to be kebab-case  [2mselector-class-pattern[22m
+   [2m942:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_57" to be kebab-case  [2mselector-class-pattern[22m
+   [2m946:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_58" to be kebab-case  [2mselector-class-pattern[22m
+   [2m950:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_59" to be kebab-case  [2mselector-class-pattern[22m
+   [2m954:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_60" to be kebab-case  [2mselector-class-pattern[22m
+   [2m958:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_61" to be kebab-case  [2mselector-class-pattern[22m
+   [2m962:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_62" to be kebab-case  [2mselector-class-pattern[22m
+   [2m966:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_63" to be kebab-case  [2mselector-class-pattern[22m
+   [2m970:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_64" to be kebab-case  [2mselector-class-pattern[22m
+   [2m974:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_65" to be kebab-case  [2mselector-class-pattern[22m
+   [2m978:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_66" to be kebab-case  [2mselector-class-pattern[22m
+   [2m982:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_67" to be kebab-case  [2mselector-class-pattern[22m
+   [2m986:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_68" to be kebab-case  [2mselector-class-pattern[22m
+   [2m990:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_69" to be kebab-case  [2mselector-class-pattern[22m
+   [2m994:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_70" to be kebab-case  [2mselector-class-pattern[22m
+   [2m998:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_71" to be kebab-case  [2mselector-class-pattern[22m
+  [2m1002:16[22m  [31m[31m✖[39m  Expected class selector ".portrait_72" to be kebab-case  [2mselector-class-pattern[22m
 
 src/styles/components.css
   [2m115:1[22m  [31m[31m✖[39m  Expected selector ".inventory-info span" to come before selector ".inventory-flex > div span", at line 99  [2mno-descending-specificity[22m
 
 src/styles/sections/places-section.css
-  [2m122:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
-  [2m133:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info", first used at line 108        [2mno-duplicate-selectors[22m
-  [2m137:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info h3", first used at line 112     [2mno-duplicate-selectors[22m
-  [2m147:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
-  [2m152:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-id", first used at line 127          [2mno-duplicate-selectors[22m
+  [2m124:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
+  [2m135:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info", first used at line 110        [2mno-duplicate-selectors[22m
+  [2m139:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-info h3", first used at line 114     [2mno-duplicate-selectors[22m
+  [2m149:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-description", first used at line 60  [2mno-duplicate-selectors[22m
+  [2m154:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".place-id", first used at line 129          [2mno-duplicate-selectors[22m
 
 src/styles/sections/player-section.css
-   [2m25:2[22m  [31m[31m✖[39m  Expected shorthand property "grid-template"                                                                            [2mdeclaration-block-no-redundant-longhand-properties[22m
-   [2m93:1[22m  [31m[31m✖[39m  Expected class selector ".player-Equipment" to be kebab-case                                                           [2mselector-class-pattern[22m
-  [2m114:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".player-inventory, .place-vault", first used at line 101                                [2mno-duplicate-selectors[22m
-  [2m195:1[22m  [31m[31m✖[39m  Expected selector ".player-stats ul li span" to come before selector ".equipment-flex .main-weapon span", at line 156  [2mno-descending-specificity[22m
+   [2m22:2[22m  [31m[31m✖[39m  Expected shorthand property "grid-template"                                                                            [2mdeclaration-block-no-redundant-longhand-properties[22m
+   [2m90:1[22m  [31m[31m✖[39m  Expected class selector ".player-Equipment" to be kebab-case                                                           [2mselector-class-pattern[22m
+  [2m111:1[22m  [31m[31m✖[39m  Unexpected duplicate selector ".player-inventory, .place-vault", first used at line 98                                 [2mno-duplicate-selectors[22m
+  [2m192:1[22m  [31m[31m✖[39m  Expected selector ".player-stats ul li span" to come before selector ".equipment-flex .main-weapon span", at line 153  [2mno-descending-specificity[22m
 
 src/styles/sections/notifications.css
   [2m117:12[22m  [31m[31m✖[39m  Expected keyframe name "slideIn" to be kebab-case   [2mkeyframes-name-pattern[22m
-  [2m128:12[22m  [31m[31m✖[39m  Expected keyframe name "slideOut" to be kebab-case  [2mkeyframes-name-pattern[22m
-
-src/styles/components/npc-dialog.css
-  [2m34:12[22m  [31m[31m✖[39m  Expected keyframe name "slideUp" to be kebab-case  [2mkeyframes-name-pattern[22m
+  [2m129:12[22m  [31m[31m✖[39m  Expected keyframe name "slideOut" to be kebab-case  [2mkeyframes-name-pattern[22m
 
 [31m✖[39m 380 problems ([31m380 errors[39m, [33m0 warnings[39m)
   1 error potentially fixable with the "--fix" option.
@@ -1081,256 +1086,256 @@ src/styles/components/npc-dialog.css
    Config loaded: /action/lib/.automation/.htmlhintrc
 
    /github/workspace/static/avatar_test.html
-[37m      L166 |[90m        <div class="avatar-grid" id="avatarGrid">[39m
-[37m                                            ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L168 |[90m                <div class="avatar avatar_1"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L172 |[90m                <div class="avatar avatar_2"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L176 |[90m                <div class="avatar avatar_3"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L180 |[90m                <div class="avatar avatar_4"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L184 |[90m                <div class="avatar avatar_5"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L188 |[90m                <div class="avatar avatar_6"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L192 |[90m                <div class="avatar avatar_7"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L196 |[90m                <div class="avatar avatar_8"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L200 |[90m                <div class="avatar avatar_9"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L204 |[90m                <div class="avatar avatar_10"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L208 |[90m                <div class="avatar avatar_11"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L212 |[90m                <div class="avatar avatar_12"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L216 |[90m                <div class="avatar avatar_13"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L220 |[90m                <div class="avatar avatar_14"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L224 |[90m                <div class="avatar avatar_15"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L228 |[90m                <div class="avatar avatar_16"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L232 |[90m                <div class="avatar avatar_17"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L236 |[90m                <div class="avatar avatar_18"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L240 |[90m                <div class="avatar avatar_19"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L244 |[90m                <div class="avatar avatar_20"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L248 |[90m                <div class="avatar avatar_21"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L252 |[90m                <div class="avatar avatar_22"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L256 |[90m                <div class="avatar avatar_23"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L260 |[90m                <div class="avatar avatar_24"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L264 |[90m                <div class="avatar avatar_25"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L268 |[90m                <div class="avatar avatar_26"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L272 |[90m                <div class="avatar avatar_27"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L276 |[90m                <div class="avatar avatar_28"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L280 |[90m                <div class="avatar avatar_29"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L284 |[90m                <div class="avatar avatar_30"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L288 |[90m                <div class="avatar avatar_31"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L292 |[90m                <div class="avatar avatar_32"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L296 |[90m                <div class="avatar avatar_33"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L300 |[90m                <div class="avatar avatar_34"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L304 |[90m                <div class="avatar avatar_35"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L308 |[90m                <div class="avatar avatar_36"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L312 |[90m                <div class="avatar avatar_37"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L316 |[90m                <div class="avatar avatar_38"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L320 |[90m                <div class="avatar avatar_39"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L324 |[90m                <div class="avatar avatar_40"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L328 |[90m                <div class="avatar avatar_41"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L332 |[90m                <div class="avatar avatar_42"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L336 |[90m                <div class="avatar avatar_43"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L340 |[90m                <div class="avatar avatar_44"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L344 |[90m                <div class="avatar avatar_45"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L348 |[90m                <div class="avatar avatar_46"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L352 |[90m                <div class="avatar avatar_47"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L356 |[90m                <div class="avatar avatar_48"></div>[39m
-[37m                                ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L171 |[90m      <div class="avatar-grid" id="avatarGrid">[39m
+[37m                                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L173 |[90m          <div class="avatar avatar_1"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L177 |[90m          <div class="avatar avatar_2"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L181 |[90m          <div class="avatar avatar_3"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L185 |[90m          <div class="avatar avatar_4"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L189 |[90m          <div class="avatar avatar_5"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L193 |[90m          <div class="avatar avatar_6"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L197 |[90m          <div class="avatar avatar_7"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L201 |[90m          <div class="avatar avatar_8"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L205 |[90m          <div class="avatar avatar_9"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L209 |[90m          <div class="avatar avatar_10"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L213 |[90m          <div class="avatar avatar_11"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L217 |[90m          <div class="avatar avatar_12"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L221 |[90m          <div class="avatar avatar_13"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L225 |[90m          <div class="avatar avatar_14"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L229 |[90m          <div class="avatar avatar_15"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L233 |[90m          <div class="avatar avatar_16"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L237 |[90m          <div class="avatar avatar_17"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L241 |[90m          <div class="avatar avatar_18"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L245 |[90m          <div class="avatar avatar_19"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L249 |[90m          <div class="avatar avatar_20"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L253 |[90m          <div class="avatar avatar_21"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L257 |[90m          <div class="avatar avatar_22"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L261 |[90m          <div class="avatar avatar_23"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L265 |[90m          <div class="avatar avatar_24"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L269 |[90m          <div class="avatar avatar_25"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L273 |[90m          <div class="avatar avatar_26"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L277 |[90m          <div class="avatar avatar_27"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L281 |[90m          <div class="avatar avatar_28"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L285 |[90m          <div class="avatar avatar_29"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L289 |[90m          <div class="avatar avatar_30"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L293 |[90m          <div class="avatar avatar_31"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L297 |[90m          <div class="avatar avatar_32"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L301 |[90m          <div class="avatar avatar_33"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L305 |[90m          <div class="avatar avatar_34"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L309 |[90m          <div class="avatar avatar_35"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L313 |[90m          <div class="avatar avatar_36"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L317 |[90m          <div class="avatar avatar_37"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L321 |[90m          <div class="avatar avatar_38"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L325 |[90m          <div class="avatar avatar_39"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L329 |[90m          <div class="avatar avatar_40"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L333 |[90m          <div class="avatar avatar_41"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L337 |[90m          <div class="avatar avatar_42"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L341 |[90m          <div class="avatar avatar_43"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L345 |[90m          <div class="avatar avatar_44"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L349 |[90m          <div class="avatar avatar_45"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L353 |[90m          <div class="avatar avatar_46"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L357 |[90m          <div class="avatar avatar_47"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L361 |[90m          <div class="avatar avatar_48"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
    Config loaded: /action/lib/.automation/.htmlhintrc
 
    /github/workspace/static/portrait_test.html
-[37m      L174 |[90m        <div class="portrait-grid" id="portraitGrid">[39m
-[37m                                              ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L175 |[90m...         <div class="portrait-item"><div class="portrait portrait_1"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L176 |[90m...         <div class="portrait-item"><div class="portrait portrait_2"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L177 |[90m...         <div class="portrait-item"><div class="portrait portrait_3"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L178 |[90m...         <div class="portrait-item"><div class="portrait portrait_4"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L179 |[90m...         <div class="portrait-item"><div class="portrait portrait_5"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L180 |[90m...         <div class="portrait-item"><div class="portrait portrait_6"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L181 |[90m...         <div class="portrait-item"><div class="portrait portrait_7"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L182 |[90m...         <div class="portrait-item"><div class="portrait portrait_8"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L183 |[90m...         <div class="portrait-item"><div class="portrait portrait_9"></div><div class="portrait-label...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L184 |[90m...         <div class="portrait-item"><div class="portrait portrait_10"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L185 |[90m...         <div class="portrait-item"><div class="portrait portrait_11"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L186 |[90m...         <div class="portrait-item"><div class="portrait portrait_12"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L187 |[90m...         <div class="portrait-item"><div class="portrait portrait_13"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L188 |[90m...         <div class="portrait-item"><div class="portrait portrait_14"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L189 |[90m...         <div class="portrait-item"><div class="portrait portrait_15"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L190 |[90m...         <div class="portrait-item"><div class="portrait portrait_16"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L191 |[90m...         <div class="portrait-item"><div class="portrait portrait_17"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L192 |[90m...         <div class="portrait-item"><div class="portrait portrait_18"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L193 |[90m...         <div class="portrait-item"><div class="portrait portrait_19"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L194 |[90m...         <div class="portrait-item"><div class="portrait portrait_20"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L195 |[90m...         <div class="portrait-item"><div class="portrait portrait_21"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L196 |[90m...         <div class="portrait-item"><div class="portrait portrait_22"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L197 |[90m...         <div class="portrait-item"><div class="portrait portrait_23"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L198 |[90m...         <div class="portrait-item"><div class="portrait portrait_24"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L199 |[90m...         <div class="portrait-item"><div class="portrait portrait_25"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L200 |[90m...         <div class="portrait-item"><div class="portrait portrait_26"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L201 |[90m...         <div class="portrait-item"><div class="portrait portrait_27"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L202 |[90m...         <div class="portrait-item"><div class="portrait portrait_28"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L203 |[90m...         <div class="portrait-item"><div class="portrait portrait_29"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L204 |[90m...         <div class="portrait-item"><div class="portrait portrait_30"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L205 |[90m...         <div class="portrait-item"><div class="portrait portrait_31"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L206 |[90m...         <div class="portrait-item"><div class="portrait portrait_32"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L207 |[90m...         <div class="portrait-item"><div class="portrait portrait_33"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L208 |[90m...         <div class="portrait-item"><div class="portrait portrait_34"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L209 |[90m...         <div class="portrait-item"><div class="portrait portrait_35"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L210 |[90m...         <div class="portrait-item"><div class="portrait portrait_36"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L211 |[90m...         <div class="portrait-item"><div class="portrait portrait_37"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L212 |[90m...         <div class="portrait-item"><div class="portrait portrait_38"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L213 |[90m...         <div class="portrait-item"><div class="portrait portrait_39"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L214 |[90m...         <div class="portrait-item"><div class="portrait portrait_40"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L215 |[90m...         <div class="portrait-item"><div class="portrait portrait_41"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L216 |[90m...         <div class="portrait-item"><div class="portrait portrait_42"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L217 |[90m...         <div class="portrait-item"><div class="portrait portrait_43"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L218 |[90m...         <div class="portrait-item"><div class="portrait portrait_44"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L219 |[90m...         <div class="portrait-item"><div class="portrait portrait_45"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L220 |[90m...         <div class="portrait-item"><div class="portrait portrait_46"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L221 |[90m...         <div class="portrait-item"><div class="portrait portrait_47"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L222 |[90m...         <div class="portrait-item"><div class="portrait portrait_48"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L223 |[90m...         <div class="portrait-item"><div class="portrait portrait_49"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L224 |[90m...         <div class="portrait-item"><div class="portrait portrait_50"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L225 |[90m...         <div class="portrait-item"><div class="portrait portrait_51"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L226 |[90m...         <div class="portrait-item"><div class="portrait portrait_52"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L227 |[90m...         <div class="portrait-item"><div class="portrait portrait_53"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L228 |[90m...         <div class="portrait-item"><div class="portrait portrait_54"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L229 |[90m...         <div class="portrait-item"><div class="portrait portrait_55"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L230 |[90m...         <div class="portrait-item"><div class="portrait portrait_56"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L231 |[90m...         <div class="portrait-item"><div class="portrait portrait_57"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L232 |[90m...         <div class="portrait-item"><div class="portrait portrait_58"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L233 |[90m...         <div class="portrait-item"><div class="portrait portrait_59"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L234 |[90m...         <div class="portrait-item"><div class="portrait portrait_60"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L235 |[90m...         <div class="portrait-item"><div class="portrait portrait_61"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L236 |[90m...         <div class="portrait-item"><div class="portrait portrait_62"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L237 |[90m...         <div class="portrait-item"><div class="portrait portrait_63"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L238 |[90m...         <div class="portrait-item"><div class="portrait portrait_64"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L239 |[90m...         <div class="portrait-item"><div class="portrait portrait_65"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L240 |[90m...         <div class="portrait-item"><div class="portrait portrait_66"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L241 |[90m...         <div class="portrait-item"><div class="portrait portrait_67"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L242 |[90m...         <div class="portrait-item"><div class="portrait portrait_68"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L243 |[90m...         <div class="portrait-item"><div class="portrait portrait_69"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L244 |[90m...         <div class="portrait-item"><div class="portrait portrait_70"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L245 |[90m...         <div class="portrait-item"><div class="portrait portrait_71"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L246 |[90m...         <div class="portrait-item"><div class="portrait portrait_72"></div><div class="portrait-labe...[39m
-[37m                                                       ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L179 |[90m      <div class="portrait-grid" id="portraitGrid">[39m
+[37m                                            ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L181 |[90m          <div class="portrait portrait_1"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L185 |[90m          <div class="portrait portrait_2"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L189 |[90m          <div class="portrait portrait_3"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L193 |[90m          <div class="portrait portrait_4"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L197 |[90m          <div class="portrait portrait_5"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L201 |[90m          <div class="portrait portrait_6"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L205 |[90m          <div class="portrait portrait_7"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L209 |[90m          <div class="portrait portrait_8"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L213 |[90m          <div class="portrait portrait_9"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L217 |[90m          <div class="portrait portrait_10"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L221 |[90m          <div class="portrait portrait_11"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L225 |[90m          <div class="portrait portrait_12"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L229 |[90m          <div class="portrait portrait_13"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L233 |[90m          <div class="portrait portrait_14"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L237 |[90m          <div class="portrait portrait_15"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L241 |[90m          <div class="portrait portrait_16"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L245 |[90m          <div class="portrait portrait_17"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L249 |[90m          <div class="portrait portrait_18"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L253 |[90m          <div class="portrait portrait_19"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L257 |[90m          <div class="portrait portrait_20"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L261 |[90m          <div class="portrait portrait_21"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L265 |[90m          <div class="portrait portrait_22"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L269 |[90m          <div class="portrait portrait_23"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L273 |[90m          <div class="portrait portrait_24"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L277 |[90m          <div class="portrait portrait_25"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L281 |[90m          <div class="portrait portrait_26"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L285 |[90m          <div class="portrait portrait_27"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L289 |[90m          <div class="portrait portrait_28"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L293 |[90m          <div class="portrait portrait_29"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L297 |[90m          <div class="portrait portrait_30"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L301 |[90m          <div class="portrait portrait_31"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L305 |[90m          <div class="portrait portrait_32"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L309 |[90m          <div class="portrait portrait_33"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L313 |[90m          <div class="portrait portrait_34"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L317 |[90m          <div class="portrait portrait_35"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L321 |[90m          <div class="portrait portrait_36"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L325 |[90m          <div class="portrait portrait_37"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L329 |[90m          <div class="portrait portrait_38"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L333 |[90m          <div class="portrait portrait_39"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L337 |[90m          <div class="portrait portrait_40"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L341 |[90m          <div class="portrait portrait_41"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L345 |[90m          <div class="portrait portrait_42"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L349 |[90m          <div class="portrait portrait_43"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L353 |[90m          <div class="portrait portrait_44"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L357 |[90m          <div class="portrait portrait_45"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L361 |[90m          <div class="portrait portrait_46"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L365 |[90m          <div class="portrait portrait_47"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L369 |[90m          <div class="portrait portrait_48"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L373 |[90m          <div class="portrait portrait_49"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L377 |[90m          <div class="portrait portrait_50"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L381 |[90m          <div class="portrait portrait_51"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L385 |[90m          <div class="portrait portrait_52"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L389 |[90m          <div class="portrait portrait_53"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L393 |[90m          <div class="portrait portrait_54"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L397 |[90m          <div class="portrait portrait_55"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L401 |[90m          <div class="portrait portrait_56"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L405 |[90m          <div class="portrait portrait_57"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L409 |[90m          <div class="portrait portrait_58"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L413 |[90m          <div class="portrait portrait_59"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L417 |[90m          <div class="portrait portrait_60"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L421 |[90m          <div class="portrait portrait_61"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L425 |[90m          <div class="portrait portrait_62"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L429 |[90m          <div class="portrait portrait_63"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L433 |[90m          <div class="portrait portrait_64"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L437 |[90m          <div class="portrait portrait_65"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L441 |[90m          <div class="portrait portrait_66"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L445 |[90m          <div class="portrait portrait_67"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L449 |[90m          <div class="portrait portrait_68"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L453 |[90m          <div class="portrait portrait_69"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L457 |[90m          <div class="portrait portrait_70"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L461 |[90m          <div class="portrait portrait_71"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
+[37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
+[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
-Scanned 4 files, found 122 errors in 2 files (47 ms)
+Scanned 4 files, found 122 errors in 2 files (49 ms)
 ```
 
 </details>
@@ -1705,8 +1710,8 @@ Clone found (javascript):
    /github/workspace/src/ui/components/sections/LogSection.js [5:24 - 14:6]
 
 Clone found (css):
- - /github/workspace/src/styles/sections/places-section.css [132:7 - 162:19] (30 lines, 157 tokens)
-   /github/workspace/src/styles/sections/places-section.css [107:11 - 135:12]
+ - /github/workspace/src/styles/sections/places-section.css [131:7 - 160:19] (29 lines, 150 tokens)
+   /github/workspace/src/styles/sections/places-section.css [107:11 - 134:12]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [60:15 - 77:36] (17 lines, 138 tokens)
@@ -1894,40 +1899,39 @@ Clone found (javascript):
  11 │ 14 │ export
 
 Clone found (css):
- - /github/workspace/src/styles/sections/places-section.css [132:7 - 162:19] (30 lines, 157 tokens)
-   /github/workspace/src/styles/sections/places-section.css [107:11 - 135:12]
+ - /github/workspace/src/styles/sections/places-section.css [131:7 - 160:19] (29 lines, 150 tokens)
+   /github/workspace/src/styles/sections/places-section.css [107:11 - 134:12]
 
- 132 │ 107 │ ;
- 133 │ 108 │ }
- 134 │ 109 │
- 135 │ 110 │ .place-info {
- 136 │ 111 │   padding: 0.5rem;
- 137 │ 112 │ }
- 138 │ 113 │
- 139 │ 114 │ .place-info h3 {
- 140 │ 115 │   font-size: 2.8rem;
- 141 │ 116 │   text-align: center;
- 142 │ 117 │   background: linear-gradient(0deg, #a18624 10%, #bf9e2a 90%);
- 143 │ 118 │   background-clip: text;
- 144 │ 119 │   background-clip: text;
- 145 │ 120 │   -webkit-text-fill-color: transparent;
- 146 │ 121 │   filter: drop-shadow(0 4px 2px rgb(0 0 0 / 25%));
- 147 │ 122 │ }
- 148 │ 123 │
- 149 │ 124 │ .place-description {
- 150 │ 125 │   margin: 0.5rem 0;
- 151 │ 126 │   color: #bdc3c7;
- 152 │ 127 │ }
- 153 │ 128 │
- 154 │ 129 │ .place-id {
- 155 │ 130 │   font-size: 0.8rem;
- 156 │ 131 │   color: #95a5a6;
- 157 │ 132 │   margin-top: 0.5rem;
- 158 │ 133 │ }
- 159 │ 134 │
- 160 │ 135 │ .place-features,
- 161 │ 136 │ .place-resources,
- 162 │ 137 │ .place-connections
+ 131 │ 107 │ ;
+ 132 │ 108 │ }
+ 133 │ 109 │
+ 134 │ 110 │ .place-info {
+ 135 │ 111 │   padding: 0.5rem;
+ 136 │ 112 │ }
+ 137 │ 113 │
+ 138 │ 114 │ .place-info h3 {
+ 139 │ 115 │   font-size: 2.8rem;
+ 140 │ 116 │   text-align: center;
+ 141 │ 117 │   background: linear-gradient(0deg, #a18624 10%, #bf9e2a 90%);
+ 142 │ 118 │   background-clip: text;
+ 143 │ 119 │   -webkit-text-fill-color: transparent;
+ 144 │ 120 │   filter: drop-shadow(0 4px 2px rgb(0 0 0 / 25%));
+ 145 │ 121 │ }
+ 146 │ 122 │
+ 147 │ 123 │ .place-description {
+ 148 │ 124 │   margin: 0.5rem 0;
+ 149 │ 125 │   color: #bdc3c7;
+ 150 │ 126 │ }
+ 151 │ 127 │
+ 152 │ 128 │ .place-id {
+ 153 │ 129 │   font-size: 0.8rem;
+ 154 │ 130 │   color: #95a5a6;
+ 155 │ 131 │   margin-top: 0.5rem;
+ 156 │ 132 │ }
+ 157 │ 133 │
+ 158 │ 134 │ .place-features,
+ 159 │ 135 │ .place-resources,
+ 160 │ 136 │ .place-connections
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [60:15 - 77:36] (17 lines, 138 tokens)
@@ -2906,12 +2910,12 @@ Clone found (javascript):
  182 │ 34 │         player
 
 Found 42 clones.
-Error: ERROR: jscpd found too many duplicates (4.73%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.73%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 ```
 
 </details>
@@ -2935,9 +2939,10 @@ Error: ERROR: jscpd found too many duplicates (4.73%) over threshold (0%)
 <summary>JSON_PRETTIER</summary>
 
 ```text
-.release-please-manifest.json 9ms
+.release-please-manifest.json 10ms
+github_conf/branch_protection_rules.json 2ms
 jsconfig.json 4ms
-[90mpackage-lock.json[39m 73ms (unchanged)
+[90mpackage-lock.json[39m 79ms (unchanged)
 package.json 2ms
 release-please-config.json 4ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
 [[31merror[39m] [0m [90m 47 |[39m         [32m"id"[39m[33m:[39m [32m"sawmill"[39m[33m,[39m
@@ -2988,9 +2993,9 @@ Checking formatting...[[33mwarn[39m] _test_/notificationSystem.test.jsx
 <summary>MARKDOWN</summary>
 
 ```text
-/github/workspace/CHANGELOG.md:75 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
-/github/workspace/CHANGELOG.md:82 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
-/github/workspace/README.md:8 error MD001/heading-increment Heading levels should only increment by one level at a time [Expected: h3; Actual: h4]
+/github/workspace/CHANGELOG.md:72 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
+/github/workspace/CHANGELOG.md:78 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
+/github/workspace/README.md:9 error MD001/heading-increment Heading levels should only increment by one level at a time [Expected: h3; Actual: h4]
 ```
 
 </details>
