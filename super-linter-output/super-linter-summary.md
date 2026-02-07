@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21786532937)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21786584627)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,7 +31,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 276ms. Fixed 1 file.
+Formatted 141 files in 274ms. Fixed 2 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -114,7 +114,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1231ms. No fixes applied.
+Checked 145 files in 1177ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -913,7 +913,7 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 [37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
 [37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
-Scanned 4 files, found 122 errors in 2 files (47 ms)
+Scanned 4 files, found 122 errors in 2 files (44 ms)
 ```
 
 </details>
@@ -2132,12 +2132,12 @@ Clone found (javascript):
  182 │ 34 │ 				player
 
 Found 42 clones.
-Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
 ```
 
 </details>
@@ -2147,8 +2147,11 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 <summary>MARKDOWN</summary>
 
 ```text
-/github/workspace/CHANGELOG.md:72 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
-/github/workspace/CHANGELOG.md:78 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
+/github/workspace/CHANGELOG.md:53 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "⚠ BREAKING CHANGES"]
+/github/workspace/CHANGELOG.md:58 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
+/github/workspace/CHANGELOG.md:76 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
+/github/workspace/CHANGELOG.md:120 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
+/github/workspace/CHANGELOG.md:126 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
 /github/workspace/README.md:9 error MD001/heading-increment Heading levels should only increment by one level at a time [Expected: h3; Actual: h4]
 ```
 
@@ -2161,12 +2164,14 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 ```text
 
 /github/workspace/CHANGELOG.md
-  28:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
-  56:37  ✓ error  Incorrect term: “json”, use “JSON” instead           terminology
-  78:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
+   24:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
+   28:40  ✓ error  Incorrect term: “id”, use “ID” instead               terminology
+   73:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
+  101:37  ✓ error  Incorrect term: “json”, use “JSON” instead           terminology
+  123:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
 
-✖ 3 problems (3 errors, 0 warnings, 0 infos)
-✓ 3 fixable problems.
+✖ 5 problems (5 errors, 0 warnings, 0 infos)
+✓ 5 fixable problems.
 Try to run: $ textlint --fix [file]
 ```
 
