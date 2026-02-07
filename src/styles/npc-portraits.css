@@ -1,0 +1,502 @@
+/* NPC Portrait Sprite Sheet CSS - Automated with CSS Variables */
+
+:root {
+    /* Sprite sheet dimensions */
+    --portrait-sprite-width: 2100px;
+    --portrait-sprite-height: 6000px;
+    
+    /* Grid configuration */
+    --portrait-columns: 6;
+    --portrait-rows: 12;
+    
+    /* Avatar dimensions */
+    --portrait-width: 350px;
+    --portrait-height: 500px;
+    
+    /* Display size (default full size) */
+    --portrait-display-width: 350px;
+    --portrait-display-height: 500px;
+}
+
+/* Base portrait class with common properties */
+.portrait {
+    display: inline-block;
+    background-image: url('../assets/avatars/npc_portrait_transparent.png');
+    background-repeat: no-repeat;
+    width: var(--portrait-display-width);
+    height: var(--portrait-display-height);
+    background-size: var(--portrait-sprite-width) var(--portrait-sprite-height);
+    margin: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Row 1 - Portraits 1-6 */
+.portrait_1 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(0 * var(--portrait-height) * -1);
+}
+
+.portrait_2 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(0 * var(--portrait-height) * -1);
+}
+
+.portrait_3 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(0 * var(--portrait-height) * -1);
+}
+
+.portrait_4 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(0 * var(--portrait-height) * -1);
+}
+
+.portrait_5 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(0 * var(--portrait-height) * -1);
+}
+
+.portrait_6 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(0 * var(--portrait-height) * -1);
+}
+
+/* Row 2 - Portraits 7-12 */
+.portrait_7 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(1 * var(--portrait-height) * -1);
+}
+
+.portrait_8 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(1 * var(--portrait-height) * -1);
+}
+
+.portrait_9 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(1 * var(--portrait-height) * -1);
+}
+
+.portrait_10 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(1 * var(--portrait-height) * -1);
+}
+
+.portrait_11 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(1 * var(--portrait-height) * -1);
+}
+
+.portrait_12 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(1 * var(--portrait-height) * -1);
+}
+
+/* Row 3 - Portraits 13-18 */
+.portrait_13 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(2 * var(--portrait-height) * -1);
+}
+
+.portrait_14 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(2 * var(--portrait-height) * -1);
+}
+
+.portrait_15 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(2 * var(--portrait-height) * -1);
+}
+
+.portrait_16 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(2 * var(--portrait-height) * -1);
+}
+
+.portrait_17 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(2 * var(--portrait-height) * -1);
+}
+
+.portrait_18 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(2 * var(--portrait-height) * -1);
+}
+
+/* Row 4 - Portraits 19-24 */
+.portrait_19 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(3 * var(--portrait-height) * -1);
+}
+
+.portrait_20 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(3 * var(--portrait-height) * -1);
+}
+
+.portrait_21 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(3 * var(--portrait-height) * -1);
+}
+
+.portrait_22 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(3 * var(--portrait-height) * -1);
+}
+
+.portrait_23 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(3 * var(--portrait-height) * -1);
+}
+
+.portrait_24 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(3 * var(--portrait-height) * -1);
+}
+
+/* Row 5 - Portraits 25-30 */
+.portrait_25 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(4 * var(--portrait-height) * -1);
+}
+
+.portrait_26 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(4 * var(--portrait-height) * -1);
+}
+
+.portrait_27 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(4 * var(--portrait-height) * -1);
+}
+
+.portrait_28 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(4 * var(--portrait-height) * -1);
+}
+
+.portrait_29 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(4 * var(--portrait-height) * -1);
+}
+
+.portrait_30 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(4 * var(--portrait-height) * -1);
+}
+
+/* Row 6 - Portraits 31-36 */
+.portrait_31 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(5 * var(--portrait-height) * -1);
+}
+
+.portrait_32 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(5 * var(--portrait-height) * -1);
+}
+
+.portrait_33 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(5 * var(--portrait-height) * -1);
+}
+
+.portrait_34 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(5 * var(--portrait-height) * -1);
+}
+
+.portrait_35 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(5 * var(--portrait-height) * -1);
+}
+
+.portrait_36 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(5 * var(--portrait-height) * -1);
+}
+
+/* Row 7 - Portraits 37-42 */
+.portrait_37 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(6 * var(--portrait-height) * -1);
+}
+
+.portrait_38 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(6 * var(--portrait-height) * -1);
+}
+
+.portrait_39 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(6 * var(--portrait-height) * -1);
+}
+
+.portrait_40 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(6 * var(--portrait-height) * -1);
+}
+
+.portrait_41 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(6 * var(--portrait-height) * -1);
+}
+
+.portrait_42 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(6 * var(--portrait-height) * -1);
+}
+
+/* Row 8 - Portraits 43-48 */
+.portrait_43 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(7 * var(--portrait-height) * -1);
+}
+
+.portrait_44 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(7 * var(--portrait-height) * -1);
+}
+
+.portrait_45 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(7 * var(--portrait-height) * -1);
+}
+
+.portrait_46 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(7 * var(--portrait-height) * -1);
+}
+
+.portrait_47 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(7 * var(--portrait-height) * -1);
+}
+
+.portrait_48 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(7 * var(--portrait-height) * -1);
+}
+
+/* Row 9 - Portraits 49-54 */
+.portrait_49 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(8 * var(--portrait-height) * -1);
+}
+
+.portrait_50 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(8 * var(--portrait-height) * -1);
+}
+
+.portrait_51 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(8 * var(--portrait-height) * -1);
+}
+
+.portrait_52 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(8 * var(--portrait-height) * -1);
+}
+
+.portrait_53 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(8 * var(--portrait-height) * -1);
+}
+
+.portrait_54 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(8 * var(--portrait-height) * -1);
+}
+
+/* Row 10 - Portraits 55-60 */
+.portrait_55 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(9 * var(--portrait-height) * -1);
+}
+
+.portrait_56 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(9 * var(--portrait-height) * -1);
+}
+
+.portrait_57 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(9 * var(--portrait-height) * -1);
+}
+
+.portrait_58 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(9 * var(--portrait-height) * -1);
+}
+
+.portrait_59 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(9 * var(--portrait-height) * -1);
+}
+
+.portrait_60 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(9 * var(--portrait-height) * -1);
+}
+
+/* Row 11 - Portraits 61-66 */
+.portrait_61 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(10 * var(--portrait-height) * -1);
+}
+
+.portrait_62 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(10 * var(--portrait-height) * -1);
+}
+
+.portrait_63 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(10 * var(--portrait-height) * -1);
+}
+
+.portrait_64 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(10 * var(--portrait-height) * -1);
+}
+
+.portrait_65 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(10 * var(--portrait-height) * -1);
+}
+
+.portrait_66 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(10 * var(--portrait-height) * -1);
+}
+
+/* Row 12 - Portraits 67-72 */
+.portrait_67 {
+    background-position: calc(0 * var(--portrait-width) * -1) calc(11 * var(--portrait-height) * -1);
+}
+
+.portrait_68 {
+    background-position: calc(1 * var(--portrait-width) * -1) calc(11 * var(--portrait-height) * -1);
+}
+
+.portrait_69 {
+    background-position: calc(2 * var(--portrait-width) * -1) calc(11 * var(--portrait-height) * -1);
+}
+
+.portrait_70 {
+    background-position: calc(3 * var(--portrait-width) * -1) calc(11 * var(--portrait-height) * -1);
+}
+
+.portrait_71 {
+    background-position: calc(4 * var(--portrait-width) * -1) calc(11 * var(--portrait-height) * -1);
+}
+
+.portrait_72 {
+    background-position: calc(5 * var(--portrait-width) * -1) calc(11 * var(--portrait-height) * -1);
+}
+
+/* Hover effect */
+.portrait:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+/* Optional: Different display sizes */
+.portrait.small {
+    width: 175px;
+    height: 250px;
+    background-size: 1050px 3000px; /* 50% scale */
+}
+
+.portrait.small.portrait_1 { background-position: 0 0; }
+.portrait.small.portrait_2 { background-position: -175px 0; }
+.portrait.small.portrait_3 { background-position: -350px 0; }
+.portrait.small.portrait_4 { background-position: -525px 0; }
+.portrait.small.portrait_5 { background-position: -700px 0; }
+.portrait.small.portrait_6 { background-position: -875px 0; }
+.portrait.small.portrait_7 { background-position: 0 -250px; }
+.portrait.small.portrait_8 { background-position: -175px -250px; }
+.portrait.small.portrait_9 { background-position: -350px -250px; }
+.portrait.small.portrait_10 { background-position: -525px -250px; }
+.portrait.small.portrait_11 { background-position: -700px -250px; }
+.portrait.small.portrait_12 { background-position: -875px -250px; }
+.portrait.small.portrait_13 { background-position: 0 -500px; }
+.portrait.small.portrait_14 { background-position: -175px -500px; }
+.portrait.small.portrait_15 { background-position: -350px -500px; }
+.portrait.small.portrait_16 { background-position: -525px -500px; }
+.portrait.small.portrait_17 { background-position: -700px -500px; }
+.portrait.small.portrait_18 { background-position: -875px -500px; }
+.portrait.small.portrait_19 { background-position: 0 -750px; }
+.portrait.small.portrait_20 { background-position: -175px -750px; }
+.portrait.small.portrait_21 { background-position: -350px -750px; }
+.portrait.small.portrait_22 { background-position: -525px -750px; }
+.portrait.small.portrait_23 { background-position: -700px -750px; }
+.portrait.small.portrait_24 { background-position: -875px -750px; }
+.portrait.small.portrait_25 { background-position: 0 -1000px; }
+.portrait.small.portrait_26 { background-position: -175px -1000px; }
+.portrait.small.portrait_27 { background-position: -350px -1000px; }
+.portrait.small.portrait_28 { background-position: -525px -1000px; }
+.portrait.small.portrait_29 { background-position: -700px -1000px; }
+.portrait.small.portrait_30 { background-position: -875px -1000px; }
+.portrait.small.portrait_31 { background-position: 0 -1250px; }
+.portrait.small.portrait_32 { background-position: -175px -1250px; }
+.portrait.small.portrait_33 { background-position: -350px -1250px; }
+.portrait.small.portrait_34 { background-position: -525px -1250px; }
+.portrait.small.portrait_35 { background-position: -700px -1250px; }
+.portrait.small.portrait_36 { background-position: -875px -1250px; }
+.portrait.small.portrait_37 { background-position: 0 -1500px; }
+.portrait.small.portrait_38 { background-position: -175px -1500px; }
+.portrait.small.portrait_39 { background-position: -350px -1500px; }
+.portrait.small.portrait_40 { background-position: -525px -1500px; }
+.portrait.small.portrait_41 { background-position: -700px -1500px; }
+.portrait.small.portrait_42 { background-position: -875px -1500px; }
+.portrait.small.portrait_43 { background-position: 0 -1750px; }
+.portrait.small.portrait_44 { background-position: -175px -1750px; }
+.portrait.small.portrait_45 { background-position: -350px -1750px; }
+.portrait.small.portrait_46 { background-position: -525px -1750px; }
+.portrait.small.portrait_47 { background-position: -700px -1750px; }
+.portrait.small.portrait_48 { background-position: -875px -1750px; }
+.portrait.small.portrait_49 { background-position: 0 -2000px; }
+.portrait.small.portrait_50 { background-position: -175px -2000px; }
+.portrait.small.portrait_51 { background-position: -350px -2000px; }
+.portrait.small.portrait_52 { background-position: -525px -2000px; }
+.portrait.small.portrait_53 { background-position: -700px -2000px; }
+.portrait.small.portrait_54 { background-position: -875px -2000px; }
+.portrait.small.portrait_55 { background-position: 0 -2250px; }
+.portrait.small.portrait_56 { background-position: -175px -2250px; }
+.portrait.small.portrait_57 { background-position: -350px -2250px; }
+.portrait.small.portrait_58 { background-position: -525px -2250px; }
+.portrait.small.portrait_59 { background-position: -700px -2250px; }
+.portrait.small.portrait_60 { background-position: -875px -2250px; }
+.portrait.small.portrait_61 { background-position: 0 -2500px; }
+.portrait.small.portrait_62 { background-position: -175px -2500px; }
+.portrait.small.portrait_63 { background-position: -350px -2500px; }
+.portrait.small.portrait_64 { background-position: -525px -2500px; }
+.portrait.small.portrait_65 { background-position: -700px -2500px; }
+.portrait.small.portrait_66 { background-position: -875px -2500px; }
+.portrait.small.portrait_67 { background-position: 0 -2750px; }
+.portrait.small.portrait_68 { background-position: -175px -2750px; }
+.portrait.small.portrait_69 { background-position: -350px -2750px; }
+.portrait.small.portrait_70 { background-position: -525px -2750px; }
+.portrait.small.portrait_71 { background-position: -700px -2750px; }
+.portrait.small.portrait_72 { background-position: -875px -2750px; }
+
+.portrait.large {
+    width: 525px;
+    height: 750px;
+    background-size: 3150px 9000px; /* 150% scale */
+}
+
+.portrait.large.portrait_1 { background-position: 0 0; }
+.portrait.large.portrait_2 { background-position: -525px 0; }
+.portrait.large.portrait_3 { background-position: -1050px 0; }
+.portrait.large.portrait_4 { background-position: -1575px 0; }
+.portrait.large.portrait_5 { background-position: -2100px 0; }
+.portrait.large.portrait_6 { background-position: -2625px 0; }
+.portrait.large.portrait_7 { background-position: 0 -750px; }
+.portrait.large.portrait_8 { background-position: -525px -750px; }
+.portrait.large.portrait_9 { background-position: -1050px -750px; }
+.portrait.large.portrait_10 { background-position: -1575px -750px; }
+.portrait.large.portrait_11 { background-position: -2100px -750px; }
+.portrait.large.portrait_12 { background-position: -2625px -750px; }
+.portrait.large.portrait_13 { background-position: 0 -1500px; }
+.portrait.large.portrait_14 { background-position: -525px -1500px; }
+.portrait.large.portrait_15 { background-position: -1050px -1500px; }
+.portrait.large.portrait_16 { background-position: -1575px -1500px; }
+.portrait.large.portrait_17 { background-position: -2100px -1500px; }
+.portrait.large.portrait_18 { background-position: -2625px -1500px; }
+.portrait.large.portrait_19 { background-position: 0 -2250px; }
+.portrait.large.portrait_20 { background-position: -525px -2250px; }
+.portrait.large.portrait_21 { background-position: -1050px -2250px; }
+.portrait.large.portrait_22 { background-position: -1575px -2250px; }
+.portrait.large.portrait_23 { background-position: -2100px -2250px; }
+.portrait.large.portrait_24 { background-position: -2625px -2250px; }
+.portrait.large.portrait_25 { background-position: 0 -3000px; }
+.portrait.large.portrait_26 { background-position: -525px -3000px; }
+.portrait.large.portrait_27 { background-position: -1050px -3000px; }
+.portrait.large.portrait_28 { background-position: -1575px -3000px; }
+.portrait.large.portrait_29 { background-position: -2100px -3000px; }
+.portrait.large.portrait_30 { background-position: -2625px -3000px; }
+.portrait.large.portrait_31 { background-position: 0 -3750px; }
+.portrait.large.portrait_32 { background-position: -525px -3750px; }
+.portrait.large.portrait_33 { background-position: -1050px -3750px; }
+.portrait.large.portrait_34 { background-position: -1575px -3750px; }
+.portrait.large.portrait_35 { background-position: -2100px -3750px; }
+.portrait.large.portrait_36 { background-position: -2625px -3750px; }
+.portrait.large.portrait_37 { background-position: 0 -4500px; }
+.portrait.large.portrait_38 { background-position: -525px -4500px; }
+.portrait.large.portrait_39 { background-position: -1050px -4500px; }
+.portrait.large.portrait_40 { background-position: -1575px -4500px; }
+.portrait.large.portrait_41 { background-position: -2100px -4500px; }
+.portrait.large.portrait_42 { background-position: -2625px -4500px; }
+.portrait.large.portrait_43 { background-position: 0 -5250px; }
+.portrait.large.portrait_44 { background-position: -525px -5250px; }
+.portrait.large.portrait_45 { background-position: -1050px -5250px; }
+.portrait.large.portrait_46 { background-position: -1575px -5250px; }
+.portrait.large.portrait_47 { background-position: -2100px -5250px; }
+.portrait.large.portrait_48 { background-position: -2625px -5250px; }
+.portrait.large.portrait_49 { background-position: 0 -6000px; }
+.portrait.large.portrait_50 { background-position: -525px -6000px; }
+.portrait.large.portrait_51 { background-position: -1050px -6000px; }
+.portrait.large.portrait_52 { background-position: -1575px -6000px; }
+.portrait.large.portrait_53 { background-position: -2100px -6000px; }
+.portrait.large.portrait_54 { background-position: -2625px -6000px; }
+.portrait.large.portrait_55 { background-position: 0 -6750px; }
+.portrait.large.portrait_56 { background-position: -525px -6750px; }
+.portrait.large.portrait_57 { background-position: -1050px -6750px; }
+.portrait.large.portrait_58 { background-position: -1575px -6750px; }
+.portrait.large.portrait_59 { background-position: -2100px -6750px; }
+.portrait.large.portrait_60 { background-position: -2625px -6750px; }
+.portrait.large.portrait_61 { background-position: 0 -7500px; }
+.portrait.large.portrait_62 { background-position: -525px -7500px; }
+.portrait.large.portrait_63 { background-position: -1050px -7500px; }
+.portrait.large.portrait_64 { background-position: -1575px -7500px; }
+.portrait.large.portrait_65 { background-position: -2100px -7500px; }
+.portrait.large.portrait_66 { background-position: -2625px -7500px; }
+.portrait.large.portrait_67 { background-position: 0 -8250px; }
+.portrait.large.portrait_68 { background-position: -525px -8250px; }
+.portrait.large.portrait_69 { background-position: -1050px -8250px; }
+.portrait.large.portrait_70 { background-position: -1575px -8250px; }
+.portrait.large.portrait_71 { background-position: -2100px -8250px; }
+.portrait.large.portrait_72 { background-position: -2625px -8250px; }

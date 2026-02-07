@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPC Portrait Sprite Sheet Test</title>
+    <link rel="stylesheet" href="../src/styles/npc-portraits.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #f0e6d2;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #c0a080;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(139, 69, 19, 0.2);
+            border-radius: 8px;
+        }
+        
+        .controls button {
+            background: #8b4513;
+            color: #ffd700;
+            border: 2px solid #654321;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .controls button:hover {
+            background: #a0522d;
+            border-color: #ffd700;
+            transform: translateY(-2px);
+        }
+        
+        .controls button.active {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        .portrait-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+            justify-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .portrait-grid.small {
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+        }
+        
+        .portrait-grid.large {
+            grid-template-columns: repeat(auto-fill, minmax(525px, 1fr));
+        }
+        
+        .portrait-item {
+            text-align: center;
+        }
+        
+        .portrait-label {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #c0a080;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: rgba(139, 69, 19, 0.3);
+            border: 2px solid #8b4513;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-box h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .info-box h3 {
+            color: #ffcc00;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            line-height: 1.8;
+            color: #e0d0b0;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            color: #e0d0b0;
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: #ffcc00;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #ffd700;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            background: none;
+            display: block;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 NPC Portrait Collection 🎭</h1>
+        <p class="subtitle">72 Unique Character Portraits | 2100×6000px Sprite Sheet (6×12 Grid) | 350×500px per portrait</p>
+        
+        <div class="controls">
+            <strong>Portrait Size:</strong>
+            <button onclick="changeSize('small')">Small (175×250px)</button>
+            <button onclick="changeSize('medium')" class="active">Medium (350×500px)</button>
+            <button onclick="changeSize('large')">Large (525×750px)</button>
+        </div>
+        
+        <div class="portrait-grid" id="portraitGrid">
+            <div class="portrait-item"><div class="portrait portrait_1"></div><div class="portrait-label">Portrait 1</div></div>
+            <div class="portrait-item"><div class="portrait portrait_2"></div><div class="portrait-label">Portrait 2</div></div>
+            <div class="portrait-item"><div class="portrait portrait_3"></div><div class="portrait-label">Portrait 3</div></div>
+            <div class="portrait-item"><div class="portrait portrait_4"></div><div class="portrait-label">Portrait 4</div></div>
+            <div class="portrait-item"><div class="portrait portrait_5"></div><div class="portrait-label">Portrait 5</div></div>
+            <div class="portrait-item"><div class="portrait portrait_6"></div><div class="portrait-label">Portrait 6</div></div>
+            <div class="portrait-item"><div class="portrait portrait_7"></div><div class="portrait-label">Portrait 7</div></div>
+            <div class="portrait-item"><div class="portrait portrait_8"></div><div class="portrait-label">Portrait 8</div></div>
+            <div class="portrait-item"><div class="portrait portrait_9"></div><div class="portrait-label">Portrait 9</div></div>
+            <div class="portrait-item"><div class="portrait portrait_10"></div><div class="portrait-label">Portrait 10</div></div>
+            <div class="portrait-item"><div class="portrait portrait_11"></div><div class="portrait-label">Portrait 11</div></div>
+            <div class="portrait-item"><div class="portrait portrait_12"></div><div class="portrait-label">Portrait 12</div></div>
+            <div class="portrait-item"><div class="portrait portrait_13"></div><div class="portrait-label">Portrait 13</div></div>
+            <div class="portrait-item"><div class="portrait portrait_14"></div><div class="portrait-label">Portrait 14</div></div>
+            <div class="portrait-item"><div class="portrait portrait_15"></div><div class="portrait-label">Portrait 15</div></div>
+            <div class="portrait-item"><div class="portrait portrait_16"></div><div class="portrait-label">Portrait 16</div></div>
+            <div class="portrait-item"><div class="portrait portrait_17"></div><div class="portrait-label">Portrait 17</div></div>
+            <div class="portrait-item"><div class="portrait portrait_18"></div><div class="portrait-label">Portrait 18</div></div>
+            <div class="portrait-item"><div class="portrait portrait_19"></div><div class="portrait-label">Portrait 19</div></div>
+            <div class="portrait-item"><div class="portrait portrait_20"></div><div class="portrait-label">Portrait 20</div></div>
+            <div class="portrait-item"><div class="portrait portrait_21"></div><div class="portrait-label">Portrait 21</div></div>
+            <div class="portrait-item"><div class="portrait portrait_22"></div><div class="portrait-label">Portrait 22</div></div>
+            <div class="portrait-item"><div class="portrait portrait_23"></div><div class="portrait-label">Portrait 23</div></div>
+            <div class="portrait-item"><div class="portrait portrait_24"></div><div class="portrait-label">Portrait 24</div></div>
+            <div class="portrait-item"><div class="portrait portrait_25"></div><div class="portrait-label">Portrait 25</div></div>
+            <div class="portrait-item"><div class="portrait portrait_26"></div><div class="portrait-label">Portrait 26</div></div>
+            <div class="portrait-item"><div class="portrait portrait_27"></div><div class="portrait-label">Portrait 27</div></div>
+            <div class="portrait-item"><div class="portrait portrait_28"></div><div class="portrait-label">Portrait 28</div></div>
+            <div class="portrait-item"><div class="portrait portrait_29"></div><div class="portrait-label">Portrait 29</div></div>
+            <div class="portrait-item"><div class="portrait portrait_30"></div><div class="portrait-label">Portrait 30</div></div>
+            <div class="portrait-item"><div class="portrait portrait_31"></div><div class="portrait-label">Portrait 31</div></div>
+            <div class="portrait-item"><div class="portrait portrait_32"></div><div class="portrait-label">Portrait 32</div></div>
+            <div class="portrait-item"><div class="portrait portrait_33"></div><div class="portrait-label">Portrait 33</div></div>
+            <div class="portrait-item"><div class="portrait portrait_34"></div><div class="portrait-label">Portrait 34</div></div>
+            <div class="portrait-item"><div class="portrait portrait_35"></div><div class="portrait-label">Portrait 35</div></div>
+            <div class="portrait-item"><div class="portrait portrait_36"></div><div class="portrait-label">Portrait 36</div></div>
+            <div class="portrait-item"><div class="portrait portrait_37"></div><div class="portrait-label">Portrait 37</div></div>
+            <div class="portrait-item"><div class="portrait portrait_38"></div><div class="portrait-label">Portrait 38</div></div>
+            <div class="portrait-item"><div class="portrait portrait_39"></div><div class="portrait-label">Portrait 39</div></div>
+            <div class="portrait-item"><div class="portrait portrait_40"></div><div class="portrait-label">Portrait 40</div></div>
+            <div class="portrait-item"><div class="portrait portrait_41"></div><div class="portrait-label">Portrait 41</div></div>
+            <div class="portrait-item"><div class="portrait portrait_42"></div><div class="portrait-label">Portrait 42</div></div>
+            <div class="portrait-item"><div class="portrait portrait_43"></div><div class="portrait-label">Portrait 43</div></div>
+            <div class="portrait-item"><div class="portrait portrait_44"></div><div class="portrait-label">Portrait 44</div></div>
+            <div class="portrait-item"><div class="portrait portrait_45"></div><div class="portrait-label">Portrait 45</div></div>
+            <div class="portrait-item"><div class="portrait portrait_46"></div><div class="portrait-label">Portrait 46</div></div>
+            <div class="portrait-item"><div class="portrait portrait_47"></div><div class="portrait-label">Portrait 47</div></div>
+            <div class="portrait-item"><div class="portrait portrait_48"></div><div class="portrait-label">Portrait 48</div></div>
+            <div class="portrait-item"><div class="portrait portrait_49"></div><div class="portrait-label">Portrait 49</div></div>
+            <div class="portrait-item"><div class="portrait portrait_50"></div><div class="portrait-label">Portrait 50</div></div>
+            <div class="portrait-item"><div class="portrait portrait_51"></div><div class="portrait-label">Portrait 51</div></div>
+            <div class="portrait-item"><div class="portrait portrait_52"></div><div class="portrait-label">Portrait 52</div></div>
+            <div class="portrait-item"><div class="portrait portrait_53"></div><div class="portrait-label">Portrait 53</div></div>
+            <div class="portrait-item"><div class="portrait portrait_54"></div><div class="portrait-label">Portrait 54</div></div>
+            <div class="portrait-item"><div class="portrait portrait_55"></div><div class="portrait-label">Portrait 55</div></div>
+            <div class="portrait-item"><div class="portrait portrait_56"></div><div class="portrait-label">Portrait 56</div></div>
+            <div class="portrait-item"><div class="portrait portrait_57"></div><div class="portrait-label">Portrait 57</div></div>
+            <div class="portrait-item"><div class="portrait portrait_58"></div><div class="portrait-label">Portrait 58</div></div>
+            <div class="portrait-item"><div class="portrait portrait_59"></div><div class="portrait-label">Portrait 59</div></div>
+            <div class="portrait-item"><div class="portrait portrait_60"></div><div class="portrait-label">Portrait 60</div></div>
+            <div class="portrait-item"><div class="portrait portrait_61"></div><div class="portrait-label">Portrait 61</div></div>
+            <div class="portrait-item"><div class="portrait portrait_62"></div><div class="portrait-label">Portrait 62</div></div>
+            <div class="portrait-item"><div class="portrait portrait_63"></div><div class="portrait-label">Portrait 63</div></div>
+            <div class="portrait-item"><div class="portrait portrait_64"></div><div class="portrait-label">Portrait 64</div></div>
+            <div class="portrait-item"><div class="portrait portrait_65"></div><div class="portrait-label">Portrait 65</div></div>
+            <div class="portrait-item"><div class="portrait portrait_66"></div><div class="portrait-label">Portrait 66</div></div>
+            <div class="portrait-item"><div class="portrait portrait_67"></div><div class="portrait-label">Portrait 67</div></div>
+            <div class="portrait-item"><div class="portrait portrait_68"></div><div class="portrait-label">Portrait 68</div></div>
+            <div class="portrait-item"><div class="portrait portrait_69"></div><div class="portrait-label">Portrait 69</div></div>
+            <div class="portrait-item"><div class="portrait portrait_70"></div><div class="portrait-label">Portrait 70</div></div>
+            <div class="portrait-item"><div class="portrait portrait_71"></div><div class="portrait-label">Portrait 71</div></div>
+            <div class="portrait-item"><div class="portrait portrait_72"></div><div class="portrait-label">Portrait 72</div></div>
+        </div>
+        
+        <div class="info-box">
+            <h2>📜 Usage Instructions</h2>
+            
+            <h3>Basic Usage:</h3>
+            <p>Add two classes to use a portrait:</p>
+            <div class="code-block"><code>&lt;div class="portrait portrait_15"&gt;&lt;/div&gt;</code></div>
+            
+            <h3>Size Options:</h3>
+            <p>You can adjust portrait sizes by adding a size class:</p>
+            <div class="code-block"><code>&lt;div class="portrait portrait_20 small"&gt;&lt;/div&gt;   &lt;!-- 175×250px --&gt;
+&lt;div class="portrait portrait_20 medium"&gt;&lt;/div&gt;  &lt;!-- 350×500px (default) --&gt;
+&lt;div class="portrait portrait_20 large"&gt;&lt;/div&gt;   &lt;!-- 525×750px --&gt;</code></div>
+            
+            <h3>Customization with CSS Variables:</h3>
+            <p>The CSS uses automated calculations. Adjust dimensions in the <code>:root</code> selector:</p>
+            <div class="code-block"><code>:root {
+    --portrait-sprite-width: 2100px;
+    --portrait-sprite-height: 6000px;
+    --portrait-width: 350px;
+    --portrait-height: 500px;
+    --portrait-display-width: 350px;
+    --portrait-display-height: 500px;
+}</code></div>
+            
+            <h3>Technical Details:</h3>
+            <ul>
+                <li>Sprite sheet: 2100×6000 pixels</li>
+                <li>Grid: 6 columns × 12 rows = 72 portraits</li>
+                <li>Portrait dimensions: 350×500 pixels</li>
+                <li>Transparent background</li>
+                <li>Uses CSS <code>calc()</code> for automated positioning</li>
+                <li>Hover effect: subtle zoom + enhanced shadow</li>
+            </ul>
+            
+            <p style="margin-top: 20px;"><strong>💡 Tip:</strong> Hover over any portrait to see the interactive effect!</p>
+        </div>
+    </div>
+    
+    <script>
+        function changeSize(size) {
+            const portraits = document.querySelectorAll('.portrait');
+            const buttons = document.querySelectorAll('.controls button');
+            const grid = document.getElementById('portraitGrid');
+            
+            // Remove all size classes
+            portraits.forEach(portrait => {
+                portrait.classList.remove('small', 'medium', 'large');
+                if (size !== 'medium') {
+                    portrait.classList.add(size);
+                }
+            });
+            
+            // Update grid class for proper layout
+            grid.classList.remove('small', 'medium', 'large');
+            grid.classList.add(size);
+            
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
