@@ -33,20 +33,27 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Set your fix mode variables to true
+          # Enable Biome Fixes
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
-          FIX_CSS: true
-          FIX_CSS_PRETTIER: true
+
+          # Disable Prettier for things Biome handles (CSS, JS, JSON)
+          VALIDATE_CSS_PRETTIER: false
+          VALIDATE_JAVASCRIPT_PRETTIER: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_TYPESCRIPT_PRETTIER: false
+
           FIX_HTML_PRETTIER: true
-          FIX_JAVASCRIPT_ES: true
-          FIX_JAVASCRIPT_PRETTIER: true
-          FIX_JSON: true
-          FIX_JSON_PRETTIER: true
-          FIX_MARKDOWN: true
-          MARKDOWN_PRETTIER: true
-          FIX_SPELL_CODESPELL: true
           FIX_MARKDOWN_PRETTIER: true
+          FIX_YAML_PRETTIER: true
+          FIX_SHELL_SHFMT: true
+          FIX_SPELL_CODESPELL: true
+
+          # Other
+          VALIDATE_PYTHON_RUFF: false
+          VALIDATE_PYTHON_BLACK: false
+          VALIDATE_GIT_COMMITLINT: false
+          SAVE_SUPER_LINTER_SUMMARY: true
           # To reuse the same Super-linter configuration that you use in the
           # lint job without duplicating it, see
           # https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md#share-environment-variables-between-environments
