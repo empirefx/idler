@@ -31,7 +31,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785145940)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785178713)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -40,7 +40,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 307ms. Fixed 139 files.
+Formatted 141 files in 300ms. Fixed 139 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -123,7 +123,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1236ms. No fixes applied.
+Checked 145 files in 1202ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -229,27 +229,6 @@ _test_/integration/gameEngine.integration.test.js:95:43 lint/complexity/useLiter
          95 │ + → → → const·inventory·=·state.placeInventory.village_center;
      96  96 │
      97  97 │   			expect(inventory).toBeDefined();
-
-
-_test_/integration/gameEngine.integration.test.js:139:22 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-    137 │ 			// Verify enemy still exists (enemies persist across navigation)
-    138 │ 			const enemyState = store.getState().enemies.byId;
-  > 139 │ 			expect(enemyState["test_enemy"]).toBeDefined();
-        │ 			                  ^^^^^^^^^^^^
-    140 │ 			expect(enemyState["test_enemy"].placeId).toBe("village_center");
-    141 │
-
-  i Unsafe fix: Use a literal key instead.
-
-    137 137 │   			// Verify enemy still exists (enemies persist across navigation)
-    138 138 │   			const enemyState = store.getState().enemies.byId;
-    139     │ - → → → expect(enemyState["test_enemy"]).toBeDefined();
-        139 │ + → → → expect(enemyState.test_enemy).toBeDefined();
-    140 140 │   			expect(enemyState["test_enemy"].placeId).toBe("village_center");
-    141 141 │
 
 
 _test_/combatService.staggered.test.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
@@ -374,6 +353,22 @@ _test_/gameLoop.test.js:12:7 lint/complexity/useOptionalChain  FIXABLE  ━━�
      13  13 │   			gameLoop.stop();
      14  14 │   		}
 
+
+src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │ import { useUIVisibility } from "../UIVisibilityContext";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
 
 static/avatar_test.html:419:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -2942,7 +2937,7 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 .release-please-manifest.json 10ms
 github_conf/branch_protection_rules.json 2ms
 jsconfig.json 3ms
-[90mpackage-lock.json[39m 71ms (unchanged)
+[90mpackage-lock.json[39m 70ms (unchanged)
 package.json 2ms
 release-please-config.json 3ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
 [[31merror[39m] [0m [90m 47 |[39m         [32m"id"[39m[33m:[39m [32m"sawmill"[39m[33m,[39m
