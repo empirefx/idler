@@ -12,7 +12,6 @@
 | HTML                       | Fail ❌           |
 | JSCPD                      | Fail ❌           |
 | JSON                       | Fail ❌           |
-| JSX_PRETTIER               | Fail ❌           |
 | MARKDOWN                   | Fail ❌           |
 | MARKDOWN_PRETTIER          | Pass ✅           |
 | NATURAL_LANGUAGE           | Fail ❌           |
@@ -24,7 +23,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785801976)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785863919)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +32,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 285ms. Fixed 1 file.
+Formatted 141 files in 318ms. Fixed 1 file.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -116,7 +115,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1208ms. No fixes applied.
+Checked 145 files in 1504ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -222,6 +221,27 @@ _test_/integration/gameEngine.integration.test.js:95:43 lint/complexity/useLiter
          95 │ + → → → const·inventory·=·state.placeInventory.village_center;
      96  96 │
      97  97 │   			expect(inventory).toBeDefined();
+
+
+_test_/integration/gameEngine.integration.test.js:139:22 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━
+
+  i The computed expression can be simplified without the use of a string literal.
+
+    137 │ 			// Verify enemy still exists (enemies persist across navigation)
+    138 │ 			const enemyState = store.getState().enemies.byId;
+  > 139 │ 			expect(enemyState["test_enemy"]).toBeDefined();
+        │ 			                  ^^^^^^^^^^^^
+    140 │ 			expect(enemyState["test_enemy"].placeId).toBe("village_center");
+    141 │
+
+  i Unsafe fix: Use a literal key instead.
+
+    137 137 │   			// Verify enemy still exists (enemies persist across navigation)
+    138 138 │   			const enemyState = store.getState().enemies.byId;
+    139     │ - → → → expect(enemyState["test_enemy"]).toBeDefined();
+        139 │ + → → → expect(enemyState.test_enemy).toBeDefined();
+    140 140 │   			expect(enemyState["test_enemy"].placeId).toBe("village_center");
+    141 141 │
 
 
 _test_/combatService.staggered.test.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
@@ -346,22 +366,6 @@ _test_/gameLoop.test.js:12:7 lint/complexity/useOptionalChain  FIXABLE  ━━�
      13  13 │   			gameLoop.stop();
      14  14 │   		}
 
-
-src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import { useUIVisibility } from "../UIVisibilityContext";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
 
 static/avatar_test.html:419:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -636,9 +640,9 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
    [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
 
 [1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/super-linter.yml:67:15
+  [1m[94m--> [0m/github/workspace/.github/workflows/super-linter.yml:69:15
    [1m[94m|[0m
-[1m[94m67[0m [1m[94m|[0m         uses: stefanzweifel/git-auto-commit-action@v7
+[1m[94m69[0m [1m[94m|[0m         uses: stefanzweifel/git-auto-commit-action@v7
    [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
    [1m[94m|[0m
    [1m[94m= [0m[1mnote[0m: audit confidence → High
@@ -915,7 +919,7 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 [37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
 [37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
-Scanned 4 files, found 122 errors in 2 files (44 ms)
+Scanned 4 files, found 122 errors in 2 files (43 ms)
 ```
 
 </details>
@@ -2154,17 +2158,6 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
   49:32  error  Parsing error: Unexpected token '('
 
 ✖ 1 problem (1 error, 0 warnings)
-```
-
-</details>
-
-<details>
-
-<summary>JSX_PRETTIER</summary>
-
-```text
-Checking formatting...[[33mwarn[39m] _test_/notificationSystem.test.jsx
-[[33mwarn[39m] Code style issues found in the above file. Run Prettier with --write to fix.
 ```
 
 </details>
