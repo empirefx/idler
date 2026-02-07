@@ -47,11 +47,16 @@ jobs:
           VALIDATE_JSX: false
           VALIDATE_TSX: false
           VALIDATE_VUE: false
+          VALIDATE_JSON: false
+          VALIDATE_JSONC: false
+          VALIDATE_JSON5: false
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_CSS: false
           VALIDATE_JSX_PRETTIER: false
           VALIDATE_VUE_PRETTIER: false
+          VALIDATE_JSONC_PRETTIER: false
+          VALIDATE_JSON5_PRETTIER: false
 
           # Other
           FIX_MARKDOWN_PRETTIER: true
