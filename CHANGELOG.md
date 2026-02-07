@@ -1,5 +1,53 @@
 # Changelog
 
+## [3.0.0](https://github.com/empirefx/idler/compare/v2.0.0...v3.0.0) (2026-02-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **engine:** GameEngine class split into focused services while preserving all functionality
+
+### Features
+
+* add NPC system with inventory management and UI components ([85dd5bc](https://github.com/empirefx/idler/commit/85dd5bcf3f4143b414e175086ef4126370d4146e))
+* add visual circle timer when enemies attack ([05e6845](https://github.com/empirefx/idler/commit/05e6845a659ebfcb36a512c677a62c5aaa64a48b))
+* **combat:** player can lock an target, auto-attack random enemy ([6ef1005](https://github.com/empirefx/idler/commit/6ef1005d2ef90b2db04159149f3cb571197972fb))
+* **engine:** implement unified GameLoop system ([6a1a47a](https://github.com/empirefx/idler/commit/6a1a47aa0292fbfa0827d364de0ed9dd2bbd7e4b))
+* implement staggered attack system with wave spawning ([4bcedfa](https://github.com/empirefx/idler/commit/4bcedfaa7ef53495b5b5cddd1e16156af8602453))
+* **inventory:** add player and place inventory slices ([a0908a7](https://github.com/empirefx/idler/commit/a0908a7bbdc534bbdf297760ddff766ba77f5f78))
+* **inventory:** extract validators and utilities ([fa7c0c4](https://github.com/empirefx/idler/commit/fa7c0c4ec219251241dd826354d90e3f440c940f))
+* **inventory:** implement cross-slice thunks ([caaaab1](https://github.com/empirefx/idler/commit/caaaab1395ffd1d91bb2bead32ace6211eadaeb4))
+* **inventory:** improve item movement ([9b43381](https://github.com/empirefx/idler/commit/9b4338182845bc076207cee056b9cc7b142b58b5))
+* log groups and filter it ([10f84b7](https://github.com/empirefx/idler/commit/10f84b71ee3e9ac7612069c83387310abdc2af5f))
+* **notification:** add display messages to the player ([9d6729f](https://github.com/empirefx/idler/commit/9d6729fe4bbc14f38fe55c32bc7f7377bece6aa9))
+* **npc:** add interactive dialog system ([9785a67](https://github.com/empirefx/idler/commit/9785a6715573d76066fc91b4d7b51b3f0d4d4361))
+
+
+### Bug Fixes
+
+* add CombatCoordinationService initialization in constructor ([fcf4881](https://github.com/empirefx/idler/commit/fcf48815daf018793445f3c5f572e0545575f4b4))
+* **combat:** add entity dead animation ([8647cd1](https://github.com/empirefx/idler/commit/8647cd13f807ec844a74b32ea27ab86894c16b2f))
+* display correct monster name instead id ([c80a94c](https://github.com/empirefx/idler/commit/c80a94c57f41662187f206866f398d784336483a))
+* display when max weight is about to reach limit ([846ec3a](https://github.com/empirefx/idler/commit/846ec3afd6a8b8605647fecd37530b5eba829f0c))
+* enemies attacking at the same fixed time ([4849f78](https://github.com/empirefx/idler/commit/4849f789b95dcf2cae5709a4e7623a05c5195cd4))
+* enemy attack delay time ([211dc27](https://github.com/empirefx/idler/commit/211dc279f1e4f607f43a978058aa651b40f523a8))
+* **gameEngine:** miss getVaultInventory method ([21aa499](https://github.com/empirefx/idler/commit/21aa4993c7f0cea0ff35f042ecd85ebf2a6339f6))
+* **gameEngine:** now handled by SaveService ([24c2ff8](https://github.com/empirefx/idler/commit/24c2ff8f11a28094ce178356791e1b13fd626444))
+* improve equipment slot interaction ([9d00a4e](https://github.com/empirefx/idler/commit/9d00a4ea802a20d8a5392cdf6145cc80a1c2eff9))
+* initial for icons ([9d05261](https://github.com/empirefx/idler/commit/9d05261439a30412fccad29a0a372f0b981513d3))
+* log combat showing fixed 5 number ([431f487](https://github.com/empirefx/idler/commit/431f4872f2eae6ccf60ff9bc93736c5f9c76f31a))
+* log player doing damage to unknown enemy ([add5796](https://github.com/empirefx/idler/commit/add5796d31e8d13aa796b28016a3c3a40bd71406))
+* mismatches & prevent middleware to exit before processing the switch statement ([1b8836f](https://github.com/empirefx/idler/commit/1b8836f04ca7c801f5b6e846abb0fd0669792548))
+* npc dont overlap with workers section ([09e0d2e](https://github.com/empirefx/idler/commit/09e0d2e8703c46bbfab5b12dbad526db4e5800ba))
+* places-grid div will now be populated ([08d275c](https://github.com/empirefx/idler/commit/08d275ceea4d2583d67ecf57813c9104f9f45b00))
+* prevent recreate store ([8a7f4a6](https://github.com/empirefx/idler/commit/8a7f4a6ba4dec707898c779fcc29c069bebf565d))
+* **productionService:** produced items should be send to closest place inventory & tests ([ba046f5](https://github.com/empirefx/idler/commit/ba046f5c98ab24aa08e4a452be601985491bffbb))
+
+
+### Code Refactoring
+
+* **engine:** decompose GameEngine into modular services ([990fa31](https://github.com/empirefx/idler/commit/990fa313612417c311d75866c192620dd36041b1))
+
 ## [2.0.0](https://github.com/empirefx/idler/compare/v1.0.0...v2.0.0) (2025-04-23)
 
 
