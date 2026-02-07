@@ -31,7 +31,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785042066)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21785076625)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -40,7 +40,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Formatted 141 files in 316ms. Fixed 139 files.
+Formatted 141 files in 293ms. Fixed 139 files.
 Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × unexpected character `(`
@@ -123,7 +123,7 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 184.
-Checked 145 files in 1213ms. No fixes applied.
+Checked 145 files in 1200ms. No fixes applied.
 Found 71 errors.
 Found 121 warnings.
 Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2937,9 +2937,9 @@ Error: ERROR: jscpd found too many duplicates (4.72%) over threshold (0%)
 .release-please-manifest.json 10ms
 github_conf/branch_protection_rules.json 2ms
 jsconfig.json 3ms
-[90mpackage-lock.json[39m 76ms (unchanged)
+[90mpackage-lock.json[39m 71ms (unchanged)
 package.json 2ms
-release-please-config.json 4ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
+release-please-config.json 3ms[[31merror[39m] _test_/fixtures/gameStates/testStates.json: SyntaxError: 'ArrowFunctionExpression' is not allowed in JSON. (49:32)
 [[31merror[39m] [0m [90m 47 |[39m         [32m"id"[39m[33m:[39m [32m"sawmill"[39m[33m,[39m
 [[31merror[39m]  [90m 48 |[39m         [32m"name"[39m[33m:[39m [32m"Sawmill"[39m[33m,[39m
 [[31merror[39m] [31m[1m>[22m[39m[90m 49 |[39m         [32m"calculateProduction"[39m[33m:[39m () [33m=>[39m [35m10[39m[33m,[39m
