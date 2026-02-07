@@ -1,112 +1,143 @@
 /* Notification System Styles */
 .notification-container {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  pointer-events: none;
-  width: 800px;
+	position: fixed;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1001;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+	pointer-events: none;
+	width: 800px;
 }
 
 .notification {
-  color: #fff;
-  padding: var(--spacing-xs) 0;
-  border-radius: var(--border-radius-md);
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  animation: slideIn 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  cursor: pointer;
+	color: #fff;
+	padding: var(--spacing-xs) 0;
+	border-radius: var(--border-radius-md);
+	pointer-events: auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	animation: slideIn 0.3s ease-out;
+	transition: all 0.3s ease-out;
+	cursor: pointer;
 }
 
 .notification:hover {
-  color: white;
+	color: white;
 }
 
 .notification-error {
-  background-size: 100% 100%;
-  background-position: 0px 0px,0px 0px;
-  background-image: radial-gradient(75% 119% at 50% 14%, #FFFFFF00 66%, #000000FF 67%),linear-gradient(0deg, #FFFFFF00 0%, #D40000FF 100%);
+	background-size: 100% 100%;
+	background-position:
+		0 0,
+		0 0;
+	background-image:
+		radial-gradient(75% 119% at 50% 14%, #fff0 66%, #000f 67%),
+		linear-gradient(0deg, #fff0 0%, #d40000ff 100%);
 }
 
 .notification-warning {
-  color: #ffe8ba;
-  background-size: 100% 100%;
-  background-position: 0px 0px,0px 0px;
-  background-image: linear-gradient(0deg, #fff0 0%, #f7c737 95%, #fff 100%);
-  mask-image: radial-gradient(75% 300% at 50% 10%, #000 0%, #000 44%, #0000 62%);
+	color: #ffe8ba;
+	background-size: 100% 100%;
+	background-position:
+		0 0,
+		0 0;
+	background-image: linear-gradient(0deg, #fff0 0%, #f7c737 95%, #fff 100%);
+	mask-image: radial-gradient(
+		75% 300% at 50% 10%,
+		#000 0%,
+		#000 44%,
+		#0000 62%
+	);
 }
 
 .notification-info {
-  background-size: 100% 100%;
-  background-position: 0px 0px,0px 0px;
-  background-image: radial-gradient(75% 75% at 50% 100%, #fff 0%, #7d7d7d 34%, #0069ff00 100%), linear-gradient(0deg, #fff0 32%, #acacac 100%);
-  mask-image: radial-gradient(75% 120% at 50% 10%, #747474FF 0%, #909090FF 44%, #0069FF00 62%);
+	background-size: 100% 100%;
+	background-position:
+		0 0,
+		0 0;
+	background-image:
+		radial-gradient(75% 75% at 50% 100%, #fff 0%, #7d7d7d 34%, #0069ff00 100%),
+		linear-gradient(0deg, #fff0 32%, #acacac 100%);
+	mask-image: radial-gradient(
+		75% 120% at 50% 10%,
+		#747474ff 0%,
+		#909090ff 44%,
+		#0069ff00 62%
+	);
 }
 
 .notification-success {
-  color: #80ff80;
-  background-size: 100% 100%;
-  background-position: 0px 0px,0px 0px;
-  background-image: radial-gradient(75% 119% at 50% 14%, #fff0 96%, #000 67%), linear-gradient(0deg, #fff0 0%, #009e09 93%, #00c80f 100%);
-  mask-image: radial-gradient(75% 300% at 50% 10%, #000 0%, #000 44%, #0000 62%);
+	color: #80ff80;
+	background-size: 100% 100%;
+	background-position:
+		0 0,
+		0 0;
+	background-image:
+		radial-gradient(75% 119% at 50% 14%, #fff0 96%, #000 67%),
+		linear-gradient(0deg, #fff0 0%, #009e09 93%, #00c80f 100%);
+	mask-image: radial-gradient(
+		75% 300% at 50% 10%,
+		#000 0%,
+		#000 44%,
+		#0000 62%
+	);
 }
 
 .notification-message {
-  flex: 1;
-  font-weight: bold;
-  font-size: var(--font-size-xs);
-  line-height: var(--line-height-base);
-  text-align: center;
+	flex: 1;
+	font-weight: bold;
+	font-size: var(--font-size-xs);
+	line-height: var(--line-height-base);
+	text-align: center;
 }
 
 .notification-close {
-  background: none;
-  border: none;
-  color: var(--color-gray);
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  padding: var(--spacing-xs);
-  margin-left: var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  transition: all 0.2s ease;
-  line-height: 1;
+	background: none;
+	border: none;
+	color: var(--color-gray);
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	padding: var(--spacing-xs);
+	margin-left: var(--spacing-md);
+	border-radius: var(--border-radius-sm);
+	transition: all 0.2s ease;
+	line-height: 1;
 }
 
 .notification-close:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.1);
+	color: #fff;
+	background: rgb(255 255 255 / 10%);
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes slideOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
 }
 
 .notification.removing {
-  animation: slideOut 0.3s ease-out;
+	animation: slideOut 0.3s ease-out;
 }

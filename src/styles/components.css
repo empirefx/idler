@@ -1,190 +1,190 @@
 .game-layout {
-  margin: 0 auto;
-  padding: 20px;
+	margin: 0 auto;
+	padding: 20px;
 }
 
 .game-main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-  max-width: var(--breakpoint-xl);
-  margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-lg);
+	max-width: var(--breakpoint-xl);
+	margin: 0 auto;
 }
 
 .workers-section,
 .buildings-section,
 .places-section,
 .player-section {
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-md);
+	border-radius: var(--border-radius-md);
+	padding: var(--spacing-md);
 }
 
 .workers-section h2,
 .buildings-section h2,
 .places-section h2 {
-  margin: 0 0 var(--spacing-md) 0;
-  color: var(--color-primary);
-  text-transform: uppercase;
+	margin: 0 0 var(--spacing-md) 0;
+	color: var(--color-primary);
+	text-transform: uppercase;
 }
 
 .action-btn,
 .clear-cache-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+	padding: 0.5rem 1rem;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.9rem;
+	transition: background-color 0.2s;
 }
 
 .clear-cache-btn {
-  background-color: #ff4444;
-  color: white;
+	background-color: #f44;
+	color: white;
 }
 
 .action-btn {
-  background-color: var(--color-gray);
-  color: white;
+	background-color: var(--color-gray);
+	color: white;
 }
 
 .clear-cache-btn:hover {
-  background-color: var(--color-danger);
+	background-color: var(--color-danger);
 }
 
 .action-btn:hover {
-  background-color: var(--color-dark);
+	background-color: var(--color-dark);
 }
 
-/* current place styles (ui/components/display/CurrentPlaceDisplay.js)*/
+/* current place styles (ui/components/display/CurrentPlaceDisplay.js) */
 
 .current-place {
-  padding: 1rem;
+	padding: 1rem;
 }
 
 .current-place h2 {
-  margin: 0 0 1rem 0;
+	margin: 0 0 1rem;
 }
 
-/* inventory styles (ui/components/display/InventoryDisplay.js)*/
+/* inventory styles (ui/components/display/InventoryDisplay.js) */
 
 .inventory-flex {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-sm);
+	justify-content: center;
+	align-items: center;
 }
 
 .inventory-flex > div {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-gray-light);
-  text-shadow: 0px 0px 3px black;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+	border-radius: var(--border-radius-sm);
+	background-color: var(--color-gray-light);
+	text-shadow: 0 0 3px black;
 }
 
 .inventory-flex > .filled:hover {
-  cursor: pointer;
-  background-color: var(--color-gray);
+	cursor: pointer;
+	background-color: var(--color-gray);
 }
 
 .inventory-flex .empty {
-  background-color: var(--color-dark);
+	background-color: var(--color-dark);
 }
 
 .inventory-flex > div span {
-  position: absolute;
-  bottom:0;
-  right: 5px;
-  font-weight: bold;
+	position: absolute;
+	bottom: 0;
+	right: 5px;
+	font-weight: bold;
 }
 
 .inventory-info {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  top: 40px;
-  right: 20px;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+	top: 40px;
+	right: 20px;
 }
 
 .inventory-info span {
-  font-weight:normal;
+	font-weight: normal;
 }
 
 .inventory-info b {
-  color: var(--color-gray-light);
-  font-weight: bold;
+	color: var(--color-gray-light);
+	font-weight: bold;
 }
 
 .inventory-info .weight-warning {
-  color: #ff4e4e;
-  font-weight: bolder;
-  padding-left: 30px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Cpath fill='%23ff4e4e' d='M36 6c-5.523 0-10 4.477-10 10v6H16v34h40V22H46v-6c0-5.523-4.477-10-10-10zm0 6c2.761 0 5 2.239 5 5v6H31v-6c0-2.761 2.239-5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
-  background-position: left center;
+	color: #ff4e4e;
+	font-weight: bolder;
+	padding-left: 30px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Cpath fill='%23ff4e4e' d='M36 6c-5.523 0-10 4.477-10 10v6H16v34h40V22H46v-6c0-5.523-4.477-10-10-10zm0 6c2.761 0 5 2.239 5 5v6H31v-6c0-2.761 2.239-5 5-5z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-size: 25px 25px;
+	background-position: left center;
 }
 
-/* key bind styles (ui/components/common/KeyBind.js)*/
+/* key bind styles (ui/components/common/KeyBind.js) */
 
 .key-bind {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: 6px;
-  font-size: var(--font-size-sm);
-  background-color: var(--color-gray);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border-radius: 6px;
+	font-size: var(--font-size-sm);
+	background-color: var(--color-gray);
+	box-shadow: 0 2px 3px rgb(0 0 0 / 30%);
 }
 
 .key-bind b {
-  color: var(--color-gray-dark);
+	color: var(--color-gray-dark);
 }
 
 .key-bind:hover {
-  cursor: default;
+	cursor: default;
 }
 
-/* tooltip text (ui/components/common/ToolTip.js)*/
+/* tooltip text (ui/components/common/ToolTip.js) */
 
 .tooltip {
-  visibility: hidden;
-  width: max-content;
-  background-color: #4579bd6e;
-  color: #aed7ff;
-  text-align: center;
-  text-transform: capitalize !important;
-  border-radius: var(--border-radius-sm);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  position: absolute;
-  z-index: 100;
-  bottom: 140%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
+	visibility: hidden;
+	width: max-content;
+	background-color: #4579bd6e;
+	color: #aed7ff;
+	text-align: center;
+	text-transform: capitalize !important;
+	border-radius: var(--border-radius-sm);
+	padding: var(--spacing-xs) var(--spacing-sm);
+	position: absolute;
+	z-index: 100;
+	bottom: 140%;
+	left: 50%;
+	transform: translateX(-50%);
+	opacity: 0;
+	transition: opacity 0.2s;
 }
 
 .tooltip::after {
-  content: " ";
-  position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #4579bd6e transparent transparent transparent;
+	content: " ";
+	position: absolute;
+	top: 100%; /* At the bottom of the tooltip */
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #4579bd6e transparent transparent;
 }
 
 .key-bind:hover > .tooltip {
-  visibility: visible;
-  opacity: 1;
+	visibility: visible;
+	opacity: 1;
 }

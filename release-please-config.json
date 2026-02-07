@@ -1,22 +1,22 @@
 {
-  "release-type": "node",
-  "packages": {
-    ".": {
-      "changelog-path": "CHANGELOG.md",
-      "release-type": "node",
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true,
-      "draft": false,
-      "prerelease": false,
-      "include-v-in-tag": true
-    }
-  },
-  "changelog-sections": [
-    { "type": "feat", "section": "Features" },
-    { "type": "fix", "section": "Bug Fixes" },
-    { "type": "refactor", "section": "Code Refactoring", "hidden": false },
-    { "type": "chore", "section": "Miscellaneous", "hidden": true },
-    { "type": "test", "section": "Tests", "hidden": true },
-    { "type": "ci", "section": "Continuous Integration", "hidden": true }
-  ]
+	"release-type": "node",
+	"packages": {
+		".": {
+			"changelog-path": "CHANGELOG.md",
+			"release-type": "node",
+			"bump-minor-pre-major": true,
+			"bump-patch-for-minor-pre-major": true,
+			"draft": false,
+			"prerelease": false,
+			"include-v-in-tag": true
+		}
+	},
+	"changelog-sections": [
+		{ "type": "feat", "section": "Features" },
+		{ "type": "fix", "section": "Bug Fixes" },
+		{ "type": "refactor", "section": "Code Refactoring", "hidden": false },
+		{ "type": "chore", "section": "Miscellaneous", "hidden": true },
+		{ "type": "test", "section": "Tests", "hidden": true },
+		{ "type": "ci", "section": "Continuous Integration", "hidden": true }
+	]
 }
