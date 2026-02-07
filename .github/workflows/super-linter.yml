@@ -37,11 +37,18 @@ jobs:
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
 
-          # Disable Prettier for things Biome handles (CSS, JS, JSON)
+          # DISABLE Prettier for languages Biome handles
           VALIDATE_CSS_PRETTIER: false
+          VALIDATE_HTML_PRETTIER: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
           VALIDATE_JSON_PRETTIER: false
           VALIDATE_TYPESCRIPT_PRETTIER: false
+          VALIDATE_GRAPHQL_PRETTIER: false
+
+          # DISABLE ESLint & Stylelint (Biome handles these)
+          VALIDATE_JAVASCRIPT_ES: false
+          VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_CSS: false
 
           FIX_HTML_PRETTIER: true
           FIX_MARKDOWN_PRETTIER: true
