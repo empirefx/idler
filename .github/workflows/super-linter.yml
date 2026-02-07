@@ -62,6 +62,7 @@ jobs:
           # Other
           FIX_SHELL_SHFMT: true
           FIX_SPELL_CODESPELL: true
+          FIX_GITHUB_ACTIONS_ZIZMOR: true
           VALIDATE_PYTHON_RUFF: false
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_GIT_COMMITLINT: false
