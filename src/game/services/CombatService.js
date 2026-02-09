@@ -5,7 +5,6 @@ import { enemyAttacked, playerDamaged } from "../events";
 import { addItem } from "../../store/slices/playerInventorySlice";
 import { gainExp, updateLastAttackTime } from "../../store/slices/playerSlice";
 import { ItemFactory } from "../factory/itemFactory";
-import { placesData } from "../../data/places";
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.
