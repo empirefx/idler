@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { InventoryService } from "../src/game/services/inventoryService";
+import { InventoryService } from "../src/game/services/InventoryService";
 
 describe("InventoryService", () => {
 	it("getInventoryForPlace returns correct inventory or undefined", () => {

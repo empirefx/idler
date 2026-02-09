@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { WaveSpawner } from "../src/game/services/spawnService";
+import { WaveSpawner } from "../src/game/services/SpawnService";
 import { enemyCatalog } from "../src/data/enemyCatalog";
 import { placesData } from "../src/data/places";
 

@@ -6,18 +6,18 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 
 ## TO-DO
 
-#### Player
+### Player
 
 - [ ] `Player` death & punishment(15% lost EXP)
 - [ ] `Player` skills(ex powerful skill, AOE skill)
 
-#### Enemies
+### Enemies
 
 - [x] `Enemy` pool should attack(all at once) in different delay times
 - [x] `Enemy` pool should have different `enemies`
 - [ ] `Enemy`(some) should have a chance to become a `worker`
 
-#### Mechanics
+### Mechanics
 
 - [ ] Calculate DMG/DEF with `stats`, `equipment`, `skills`(?)
 - [x] `Inventory` should display a slider when item quantity is more than 1
@@ -30,7 +30,7 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 - [ ] `Dialog` ui
 - [ ] `Quest` log
 
-#### Other
+### Other
 
 - [x] `Log` better format for better readability
 - [x] Alert `player` he can't carry that much `weight`

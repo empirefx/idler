@@ -3,7 +3,7 @@ import Logger from "../utils/Logger";
 import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice";
 import { InventoryService } from "../services/InventoryService";
 import { ItemFactory } from "../factory/itemFactory";
-import SpawnService from "../services/spawnService";
+import SpawnService from "../services/SpawnService";
 import { EventBusService } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
 import { workerCreatedItem } from "../events";
