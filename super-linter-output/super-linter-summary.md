@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850951402)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850994997)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 92.
-Checked 103 files in 969ms. No fixes applied.
+Checked 103 files in 888ms. No fixes applied.
 Found 50 errors.
 Found 59 warnings.
 Found 3 infos.src/store/slices/inventory/inventoryUtils.js:101:4 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━
@@ -186,62 +186,6 @@ src/store/slices/npcSlice.js:60:32 lint/correctness/noUnusedFunctionParameters  
        60 │ + → [(state)·=>·state.npcs.npcs,·(_state,·npcId)·=>·npcId],
     61 61 │   	(npcs, npcId) => npcs[npcId] || null,
     62 62 │   );
-
-
-src/store/slices/placesSlice.js:65:5 lint/complexity/noCommaOperator ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! The comma operator is disallowed.
-
-    63 │ 		builder.addCase("@@INIT", (state) => {
-    64 │ 			updateAvailableConnections(state);
-  > 65 │ 		}),
-       │ 		  ^
-    66 │ 			builder.addMatcher(
-    67 │ 				(action) => action.type === "places/navigateToPlace",
-
-  i Its use is often confusing and obscures side effects.
-
-
-src/store/slices/placesSlice.js:13:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    11 │ // Initialize available connections for the initial state
-    12 │ const currentPlace = placesData[initialState.currentPlaceId];
-  > 13 │ if (currentPlace && currentPlace.connections) {
-       │     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    14 │ 	initialState.availableConnections = currentPlace.connections.map(
-    15 │ 		(placeId) => ({
-
-  i Unsafe fix: Change to an optional chain.
-
-    11 11 │   // Initialize available connections for the initial state
-    12 12 │   const currentPlace = placesData[initialState.currentPlaceId];
-    13    │ - if·(currentPlace·&&·currentPlace.connections)·{
-       13 │ + if·(currentPlace?.connections)·{
-    14 14 │   	initialState.availableConnections = currentPlace.connections.map(
-    15 15 │   		(placeId) => ({
-
-
-src/store/slices/placesSlice.js:25:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    23 │ const updateAvailableConnections = (state) => {
-    24 │ 	const currentPlace = state[state.currentPlaceId];
-  > 25 │ 	if (currentPlace && currentPlace.connections) {
-       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    26 │ 		state.availableConnections = currentPlace.connections.map((placeId) => ({
-    27 │ 			id: placeId,
-
-  i Unsafe fix: Change to an optional chain.
-
-    23 23 │   const updateAvailableConnections = (state) => {
-    24 24 │   	const currentPlace = state[state.currentPlaceId];
-    25    │ - → if·(currentPlace·&&·currentPlace.connections)·{
-       25 │ + → if·(currentPlace?.connections)·{
-    26 26 │   		state.availableConnections = currentPlace.connections.map((placeId) => ({
-    27 27 │   			id: placeId,
 
 
 src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
@@ -398,6 +342,66 @@ src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImport
 
     1 │ import·React·from·"react";
       │ --------------------------
+
+src/ui/components/display/InventoryDisplay.js:194:7 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    193 │ 					return (
+  > 194 │ 						<div
+        │ 						^^^^
+  > 195 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
+         ...
+  > 218 │ 							}
+  > 219 │ 						>
+        │ 						^
+    220 │ 							{item?.type === "equipment" && (
+    221 │ 								// Display armor/weapon sprite
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/display/InventoryDisplay.js:194:7 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    193 │ 					return (
+  > 194 │ 						<div
+        │ 						^^^^
+  > 195 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
+         ...
+  > 218 │ 							}
+  > 219 │ 						>
+        │ 						^
+    220 │ 							{item?.type === "equipment" && (
+    221 │ 								// Display armor/weapon sprite
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/display/InventoryDisplay.js:50:28 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━
+
+  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
+
+    49 │ 	// Handle right-click context menu for moving items between inventories
+  > 50 │ 	const handleContextMenu = useCallback(
+       │ 	                          ^^^^^^^^^^^
+    51 │ 		(e, item) => {
+    52 │ 			if (!otherInventory) return; // Do nothing if no target inventory
+
+  i Hooks should not be called after an early return.
+
+    45 │ 	const dispatch = useDispatch();
+    46 │
+  > 47 │ 	if (!inventory) return null; // If inventory is not found, render nothing
+       │ 	                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    48 │
+    49 │ 	// Handle right-click context menu for moving items between inventories
+
+  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
+
+  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
 
 src/ui/components/display/LogDisplay.js:15:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
 
