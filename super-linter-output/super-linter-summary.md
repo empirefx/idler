@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21849756676)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850005878)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,27 +32,11 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 149.
-Checked 103 files in 779ms. No fixes applied.
+Diagnostics not shown: 143.
+Checked 103 files in 767ms. No fixes applied.
 Found 62 errors.
-Found 102 warnings.
-Found 5 infos.src/App.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { UIVisibilityProvider } from "./ui/UIVisibilityContext";
-    3 │ import InputManager from "./ui/InputManager";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/game/engine/GameEngine.js:152:2 lint/suspicious/useAdjacentOverloadSignatures ━━━━━━━━━━━━━━━━━━
+Found 96 warnings.
+Found 5 infos.src/game/engine/GameEngine.js:152:2 lint/suspicious/useAdjacentOverloadSignatures ━━━━━━━━━━━━━━━━━━
 
   ! All getAssignedWorkers signatures must be adjacent.
 
@@ -133,6 +117,76 @@ src/game/engine/GameEngine.js:32:4 lint/correctness/noUnusedFunctionParameters �
   i Unused parameters might be the result of an incomplete refactoring.
 
 
+src/game/engine/GameEngine.js:33:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    31 │ 		{
+    32 │ 			inventoryService = InventoryService,
+  > 33 │ 			itemFactory = ItemFactory,
+       │ 			^^^^^^^^^^^
+    34 │ 			productionService = ProductionService,
+    35 │ 			saveService = SaveService,
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+
+src/game/engine/GameEngine.js:34:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    32 │ 			inventoryService = InventoryService,
+    33 │ 			itemFactory = ItemFactory,
+  > 34 │ 			productionService = ProductionService,
+       │ 			^^^^^^^^^^^^^^^^^
+    35 │ 			saveService = SaveService,
+    36 │ 			navigationService = NavigationService,
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+
+src/game/engine/GameEngine.js:35:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    33 │ 			itemFactory = ItemFactory,
+    34 │ 			productionService = ProductionService,
+  > 35 │ 			saveService = SaveService,
+       │ 			^^^^^^^^^^^
+    36 │ 			navigationService = NavigationService,
+    37 │ 			enemyLifecycleService = EnemyLifecycleService,
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+
+src/game/engine/GameEngine.js:36:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    34 │ 			productionService = ProductionService,
+    35 │ 			saveService = SaveService,
+  > 36 │ 			navigationService = NavigationService,
+       │ 			^^^^^^^^^^^^^^^^^
+    37 │ 			enemyLifecycleService = EnemyLifecycleService,
+    38 │ 			combatService = CombatService,
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+
+src/game/engine/GameEngine.js:37:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    35 │ 			saveService = SaveService,
+    36 │ 			navigationService = NavigationService,
+  > 37 │ 			enemyLifecycleService = EnemyLifecycleService,
+       │ 			^^^^^^^^^^^^^^^^^^^^^
+    38 │ 			combatService = CombatService,
+    39 │ 			gameLoop = GameLoop,
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+
 src/game/factory/enemyFactory.js:5:8 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   ! Avoid classes that contain only static members.
@@ -169,7 +223,7 @@ src/game/factory/itemFactory.js:4:8 lint/complexity/noStaticOnlyClass ━━━�
   i Prefer using simple functions instead of classes with only static members.
 
 
-src/ui/components/sections/PlayerEntitySection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+src/ui/components/sections/PlacesSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
   ! This import is unused.
 
@@ -177,77 +231,6 @@ src/ui/components/sections/PlayerEntitySection.js:1:8 lint/correctness/noUnusedI
       │        ^^^^^
     2 │ import { useSelector } from "react-redux";
     3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/sections/PlayerSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/sections/WorkersSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/hooks/useGameState.js:16:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
-
-  ! This variable gameEngine is unused.
-
-    14 │ 		gameEngineRef.current = new GameEngine(dispatch, store);
-    15 │ 	}
-  > 16 │ 	const gameEngine = gameEngineRef.current;
-       │ 	      ^^^^^^^^^^
-    17 │ 	const [error, setError] = useState(null);
-    18 │ 	const isInitialized = useRef(false);
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend gameEngine with an underscore.
-
-    14 14 │   		gameEngineRef.current = new GameEngine(dispatch, store);
-    15 15 │   	}
-    16    │ - → const·gameEngine·=·gameEngineRef.current;
-       16 │ + → const·_gameEngine·=·gameEngineRef.current;
-    17 17 │   	const [error, setError] = useState(null);
-    18 18 │   	const isInitialized = useRef(false);
-
-
-src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import { useUIVisibility } from "../UIVisibilityContext";
 
   i Unused imports might be the result of an incomplete refactoring.
 
@@ -418,8 +401,8 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ```text
 Clone found (javascript):
- - /github/workspace/src/ui/components/sections/WorkersSection.js [43:9 - 51:10] (8 lines, 75 tokens)
-   /github/workspace/src/ui/components/sections/WorkersSection.js [29:11 - 37:3]
+ - /github/workspace/src/ui/components/sections/WorkersSection.js [42:9 - 50:10] (8 lines, 75 tokens)
+   /github/workspace/src/ui/components/sections/WorkersSection.js [28:11 - 36:3]
 
 Clone found (javascript):
  - /github/workspace/src/ui/components/display/LogDisplay.js [2:14 - 11:7] (9 lines, 95 tokens)
@@ -586,18 +569,18 @@ Clone found (javascript):
    /github/workspace/_test_/combatService.test.js [14:2 - 34:2]
 
 Clone found (javascript):
- - /github/workspace/src/ui/components/sections/WorkersSection.js [43:9 - 51:10] (8 lines, 75 tokens)
-   /github/workspace/src/ui/components/sections/WorkersSection.js [29:11 - 37:3]
+ - /github/workspace/src/ui/components/sections/WorkersSection.js [42:9 - 50:10] (8 lines, 75 tokens)
+   /github/workspace/src/ui/components/sections/WorkersSection.js [28:11 - 36:3]
 
- 43 │ 29 │ .map((w) => (
- 44 │ 30 │ 							<WorkerCard
- 45 │ 31 │ 								key={w.id}
- 46 │ 32 │ 								worker={w}
- 47 │ 33 │ 								buildings={currentBuildings.map((id) => buildings[id])}
- 48 │ 34 │ 							/>
- 49 │ 35 │ 						))
- 50 │ 36 │ 					) : (
- 51 │ 37 │ 						<div className="no-workers-message">Currently
+ 42 │ 28 │ .map((w) => (
+ 43 │ 29 │ 							<WorkerCard
+ 44 │ 30 │ 								key={w.id}
+ 45 │ 31 │ 								worker={w}
+ 46 │ 32 │ 								buildings={currentBuildings.map((id) => buildings[id])}
+ 47 │ 33 │ 							/>
+ 48 │ 34 │ 						))
+ 49 │ 35 │ 					) : (
+ 50 │ 36 │ 						<div className="no-workers-message">Currently
 
 Clone found (javascript):
  - /github/workspace/src/ui/components/display/LogDisplay.js [2:14 - 11:7] (9 lines, 95 tokens)
