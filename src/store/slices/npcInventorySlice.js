@@ -3,10 +3,7 @@ import {
 	validateSlotLimit,
 	validateItemExists,
 } from "./inventory/inventoryValidators.js";
-import {
-	canItemsStack,
-	cloneItem,
-} from "./inventory/inventoryUtils.js";
+import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
 
 // Initial NPC inventory state
 const initialState = {
@@ -146,8 +143,7 @@ const npcInventorySlice = createSlice({
 
 		// Move item from NPC inventory to another inventory
 		moveItem(state, action) {
-			const { fromInventoryId, itemId, quantity } =
-				action.payload;
+			const { fromInventoryId, itemId, quantity } = action.payload;
 
 			const inventory = state[fromInventoryId];
 			if (!inventory) return;

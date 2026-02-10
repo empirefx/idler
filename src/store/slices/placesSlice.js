@@ -64,12 +64,12 @@ export const placesSlice = createSlice({
 			updateAvailableConnections(state);
 		});
 		builder.addMatcher(
-				(action) => action.type === "places/navigateToPlace",
-				(state) => {
-					// Ensure available connections are updated after navigation
-					updateAvailableConnections(state);
-				},
-			);
+			(action) => action.type === "places/navigateToPlace",
+			(state) => {
+				// Ensure available connections are updated after navigation
+				updateAvailableConnections(state);
+			},
+		);
 	},
 });
 
