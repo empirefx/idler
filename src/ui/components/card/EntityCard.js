@@ -6,6 +6,7 @@ import CircularProgressTimer from "../common/CircularProgressTimer";
 const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	const dispatch = useDispatch();
 	const targetId = useSelector((s) => s.combat?.targetEnemyId);
+	const playerId = useSelector((s) => s.player?.id);
 	const isTargeted = entity?.id === targetId;
 
 	// Memoize timer props to prevent unnecessary re-renders
@@ -37,7 +38,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	}
 
 	const handleClick = () => {
-		if (isDead) return;
+		if (isDead || entity.id === playerId) return;
 		dispatch({ type: "combat/setTarget", payload: entity.id });
 	};
 
