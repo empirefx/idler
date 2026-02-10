@@ -9,7 +9,7 @@
 			"!super-linter-output/**/*"
 		]
 	},
-	 "linter": {
+	"linter": {
 		"rules": {
 			"recommended": true,
 			"correctness": {

@@ -2,7 +2,7 @@
 
 | Language                   | Validation result |
 | -------------------------- | ----------------- |
-| BIOME_FORMAT               | Fail ❌           |
+| BIOME_FORMAT               | Pass ✅           |
 | BIOME_LINT                 | Fail ❌           |
 | CHECKOV                    | Pass ✅           |
 | GITHUB_ACTIONS             | Pass ✅           |
@@ -22,209 +22,340 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21873641393)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21873869391)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
-
-<details>
-
-<summary>BIOME_FORMAT</summary>
-
-```text
-/github/workspace/biome.json:19:9 deserialize ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Found an unknown key `noUnusedImports`.
-
-    17 │       },
-    18 │       "style": {
-  > 19 │         "noUnusedImports": "warn"
-       │         ^^^^^^^^^^^^^^^^^
-    20 │       }
-    21 │     }
-
-  i Known keys:
-
-  - recommended
-  - noCommonJs
-  - noDefaultExport
-  - noDescendingSpecificity
-  - noDoneCallback
-  - noEnum
-  - noExportedImports
-  - noHeadElement
-  - noImplicitBoolean
-  - noInferrableTypes
-  - noMagicNumbers
-  - noNamespace
-  - noNegationElse
-  - noNestedTernary
-  - noNonNullAssertion
-  - noParameterAssign
-  - noParameterProperties
-  - noProcessEnv
-  - noRestrictedGlobals
-  - noRestrictedImports
-  - noRestrictedTypes
-  - noShoutyConstants
-  - noSubstr
-  - noUnusedTemplateLiteral
-  - noUselessElse
-  - noValueAtRule
-  - noYodaExpression
-  - useArrayLiterals
-  - useAsConstAssertion
-  - useAtIndex
-  - useBlockStatements
-  - useCollapsedElseIf
-  - useCollapsedIf
-  - useComponentExportOnlyModules
-  - useConsistentArrayType
-  - useConsistentBuiltinInstantiation
-  - useConsistentCurlyBraces
-  - useConsistentMemberAccessibility
-  - useConsistentObjectDefinitions
-  - useConsistentTypeDefinitions
-  - useConst
-  - useDefaultParameterLast
-  - useDefaultSwitchClause
-  - useDeprecatedReason
-  - useEnumInitializers
-  - useExplicitLengthCheck
-  - useExponentiationOperator
-  - useExportType
-  - useExportsLast
-  - useFilenamingConvention
-  - useForOf
-  - useFragmentSyntax
-  - useGraphqlNamingConvention
-  - useGroupedAccessorPairs
-  - useImportType
-  - useLiteralEnumMembers
-  - useNamingConvention
-  - useNodeAssertStrict
-  - useNodejsImportProtocol
-  - useNumberNamespace
-  - useNumericSeparators
-  - useObjectSpread
-  - useReactFunctionComponents
-  - useReadonlyClassProperties
-  - useSelfClosingElements
-  - useShorthandAssign
-  - useShorthandFunctionType
-  - useSingleVarDeclarator
-  - useSymbolDescription
-  - useTemplate
-  - useThrowNewError
-  - useThrowOnlyError
-  - useTrimStartEnd
-  - useUnifiedTypeSignatures
-
-
-configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Biome exited because the configuration resulted in errors. Please fix them.
-
-```
-
-</details>
 
 <details>
 
 <summary>BIOME_LINT</summary>
 
 ```text
-/github/workspace/biome.json:19:9 deserialize ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
+Diagnostics not shown: 42.
+Checked 103 files in 783ms. No fixes applied.
+Found 36 errors.
+Found 26 warnings.src/ui/components/common/NewLevelDialog.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
-  × Found an unknown key `noUnusedImports`.
+  ! This import is unused.
 
-    17 │       },
-    18 │       "style": {
-  > 19 │         "noUnusedImports": "warn"
-       │         ^^^^^^^^^^^^^^^^^
-    20 │       }
-    21 │     }
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ // Modal-style dialog for level-up choices
 
-  i Known keys:
+  i Unused imports might be the result of an incomplete refactoring.
 
-  - recommended
-  - noCommonJs
-  - noDefaultExport
-  - noDescendingSpecificity
-  - noDoneCallback
-  - noEnum
-  - noExportedImports
-  - noHeadElement
-  - noImplicitBoolean
-  - noInferrableTypes
-  - noMagicNumbers
-  - noNamespace
-  - noNegationElse
-  - noNestedTernary
-  - noNonNullAssertion
-  - noParameterAssign
-  - noParameterProperties
-  - noProcessEnv
-  - noRestrictedGlobals
-  - noRestrictedImports
-  - noRestrictedTypes
-  - noShoutyConstants
-  - noSubstr
-  - noUnusedTemplateLiteral
-  - noUselessElse
-  - noValueAtRule
-  - noYodaExpression
-  - useArrayLiterals
-  - useAsConstAssertion
-  - useAtIndex
-  - useBlockStatements
-  - useCollapsedElseIf
-  - useCollapsedIf
-  - useComponentExportOnlyModules
-  - useConsistentArrayType
-  - useConsistentBuiltinInstantiation
-  - useConsistentCurlyBraces
-  - useConsistentMemberAccessibility
-  - useConsistentObjectDefinitions
-  - useConsistentTypeDefinitions
-  - useConst
-  - useDefaultParameterLast
-  - useDefaultSwitchClause
-  - useDeprecatedReason
-  - useEnumInitializers
-  - useExplicitLengthCheck
-  - useExponentiationOperator
-  - useExportType
-  - useExportsLast
-  - useFilenamingConvention
-  - useForOf
-  - useFragmentSyntax
-  - useGraphqlNamingConvention
-  - useGroupedAccessorPairs
-  - useImportType
-  - useLiteralEnumMembers
-  - useNamingConvention
-  - useNodeAssertStrict
-  - useNodejsImportProtocol
-  - useNumberNamespace
-  - useNumericSeparators
-  - useObjectSpread
-  - useReactFunctionComponents
-  - useReadonlyClassProperties
-  - useSelfClosingElements
-  - useShorthandAssign
-  - useShorthandFunctionType
-  - useSingleVarDeclarator
-  - useSymbolDescription
-  - useTemplate
-  - useThrowNewError
-  - useThrowOnlyError
-  - useTrimStartEnd
-  - useUnifiedTypeSignatures
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/common/Notification.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+
+  ! These imports are unused.
+
+  > 1 │ import React, { useEffect } from "react";
+      │        ^^^^^
+    2 │ import { useDispatch } from "react-redux";
+    3 │ import { removeNotification } from "../../../store/slices/notificationSlice";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React,·{·useEffect·}·from·"react";
+      │        -------
+
+src/ui/components/common/NotificationContainer.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │ import Notification from "./Notification";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/common/ProgressBar.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ const ProgressBar = ({ value, max }) => {
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/common/QuantitySlider.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ function QuantitySlider({
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/common/ToolTip.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ const ToolTip = ({ text }) => {
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/display/ControlDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ const ControlDisplay = ({ isInCombat, onToggleCombat }) => (
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/display/EquipmentDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useDispatch, useSelector } from "react-redux";
+    3 │ import {
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
+
+  ! These imports are unused.
+
+  > 1 │ import React, { useEffect, useRef } from "react";
+      │        ^^^^^
+    2 │ const _LOG_CATEGORIES = {
+    3 │ 	worker: { label: "Workers", color: "worker" },
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React,·{·useEffect,·useRef·}·from·"react";
+      │        -------
+
+src/ui/components/display/ResourceDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │ import { createSelector } from "@reduxjs/toolkit";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/list/EnemyList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ import EntityCard from "../card/EntityCard";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/list/NPCList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ import NPCCard from "../card/NPCCard";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/list/StatList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/sections/BuildingsSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector, useDispatch } from "react-redux";
+    3 │ import { createSelector } from "@reduxjs/toolkit";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/common/NewLevelDialog.js:5:2 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    3 │ // Modal-style dialog for level-up choices
+    4 │ const NewLevelDialog = ({ onChoose, onCancel }) => (
+  > 5 │ 	<div className="dialog" onClick={onCancel}>
+      │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    6 │ 		<p>Choose bonus:</p>
+    7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/NewLevelDialog.js:5:2 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━
 
-  × Biome exited because the configuration resulted in errors. Please fix them.
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    3 │ // Modal-style dialog for level-up choices
+    4 │ const NewLevelDialog = ({ onChoose, onCancel }) => (
+  > 5 │ 	<div className="dialog" onClick={onCancel}>
+      │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    6 │ 		<p>Choose bonus:</p>
+    7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/common/NewLevelDialog.js:7:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    5 │ 	<div className="dialog" onClick={onCancel}>
+    6 │ 		<p>Choose bonus:</p>
+  > 7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+      │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    8 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+    9 │ 				+1 STR
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/common/NewLevelDialog.js:7:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    5 │ 	<div className="dialog" onClick={onCancel}>
+    6 │ 		<p>Choose bonus:</p>
+  > 7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+      │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    8 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+    9 │ 				+1 STR
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/common/Notification.js:39:4 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
+
+  × The HTML element div is non-interactive. Do not use tabIndex.
+
+    37 │ 			}}
+    38 │ 			role="alert"
+  > 39 │ 			tabIndex={0}
+       │ 			^^^^^^^^^^^^
+    40 │ 		>
+    41 │ 			<span className="notification-message">{message}</span>
+
+  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
+
+  i Unsafe fix: Remove the tabIndex attribute.
+
+    37 37 │   			}}
+    38 38 │   			role="alert"
+    39    │ - → → → tabIndex={0}
+    40 39 │   		>
+    41 40 │   			<span className="notification-message">{message}</span>
+
+
+lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some warnings were emitted while running checks.
 
 ```
 
