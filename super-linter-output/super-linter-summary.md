@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850706120)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850749518)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 105.
-Checked 103 files in 717ms. No fixes applied.
+Checked 103 files in 772ms. No fixes applied.
 Found 51 errors.
 Found 70 warnings.
 Found 4 infos.src/game/services/SpawnService.js:75:2 lint/complexity/noUselessConstructor  FIXABLE  ━━━━━━━━━━━━━━
