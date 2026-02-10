@@ -2,7 +2,7 @@
 
 | Language                   | Validation result |
 | -------------------------- | ----------------- |
-| BIOME_FORMAT               | Fail ❌           |
+| BIOME_FORMAT               | Pass ✅           |
 | BIOME_LINT                 | Fail ❌           |
 | CHECKOV                    | Pass ✅           |
 | GITHUB_ACTIONS             | Pass ✅           |
@@ -22,137 +22,42 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21876621464)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21876944593)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
-
-<details>
-
-<summary>BIOME_FORMAT</summary>
-
-```text
-/github/workspace/biome.json:16:5 deserialize ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Found an unknown key `useButtonTag`.
-
-    14 │ 			"recommended": true,
-    15 │ 			"a11y": {
-  > 16 │ 				"useButtonTag": "off"
-       │ 				^^^^^^^^^^^^^^
-    17 │ 			},
-    18 │ 			"correctness": {
-
-  i Known keys:
-
-  - recommended
-  - noAccessKey
-  - noAriaHiddenOnFocusable
-  - noAriaUnsupportedElements
-  - noAutofocus
-  - noDistractingElements
-  - noHeaderScope
-  - noInteractiveElementToNoninteractiveRole
-  - noLabelWithoutControl
-  - noNoninteractiveElementInteractions
-  - noNoninteractiveElementToInteractiveRole
-  - noNoninteractiveTabindex
-  - noPositiveTabindex
-  - noRedundantAlt
-  - noRedundantRoles
-  - noStaticElementInteractions
-  - noSvgWithoutTitle
-  - useAltText
-  - useAnchorContent
-  - useAriaActivedescendantWithTabindex
-  - useAriaPropsForRole
-  - useAriaPropsSupportedByRole
-  - useButtonType
-  - useFocusableInteractive
-  - useGenericFontNames
-  - useHeadingContent
-  - useHtmlLang
-  - useIframeTitle
-  - useKeyWithClickEvents
-  - useKeyWithMouseEvents
-  - useMediaCaption
-  - useSemanticElements
-  - useValidAnchor
-  - useValidAriaProps
-  - useValidAriaRole
-  - useValidAriaValues
-  - useValidAutocomplete
-  - useValidLang
-
-
-configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Biome exited because the configuration resulted in errors. Please fix them.
-
-```
-
-</details>
 
 <details>
 
 <summary>BIOME_LINT</summary>
 
 ```text
-/github/workspace/biome.json:16:5 deserialize ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Checked 103 files in 671ms. No fixes applied.
+Found 2 warnings.src/ui/components/display/EquipmentDisplay.js:32:5 suppressions/unused ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Found an unknown key `useButtonTag`.
+  ! Suppression comment has no effect. Remove the suppression or make sure you are suppressing the correct rule.
 
-    14 │ 			"recommended": true,
-    15 │ 			"a11y": {
-  > 16 │ 				"useButtonTag": "off"
-       │ 				^^^^^^^^^^^^^^
-    17 │ 			},
-    18 │ 			"correctness": {
-
-  i Known keys:
-
-  - recommended
-  - noAccessKey
-  - noAriaHiddenOnFocusable
-  - noAriaUnsupportedElements
-  - noAutofocus
-  - noDistractingElements
-  - noHeaderScope
-  - noInteractiveElementToNoninteractiveRole
-  - noLabelWithoutControl
-  - noNoninteractiveElementInteractions
-  - noNoninteractiveElementToInteractiveRole
-  - noNoninteractiveTabindex
-  - noPositiveTabindex
-  - noRedundantAlt
-  - noRedundantRoles
-  - noStaticElementInteractions
-  - noSvgWithoutTitle
-  - useAltText
-  - useAnchorContent
-  - useAriaActivedescendantWithTabindex
-  - useAriaPropsForRole
-  - useAriaPropsSupportedByRole
-  - useButtonType
-  - useFocusableInteractive
-  - useGenericFontNames
-  - useHeadingContent
-  - useHtmlLang
-  - useIframeTitle
-  - useKeyWithClickEvents
-  - useKeyWithMouseEvents
-  - useMediaCaption
-  - useSemanticElements
-  - useValidAnchor
-  - useValidAriaProps
-  - useValidAriaRole
-  - useValidAriaValues
-  - useValidAutocomplete
-  - useValidLang
+    30 │ 		<div className="equipment-flex">
+    31 │ 			{EQUIPMENT_SLOTS.map(({ key, label }) => (
+  > 32 │ 				// biome-ignore lint/a11y/useSemanticElements: CSS targets div elements specifically
+       │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    33 │ 				<div
+    34 │ 					role="button"
 
 
-configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/display/InventoryDisplay.js:196:7 suppressions/unused ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Biome exited because the configuration resulted in errors. Please fix them.
+  ! Suppression comment has no effect. Remove the suppression or make sure you are suppressing the correct rule.
+
+    195 │ 					return (
+  > 196 │ 						// biome-ignore lint/a11y/useSemanticElements: CSS targets div elements specifically
+        │ 						^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    197 │ 						<div
+    198 │ 							role="button"
+
+
+lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some warnings were emitted while running checks.
 
 ```
 
@@ -326,25 +231,21 @@ Clone found (javascript):
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ css        │ 17             │ 2745        │ 15759        │ 1            │ 29 (1.06%)       │ 150 (0.95%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ json       │ 9              │ 263         │ 1660         │ 2            │ 44 (16.73%)      │ 257 (15.48%)      │
-├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ yaml       │ 3              │ 133         │ 867          │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ json       │ 9              │ 266         │ 1672         │ 2            │ 44 (16.54%)      │ 257 (15.37%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ jsx        │ 1              │ 103         │ 623          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ markdown   │ 2              │ 238         │ 2486         │ 0            │ 0 (0%)           │ 0 (0%)            │
-├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 150            │ 15363       │ 115343       │ 39           │ 646 (4.2%)       │ 4758 (4.13%)      │
+│ Total:     │ 145            │ 14995       │ 112002       │ 39           │ 646 (4.31%)      │ 4758 (4.25%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 39 clones.
-Error: ERROR: jscpd found too many duplicates (4.2%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.31%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.2%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.31%) over threshold (0%)
 ```
 
 </details>
