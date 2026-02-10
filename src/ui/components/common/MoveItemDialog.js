@@ -10,7 +10,6 @@ function MoveItemDialog({
 	item,
 	onConfirm,
 	onCancel,
-	sourceInventory,
 	targetInventory,
 }) {
 	const [quantity, setQuantity] = useState(1);
@@ -97,7 +96,6 @@ function MoveItemDialog({
 					onCancel();
 				}
 			}}
-			tabIndex={0}
 		>
 			<div
 				className="move-item-dialog"
@@ -114,8 +112,9 @@ function MoveItemDialog({
 				</div>
 
 				<div className="quantity-section">
-					<label>Quantity:</label>
+					<label htmlFor="quantity-slider">Quantity:</label>
 					<QuantitySlider
+						id="quantity-slider"
 						value={quantity}
 						onChange={setQuantity}
 						min={1}

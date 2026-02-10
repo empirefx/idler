@@ -14,7 +14,17 @@ const NPCCard = ({ npc, onClick }) => {
 	};
 
 	return (
-		<div className="npc-card" onClick={handleClick}>
+		<div 
+			className="npc-card" 
+			role="button"
+			tabIndex={0}
+			onClick={handleClick}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					handleClick();
+				}
+			}}
+		>
 			<div className={`npc-avatar avatar avatar_${avatar} small`}></div>
 			<div className="npc-info">
 				<h3>{name}</h3>

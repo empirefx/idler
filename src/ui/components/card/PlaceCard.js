@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { navigateToPlace } from "../../../store/slices/placesSlice";
 
 const PlaceCard = ({ place }) => {
-	if (!place) return null;
-
 	const dispatch = useDispatch();
+
+	if (!place) return null;
 
 	const handleMove = () => {
 		dispatch(navigateToPlace(place.id));

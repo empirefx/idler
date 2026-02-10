@@ -1,4 +1,3 @@
-import React from "react";
 import ToolTip from "./ToolTip";
 
 const KeyBind = ({ value, info }) => {

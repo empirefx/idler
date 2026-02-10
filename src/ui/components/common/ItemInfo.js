@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ItemInfo = ({ item, children }) => {
 	const [show, setShow] = useState(false);
@@ -6,6 +6,8 @@ const ItemInfo = ({ item, children }) => {
 	return (
 		<div
 			className="item-info-wrapper"
+			role="button"
+			tabIndex={0}
 			onMouseEnter={() => setShow(true)}
 			onMouseLeave={() => setShow(false)}
 		>

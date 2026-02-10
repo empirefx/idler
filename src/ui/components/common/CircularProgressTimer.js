@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "./../../../styles/components/CircularProgressTimer.css";
 
 const CircularProgressTimer = ({
@@ -21,7 +21,7 @@ const CircularProgressTimer = ({
 		}
 		if (time === 0) onComplete?.();
 		prevTimeRef.current = time;
-	}, [time, enemyId, onComplete]);
+	}, [time, onComplete]);
 
 	const start = startTimeRef.current;
 	const progress = Math.min(100, Math.max(0, ((start - time) / start) * 100));

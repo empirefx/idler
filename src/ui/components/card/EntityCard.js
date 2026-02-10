@@ -8,6 +8,24 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	const targetId = useSelector((s) => s.combat?.targetEnemyId);
 	const isTargeted = entity?.id === targetId;
 
+	// Memoize timer props to prevent unnecessary re-renders
+	const timerProps = useMemo(() => {
+		if (!entity || typeof entity !== "object" || entity.health === undefined) {
+			return null;
+		}
+		const { countdown, isCountdownActive, maxCountdown } = entity;
+		return {
+			time: countdown,
+			maxTime: maxCountdown || countdown,
+			isRunning: Boolean(isCountdownActive && countdown > 0),
+			size: 20,
+			displayText: false,
+			onComplete: () => {
+				// Enemy will perform an attack - could trigger attack event here if needed
+			},
+		};
+	}, [entity]);
+
 	// Handle case where entity is null/undefined (still loading)
 	if (!entity || typeof entity !== "object" || entity.health === undefined) {
 		return (
@@ -23,20 +41,6 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 		dispatch({ type: "combat/setTarget", payload: entity.id });
 	};
 
-	// Memoize timer props to prevent unnecessary re-renders
-	const timerProps = useMemo(() => {
-		const { countdown, isCountdownActive, maxCountdown } = entity;
-		return {
-			time: countdown,
-			maxTime: maxCountdown || countdown,
-			isRunning: Boolean(isCountdownActive && countdown > 0),
-			size: 20,
-			displayText: false,
-			onComplete: () => {
-				// Enemy will perform an attack - could trigger attack event here if needed
-			},
-		};
-	}, [entity.countdown, entity.isCountdownActive, entity.maxCountdown]);
 
 	const {
 		name,
@@ -53,7 +57,14 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 
 	return (
 		<div
+			role="button"
+			tabIndex={0}
 			onClick={handleClick}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					handleClick();
+				}
+			}}
 			className={`entity-card ${canAttack ? "ready-to-attack" : ""} ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
 			data-enemy-id={entity.id}
 		>
@@ -66,7 +77,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 			<h3>{name}</h3>
 
 			{!isDead && <ProgressBar value={health} max={maxHealth} />}
-			{!isDead && isStaggered && <CircularProgressTimer {...timerProps} />}
+			{!isDead && isStaggered && timerProps && <CircularProgressTimer {...timerProps} />}
 		</div>
 	);
 };

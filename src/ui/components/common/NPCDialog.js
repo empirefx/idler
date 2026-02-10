@@ -70,7 +70,7 @@ const NPCDialog = ({
 				<span className="key-bind">ESC</span>
 				<span>escape</span>
 			</div>
-			<div
+			<fieldset
 				className="npc-dialog-content"
 				onClick={(e) => e.stopPropagation()}
 				onKeyDown={(e) => {
@@ -78,7 +78,6 @@ const NPCDialog = ({
 						e.stopPropagation();
 					}
 				}}
-				role="group"
 			>
 				{/* Bottom section with 2 columns */}
 				<div className="dialog-bottom-section">
@@ -132,7 +131,7 @@ const NPCDialog = ({
 						</div>
 					</div>
 				</div>
-			</div>
+			</fieldset>
 		</dialog>
 	);
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import InventoryDisplay from "../display/InventoryDisplay";
@@ -27,6 +27,7 @@ const PlayerCard = ({ player, vaultId }) => {
 					<div className="player-options">
 						{player.exp >= player.expToNext && (
 							<button
+								type="button"
 								className="select-btn"
 								onClick={() => setShowLevelUp((prev) => !prev)}
 							>

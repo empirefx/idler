@@ -5,6 +5,7 @@ function QuantitySlider({
 	max,
 	disabled = false,
 	className = "",
+	id,
 }) {
 	const handleChange = (e) => {
 		const newValue = parseInt(e.target.value, 10);
@@ -15,6 +16,7 @@ function QuantitySlider({
 		<div className={`quantity-slider ${className}`}>
 			<input
 				type="range"
+				id={id}
 				min={min}
 				max={max}
 				value={value}
