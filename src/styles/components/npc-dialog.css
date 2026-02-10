@@ -2,6 +2,10 @@
 
 .npc-dialog {
 	/* Remove default limits */
+	position: fixed;
+	inset: 0;
+	will-change: transform;
+	animation: .02s cubic-bezier(.4, 0, .2, 1) slideUp forwards;
 	max-width: none;
 	max-height: none;
 	border: none;
@@ -11,7 +15,6 @@
 	width: 100vw;
 	background: none;
 	z-index: 1000;
-	animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	overflow: visible;
 }
 
@@ -212,6 +215,11 @@
 	height: 80px;
 	transform: scale(1.2);
 	clip-path: circle();
+}
+
+@keyframes slideUp {
+	from { transform: translateY(100%); }
+	to { transform: translateY(0); }
 }
 
 /* Responsive design */
