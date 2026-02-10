@@ -1,7 +1,10 @@
 {
   "ignore": [
     "**/static/**",
-    "static/**"
+    "static/**",
+    "**/*.md",
+    "**/*.yml",
+    "**/*.yaml"
   ],
   "output": "json",
   "threshold": 0
