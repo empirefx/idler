@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21875292477)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21875377137)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,7 +31,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 103 files in 689ms. No fixes applied.
+Checked 103 files in 696ms. No fixes applied.
 Found 4 errors.
 Found 2 warnings.src/ui/components/card/WorkerCard.js:5:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
 
