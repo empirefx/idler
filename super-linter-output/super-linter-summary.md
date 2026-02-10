@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21875969979)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21876043034)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,7 +31,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 103 files in 852ms. No fixes applied.
+Checked 103 files in 693ms. No fixes applied.
 Found 3 errors.src/ui/components/card/EntityCard.js:58:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━
 
   × Static Elements should not be interactive.
