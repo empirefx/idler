@@ -9,29 +9,32 @@ const NewLevelDialog = ({ onChoose, onCancel }) => (
 				onCancel();
 			}
 		}}
-		tabIndex={0}
 	>
 		<p>Choose bonus:</p>
-		<div
+		<fieldset
 			className="player-options"
-			role="group"
 			onClick={(e) => e.stopPropagation()}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.stopPropagation();
+				}
+			}}
 		>
-			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+			<button className="select-btn" onClick={() => onChoose({ strength: 1 })} type="button">
 				+1 STR
 			</button>
-			<button className="select-btn" onClick={() => onChoose({ defense: 2 })}>
+			<button className="select-btn" onClick={() => onChoose({ defense: 2 })} type="button">
 				+2 DEF
 			</button>
-			<button className="select-btn" onClick={() => onChoose({ agility: 1 })}>
+			<button className="select-btn" onClick={() => onChoose({ agility: 1 })} type="button">
 				+1 AGI
 			</button>
-			<button className="select-btn" onClick={() => onChoose({ vitality: 3 })}>
+			<button className="select-btn" onClick={() => onChoose({ vitality: 3 })} type="button">
 				+3 VIT
 			</button>
-		</div>
+		</fieldset>
 
-		<button onClick={onCancel}>Cancel</button>
+		<button onClick={onCancel} type="button">Cancel</button>
 	</div>
 );
 

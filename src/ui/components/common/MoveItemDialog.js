@@ -1,5 +1,5 @@
 // src/ui/components/MoveItemDialog.js
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import QuantitySlider from "./QuantitySlider.js";
 import {
 	calculateTotalPlayerWeight,
@@ -88,8 +88,27 @@ function MoveItemDialog({
 	const canConfirm = !weightInfo || weightInfo.maxMovable > 0;
 
 	return (
-		<div className="dialog" onClick={onCancel}>
-			<div className="move-item-dialog" onClick={(e) => e.stopPropagation()}>
+		<div 
+			className="dialog" 
+			role="dialog"
+			onClick={onCancel}
+			onKeyDown={(e) => {
+				if (e.key === 'Escape') {
+					onCancel();
+				}
+			}}
+			tabIndex={0}
+		>
+			<div 
+				className="move-item-dialog" 
+				onClick={(e) => e.stopPropagation()}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.stopPropagation();
+					}
+				}}
+				role="document"
+			>
 				<div className="dialog-header">
 					Move {quantity} "{item?.name}" to {getTargetName()}?
 				</div>
@@ -120,10 +139,11 @@ function MoveItemDialog({
 						onClick={handleConfirm}
 						disabled={!canConfirm}
 						className={!canConfirm ? "disabled" : ""}
+						type="button"
 					>
 						Move {quantity}
 					</button>
-					<button onClick={onCancel}>Cancel</button>
+					<button onClick={onCancel} type="button">Cancel</button>
 				</div>
 			</div>
 		</div>

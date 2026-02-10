@@ -70,7 +70,7 @@
 
 .worker-info p {
 	text-indent: 10px;
-	color: black !important;
+	color: black;
 }
 
 .worker-avatar img {
