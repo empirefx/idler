@@ -13,7 +13,7 @@ export const useGameState = () => {
 	if (!gameEngineRef.current) {
 		gameEngineRef.current = new GameEngine(dispatch, store);
 	}
-	const gameEngine = gameEngineRef.current;
+	const _gameEngine = gameEngineRef.current;
 	const [error, setError] = useState(null);
 	const isInitialized = useRef(false);
 
