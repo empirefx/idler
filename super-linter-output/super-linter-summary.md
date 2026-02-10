@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21877097781)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21877681260)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -190,7 +190,7 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 117            │ 11868       │ 93835        │ 36           │ 573 (4.83%)      │ 4351 (4.64%)      │
+│ javascript │ 117            │ 11909       │ 94117        │ 36           │ 573 (4.81%)      │ 4351 (4.62%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ css        │ 17             │ 2745        │ 15759        │ 1            │ 29 (1.06%)       │ 150 (0.95%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
@@ -198,17 +198,15 @@ Clone found (javascript):
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ jsx        │ 1              │ 103         │ 623          │ 0            │ 0 (0%)           │ 0 (0%)            │
-├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 145            │ 14993       │ 111996       │ 39           │ 646 (4.31%)      │ 4758 (4.25%)      │
+│ Total:     │ 144            │ 14931       │ 111655       │ 39           │ 646 (4.33%)      │ 4758 (4.26%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 39 clones.
-Error: ERROR: jscpd found too many duplicates (4.31%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.33%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.31%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.33%) over threshold (0%)
 ```
 
 </details>
