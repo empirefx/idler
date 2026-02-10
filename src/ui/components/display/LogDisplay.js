@@ -14,7 +14,7 @@ export default function LogDisplay({ filteredLogs }) {
 		if (containerRef.current) {
 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
 		}
-	}, []);
+	}, [filteredLogs]);
 
 	return (
 		<div className="log-display" ref={containerRef}>
