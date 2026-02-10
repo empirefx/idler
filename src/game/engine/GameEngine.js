@@ -2,7 +2,7 @@ import Logger from "../utils/Logger";
 
 import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice";
 import { InventoryService } from "../services/InventoryService";
-import { ItemFactory } from "../factory/itemFactory";
+import { createItem } from "../factory/itemFactory";
 import SpawnService from "../services/SpawnService";
 import { EventBusService } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
@@ -29,15 +29,6 @@ class GameEngine {
 		dispatch,
 		store,
 		{
-			inventoryService = InventoryService,
-			itemFactory = ItemFactory,
-			productionService = ProductionService,
-			saveService = SaveService,
-			navigationService = NavigationService,
-			enemyLifecycleService = EnemyLifecycleService,
-			combatService = CombatService,
-			gameLoop = GameLoop,
-			eventBusService = EventBusService,
 			spawnService = SpawnService,
 		} = {},
 	) {
@@ -49,7 +40,7 @@ class GameEngine {
 
 		// Initialize services
 		this.inventoryService = this.inventoryService || InventoryService;
-		this.itemFactory = this.itemFactory || ItemFactory;
+		this.itemFactory = this.itemFactory || createItem;
 		this.events = { workerCreatedItem }; // Simple events object
 		this.productionService = new ProductionService(
 			this.inventoryService,
@@ -186,26 +177,6 @@ class GameEngine {
 	// Clear saved game state
 	clearSavedState() {
 		this.saveService.clearSavedState();
-	}
-
-	// Get workers assigned to a specific building (now handled by ProductionService)
-	getAssignedWorkers(state, buildingId) {
-		return this.productionService.getAssignedWorkers(state, buildingId);
-	}
-
-	// Calculate production rate for a building (now handled by ProductionService)
-	calculateProductionRate(building, state) {
-		return this.productionService.calculateProductionRate(building, state);
-	}
-
-	// Validate that a building can produce (now handled by ProductionService)
-	canBuildingProduce(state, buildingId) {
-		return this.productionService.canBuildingProduce(state, buildingId);
-	}
-
-	// Get all production calculations for UI purposes (now handled by ProductionService)
-	getAllProductionCalculations(state) {
-		return this.productionService.getAllProductionCalculations(state);
 	}
 
 	// Start the game loop

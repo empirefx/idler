@@ -48,7 +48,7 @@ export default class ProductionService {
 			}
 
 			// Create item using itemFactory
-			const item = this.itemFactory.create(productionType, productionRate);
+			const item = this.itemFactory(productionType, productionRate);
 
 			if (!item) {
 				Logger.log(

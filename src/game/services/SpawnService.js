@@ -1,5 +1,5 @@
 import Logger from "../utils/Logger";
-import EnemyFactory from "../factory/enemyFactory";
+import createEnemy from "../factory/enemyFactory";
 import { placesData } from "../../data/places";
 
 class BaseSpawner {
@@ -16,7 +16,7 @@ class BaseSpawner {
 	createEnemy(type) {
 		// Generate a unique ID for the enemy
 		const id = `${type}-${Date.now()}-${crypto.randomUUID().slice(0, 6)}`;
-		const base = EnemyFactory.create(type);
+		const base = createEnemy(type);
 
 		// Create the enemy object
 		const enemy = base

@@ -4,7 +4,7 @@ import { batch } from "react-redux";
 import { enemyAttacked, playerDamaged } from "../events";
 import { addItem } from "../../store/slices/playerInventorySlice";
 import { gainExp, updateLastAttackTime } from "../../store/slices/playerSlice";
-import { ItemFactory } from "../factory/itemFactory";
+import { createItem } from "../factory/itemFactory";
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.
@@ -123,7 +123,7 @@ export const CombatService = {
 		if (spawnInfo && Array.isArray(spawnInfo.drops)) {
 			spawnInfo.drops.forEach(({ itemId, dropRate }) => {
 				if (Math.random() < dropRate) {
-					const loot = ItemFactory.create(itemId, 1);
+					const loot = createItem(itemId, 1);
 					if (loot) {
 						this.store.dispatch(
 							addItem({

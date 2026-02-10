@@ -4,9 +4,14 @@ export class EventBusService {
 		this.handlers = {};
 	}
 	on(event, handler) {
-		(this.handlers[event] = this.handlers[event] || []).push(handler);
+		if (!this.handlers[event]) {
+			this.handlers[event] = [];
+		}
+		this.handlers[event].push(handler);
 	}
 	emit(event, data) {
-		(this.handlers[event] || []).forEach((h) => h(data));
+		(this.handlers[event] || []).forEach((h) => {
+			h(data);
+		});
 	}
 }
