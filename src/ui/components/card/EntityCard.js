@@ -41,7 +41,6 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 		dispatch({ type: "combat/setTarget", payload: entity.id });
 	};
 
-
 	const {
 		name,
 		health = 0,
@@ -61,7 +60,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 			tabIndex={0}
 			onClick={handleClick}
 			onKeyDown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
+				if (e.key === "Enter" || e.key === " ") {
 					handleClick();
 				}
 			}}
@@ -77,7 +76,9 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 			<h3>{name}</h3>
 
 			{!isDead && <ProgressBar value={health} max={maxHealth} />}
-			{!isDead && isStaggered && timerProps && <CircularProgressTimer {...timerProps} />}
+			{!isDead && isStaggered && timerProps && (
+				<CircularProgressTimer {...timerProps} />
+			)}
 		</div>
 	);
 };

@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21874717794)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21875292477)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,387 +31,103 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 2.
-Checked 103 files in 692ms. No fixes applied.
-Found 15 errors.
-Found 7 warnings.src/ui/UIVisibilityContext.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━
+Checked 103 files in 689ms. No fixes applied.
+Found 4 errors.
+Found 2 warnings.src/ui/components/card/WorkerCard.js:5:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
 
-  ! These imports are unused.
+  ! Several of these imports are unused.
 
-  > 1 │ import React, { createContext, useContext, useState, useCallback } from "react";
-      │        ^^^^^
-    2 │
-    3 │ // Manages the visibility of UI panels/cards
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React,·{·createContext,·useContext,·useState,·useCallback·}·from·"react";
-      │        -------
-
-src/ui/components/card/PlayerCard.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
-
-  ! These imports are unused.
-
-  > 1 │ import React, { useState } from "react";
-      │        ^^^^^
-    2 │ import { useDispatch } from "react-redux";
-    3 │
+    4 │ import {
+  > 5 │ 	assignWorkerToBuilding,
+      │ 	^^^^^^^^^^^^^^^^^^^^^^^
+  > 6 │ 	unassignWorker,
+      │ 	^^^^^^^^^^^^^^
+    7 │ 	assignWorkerToBuildingWithEvent,
+    8 │ 	unassignWorkerWithEvent,
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-    1 │ import·React,·{·useState·}·from·"react";
-      │        -------
+     3  3 │
+     4  4 │   import {
+     5    │ - → assignWorkerToBuilding,
+     6    │ - → unassignWorker,
+     7  5 │   	assignWorkerToBuildingWithEvent,
+     8  6 │   	unassignWorkerWithEvent,
 
-src/ui/components/common/CircularProgressTimer.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
-  ! These imports are unused.
-
-  > 1 │ import React, { useEffect, useRef } from "react";
-      │        ^^^^^
-    2 │ import "./../../../styles/components/CircularProgressTimer.css";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React,·{·useEffect,·useRef·}·from·"react";
-      │        -------
-
-src/ui/components/common/ItemInfo.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
-
-  ! These imports are unused.
-
-  > 1 │ import React, { useState } from "react";
-      │        ^^^^^
-    2 │
-    3 │ const ItemInfo = ({ item, children }) => {
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React,·{·useState·}·from·"react";
-      │        -------
-
-src/ui/components/common/KeyBind.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import ToolTip from "./ToolTip";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/common/MoveItemDialog.js:13:2 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
+src/ui/components/common/CircularProgressTimer.js:7:2 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    11 │ 	onConfirm,
-    12 │ 	onCancel,
-  > 13 │ 	sourceInventory,
-       │ 	^^^^^^^^^^^^^^^
-    14 │ 	targetInventory,
-    15 │ }) {
+    5 │ 	time = 0,
+    6 │ 	isRunning = false,
+  > 7 │ 	enemyId,
+      │ 	^^^^^^^
+    8 │ 	onComplete,
+    9 │ 	size = 30,
 
   i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/ui/components/card/EntityCard.js:55:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━
+src/ui/components/card/EntityCard.js:59:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Static Elements should not be interactive.
+  × The elements with this role can be changed to the following elements:
+    <button>
 
-    54 │ 	return (
-  > 55 │ 		<div
-       │ 		^^^^
-  > 56 │ 			onClick={handleClick}
-  > 57 │ 			className={`entity-card ${canAttack ? "ready-to-attack" : ""} ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
-  > 58 │ 			data-enemy-id={entity.id}
-  > 59 │ 		>
-       │ 		^
-    60 │ 			<div className="block-gradient"></div>
-    61 │ 			<img
+    57 │ 	return (
+    58 │ 		<div
+  > 59 │ 			role="button"
+       │ 			^^^^^^^^^^^^^
+    60 │ 			tabIndex={0}
+    61 │ 			onClick={handleClick}
 
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+  i For examples and more information, see WAI-ARIA Roles
 
 
-src/ui/components/card/EntityCard.js:55:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/card/NPCCard.js:19:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+  × The elements with this role can be changed to the following elements:
+    <button>
 
-    54 │ 	return (
-  > 55 │ 		<div
-       │ 		^^^^
-  > 56 │ 			onClick={handleClick}
-  > 57 │ 			className={`entity-card ${canAttack ? "ready-to-attack" : ""} ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
-  > 58 │ 			data-enemy-id={entity.id}
-  > 59 │ 		>
-       │ 		^
-    60 │ 			<div className="block-gradient"></div>
-    61 │ 			<img
+    17 │ 		<div
+    18 │ 			className="npc-card"
+  > 19 │ 			role="button"
+       │ 			^^^^^^^^^^^^^
+    20 │ 			tabIndex={0}
+    21 │ 			onClick={handleClick}
 
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+  i For examples and more information, see WAI-ARIA Roles
 
 
-src/ui/components/card/EntityCard.js:27:21 lint/correctness/useExhaustiveDependencies ━━━━━━━━━━━━━━
-
-  × This hook specifies a dependency more specific than its captures: entity.maxCountdown
-
-    26 │ 	// Memoize timer props to prevent unnecessary re-renders
-  > 27 │ 	const timerProps = useMemo(() => {
-       │ 	                   ^^^^^^^
-    28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
-    29 │ 		return {
-
-  i This capture is more generic than...
-
-    26 │ 	// Memoize timer props to prevent unnecessary re-renders
-    27 │ 	const timerProps = useMemo(() => {
-  > 28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
-       │ 		                                                       ^^^^^^
-    29 │ 		return {
-    30 │ 			time: countdown,
-
-  i ...this dependency.
-
-    37 │ 			},
-    38 │ 		};
-  > 39 │ 	}, [entity.countdown, entity.isCountdownActive, entity.maxCountdown]);
-       │ 	                                                ^^^^^^^^^^^^^^^^^^^
-    40 │
-    41 │ 	const {
-
-
-src/ui/components/card/EntityCard.js:27:21 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
-
-  × This hook does not specify its dependency on entity.
-
-    26 │ 	// Memoize timer props to prevent unnecessary re-renders
-  > 27 │ 	const timerProps = useMemo(() => {
-       │ 	                   ^^^^^^^
-    28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
-    29 │ 		return {
-
-  i This dependency is being used here, but is not specified in the hook dependency list.
-
-    26 │ 	// Memoize timer props to prevent unnecessary re-renders
-    27 │ 	const timerProps = useMemo(() => {
-  > 28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
-       │ 		                                                       ^^^^^^
-    29 │ 		return {
-    30 │ 			time: countdown,
-
-  i React relies on hook dependencies to determine when to re-compute Effects.
-    Failing to specify dependencies can result in Effects not updating correctly when state changes.
-    These "stale closures" are a common source of surprising bugs.
-
-  i Unsafe fix: Add the missing dependency to the list.
-
-    39 │ → },·[entity.countdown,·entity.isCountdownActive,·entity.maxCountdown,·entity]);
-       │                                                                      ++++++++
-
-src/ui/components/card/EntityCard.js:27:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━━━━━━━
-
-  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
-
-    26 │ 	// Memoize timer props to prevent unnecessary re-renders
-  > 27 │ 	const timerProps = useMemo(() => {
-       │ 	                   ^^^^^^^
-    28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
-    29 │ 		return {
-
-  i Hooks should not be called after an early return.
-
-    11 │ 	// Handle case where entity is null/undefined (still loading)
-  > 12 │ 	if (!entity || typeof entity !== "object" || entity.health === undefined) {
-       │
-  > 13 │ 		return (
-        ...
-  > 17 │ 			</div>
-  > 18 │ 		);
-       │ 		^^
-    19 │ 	}
-    20 │
-
-  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
-
-  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
-
-
-src/ui/components/card/NPCCard.js:17:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    16 │ 	return (
-  > 17 │ 		<div className="npc-card" onClick={handleClick}>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    18 │ 			<div className={`npc-avatar avatar avatar_${avatar} small`}></div>
-    19 │ 			<div className="npc-info">
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/card/NPCCard.js:17:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    16 │ 	return (
-  > 17 │ 		<div className="npc-card" onClick={handleClick}>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    18 │ 			<div className={`npc-avatar avatar avatar_${avatar} small`}></div>
-    19 │ 			<div className="npc-info">
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/card/PlaceCard.js:8:19 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
-
-     6 │ 	if (!place) return null;
-     7 │
-   > 8 │ 	const dispatch = useDispatch();
-       │ 	                 ^^^^^^^^^^^
-     9 │
-    10 │ 	const handleMove = () => {
-
-  i Hooks should not be called after an early return.
-
-    5 │ const PlaceCard = ({ place }) => {
-  > 6 │ 	if (!place) return null;
-      │ 	            ^^^^^^^^^^^^
-    7 │
-    8 │ 	const dispatch = useDispatch();
-
-  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
-
-  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
-
-
-src/ui/components/card/PlayerCard.js:29:8 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/card/WorkerCard.js:62:6 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Provide an explicit type prop for the button element.
 
-    27 │ 					<div className="player-options">
-    28 │ 						{player.exp >= player.expToNext && (
-  > 29 │ 							<button
-       │ 							^^^^^^^
-  > 30 │ 								className="select-btn"
-  > 31 │ 								onClick={() => setShowLevelUp((prev) => !prev)}
-  > 32 │ 							>
-       │ 							^
-    33 │ 								Level Up
-    34 │ 							</button>
+    60 │ 					</select>
+    61 │ 				) : worker.assignedBuildingId ? (
+  > 62 │ 					<button onClick={handleUnassign}>Unassign</button>
+       │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    63 │ 				) : null}
+    64 │ 			</div>
 
   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
 
   i Allowed button types are: submit, button or reset
 
 
-src/ui/components/common/CircularProgressTimer.js:18:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
-
-  × This hook specifies more dependencies than necessary: enemyId.
-
-    17 │ 	// Detect new cycle (countdown reset)
-  > 18 │ 	useEffect(() => {
-       │ 	^^^^^^^^^
-    19 │ 		if (time > prevTimeRef.current) {
-    20 │ 			startTimeRef.current = time || 1;
-
-  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
-
-    22 │ 		if (time === 0) onComplete?.();
-    23 │ 		prevTimeRef.current = time;
-  > 24 │ 	}, [time, enemyId, onComplete]);
-       │ 	          ^^^^^^^
-    25 │
-    26 │ 	const start = startTimeRef.current;
-
-  i React relies on hook dependencies to determine when to re-compute Effects.
-    Specifying more dependencies than required can lead to unnecessary re-rendering
-    and degraded performance.
-
-  i Unsafe fix: Remove the extra dependencies from the list.
-
-    24 │ → },·[time,·enemyId,·onComplete]);
-       │             ---------
-
-src/ui/components/common/ItemInfo.js:7:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-     6 │ 	return (
-   > 7 │ 		<div
-       │ 		^^^^
-   > 8 │ 			className="item-info-wrapper"
-   > 9 │ 			onMouseEnter={() => setShow(true)}
-  > 10 │ 			onMouseLeave={() => setShow(false)}
-  > 11 │ 		>
-       │ 		^
-    12 │ 			{children}
-    13 │ 			{show && (
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/common/MoveItemDialog.js:100:4 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
-
-  × The HTML element div is non-interactive. Do not use tabIndex.
-
-     98 │ 				}
-     99 │ 			}}
-  > 100 │ 			tabIndex={0}
-        │ 			^^^^^^^^^^^^
-    101 │ 		>
-    102 │ 			<div
-
-  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
-
-  i Unsafe fix: Remove the tabIndex attribute.
-
-     98  98 │   				}
-     99  99 │   			}}
-    100     │ - → → → tabIndex={0}
-    101 100 │   		>
-    102 101 │   			<div
-
-
-src/ui/components/common/MoveItemDialog.js:117:6 lint/a11y/noLabelWithoutControl ━━━━━━━━━━━━━━━━━━━
-
-  × A form label must be associated with an input.
-
-    116 │ 				<div className="quantity-section">
-  > 117 │ 					<label>Quantity:</label>
-        │ 					^^^^^^^^^^^^^^^^^^^^^^^^
-    118 │ 					<QuantitySlider
-    119 │ 						value={quantity}
-
-  i Consider adding a `for` or `htmlFor` attribute to the label element or moving the input element to inside the label element.
-
-
-src/ui/components/common/NPCDialog.js:81:5 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/ItemInfo.js:9:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × The elements with this role can be changed to the following elements:
-    <fieldset>
+    <button>
 
-    79 │ 					}
-    80 │ 				}}
-  > 81 │ 				role="group"
-       │ 				^^^^^^^^^^^^
-    82 │ 			>
-    83 │ 				{/* Bottom section with 2 columns */}
+     7 │ 		<div
+     8 │ 			className="item-info-wrapper"
+   > 9 │ 			role="button"
+       │ 			^^^^^^^^^^^^^
+    10 │ 			tabIndex={0}
+    11 │ 			onMouseEnter={() => setShow(true)}
 
   i For examples and more information, see WAI-ARIA Roles
 
@@ -1602,12 +1318,12 @@ Clone found (javascript):
  182 │ 34 │ 				player
 
 Found 41 clones.
-Error: ERROR: jscpd found too many duplicates (4.54%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.53%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.54%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.53%) over threshold (0%)
 ```
 
 </details>

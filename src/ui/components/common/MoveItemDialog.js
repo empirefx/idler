@@ -6,12 +6,7 @@ import {
 	calculateMaxMovableItems,
 } from "../../../store/slices/inventory/inventoryUtils.js";
 
-function MoveItemDialog({
-	item,
-	onConfirm,
-	onCancel,
-	targetInventory,
-}) {
+function MoveItemDialog({ item, onConfirm, onCancel, targetInventory }) {
 	const [quantity, setQuantity] = useState(1);
 	const availableQuantity = item?.quantity || 1;
 	const isPlayerTarget = targetInventory?.type === "player";
