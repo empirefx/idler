@@ -38,10 +38,7 @@ const NPCDialog = ({
 	const getResponseText = () => {
 		if (!npc.dialogue) return "This NPC has nothing to say.";
 
-		if (
-			selectedOption !== null &&
-			npc.dialogue.options?.[selectedOption]
-		) {
+		if (selectedOption !== null && npc.dialogue.options?.[selectedOption]) {
 			return npc.dialogue.options[selectedOption].response;
 		}
 		return npc.dialogue.initial || "Hello, traveler.";
@@ -62,24 +59,22 @@ const NPCDialog = ({
 			className="npc-dialog"
 			onClick={handleBackdropClick}
 			onKeyDown={(e) => {
-				if (e.key === 'Escape') {
+				if (e.key === "Escape") {
 					onClose();
 				}
 			}}
 		>
 			{/* Hidden focus trap */}
-			<div
-				style={{ position: "absolute", opacity: 0, height: 0 }}
-			></div>
+			<div style={{ position: "absolute", opacity: 0, height: 0 }}></div>
 			<div className="key-bind-container">
 				<span className="key-bind">ESC</span>
 				<span>escape</span>
 			</div>
-			<div 
-				className="npc-dialog-content" 
+			<div
+				className="npc-dialog-content"
 				onClick={(e) => e.stopPropagation()}
 				onKeyDown={(e) => {
-					if (e.key === 'Enter' || e.key === ' ') {
+					if (e.key === "Enter" || e.key === " ") {
 						e.stopPropagation();
 					}
 				}}

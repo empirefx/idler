@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21874361138)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21874632268)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,35 +32,49 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 25.
-Checked 103 files in 711ms. No fixes applied.
-Found 34 errors.
-Found 11 warnings.src/styles/sections/workers-section.css:73:15 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━
+Diagnostics not shown: 2.
+Checked 103 files in 692ms. No fixes applied.
+Found 15 errors.
+Found 7 warnings.src/ui/UIVisibilityContext.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━
 
-  ! Avoid the use of the !important style.
+  ! These imports are unused.
 
-    71 │ .worker-info p {
-    72 │ 	text-indent: 10px;
-  > 73 │ 	color: black !important;
-       │ 	             ^^^^^^^^^^
-    74 │ }
-    75 │
+  > 1 │ import React, { createContext, useContext, useState, useCallback } from "react";
+      │        ^^^^^
+    2 │
+    3 │ // Manages the visibility of UI panels/cards
 
-  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
+  i Unused imports might be the result of an incomplete refactoring.
 
-  i Unsafe fix: Remove the style.
+  i Unsafe fix: Remove the unused imports.
 
-    73 │ → color:·black·!important;
-       │               -----------
+    1 │ import·React,·{·createContext,·useContext,·useState,·useCallback·}·from·"react";
+      │        -------
 
-src/ui/components/common/NPCDialog.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━
+src/ui/components/card/PlayerCard.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
+
+  ! These imports are unused.
+
+  > 1 │ import React, { useState } from "react";
+      │        ^^^^^
+    2 │ import { useDispatch } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React,·{·useState·}·from·"react";
+      │        -------
+
+src/ui/components/common/CircularProgressTimer.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
   ! These imports are unused.
 
   > 1 │ import React, { useEffect, useRef } from "react";
       │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import { selectPlayer } from "../../../store/slices/playerSlice";
+    2 │ import "./../../../styles/components/CircularProgressTimer.css";
+    3 │
 
   i Unused imports might be the result of an incomplete refactoring.
 
@@ -69,322 +83,337 @@ src/ui/components/common/NPCDialog.js:1:8 lint/correctness/noUnusedImports  FIXA
     1 │ import·React,·{·useEffect,·useRef·}·from·"react";
       │        -------
 
-src/ui/components/common/NPCDialog.js:104:9 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
+src/ui/components/common/ItemInfo.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
 
-  ! Change to an optional chain.
+  ! These imports are unused.
 
-    102 │ 						<div className="npc-response">{getResponseText()}</div>
-    103 │ 						<div className="dialog-options">
-  > 104 │ 							{npc.dialogue && npc.dialogue.options ? (
-        │ 							 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    105 │ 								npc.dialogue.options.map((option, index) => (
-    106 │ 									<button
+  > 1 │ import React, { useState } from "react";
+      │        ^^^^^
+    2 │
+    3 │ const ItemInfo = ({ item, children }) => {
 
-  i Unsafe fix: Change to an optional chain.
+  i Unused imports might be the result of an incomplete refactoring.
 
-    102 102 │   						<div className="npc-response">{getResponseText()}</div>
-    103 103 │   						<div className="dialog-options">
-    104     │ - → → → → → → → {npc.dialogue·&&·npc.dialogue.options·?·(
-        104 │ + → → → → → → → {npc.dialogue?.options·?·(
-    105 105 │   								npc.dialogue.options.map((option, index) => (
-    106 106 │   									<button
+  i Unsafe fix: Remove the unused imports.
 
+    1 │ import·React,·{·useState·}·from·"react";
+      │        -------
 
-src/ui/components/common/MoveItemDialog.js:91:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━
+src/ui/components/common/KeyBind.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
 
-  × Static Elements should not be interactive.
+  ! This import is unused.
 
-    90 │ 	return (
-  > 91 │ 		<div className="dialog" onClick={onCancel}>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    92 │ 			<div className="move-item-dialog" onClick={(e) => e.stopPropagation()}>
-    93 │ 				<div className="dialog-header">
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import ToolTip from "./ToolTip";
+    3 │
 
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+  i Unused imports might be the result of an incomplete refactoring.
 
+  i Unsafe fix: Remove the unused imports.
 
-src/ui/components/common/MoveItemDialog.js:91:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━
+    1 │ import·React·from·"react";
+      │ --------------------------
 
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+src/ui/components/common/MoveItemDialog.js:13:2 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
 
-    90 │ 	return (
-  > 91 │ 		<div className="dialog" onClick={onCancel}>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    92 │ 			<div className="move-item-dialog" onClick={(e) => e.stopPropagation()}>
-    93 │ 				<div className="dialog-header">
+  ! This parameter is unused.
 
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+    11 │ 	onConfirm,
+    12 │ 	onCancel,
+  > 13 │ 	sourceInventory,
+       │ 	^^^^^^^^^^^^^^^
+    14 │ 	targetInventory,
+    15 │ }) {
 
-
-src/ui/components/common/NPCDialog.js:61:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    60 │ 	return (
-  > 61 │ 		<dialog
-       │ 		^^^^^^^
-  > 62 │ 			ref={dialogRef}
-  > 63 │ 			className="npc-dialog"
-  > 64 │ 			onClick={handleBackdropClick}
-  > 65 │ 		>
-       │ 		^
-    66 │ 			{/* Hidden focus trap */}
-    67 │ 			<div
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+  i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/ui/components/common/NPCDialog.js:69:5 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━━━
-
-  × The HTML element div is non-interactive. Do not use tabIndex.
-
-    67 │ 			<div
-    68 │ 				style={{ position: "absolute", opacity: 0, height: 0 }}
-  > 69 │ 				tabIndex={0}
-       │ 				^^^^^^^^^^^^
-    70 │ 			></div>
-    71 │ 			<div className="key-bind-container">
-
-  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
-
-  i Unsafe fix: Remove the tabIndex attribute.
-
-     67  67 │   			<div
-     68  68 │   				style={{ position: "absolute", opacity: 0, height: 0 }}
-     69     │ - → → → → tabIndex={0}
-     70  69 │   			></div>
-     71  70 │   			<div className="key-bind-container">
-
-
-src/ui/components/common/NPCDialog.js:75:4 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    73 │ 				<span>escape</span>
-    74 │ 			</div>
-  > 75 │ 			<div className="npc-dialog-content" onClick={(e) => e.stopPropagation()}>
-       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    76 │ 				{/* Bottom section with 2 columns */}
-    77 │ 				<div className="dialog-bottom-section">
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/common/NPCDialog.js:75:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━
+src/ui/components/card/EntityCard.js:55:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━
 
   × Static Elements should not be interactive.
 
-    73 │ 				<span>escape</span>
-    74 │ 			</div>
-  > 75 │ 			<div className="npc-dialog-content" onClick={(e) => e.stopPropagation()}>
-       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    76 │ 				{/* Bottom section with 2 columns */}
-    77 │ 				<div className="dialog-bottom-section">
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/common/NPCDialog.js:106:10 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    104 │ 							{npc.dialogue && npc.dialogue.options ? (
-    105 │ 								npc.dialogue.options.map((option, index) => (
-  > 106 │ 									<button
-        │ 									^^^^^^^
-  > 107 │ 										key={index}
-  > 108 │ 										onClick={() => onOptionSelect(index)}
-  > 109 │ 										className="dialog-option-btn"
-  > 110 │ 									>
-        │ 									^
-    111 │ 										{option.text}
-    112 │ 									</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/common/NPCDialog.js:107:16 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Avoid using the index of an array as key property in an element.
-
-    105 │ 								npc.dialogue.options.map((option, index) => (
-    106 │ 									<button
-  > 107 │ 										key={index}
-        │ 										     ^^^^^
-    108 │ 										onClick={() => onOptionSelect(index)}
-    109 │ 										className="dialog-option-btn"
-
-  i This is the source of the key value.
-
-    103 │ 						<div className="dialog-options">
-    104 │ 							{npc.dialogue && npc.dialogue.options ? (
-  > 105 │ 								npc.dialogue.options.map((option, index) => (
-        │ 								                                  ^^^^^
-    106 │ 									<button
-    107 │ 										key={index}
-
-  i The order of the items may change, and this also affects performances and component state.
-
-  i Check the React documentation.
-
-
-src/ui/components/common/NPCDialog.js:115:9 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    113 │ 								))
-    114 │ 							) : (
-  > 115 │ 								<button
-        │ 								^^^^^^^
-  > 116 │ 									disabled
-  > 117 │ 									className="dialog-option-btn"
-  > 118 │ 									style={{ opacity: 0.5 }}
-  > 119 │ 								>
-        │ 								^
-    120 │ 									No dialogue options available
-    121 │ 								</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/common/NewLevelDialog.js:12:3 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
-
-  × The HTML element div is non-interactive. Do not use tabIndex.
-
-    10 │ 			}
-    11 │ 		}}
-  > 12 │ 		tabIndex={0}
-       │ 		^^^^^^^^^^^^
-    13 │ 	>
-    14 │ 		<p>Choose bonus:</p>
-
-  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
-
-  i Unsafe fix: Remove the tabIndex attribute.
-
-    10 10 │   			}
-    11 11 │   		}}
-    12    │ - → → tabIndex={0}
-    13 12 │   	>
-    14 13 │   		<p>Choose bonus:</p>
-
-
-src/ui/components/common/NewLevelDialog.js:15:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    13 │ 	>
-    14 │ 		<p>Choose bonus:</p>
-  > 15 │ 		<div
+    54 │ 	return (
+  > 55 │ 		<div
        │ 		^^^^
-  > 16 │ 			className="player-options"
-  > 17 │ 			role="group"
-  > 18 │ 			onClick={(e) => e.stopPropagation()}
-  > 19 │ 		>
+  > 56 │ 			onClick={handleClick}
+  > 57 │ 			className={`entity-card ${canAttack ? "ready-to-attack" : ""} ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
+  > 58 │ 			data-enemy-id={entity.id}
+  > 59 │ 		>
        │ 		^
-    20 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
-    21 │ 				+1 STR
+    60 │ 			<div className="block-gradient"></div>
+    61 │ 			<img
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/card/EntityCard.js:55:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    54 │ 	return (
+  > 55 │ 		<div
+       │ 		^^^^
+  > 56 │ 			onClick={handleClick}
+  > 57 │ 			className={`entity-card ${canAttack ? "ready-to-attack" : ""} ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
+  > 58 │ 			data-enemy-id={entity.id}
+  > 59 │ 		>
+       │ 		^
+    60 │ 			<div className="block-gradient"></div>
+    61 │ 			<img
 
   i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
 
 
-src/ui/components/common/NewLevelDialog.js:17:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/card/EntityCard.js:27:21 lint/correctness/useExhaustiveDependencies ━━━━━━━━━━━━━━
+
+  × This hook specifies a dependency more specific than its captures: entity.maxCountdown
+
+    26 │ 	// Memoize timer props to prevent unnecessary re-renders
+  > 27 │ 	const timerProps = useMemo(() => {
+       │ 	                   ^^^^^^^
+    28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
+    29 │ 		return {
+
+  i This capture is more generic than...
+
+    26 │ 	// Memoize timer props to prevent unnecessary re-renders
+    27 │ 	const timerProps = useMemo(() => {
+  > 28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
+       │ 		                                                       ^^^^^^
+    29 │ 		return {
+    30 │ 			time: countdown,
+
+  i ...this dependency.
+
+    37 │ 			},
+    38 │ 		};
+  > 39 │ 	}, [entity.countdown, entity.isCountdownActive, entity.maxCountdown]);
+       │ 	                                                ^^^^^^^^^^^^^^^^^^^
+    40 │
+    41 │ 	const {
+
+
+src/ui/components/card/EntityCard.js:27:21 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+
+  × This hook does not specify its dependency on entity.
+
+    26 │ 	// Memoize timer props to prevent unnecessary re-renders
+  > 27 │ 	const timerProps = useMemo(() => {
+       │ 	                   ^^^^^^^
+    28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
+    29 │ 		return {
+
+  i This dependency is being used here, but is not specified in the hook dependency list.
+
+    26 │ 	// Memoize timer props to prevent unnecessary re-renders
+    27 │ 	const timerProps = useMemo(() => {
+  > 28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
+       │ 		                                                       ^^^^^^
+    29 │ 		return {
+    30 │ 			time: countdown,
+
+  i React relies on hook dependencies to determine when to re-compute Effects.
+    Failing to specify dependencies can result in Effects not updating correctly when state changes.
+    These "stale closures" are a common source of surprising bugs.
+
+  i Unsafe fix: Add the missing dependency to the list.
+
+    39 │ → },·[entity.countdown,·entity.isCountdownActive,·entity.maxCountdown,·entity]);
+       │                                                                      ++++++++
+
+src/ui/components/card/EntityCard.js:27:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━━━━━━━
+
+  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
+
+    26 │ 	// Memoize timer props to prevent unnecessary re-renders
+  > 27 │ 	const timerProps = useMemo(() => {
+       │ 	                   ^^^^^^^
+    28 │ 		const { countdown, isCountdownActive, maxCountdown } = entity;
+    29 │ 		return {
+
+  i Hooks should not be called after an early return.
+
+    11 │ 	// Handle case where entity is null/undefined (still loading)
+  > 12 │ 	if (!entity || typeof entity !== "object" || entity.health === undefined) {
+       │
+  > 13 │ 		return (
+        ...
+  > 17 │ 			</div>
+  > 18 │ 		);
+       │ 		^^
+    19 │ 	}
+    20 │
+
+  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
+
+  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
+
+src/ui/components/card/NPCCard.js:17:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    16 │ 	return (
+  > 17 │ 		<div className="npc-card" onClick={handleClick}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    18 │ 			<div className={`npc-avatar avatar avatar_${avatar} small`}></div>
+    19 │ 			<div className="npc-info">
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/card/NPCCard.js:17:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    16 │ 	return (
+  > 17 │ 		<div className="npc-card" onClick={handleClick}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    18 │ 			<div className={`npc-avatar avatar avatar_${avatar} small`}></div>
+    19 │ 			<div className="npc-info">
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/card/PlaceCard.js:8:19 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
+
+     6 │ 	if (!place) return null;
+     7 │
+   > 8 │ 	const dispatch = useDispatch();
+       │ 	                 ^^^^^^^^^^^
+     9 │
+    10 │ 	const handleMove = () => {
+
+  i Hooks should not be called after an early return.
+
+    5 │ const PlaceCard = ({ place }) => {
+  > 6 │ 	if (!place) return null;
+      │ 	            ^^^^^^^^^^^^
+    7 │
+    8 │ 	const dispatch = useDispatch();
+
+  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
+
+  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
+
+src/ui/components/card/PlayerCard.js:29:8 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    27 │ 					<div className="player-options">
+    28 │ 						{player.exp >= player.expToNext && (
+  > 29 │ 							<button
+       │ 							^^^^^^^
+  > 30 │ 								className="select-btn"
+  > 31 │ 								onClick={() => setShowLevelUp((prev) => !prev)}
+  > 32 │ 							>
+       │ 							^
+    33 │ 								Level Up
+    34 │ 							</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/CircularProgressTimer.js:18:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+
+  × This hook specifies more dependencies than necessary: enemyId.
+
+    17 │ 	// Detect new cycle (countdown reset)
+  > 18 │ 	useEffect(() => {
+       │ 	^^^^^^^^^
+    19 │ 		if (time > prevTimeRef.current) {
+    20 │ 			startTimeRef.current = time || 1;
+
+  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
+
+    22 │ 		if (time === 0) onComplete?.();
+    23 │ 		prevTimeRef.current = time;
+  > 24 │ 	}, [time, enemyId, onComplete]);
+       │ 	          ^^^^^^^
+    25 │
+    26 │ 	const start = startTimeRef.current;
+
+  i React relies on hook dependencies to determine when to re-compute Effects.
+    Specifying more dependencies than required can lead to unnecessary re-rendering
+    and degraded performance.
+
+  i Unsafe fix: Remove the extra dependencies from the list.
+
+    24 │ → },·[time,·enemyId,·onComplete]);
+       │             ---------
+
+src/ui/components/common/ItemInfo.js:7:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+     6 │ 	return (
+   > 7 │ 		<div
+       │ 		^^^^
+   > 8 │ 			className="item-info-wrapper"
+   > 9 │ 			onMouseEnter={() => setShow(true)}
+  > 10 │ 			onMouseLeave={() => setShow(false)}
+  > 11 │ 		>
+       │ 		^
+    12 │ 			{children}
+    13 │ 			{show && (
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/common/MoveItemDialog.js:100:4 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
+
+  × The HTML element div is non-interactive. Do not use tabIndex.
+
+     98 │ 				}
+     99 │ 			}}
+  > 100 │ 			tabIndex={0}
+        │ 			^^^^^^^^^^^^
+    101 │ 		>
+    102 │ 			<div
+
+  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
+
+  i Unsafe fix: Remove the tabIndex attribute.
+
+     98  98 │   				}
+     99  99 │   			}}
+    100     │ - → → → tabIndex={0}
+    101 100 │   		>
+    102 101 │   			<div
+
+
+src/ui/components/common/MoveItemDialog.js:117:6 lint/a11y/noLabelWithoutControl ━━━━━━━━━━━━━━━━━━━
+
+  × A form label must be associated with an input.
+
+    116 │ 				<div className="quantity-section">
+  > 117 │ 					<label>Quantity:</label>
+        │ 					^^^^^^^^^^^^^^^^^^^^^^^^
+    118 │ 					<QuantitySlider
+    119 │ 						value={quantity}
+
+  i Consider adding a `for` or `htmlFor` attribute to the label element or moving the input element to inside the label element.
+
+
+src/ui/components/common/NPCDialog.js:81:5 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × The elements with this role can be changed to the following elements:
     <fieldset>
 
-    15 │ 		<div
-    16 │ 			className="player-options"
-  > 17 │ 			role="group"
-       │ 			^^^^^^^^^^^^
-    18 │ 			onClick={(e) => e.stopPropagation()}
-    19 │ 		>
+    79 │ 					}
+    80 │ 				}}
+  > 81 │ 				role="group"
+       │ 				^^^^^^^^^^^^
+    82 │ 			>
+    83 │ 				{/* Bottom section with 2 columns */}
 
   i For examples and more information, see WAI-ARIA Roles
-
-
-src/ui/components/common/NewLevelDialog.js:20:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    18 │ 			onClick={(e) => e.stopPropagation()}
-    19 │ 		>
-  > 20 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
-       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    21 │ 				+1 STR
-    22 │ 			</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/common/NewLevelDialog.js:23:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    21 │ 				+1 STR
-    22 │ 			</button>
-  > 23 │ 			<button className="select-btn" onClick={() => onChoose({ defense: 2 })}>
-       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    24 │ 				+2 DEF
-    25 │ 			</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/common/NewLevelDialog.js:26:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    24 │ 				+2 DEF
-    25 │ 			</button>
-  > 26 │ 			<button className="select-btn" onClick={() => onChoose({ agility: 1 })}>
-       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    27 │ 				+1 AGI
-    28 │ 			</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/common/NewLevelDialog.js:29:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    27 │ 				+1 AGI
-    28 │ 			</button>
-  > 29 │ 			<button className="select-btn" onClick={() => onChoose({ vitality: 3 })}>
-       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    30 │ 				+3 VIT
-    31 │ 			</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/common/NewLevelDialog.js:34:3 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    32 │ 		</div>
-    33 │
-  > 34 │ 		<button onClick={onCancel}>Cancel</button>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    35 │ 	</div>
-    36 │ );
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1573,12 +1602,12 @@ Clone found (javascript):
  182 │ 34 │ 				player
 
 Found 41 clones.
-Error: ERROR: jscpd found too many duplicates (4.55%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.54%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.55%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.54%) over threshold (0%)
 ```
 
 </details>

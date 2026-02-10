@@ -88,22 +88,22 @@ function MoveItemDialog({
 	const canConfirm = !weightInfo || weightInfo.maxMovable > 0;
 
 	return (
-		<div 
-			className="dialog" 
+		<div
+			className="dialog"
 			role="dialog"
 			onClick={onCancel}
 			onKeyDown={(e) => {
-				if (e.key === 'Escape') {
+				if (e.key === "Escape") {
 					onCancel();
 				}
 			}}
 			tabIndex={0}
 		>
-			<div 
-				className="move-item-dialog" 
+			<div
+				className="move-item-dialog"
 				onClick={(e) => e.stopPropagation()}
 				onKeyDown={(e) => {
-					if (e.key === 'Enter' || e.key === ' ') {
+					if (e.key === "Enter" || e.key === " ") {
 						e.stopPropagation();
 					}
 				}}
@@ -143,7 +143,9 @@ function MoveItemDialog({
 					>
 						Move {quantity}
 					</button>
-					<button onClick={onCancel} type="button">Cancel</button>
+					<button onClick={onCancel} type="button">
+						Cancel
+					</button>
 				</div>
 			</div>
 		</div>
