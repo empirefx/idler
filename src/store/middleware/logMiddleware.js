@@ -9,12 +9,11 @@ import {
 import { addLog } from "../slices/logSlice";
 import {
 	getEnemyDisplayName,
-	getEnemyTypeDisplayName,
 } from "../../utils/enemyUtils";
 
 const logMiddleware = (store) => (next) => (action) => {
 	// Don't process log actions to prevent recursion
-	if (action.type && action.type.startsWith("logs/")) {
+	if (action.type?.startsWith("logs/")) {
 		return next(action);
 	}
 
@@ -85,7 +84,6 @@ const logMiddleware = (store) => (next) => (action) => {
 		case PLAYER_DAMAGED: {
 			const {
 				attackerId: playerAttackerId,
-				attackerType,
 				targetId: playerTargetId,
 				damage,
 				damageType,
@@ -104,7 +102,7 @@ const logMiddleware = (store) => (next) => (action) => {
 					}),
 				);
 			} else if (damageType === "received") {
-				const attackerName = getEnemyDisplayName(
+				const _attackerName = getEnemyDisplayName(
 					currentState,
 					playerAttackerId,
 				);

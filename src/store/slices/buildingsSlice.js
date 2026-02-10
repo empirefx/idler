@@ -23,7 +23,7 @@ export const buildingsSlice = createSlice({
 			}
 		},
 		// Set entire buildings state (used for loading saved state)
-		setBuildings: (state, action) => action.payload,
+		setBuildings: (_state, action) => action.payload,
 	},
 });
 

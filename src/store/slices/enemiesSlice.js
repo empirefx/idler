@@ -94,7 +94,7 @@ const enemiesSlice = createSlice({
 		updateEnemyCountdown(state, action) {
 			const { id, deltaTime } = action.payload;
 			const enemy = state.byId[id];
-			if (enemy && enemy.isCountdownActive && enemy.countdown > 0) {
+			if (enemy?.isCountdownActive && enemy.countdown > 0) {
 				// Convert deltaTime from seconds to milliseconds
 				enemy.countdown = Math.max(0, enemy.countdown - deltaTime * 1000);
 			}

@@ -6,7 +6,7 @@ const notificationMiddleware = (store) => (next) => (action) => {
 	const result = next(action);
 
 	// Handle failed inventory actions by checking for error types
-	if (action.type && action.type.includes("moveItem") && action.error) {
+	if (action.type?.includes("moveItem") && action.error) {
 		const error = action.error;
 		let message = "";
 		let type = NOTIFICATION_TYPES.ERROR;

@@ -47,7 +47,7 @@ const ControlSection = ({ clearCache }) => {
 				)}
 
 				<div className="cache">
-					<button onClick={clearCache} className="clear-cache-btn">
+					<button type="button" onClick={clearCache} className="clear-cache-btn">
 						Clear Cache
 					</button>
 				</div>

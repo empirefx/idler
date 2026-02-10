@@ -186,7 +186,7 @@ export const CombatService = {
 			const updated = this.store.getState().enemies.byId[targetEnemy.id];
 			if (!updated) return;
 
-			if (updated && updated.isDead) {
+			if (updated?.isDead) {
 				// Enemy died, handle drops, exp, etc
 				this.store.dispatch({ type: "combat/clearTarget" });
 				this.handleEnemyDrops(enemySnapshot);

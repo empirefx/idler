@@ -14,7 +14,7 @@ const StatList = ({ baseStats }) => {
 	// Aggregate equipment bonuses for each stat
 	const equipmentBonus = {};
 	Object.values(equipment).forEach((item) => {
-		if (item && item.stats) {
+		if (item?.stats) {
 			Object.entries(item.stats).forEach(([stat, value]) => {
 				equipmentBonus[stat] = (equipmentBonus[stat] || 0) + value;
 			});
