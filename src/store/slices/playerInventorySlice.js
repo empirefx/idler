@@ -292,12 +292,12 @@ export const selectPlayerInventoryStats = createSelector(
 );
 
 export const selectEquippedItem = createSelector(
-	[selectPlayerEquipment, (state, slot) => slot],
+	[selectPlayerEquipment, (_state, slot) => slot],
 	(equipment, slot) => (equipment ? equipment[slot] : null),
 );
 
 export const selectCanEquipItem = createSelector(
-	[selectPlayerInventoryById, (state, itemId) => itemId],
+	[selectPlayerInventoryById, (_state, itemId) => itemId],
 	(inventory, itemId) => {
 		if (!inventory) return false;
 		const item = findItemById(inventory, itemId);

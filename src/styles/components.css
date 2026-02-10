@@ -161,7 +161,7 @@
 	background-color: #4579bd6e;
 	color: #aed7ff;
 	text-align: center;
-	text-transform: capitalize !important;
+	text-transform: capitalize;
 	border-radius: var(--border-radius-sm);
 	padding: var(--spacing-xs) var(--spacing-sm);
 	position: absolute;

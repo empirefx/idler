@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 
 import { navigateToPlace } from "../../../store/slices/placesSlice";
@@ -28,7 +27,16 @@ const PlaceCard = ({ place }) => {
 				</div>
 
 				<div className="place-top-right">
-					<button className="action-btn" onClick={handleMove}>
+					<button 
+					className="action-btn" 
+					onClick={handleMove}
+					type="button"
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							handleMove();
+						}
+					}}
+				>
 						Move
 					</button>
 				</div>
