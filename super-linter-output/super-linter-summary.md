@@ -2,11 +2,11 @@
 
 | Language                   | Validation result |
 | -------------------------- | ----------------- |
-| BIOME_FORMAT               | Fail ❌           |
+| BIOME_FORMAT               | Pass ✅           |
 | BIOME_LINT                 | Fail ❌           |
 | CHECKOV                    | Pass ✅           |
 | GITHUB_ACTIONS             | Pass ✅           |
-| GITHUB_ACTIONS_ZIZMOR      | Fail ❌           |
+| GITHUB_ACTIONS_ZIZMOR      | Pass ✅           |
 | GITLEAKS                   | Pass ✅           |
 | GIT_MERGE_CONFLICT_MARKERS | Pass ✅           |
 | HTML                       | Fail ❌           |
@@ -22,90 +22,9 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21786584627)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21846637520)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
-
-<details>
-
-<summary>BIOME_FORMAT</summary>
-
-```text
-Formatted 141 files in 274ms. Fixed 2 files.
-Found 5 errors._test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × unexpected character `(`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-
-_test_/fixtures/gameStates/testStates.json:49:33 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × unexpected character `)`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                 ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-
-_test_/fixtures/gameStates/testStates.json:49:35 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × unexpected character `=`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                   ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-
-_test_/fixtures/gameStates/testStates.json:49:36 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × unexpected character `>`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                    ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-
-_test_/fixtures/gameStates/testStates.json:49:38 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × expected `,` but instead found `10`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                      ^^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-  i Remove 10
-
-
-_test_/fixtures/gameStates/testStates.json format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Code formatting aborted due to parsing errors. To format code with errors, enable the 'formatter.formatWithErrors' option.
-
-
-format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Some errors were emitted while running checks.
-
-```
-
-</details>
 
 <details>
 
@@ -113,236 +32,212 @@ format ━━━━━━━━━━━━━━━━━━━━━━━━�
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 184.
-Checked 145 files in 1177ms. No fixes applied.
-Found 71 errors.
-Found 121 warnings.
-Found 12 infos._test_/enemiesSlice.test.js:29:24 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-    27 │ 		const newState = enemiesReducer(state, addEnemy({ placeId, enemy }));
-    28 │
-  > 29 │ 		expect(newState.byId["e1"]).toEqual({
-       │ 		                     ^^^^
-    30 │ 			...enemy,
-    31 │ 			placeId,
-
-  i Unsafe fix: Use a literal key instead.
-
-     27  27 │   		const newState = enemiesReducer(state, addEnemy({ placeId, enemy }));
-     28  28 │
-     29     │ - → → expect(newState.byId["e1"]).toEqual({
-         29 │ + → → expect(newState.byId.e1).toEqual({
-     30  30 │   			...enemy,
-     31  31 │   			placeId,
-
-
-_test_/enemiesSlice.test.js:74:17 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-    72 │ 		);
-    73 │ 		s = enemiesReducer(s, damageEnemy({ id: "e1", amount: 3 }));
-  > 74 │ 		expect(s.byId["e1"].health).toBe(2);
-       │ 		              ^^^^
-    75 │ 		s = enemiesReducer(s, damageEnemy({ id: "e1", amount: 5 }));
-    76 │ 		expect(s.byId).not.toHaveProperty("e1");
-
-  i Unsafe fix: Use a literal key instead.
-
-     72  72 │   		);
-     73  73 │   		s = enemiesReducer(s, damageEnemy({ id: "e1", amount: 3 }));
-     74     │ - → → expect(s.byId["e1"].health).toBe(2);
-         74 │ + → → expect(s.byId.e1.health).toBe(2);
-     75  75 │   		s = enemiesReducer(s, damageEnemy({ id: "e1", amount: 5 }));
-     76  76 │   		expect(s.byId).not.toHaveProperty("e1");
-
-
-_test_/enemiesSlice.test.js:86:32 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-    84 │ 		);
-    85 │ 		const list = selectAllEnemies({ enemies: s });
-  > 86 │ 		expect(list).toEqual([s.byId["e1"]]);
-       │ 		                             ^^^^
-    87 │ 	});
-    88 │
-
-  i Unsafe fix: Use a literal key instead.
-
-     84  84 │   		);
-     85  85 │   		const list = selectAllEnemies({ enemies: s });
-     86     │ - → → expect(list).toEqual([s.byId["e1"]]);
-         86 │ + → → expect(list).toEqual([s.byId.e1]);
-     87  87 │   	});
-     88  88 │
-
-
-_test_/enemiesSlice.test.js:100:32 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-     98 │ 		const globalState = { enemies: s, places: { currentPlaceId: "p1" } };
-     99 │ 		const list = selectEnemiesForCurrentPlace(globalState);
-  > 100 │ 		expect(list).toEqual([s.byId["e1"]]);
-        │ 		                             ^^^^
-    101 │ 	});
-    102 │
-
-  i Unsafe fix: Use a literal key instead.
-
-     98  98 │   		const globalState = { enemies: s, places: { currentPlaceId: "p1" } };
-     99  99 │   		const list = selectEnemiesForCurrentPlace(globalState);
-    100     │ - → → expect(list).toEqual([s.byId["e1"]]);
-        100 │ + → → expect(list).toEqual([s.byId.e1]);
-    101 101 │   	});
-    102 102 │
-
-
-_test_/integration/gameEngine.integration.test.js:95:43 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━
-
-  i The computed expression can be simplified without the use of a string literal.
-
-    93 │ 			// Verify the production cycle ran without errors
-    94 │ 			const state = store.getState();
-  > 95 │ 			const inventory = state.placeInventory["village_center"];
-       │ 			                                       ^^^^^^^^^^^^^^^^
-    96 │
-    97 │ 			expect(inventory).toBeDefined();
-
-  i Unsafe fix: Use a literal key instead.
-
-     93  93 │   			// Verify the production cycle ran without errors
-     94  94 │   			const state = store.getState();
-     95     │ - → → → const·inventory·=·state.placeInventory["village_center"];
-         95 │ + → → → const·inventory·=·state.placeInventory.village_center;
-     96  96 │
-     97  97 │   			expect(inventory).toBeDefined();
-
-
-_test_/combatService.staggered.test.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
+Diagnostics not shown: 149.
+Checked 103 files in 752ms. No fixes applied.
+Found 62 errors.
+Found 102 warnings.
+Found 5 infos.src/App.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   ! This import is unused.
 
-    1 │ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-    2 │ import { CombatService } from "../src/game/services/CombatService";
-  > 3 │ import { placesData } from "../src/data/places";
-      │        ^^^^^^^^^^^^^^
-    4 │
-    5 │ describe("CombatService Staggered Attack Tests", () => {
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { UIVisibilityProvider } from "./ui/UIVisibilityContext";
+    3 │ import InputManager from "./ui/InputManager";
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-      1   1 │   import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-      2   2 │   import { CombatService } from "../src/game/services/CombatService";
-      3     │ - import·{·placesData·}·from·"../src/data/places";
-      4   3 │
-      5   4 │   describe("CombatService Staggered Attack Tests", () => {
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/game/engine/GameEngine.js:152:2 lint/suspicious/useAdjacentOverloadSignatures ━━━━━━━━━━━━━━━━━━
+
+  ! All getAssignedWorkers signatures must be adjacent.
+
+    151 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
+  > 152 │ 	getAssignedWorkers(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^
+    153 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+    154 │ 	}
+
+  i All calculateProductionRate signatures must be adjacent.
+
+    156 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  > 157 │ 	calculateProductionRate(building, state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^
+    158 │ 		return this.productionService.calculateProductionRate(building, state);
+    159 │ 	}
+
+  i All canBuildingProduce signatures must be adjacent.
+
+    161 │ 	// Validate that a building can produce (now handled by ProductionService)
+  > 162 │ 	canBuildingProduce(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^
+    163 │ 		return this.productionService.canBuildingProduce(state, buildingId);
+    164 │ 	}
+
+  i All getAllProductionCalculations signatures must be adjacent.
+
+    166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+  > 167 │ 	getAllProductionCalculations(state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    168 │ 		return this.productionService.getAllProductionCalculations(state);
+    169 │ 	}
+
+  i All getAssignedWorkers signatures must be adjacent.
+
+    191 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
+  > 192 │ 	getAssignedWorkers(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^
+    193 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+    194 │ 	}
+
+  i All calculateProductionRate signatures must be adjacent.
+
+    196 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  > 197 │ 	calculateProductionRate(building, state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^
+    198 │ 		return this.productionService.calculateProductionRate(building, state);
+    199 │ 	}
+
+  i All canBuildingProduce signatures must be adjacent.
+
+    201 │ 	// Validate that a building can produce (now handled by ProductionService)
+  > 202 │ 	canBuildingProduce(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^
+    203 │ 		return this.productionService.canBuildingProduce(state, buildingId);
+    204 │ 	}
+
+  i All getAllProductionCalculations signatures must be adjacent.
+
+    206 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+  > 207 │ 	getAllProductionCalculations(state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    208 │ 		return this.productionService.getAllProductionCalculations(state);
+    209 │ 	}
 
 
-_test_/combatService.staggered.test.js:9:6 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━
+src/game/engine/GameEngine.js:32:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
 
-  ! This variable mockGameLoop is unused.
+  ! This parameter is unused.
 
-     7 │ 	let mockStore;
-     8 │ 	let mockEventBusService;
-   > 9 │ 	let mockGameLoop;
-       │ 	    ^^^^^^^^^^^^
-    10 │
-    11 │ 	beforeEach(() => {
+    30 │ 		store,
+    31 │ 		{
+  > 32 │ 			inventoryService = InventoryService,
+       │ 			^^^^^^^^^^^^^^^^
+    33 │ 			itemFactory = ItemFactory,
+    34 │ 			productionService = ProductionService,
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+
+src/game/factory/enemyFactory.js:5:8 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Avoid classes that contain only static members.
+
+     4 │ // Factory for creating enemy instances with base stats
+   > 5 │ export class EnemyFactory {
+       │        ^^^^^^^^^^^^^^^^^^^^
+   > 6 │ 	static create(type, options = {}) {
+        ...
+  > 32 │ 	}
+  > 33 │ }
+       │ ^
+    34 │
+    35 │ export default EnemyFactory;
+
+  i Prefer using simple functions instead of classes with only static members.
+
+
+src/game/factory/itemFactory.js:4:8 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Avoid classes that contain only static members.
+
+     3 │ // Handles item creation logic, including randomization, upgrades, etc.
+   > 4 │ export class ItemFactory {
+       │        ^^^^^^^^^^^^^^^^^^^
+   > 5 │ 	// Create an item object for production, using the itemCatalog and optional randomization
+        ...
+  > 18 │ 		return item;
+  > 19 │ 	}
+  > 20 │ }
+       │ ^
+    21 │
+
+  i Prefer using simple functions instead of classes with only static members.
+
+
+src/ui/components/sections/PlayerEntitySection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/sections/PlayerSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/sections/WorkersSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/hooks/useGameState.js:16:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
+
+  ! This variable gameEngine is unused.
+
+    14 │ 		gameEngineRef.current = new GameEngine(dispatch, store);
+    15 │ 	}
+  > 16 │ 	const gameEngine = gameEngineRef.current;
+       │ 	      ^^^^^^^^^^
+    17 │ 	const [error, setError] = useState(null);
+    18 │ 	const isInitialized = useRef(false);
 
   i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
-  i Unsafe fix: If this is intentional, prepend mockGameLoop with an underscore.
+  i Unsafe fix: If this is intentional, prepend gameEngine with an underscore.
 
-      7   7 │   	let mockStore;
-      8   8 │   	let mockEventBusService;
-      9     │ - → let·mockGameLoop;
-          9 │ + → let·_mockGameLoop;
-     10  10 │
-     11  11 │   	beforeEach(() => {
-    ······· │
-     22  22 │
-     23  23 │   		// Mock game loop
-     24     │ - → → mockGameLoop·=·{
-         24 │ + → → _mockGameLoop·=·{
-     25  25 │   			register: vi.fn(),
-     26  26 │   		};
-
-
-_test_/combatService.staggered.test.js:62:10 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━
-
-  ! This variable currentTime is unused.
-
-    61 │ 		it("should handle enemies ready to attack", () => {
-  > 62 │ 			const currentTime = Date.now();
-       │ 			      ^^^^^^^^^^^
-    63 │ 			const enemies = [
-    64 │ 				{
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend currentTime with an underscore.
-
-     60  60 │
-     61  61 │   		it("should handle enemies ready to attack", () => {
-     62     │ - → → → const·currentTime·=·Date.now();
-         62 │ + → → → const·_currentTime·=·Date.now();
-     63  63 │   			const enemies = [
-     64  64 │   				{
-
-
-_test_/eventSystem.test.js:49:6 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This variable consoleSpy is unused.
-
-    47 │ describe("Event System Logging", () => {
-    48 │ 	let store;
-  > 49 │ 	let consoleSpy;
-       │ 	    ^^^^^^^^^^
-    50 │
-    51 │ 	beforeEach(() => {
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend consoleSpy with an underscore.
-
-     47  47 │   describe("Event System Logging", () => {
-     48  48 │   	let store;
-     49     │ - → let·consoleSpy;
-         49 │ + → let·_consoleSpy;
-     50  50 │
-     51  51 │   	beforeEach(() => {
-     52  52 │   		// Create fresh store with log middleware
-     53  53 │   		store = configureTestStore();
-     54     │ - → → consoleSpy·=·vi.spyOn(console,·"log").mockImplementation(()·=>·{});
-         54 │ + → → _consoleSpy·=·vi.spyOn(console,·"log").mockImplementation(()·=>·{});
-     55  55 │
-     56  56 │   		// Clear existing logs
-
-
-_test_/gameLoop.test.js:12:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    11 │ 	afterEach(() => {
-  > 12 │ 		if (gameLoop && gameLoop.isActive()) {
-       │ 		    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    13 │ 			gameLoop.stop();
-    14 │ 		}
-
-  i Unsafe fix: Change to an optional chain.
-
-     10  10 │
-     11  11 │   	afterEach(() => {
-     12     │ - → → if·(gameLoop·&&·gameLoop.isActive())·{
-         12 │ + → → if·(gameLoop?.isActive())·{
-     13  13 │   			gameLoop.stop();
-     14  14 │   		}
+    14 14 │   		gameEngineRef.current = new GameEngine(dispatch, store);
+    15 15 │   	}
+    16    │ - → const·gameEngine·=·gameEngineRef.current;
+       16 │ + → const·_gameEngine·=·gameEngineRef.current;
+    17 17 │   	const [error, setError] = useState(null);
+    18 18 │   	const isInitialized = useRef(false);
 
 
 src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -361,292 +256,158 @@ src/ui/layouts/GameLayout.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━�
     1 │ import·React·from·"react";
       │ --------------------------
 
-static/avatar_test.html:419:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:152:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
 
-  ! This function changeSize is unused.
+  × Duplicate class member name "getAssignedWorkers"
 
-    418 │     <script>
-  > 419 │       function changeSize(size) {
-        │                ^^^^^^^^^^
-    420 │         const avatars = document.querySelectorAll(".avatar");
-    421 │         const buttons = document.querySelectorAll(".controls button");
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend changeSize with an underscore.
-
-     1  1 │
-     2    │ - ······function·changeSize(size)·{
-        2 │ + ······function·_changeSize(size)·{
-     3  3 │           const avatars = document.querySelectorAll(".avatar");
-     4  4 │           const buttons = document.querySelectorAll(".controls button");
+    151 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
+  > 152 │ 	getAssignedWorkers(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 153 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+  > 154 │ 	}
+        │ 	^
+    155 │
+    156 │ 	// Calculate production rate for a building (now handled by ProductionService)
 
 
-static/portrait_test.html:523:16 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:157:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
 
-  ! This function changeSize is unused.
+  × Duplicate class member name "calculateProductionRate"
 
-    522 │     <script>
-  > 523 │       function changeSize(size) {
-        │                ^^^^^^^^^^
-    524 │         const portraits = document.querySelectorAll(".portrait");
-    525 │         const buttons = document.querySelectorAll(".controls button");
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend changeSize with an underscore.
-
-     1  1 │
-     2    │ - ······function·changeSize(size)·{
-        2 │ + ······function·_changeSize(size)·{
-     3  3 │           const portraits = document.querySelectorAll(".portrait");
-     4  4 │           const buttons = document.querySelectorAll(".controls button");
+    156 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  > 157 │ 	calculateProductionRate(building, state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 158 │ 		return this.productionService.calculateProductionRate(building, state);
+  > 159 │ 	}
+        │ 	^
+    160 │
+    161 │ 	// Validate that a building can produce (now handled by ProductionService)
 
 
-_test_/fixtures/gameStates/testStates.json:49:32 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:162:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × unexpected character `(`
+  × Duplicate class member name "canBuildingProduce"
 
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-
-_test_/fixtures/gameStates/testStates.json:49:33 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × unexpected character `)`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                 ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
+    161 │ 	// Validate that a building can produce (now handled by ProductionService)
+  > 162 │ 	canBuildingProduce(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 163 │ 		return this.productionService.canBuildingProduce(state, buildingId);
+  > 164 │ 	}
+        │ 	^
+    165 │
+    166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
 
 
-_test_/fixtures/gameStates/testStates.json:49:35 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:167:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × unexpected character `=`
+  × Duplicate class member name "getAllProductionCalculations"
 
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                   ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
-
-
-_test_/fixtures/gameStates/testStates.json:49:36 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × unexpected character `>`
-
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                    ^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
+    166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+  > 167 │ 	getAllProductionCalculations(state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 168 │ 		return this.productionService.getAllProductionCalculations(state);
+  > 169 │ 	}
+        │ 	^
+    170 │
+    171 │ 	// Save game state to localStorage
 
 
-_test_/fixtures/gameStates/testStates.json:49:38 parse ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:192:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × expected `,` but instead found `10`
+  × Duplicate class member name "getAssignedWorkers"
 
-    47 │         "id": "sawmill",
-    48 │         "name": "Sawmill",
-  > 49 │         "calculateProduction": () => 10,
-       │                                      ^^
-    50 │         "productionType": "wood",
-    51 │         "baseProductionRate": 5
+    191 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
+  > 192 │ 	getAssignedWorkers(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 193 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+  > 194 │ 	}
+        │ 	^
+    195 │
+    196 │ 	// Calculate production rate for a building (now handled by ProductionService)
 
-  i Remove 10
+
+src/game/engine/GameEngine.js:197:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Duplicate class member name "calculateProductionRate"
+
+    196 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  > 197 │ 	calculateProductionRate(building, state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 198 │ 		return this.productionService.calculateProductionRate(building, state);
+  > 199 │ 	}
+        │ 	^
+    200 │
+    201 │ 	// Validate that a building can produce (now handled by ProductionService)
 
 
-static/avatar_test.html:430:17 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:202:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Duplicate class member name "canBuildingProduce"
+
+    201 │ 	// Validate that a building can produce (now handled by ProductionService)
+  > 202 │ 	canBuildingProduce(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 203 │ 		return this.productionService.canBuildingProduce(state, buildingId);
+  > 204 │ 	}
+        │ 	^
+    205 │
+    206 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+
+
+src/game/engine/GameEngine.js:207:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Duplicate class member name "getAllProductionCalculations"
+
+    206 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+  > 207 │ 	getAllProductionCalculations(state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 208 │ 		return this.productionService.getAllProductionCalculations(state);
+  > 209 │ 	}
+        │ 	^
+    210 │
+    211 │ 	// Start the game loop
+
+
+src/game/services/EventBusService.js:7:4 lint/suspicious/noAssignInExpressions ━━━━━━━━━━━━━━━━━━━━━
+
+  × The assignment should not be in an expression.
+
+    5 │ 	}
+    6 │ 	on(event, handler) {
+  > 7 │ 		(this.handlers[event] = this.handlers[event] || []).push(handler);
+      │ 		 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    8 │ 	}
+    9 │ 	emit(event, data) {
+
+  i The use of assignments in expressions is confusing.
+    Expressions are often considered as side-effect free.
+
+
+src/game/services/EventBusService.js:10:32 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━
 
   × This callback passed to forEach() iterable method should not return a value.
 
-    429 │         // Update active button
-  > 430 │         buttons.forEach((btn) => btn.classList.remove("active"));
-        │                 ^^^^^^^
-    431 │         event.target.classList.add("active");
-    432 │       }
+     8 │ 	}
+     9 │ 	emit(event, data) {
+  > 10 │ 		(this.handlers[event] || []).forEach((h) => h(data));
+       │ 		                             ^^^^^^^
+    11 │ 	}
+    12 │ }
 
   i Either remove this return or remove the returned value.
 
-    429 │         // Update active button
-  > 430 │         buttons.forEach((btn) => btn.classList.remove("active"));
-        │                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    431 │         event.target.classList.add("active");
-    432 │       }
-
-
-static/portrait_test.html:541:17 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × This callback passed to forEach() iterable method should not return a value.
-
-    540 │         // Update active button
-  > 541 │         buttons.forEach((btn) => btn.classList.remove("active"));
-        │                 ^^^^^^^
-    542 │         event.target.classList.add("active");
-    543 │       }
-
-  i Either remove this return or remove the returned value.
-
-    540 │         // Update active button
-  > 541 │         buttons.forEach((btn) => btn.classList.remove("active"));
-        │                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    542 │         event.target.classList.add("active");
-    543 │       }
+     8 │ 	}
+     9 │ 	emit(event, data) {
+  > 10 │ 		(this.handlers[event] || []).forEach((h) => h(data));
+       │ 		                                            ^^^^^^^
+    11 │ 	}
+    12 │ }
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Some warnings were emitted while running checks.
 
-```
-
-</details>
-
-<details>
-
-<summary>GITHUB_ACTIONS_ZIZMOR</summary>
-
-```text
-[1m[33mwarning[artipacked][0m[1m: credential persistence through GitHub Actions artifacts[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:19:9
-   [1m[94m|[0m
-[1m[94m19[0m [1m[94m|[0m         - name: Checkout
-   [1m[94m|[0m [1m[33m _________^[0m
-[1m[94m20[0m [1m[94m|[0m [1m[33m|[0m         uses: actions/checkout@v5
-   [1m[94m|[0m [1m[33m|_________________________________^[0m [1m[33mdoes not set persist-credentials: false[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → Low
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#artipacked[39m
-
-[1m[91merror[excessive-permissions][0m[1m: overly broad permissions[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:11:3
-   [1m[94m|[0m
-[1m[94m11[0m [1m[94m|[0m   pages: write
-   [1m[94m|[0m   [1m[91m^^^^^^^^^^^^[0m [1m[91mpages: write is overly broad at the workflow level[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#excessive-permissions[39m
-
-[1m[91merror[excessive-permissions][0m[1m: overly broad permissions[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:12:3
-   [1m[94m|[0m
-[1m[94m12[0m [1m[94m|[0m   id-token: write
-   [1m[94m|[0m   [1m[91m^^^^^^^^^^^^^^^[0m [1m[91mid-token: write is overly broad at the workflow level[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#excessive-permissions[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:20:15
-   [1m[94m|[0m
-[1m[94m20[0m [1m[94m|[0m         uses: actions/checkout@v5
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:23:15
-   [1m[94m|[0m
-[1m[94m23[0m [1m[94m|[0m         uses: actions/setup-node@v6
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:35:15
-   [1m[94m|[0m
-[1m[94m35[0m [1m[94m|[0m         uses: actions/upload-pages-artifact@v4
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/deploy-pages.yml:49:15
-   [1m[94m|[0m
-[1m[94m49[0m [1m[94m|[0m         uses: actions/deploy-pages@v4
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/release-please.yml:13:15
-   [1m[94m|[0m
-[1m[94m13[0m [1m[94m|[0m       - uses: google-github-actions/release-please-action@v4
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[96mhelp[artipacked][0m[1m: credential persistence through GitHub Actions artifacts[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/super-linter.yml:23:9
-   [1m[94m|[0m
-[1m[94m23[0m [1m[94m|[0m         - name: Checkout code
-   [1m[94m|[0m [1m[96m _________^[0m
-[1m[94m24[0m [1m[94m|[0m [1m[96m|[0m         uses: actions/checkout@v6
-[1m[94m25[0m [1m[94m|[0m [1m[96m|[0m         with:
-[1m[94m26[0m [1m[94m|[0m [1m[96m|[0m           # super-linter needs the full git history to get the
-[1m[94m27[0m [1m[94m|[0m [1m[96m|[0m           # list of files that changed across commits
-[1m[94m28[0m [1m[94m|[0m [1m[96m|[0m           fetch-depth: 0
-[1m[94m29[0m [1m[94m|[0m [1m[96m|[0m           token: ${{ secrets.SUPER_LINTER_TOKEN }}
-   [1m[94m|[0m [1m[96m|__________________________________________________^[0m [1m[96mdoes not set persist-credentials: false[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → Low
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#artipacked[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/super-linter.yml:24:15
-   [1m[94m|[0m
-[1m[94m24[0m [1m[94m|[0m         uses: actions/checkout@v6
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/super-linter.yml:32:15
-   [1m[94m|[0m
-[1m[94m32[0m [1m[94m|[0m         uses: super-linter/super-linter@v8.5.0
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[1m[91merror[unpinned-uses][0m[1m: unpinned action reference[0m
-  [1m[94m--> [0m/github/workspace/.github/workflows/super-linter.yml:74:15
-   [1m[94m|[0m
-[1m[94m74[0m [1m[94m|[0m         uses: stefanzweifel/git-auto-commit-action@v7
-   [1m[94m|[0m               [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91maction is not pinned to a hash (required by blanket policy)[0m
-   [1m[94m|[0m
-   [1m[94m= [0m[1mnote[0m: audit confidence → High
-   [1m[94m= [0m[1mnote[0m: this finding has an auto-fix
-   [1m[94m= [0m[1mhelp[0m: audit documentation → [32mhttps://docs.zizmor.sh/audits/#unpinned-uses[39m
-
-[32m24[39m findings ([1m[93m12[39m suppressed, [92m10[39m fixable[0m): [35m0[39m informational, [36m1[39m low, [33m1[39m medium, [31m10[39m high🌈 zizmor v1.22.0
-[32m INFO[0m [1maudit[0m[2m:[0m [2mzizmor[0m[2m:[0m 🌈 completed /github/workspace/.github/workflows/deploy-pages.yml
-[32m INFO[0m [1maudit[0m[2m:[0m [2mzizmor[0m[2m:[0m 🌈 completed /github/workspace/.github/workflows/release-please.yml
-[32m INFO[0m [1maudit[0m[2m:[0m [2mzizmor[0m[2m:[0m 🌈 completed /github/workspace/.github/workflows/super-linter.yml
 ```
 
 </details>
@@ -913,7 +674,7 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 [37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
 [37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
 
-Scanned 4 files, found 122 errors in 2 files (44 ms)
+Scanned 4 files, found 122 errors in 2 files (49 ms)
 ```
 
 </details>
@@ -2147,12 +1908,11 @@ Error: ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
 <summary>MARKDOWN</summary>
 
 ```text
-/github/workspace/CHANGELOG.md:53 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "⚠ BREAKING CHANGES"]
-/github/workspace/CHANGELOG.md:58 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
-/github/workspace/CHANGELOG.md:76 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
-/github/workspace/CHANGELOG.md:120 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
-/github/workspace/CHANGELOG.md:126 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
-/github/workspace/README.md:9 error MD001/heading-increment Heading levels should only increment by one level at a time [Expected: h3; Actual: h4]
+/github/workspace/CHANGELOG.md:50 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "⚠ BREAKING CHANGES"]
+/github/workspace/CHANGELOG.md:55 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
+/github/workspace/CHANGELOG.md:73 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
+/github/workspace/CHANGELOG.md:117 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
+/github/workspace/CHANGELOG.md:123 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
 ```
 
 </details>
