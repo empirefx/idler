@@ -9,11 +9,11 @@
 | GITHUB_ACTIONS_ZIZMOR      | Pass ✅           |
 | GITLEAKS                   | Pass ✅           |
 | GIT_MERGE_CONFLICT_MARKERS | Pass ✅           |
-| HTML                       | Fail ❌           |
+| HTML                       | Pass ✅           |
 | JSCPD                      | Fail ❌           |
-| MARKDOWN                   | Fail ❌           |
+| MARKDOWN                   | Pass ✅           |
 | MARKDOWN_PRETTIER          | Pass ✅           |
-| NATURAL_LANGUAGE           | Fail ❌           |
+| NATURAL_LANGUAGE           | Pass ✅           |
 | PRE_COMMIT                 | Pass ✅           |
 | SPELL_CODESPELL            | Pass ✅           |
 | TRIVY                      | Pass ✅           |
@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21846637520)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21848460448)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 149.
-Checked 103 files in 752ms. No fixes applied.
+Checked 103 files in 899ms. No fixes applied.
 Found 62 errors.
 Found 102 warnings.
 Found 5 infos.src/App.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -408,273 +408,6 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Some warnings were emitted while running checks.
 
-```
-
-</details>
-
-<details>
-
-<summary>HTML</summary>
-
-```text
-
-   Config loaded: /action/lib/.automation/.htmlhintrc
-
-   Config loaded: /action/lib/.automation/.htmlhintrc
-
-   Config loaded: /action/lib/.automation/.htmlhintrc
-
-   /github/workspace/static/avatar_test.html
-[37m      L171 |[90m      <div class="avatar-grid" id="avatarGrid">[39m
-[37m                                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L173 |[90m          <div class="avatar avatar_1"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L177 |[90m          <div class="avatar avatar_2"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L181 |[90m          <div class="avatar avatar_3"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L185 |[90m          <div class="avatar avatar_4"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L189 |[90m          <div class="avatar avatar_5"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L193 |[90m          <div class="avatar avatar_6"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L197 |[90m          <div class="avatar avatar_7"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L201 |[90m          <div class="avatar avatar_8"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L205 |[90m          <div class="avatar avatar_9"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L209 |[90m          <div class="avatar avatar_10"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L213 |[90m          <div class="avatar avatar_11"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L217 |[90m          <div class="avatar avatar_12"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L221 |[90m          <div class="avatar avatar_13"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L225 |[90m          <div class="avatar avatar_14"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L229 |[90m          <div class="avatar avatar_15"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L233 |[90m          <div class="avatar avatar_16"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L237 |[90m          <div class="avatar avatar_17"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L241 |[90m          <div class="avatar avatar_18"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L245 |[90m          <div class="avatar avatar_19"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L249 |[90m          <div class="avatar avatar_20"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L253 |[90m          <div class="avatar avatar_21"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L257 |[90m          <div class="avatar avatar_22"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L261 |[90m          <div class="avatar avatar_23"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L265 |[90m          <div class="avatar avatar_24"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L269 |[90m          <div class="avatar avatar_25"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L273 |[90m          <div class="avatar avatar_26"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L277 |[90m          <div class="avatar avatar_27"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L281 |[90m          <div class="avatar avatar_28"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L285 |[90m          <div class="avatar avatar_29"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L289 |[90m          <div class="avatar avatar_30"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L293 |[90m          <div class="avatar avatar_31"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L297 |[90m          <div class="avatar avatar_32"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L301 |[90m          <div class="avatar avatar_33"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L305 |[90m          <div class="avatar avatar_34"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L309 |[90m          <div class="avatar avatar_35"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L313 |[90m          <div class="avatar avatar_36"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L317 |[90m          <div class="avatar avatar_37"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L321 |[90m          <div class="avatar avatar_38"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L325 |[90m          <div class="avatar avatar_39"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L329 |[90m          <div class="avatar avatar_40"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L333 |[90m          <div class="avatar avatar_41"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L337 |[90m          <div class="avatar avatar_42"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L341 |[90m          <div class="avatar avatar_43"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L345 |[90m          <div class="avatar avatar_44"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L349 |[90m          <div class="avatar avatar_45"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L353 |[90m          <div class="avatar avatar_46"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L357 |[90m          <div class="avatar avatar_47"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L361 |[90m          <div class="avatar avatar_48"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-
-   Config loaded: /action/lib/.automation/.htmlhintrc
-
-   /github/workspace/static/portrait_test.html
-[37m      L179 |[90m      <div class="portrait-grid" id="portraitGrid">[39m
-[37m                                            ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L181 |[90m          <div class="portrait portrait_1"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L185 |[90m          <div class="portrait portrait_2"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L189 |[90m          <div class="portrait portrait_3"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L193 |[90m          <div class="portrait portrait_4"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L197 |[90m          <div class="portrait portrait_5"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L201 |[90m          <div class="portrait portrait_6"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L205 |[90m          <div class="portrait portrait_7"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L209 |[90m          <div class="portrait portrait_8"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L213 |[90m          <div class="portrait portrait_9"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L217 |[90m          <div class="portrait portrait_10"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L221 |[90m          <div class="portrait portrait_11"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L225 |[90m          <div class="portrait portrait_12"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L229 |[90m          <div class="portrait portrait_13"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L233 |[90m          <div class="portrait portrait_14"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L237 |[90m          <div class="portrait portrait_15"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L241 |[90m          <div class="portrait portrait_16"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L245 |[90m          <div class="portrait portrait_17"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L249 |[90m          <div class="portrait portrait_18"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L253 |[90m          <div class="portrait portrait_19"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L257 |[90m          <div class="portrait portrait_20"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L261 |[90m          <div class="portrait portrait_21"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L265 |[90m          <div class="portrait portrait_22"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L269 |[90m          <div class="portrait portrait_23"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L273 |[90m          <div class="portrait portrait_24"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L277 |[90m          <div class="portrait portrait_25"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L281 |[90m          <div class="portrait portrait_26"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L285 |[90m          <div class="portrait portrait_27"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L289 |[90m          <div class="portrait portrait_28"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L293 |[90m          <div class="portrait portrait_29"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L297 |[90m          <div class="portrait portrait_30"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L301 |[90m          <div class="portrait portrait_31"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L305 |[90m          <div class="portrait portrait_32"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L309 |[90m          <div class="portrait portrait_33"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L313 |[90m          <div class="portrait portrait_34"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L317 |[90m          <div class="portrait portrait_35"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L321 |[90m          <div class="portrait portrait_36"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L325 |[90m          <div class="portrait portrait_37"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L329 |[90m          <div class="portrait portrait_38"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L333 |[90m          <div class="portrait portrait_39"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L337 |[90m          <div class="portrait portrait_40"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L341 |[90m          <div class="portrait portrait_41"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L345 |[90m          <div class="portrait portrait_42"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L349 |[90m          <div class="portrait portrait_43"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L353 |[90m          <div class="portrait portrait_44"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L357 |[90m          <div class="portrait portrait_45"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L361 |[90m          <div class="portrait portrait_46"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L365 |[90m          <div class="portrait portrait_47"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L369 |[90m          <div class="portrait portrait_48"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L373 |[90m          <div class="portrait portrait_49"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L377 |[90m          <div class="portrait portrait_50"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L381 |[90m          <div class="portrait portrait_51"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L385 |[90m          <div class="portrait portrait_52"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L389 |[90m          <div class="portrait portrait_53"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L393 |[90m          <div class="portrait portrait_54"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L397 |[90m          <div class="portrait portrait_55"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L401 |[90m          <div class="portrait portrait_56"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L405 |[90m          <div class="portrait portrait_57"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L409 |[90m          <div class="portrait portrait_58"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L413 |[90m          <div class="portrait portrait_59"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L417 |[90m          <div class="portrait portrait_60"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L421 |[90m          <div class="portrait portrait_61"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L425 |[90m          <div class="portrait portrait_62"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L429 |[90m          <div class="portrait portrait_63"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L433 |[90m          <div class="portrait portrait_64"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L437 |[90m          <div class="portrait portrait_65"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L441 |[90m          <div class="portrait portrait_66"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L445 |[90m          <div class="portrait portrait_67"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L449 |[90m          <div class="portrait portrait_68"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L453 |[90m          <div class="portrait portrait_69"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L457 |[90m          <div class="portrait portrait_70"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L461 |[90m          <div class="portrait portrait_71"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-[37m      L465 |[90m          <div class="portrait portrait_72"></div>[39m
-[37m                          ^ [31mThe id and class attribute values must be in lowercase and split by a dash. (id-class-value)[39m
-
-Scanned 4 files, found 122 errors in 2 files (49 ms)
 ```
 
 </details>
@@ -1899,40 +1632,6 @@ Error: ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
     at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
-```
-
-</details>
-
-<details>
-
-<summary>MARKDOWN</summary>
-
-```text
-/github/workspace/CHANGELOG.md:50 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "⚠ BREAKING CHANGES"]
-/github/workspace/CHANGELOG.md:55 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
-/github/workspace/CHANGELOG.md:73 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
-/github/workspace/CHANGELOG.md:117 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Features"]
-/github/workspace/CHANGELOG.md:123 error MD024/no-duplicate-heading Multiple headings with the same content [Context: "Bug Fixes"]
-```
-
-</details>
-
-<details>
-
-<summary>NATURAL_LANGUAGE</summary>
-
-```text
-
-/github/workspace/CHANGELOG.md
-   24:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
-   28:40  ✓ error  Incorrect term: “id”, use “ID” instead               terminology
-   73:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
-  101:37  ✓ error  Incorrect term: “json”, use “JSON” instead           terminology
-  123:5   ✓ error  Incorrect term: “Bug Fixes”, use “Bugfixes” instead  terminology
-
-✖ 5 problems (5 errors, 0 warnings, 0 infos)
-✓ 5 fixable problems.
-Try to run: $ textlint --fix [file]
 ```
 
 </details>
