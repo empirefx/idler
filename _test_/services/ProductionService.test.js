@@ -5,7 +5,15 @@ import {
 	createBaseState,
 } from "../fixtures/stateBuilders.js";
 import { createMockStore } from "../mocks/services.mock.js";
-import { createMockItemFactory, createMockInventoryService, createMockBuilding, createPlaceState } from "../utils/testHelpers.js";
+import { 
+	createMockItemFactory, 
+	createMockInventoryService, 
+	createMockBuilding, 
+	createPlaceState,
+	createProductionTestScenario,
+	testProductionProcessing,
+	testZeroProductionScenario
+} from "../utils/testHelpers.js";
 import ProductionService from "../../src/game/services/ProductionService.js";
 
 describe("ProductionService", () => {
@@ -39,15 +47,11 @@ describe("ProductionService", () => {
 
 	describe("processBuildingProduction", () => {
 		it("should process production for building with workers", () => {
-			const building = {
-				id: "sawmill",
-				calculateProduction: () => 10,
-				productionType: "wood",
-			};
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-			]);
-			const deltaTime = 1000;
+			const { building, state, deltaTime } = createProductionTestScenario(
+				"sawmill", "Sawmill", "wood", 10
+			);
+			// Override to test calculateProduction method
+			building.calculateProduction = () => 10;
 
 			// Mock the production calculation
 			const expectedItem = {
@@ -57,6 +61,7 @@ describe("ProductionService", () => {
 				quantity: 10,
 				weight: 1,
 			};
+			mockItemFactory.create.mockReturnValue(expectedItem);
 
 			productionService.processBuildingProduction(
 				"sawmill",
@@ -81,13 +86,13 @@ describe("ProductionService", () => {
 		});
 
 		it("should not process production for building without workers", () => {
-			const building = {
-				id: "mine",
-				calculateProduction: () => 15,
-				productionType: "stone",
-			};
-			const state = createStateWithWorkers([]); // No workers
-			const deltaTime = 1000;
+			const { building, state, deltaTime } = createProductionTestScenario(
+				"mine", "Mine", "stone", 15
+			);
+			// Override to test calculateProduction method
+			building.calculateProduction = () => 15;
+			// Remove workers to test no-production scenario
+			state.player.workers = [];
 
 			productionService.processBuildingProduction(
 				"mine",
@@ -102,44 +107,26 @@ describe("ProductionService", () => {
 		});
 
 		it("should use baseProductionRate when calculateProduction not available", () => {
-			const building = {
-				id: "farm",
-				baseProductionRate: 8,
-				productionType: "food",
-			};
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "farm" },
-			]);
-			const deltaTime = 1000;
-
-			productionService.processBuildingProduction(
-				"farm",
-				building,
-				state,
-				deltaTime,
+			const { building, state, deltaTime } = createProductionTestScenario(
+				"farm", "Farm", "food", 8
 			);
+			// Override building to test baseProductionRate fallback
+			building.baseProductionRate = 8;
+			building.calculateProduction = undefined;
 
-			// Should use base production rate
-			expect(mockItemFactory.create).toHaveBeenCalledWith("food", 8);
+			testProductionProcessing(
+				productionService, mockItemFactory, "farm", building, state, deltaTime, "food", 8
+			);
 		});
 
 		it("should handle zero production gracefully", () => {
-			const building = createMockBuilding("sawmill", "Sawmill", "wood", 0);
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-			]);
-			const deltaTime = 1000;
-
-			productionService.processBuildingProduction(
-				"sawmill",
-				building,
-				state,
-				deltaTime,
+			const { building, state, deltaTime } = createProductionTestScenario(
+				"sawmill", "Sawmill", "wood", 0
 			);
 
-			// Should not create items
-			expect(mockItemFactory.create).not.toHaveBeenCalled();
-			expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
+			testZeroProductionScenario(
+				productionService, mockItemFactory, mockInventoryService, "sawmill", building, state, deltaTime
+			);
 		});
 	});
 

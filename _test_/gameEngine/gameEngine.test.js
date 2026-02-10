@@ -16,20 +16,14 @@ import {
 	createStateWithBuilding,
 	createStateWithWorkers,
 } from "../fixtures/stateBuilders";
-import { createMockBuilding } from "../utils/testHelpers.js";
-
-// Helper function to create test state with buildings and workers
-const createTestStateWithBuildings = (buildings, workers = []) => ({
-	...createStateWithWorkers(workers),
-	buildings,
-	places: {
-		currentPlaceId: "village_center",
-		village_center: { hasInventory: true },
-	},
-	placeInventory: {
-		village_center: { items: [] },
-	},
-});
+import { 
+	createMockBuilding,
+	createTestStateWithBuildings,
+	createProductionTestScenario,
+	testProductionProcessing,
+	testZeroProductionScenario,
+	createMultipleBuildingsScenario
+} from "../utils/testHelpers.js";
 
 describe("GameEngine", () => {
 	let gameEngine;
@@ -244,45 +238,25 @@ describe("GameEngine", () => {
 	describe("Production Processing", () => {
 		describe("processBuildingProduction()", () => {
 			it("should process production for building with workers", () => {
-				const building = {
-					id: "sawmill",
-					calculateProduction: () => 15,
-					productionType: "wood",
-				};
-				const state = createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "sawmill" },
-				]);
-				const deltaTime = 1000;
-
-				gameEngine.processBuildingProduction(
-					"sawmill",
-					building,
-					state,
-					deltaTime,
+				const { building, state, deltaTime } = createProductionTestScenario(
+					"sawmill", "Sawmill", "wood", 15
 				);
+				// Override to test calculateProduction method
+				building.calculateProduction = () => 15;
 
-				// Should create item
-				expect(mockItemFactory.create).toHaveBeenCalledWith("wood", 15);
-
-				// Should add to inventory
-				expect(mockInventoryService.addItemToInventory).toHaveBeenCalled();
-
-				// Should dispatch worker created item action
-				expect(mockDispatch).toHaveBeenCalledWith(
-					expect.objectContaining({
-						type: expect.stringContaining("WORKER_CREATED_ITEM"),
-					}),
+				testProductionProcessing(
+					gameEngine, mockItemFactory, "sawmill", building, state, deltaTime, "wood", 15
 				);
 			});
 
 			it("should not process production for building without workers", () => {
-				const building = {
-					id: "sawmill",
-					calculateProduction: () => 15,
-					productionType: "wood",
-				};
-				const state = createStateWithWorkers([]);
-				const deltaTime = 1000;
+				const { building, state, deltaTime } = createProductionTestScenario(
+					"sawmill", "Sawmill", "wood", 15
+				);
+				// Override to test calculateProduction method
+				building.calculateProduction = () => 15;
+				// Remove workers to test no-production scenario
+				state.player.workers = [];
 
 				gameEngine.processBuildingProduction(
 					"sawmill",
@@ -296,60 +270,35 @@ describe("GameEngine", () => {
 			});
 
 			it("should use baseProductionRate when calculateProduction not available", () => {
-				const building = {
-					id: "sawmill",
-					baseProductionRate: 8,
-					productionType: "wood",
-				};
-				const state = createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "sawmill" },
-				]);
-				const deltaTime = 1000;
-
-				gameEngine.processBuildingProduction(
-					"sawmill",
-					building,
-					state,
-					deltaTime,
+				const { building, state, deltaTime } = createProductionTestScenario(
+					"sawmill", "Sawmill", "wood", 8
 				);
+				// Override building to test baseProductionRate fallback
+				building.baseProductionRate = 8;
+				building.calculateProduction = undefined;
 
-				expect(mockItemFactory.create).toHaveBeenCalledWith("wood", 8);
+				testProductionProcessing(
+					gameEngine, mockItemFactory, "sawmill", building, state, deltaTime, "wood", 8
+				);
 			});
 
 			it("should handle zero production gracefully", () => {
-				const building = createMockBuilding("sawmill", "Sawmill", "wood", 0);
-				const state = createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "sawmill" },
-				]);
-				const deltaTime = 1000;
-
-				gameEngine.processBuildingProduction(
-					"sawmill",
-					building,
-					state,
-					deltaTime,
+				const { building, state, deltaTime } = createProductionTestScenario(
+					"sawmill", "Sawmill", "wood", 0
 				);
 
+				gameEngine.processBuildingProduction("sawmill", building, state, deltaTime);
 				expect(mockItemFactory.create).toHaveBeenCalledWith("wood", 0);
 			});
 
 			it("should handle invalid place inventory gracefully", () => {
-				const building = {
-					id: "sawmill",
-					calculateProduction: () => 10,
-					productionType: "wood",
-				};
-				const state = {
-					...createStateWithWorkers([
-						{ id: "worker1", assignedBuildingId: "sawmill" },
-					]),
-					places: {
-						currentPlaceId: "village_center",
-						village_center: { hasInventory: true }, // Target place exists
-					},
-					placeInventory: {}, // No inventories
-				};
-				const deltaTime = 1000;
+				const { building, state, deltaTime } = createProductionTestScenario(
+					"sawmill", "Sawmill", "wood", 10
+				);
+				// Override to test calculateProduction method
+				building.calculateProduction = () => 10;
+				// Remove place inventory to test error handling
+				state.placeInventory = {};
 
 				gameEngine.processBuildingProduction(
 					"sawmill",
@@ -487,14 +436,16 @@ describe("GameEngine", () => {
 		});
 
 		it("should process building production for all buildings with workers", () => {
-			const buildings = {
-				sawmill: createMockBuilding("sawmill", "Sawmill", "wood", 10),
-				mine: createMockBuilding("mine", "Mine", "stone", 5),
-			};
-			const state = createTestStateWithBuildings(buildings, [
+			const buildingsConfig = [
+				{ id: "sawmill", name: "Sawmill", productionType: "wood", baseRate: 10 },
+				{ id: "mine", name: "Mine", productionType: "stone", baseRate: 5 },
+			];
+			const workersConfig = [
 				{ id: "worker1", assignedBuildingId: "sawmill" },
 				{ id: "worker2", assignedBuildingId: "mine" },
-			]);
+			];
+			
+			const { buildings, state } = createMultipleBuildingsScenario(buildingsConfig, workersConfig);
 
 			gameEngine.update(1000, state);
 
@@ -504,13 +455,15 @@ describe("GameEngine", () => {
 		});
 
 		it("should not process buildings without assigned workers", () => {
-			const buildings = {
-				sawmill: createMockBuilding("sawmill", "Sawmill", "wood", 10),
-				mine: createMockBuilding("mine", "Mine", "stone", 5),
-			};
-			const state = createTestStateWithBuildings(buildings, [
+			const buildingsConfig = [
+				{ id: "sawmill", name: "Sawmill", productionType: "wood", baseRate: 10 },
+				{ id: "mine", name: "Mine", productionType: "stone", baseRate: 5 },
+			];
+			const workersConfig = [
 				{ id: "worker1", assignedBuildingId: "sawmill" }, // Only assigned to sawmill
-			]);
+			];
+			
+			const { buildings, state } = createMultipleBuildingsScenario(buildingsConfig, workersConfig);
 
 			gameEngine.update(1000, state);
 

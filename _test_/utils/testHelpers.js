@@ -110,5 +110,56 @@ export const expectMockNotCalled = (mock) => {
 	expect(mock).not.toHaveBeenCalled();
 };
 
+// Helper to create test production scenario
+export const createProductionTestScenario = (buildingId, buildingName, productionType, baseRate, workerId = "worker1") => {
+	const building = createMockBuilding(buildingId, buildingName, productionType, baseRate);
+	const state = createStateWithWorkers([
+		{ id: workerId, assignedBuildingId: buildingId },
+	]);
+	const deltaTime = 1000;
+	
+	return { building, state, deltaTime };
+};
+
+// Helper to test production processing with common assertions
+export const testProductionProcessing = (service, mockItemFactory, buildingId, building, state, deltaTime, expectedType, expectedQuantity) => {
+	service.processBuildingProduction(buildingId, building, state, deltaTime);
+	expect(mockItemFactory.create).toHaveBeenCalledWith(expectedType, expectedQuantity);
+};
+
+// Helper to test zero production scenario
+export const testZeroProductionScenario = (service, mockItemFactory, mockInventoryService, buildingId, building, state, deltaTime) => {
+	service.processBuildingProduction(buildingId, building, state, deltaTime);
+	expect(mockItemFactory.create).not.toHaveBeenCalled();
+	if (mockInventoryService) {
+		expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
+	}
+};
+
+// Helper to create test state with buildings and workers
+export const createTestStateWithBuildings = (buildings, workers = []) => ({
+	...createStateWithWorkers(workers),
+	buildings,
+	places: {
+		currentPlaceId: "village_center",
+		village_center: { hasInventory: true },
+	},
+	placeInventory: {
+		village_center: { items: [] },
+	},
+});
+
+// Helper to create multiple buildings test scenario
+export const createMultipleBuildingsScenario = (buildingsConfig, workersConfig) => {
+	const buildings = {};
+	buildingsConfig.forEach(config => {
+		buildings[config.id] = createMockBuilding(config.id, config.name, config.productionType, config.baseRate);
+	});
+	
+	const state = createTestStateWithBuildings(buildings, workersConfig);
+	return { buildings, state };
+};
+
 // Import state builders to avoid duplication
 export { createBaseState, createTestState } from '../fixtures/stateBuilders.js';
+export { createStateWithWorkers } from '../fixtures/stateBuilders.js';
