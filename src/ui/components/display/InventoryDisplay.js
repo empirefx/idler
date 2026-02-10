@@ -45,8 +45,6 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 		}
 	});
 
-	if (!inventory) return null; // If inventory is not found, render nothing
-
 	// Handle right-click context menu for moving items between inventories
 	const handleContextMenu = useCallback(
 		(e, item) => {
@@ -149,9 +147,8 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 		[dispatch, inventory.id],
 	);
 
-	// Calculate total items and weight if available
-	const totalItems = inventory.items.length;
-	const maxSlots = inventory.maxSlots;
+	if (!inventory) return null; // If inventory is not found, render nothing
+
 	const hasWeightLimit = typeof inventory.maxWeight !== "undefined";
 	let currentWeight = 0;
 
@@ -192,11 +189,10 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					const item = inventory.items[i];
 
 					return (
-						<div
-							role="button"
-							tabIndex={0}
+						<button
+							type="button"
 							className={`inventory-slot ${item ? "filled" : "empty"}`}
-							key={i}
+							key={item ? `slot-${item.id}-${i}` : `empty-${i}`}
 							onContextMenu={
 								item && otherInventory
 									? (e) => handleContextMenu(e, item)
@@ -246,7 +242,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 									</p>
 								</ItemInfo>
 							)}
-						</div>
+						</button>
 					);
 				})}
 			</div>

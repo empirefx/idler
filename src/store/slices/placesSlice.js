@@ -22,7 +22,7 @@ if (currentPlace && currentPlace.connections) {
 // Helper function to update available connections
 const updateAvailableConnections = (state) => {
 	const currentPlace = state[state.currentPlaceId];
-	if (currentPlace && currentPlace.connections) {
+	if (currentPlace?.connections) {
 		state.availableConnections = currentPlace.connections.map((placeId) => ({
 			id: placeId,
 			...state[placeId], // Include all properties from the connected place
@@ -55,15 +55,15 @@ export const placesSlice = createSlice({
 			}
 		},
 		// Set entire places state (used for loading saved state)
-		setPlaces: (state, action) => action.payload,
+		setPlaces: (_state, action) => action.payload,
 	},
 
 	extraReducers: (builder) => {
 		// This will run when the reducer is first created
 		builder.addCase("@@INIT", (state) => {
 			updateAvailableConnections(state);
-		}),
-			builder.addMatcher(
+		});
+		builder.addMatcher(
 				(action) => action.type === "places/navigateToPlace",
 				(state) => {
 					// Ensure available connections are updated after navigation

@@ -5,8 +5,6 @@ import {
 } from "./inventory/inventoryValidators.js";
 import {
 	canItemsStack,
-	findItemById,
-	getItemIndex,
 	cloneItem,
 } from "./inventory/inventoryUtils.js";
 
@@ -148,7 +146,7 @@ const npcInventorySlice = createSlice({
 
 		// Move item from NPC inventory to another inventory
 		moveItem(state, action) {
-			const { fromInventoryId, toInventoryId, itemId, quantity } =
+			const { fromInventoryId, itemId, quantity } =
 				action.payload;
 
 			const inventory = state[fromInventoryId];
@@ -219,7 +217,7 @@ export const {
 
 // Memoized selectors
 export const selectNpcInventoryById = createSelector(
-	[(state) => state.npcInventory, (state, npcId) => npcId],
+	[(state) => state.npcInventory, (_state, npcId) => npcId],
 	(npcInventory, npcId) => (npcInventory ? npcInventory[npcId] : undefined),
 );
 
