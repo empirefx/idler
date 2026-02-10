@@ -25,13 +25,7 @@ import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
  * EventBusService: system messaging only
  */
 class GameEngine {
-	constructor(
-		dispatch,
-		store,
-		{
-			spawnService = SpawnService,
-		} = {},
-	) {
+	constructor(dispatch, store, { spawnService = SpawnService } = {}) {
 		this.store = store;
 		this.lastState = store.getState();
 		this.dispatch = dispatch;

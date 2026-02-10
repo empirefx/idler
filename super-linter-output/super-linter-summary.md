@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850005878)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850411509)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,205 +32,273 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 143.
-Checked 103 files in 767ms. No fixes applied.
-Found 62 errors.
-Found 96 warnings.
-Found 5 infos.src/game/engine/GameEngine.js:152:2 lint/suspicious/useAdjacentOverloadSignatures ━━━━━━━━━━━━━━━━━━
+Diagnostics not shown: 125.
+Checked 103 files in 768ms. No fixes applied.
+Found 56 errors.
+Found 84 warnings.
+Found 5 infos.src/game/services/ProductionService.js:160:25 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━
+
+  i The computed expression can be simplified without the use of a string literal.
+
+    159 │ 		// Fallback to village_center if no other place found
+  > 160 │ 		return placeInventory["village_center"] ? "village_center" : currentPlaceId;
+        │ 		                      ^^^^^^^^^^^^^^^^
+    161 │ 	}
+    162 │
+
+  i Unsafe fix: Use a literal key instead.
+
+    158 158 │
+    159 159 │   		// Fallback to village_center if no other place found
+    160     │ - → → return·placeInventory["village_center"]·?·"village_center"·:·currentPlaceId;
+        160 │ + → → return·placeInventory.village_center·?·"village_center"·:·currentPlaceId;
+    161 161 │   	}
+    162 162 │
+
+
+src/game/engine/GameEngine.js:137:2 lint/suspicious/useAdjacentOverloadSignatures ━━━━━━━━━━━━━━━━━━
 
   ! All getAssignedWorkers signatures must be adjacent.
 
-    151 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
-  > 152 │ 	getAssignedWorkers(state, buildingId) {
+    136 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
+  > 137 │ 	getAssignedWorkers(state, buildingId) {
         │ 	^^^^^^^^^^^^^^^^^^
-    153 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+    138 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+    139 │ 	}
+
+  i All calculateProductionRate signatures must be adjacent.
+
+    141 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  > 142 │ 	calculateProductionRate(building, state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^
+    143 │ 		return this.productionService.calculateProductionRate(building, state);
+    144 │ 	}
+
+  i All canBuildingProduce signatures must be adjacent.
+
+    146 │ 	// Validate that a building can produce (now handled by ProductionService)
+  > 147 │ 	canBuildingProduce(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^
+    148 │ 		return this.productionService.canBuildingProduce(state, buildingId);
+    149 │ 	}
+
+  i All getAllProductionCalculations signatures must be adjacent.
+
+    151 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+  > 152 │ 	getAllProductionCalculations(state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    153 │ 		return this.productionService.getAllProductionCalculations(state);
     154 │ 	}
 
-  i All calculateProductionRate signatures must be adjacent.
 
-    156 │ 	// Calculate production rate for a building (now handled by ProductionService)
-  > 157 │ 	calculateProductionRate(building, state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^
-    158 │ 		return this.productionService.calculateProductionRate(building, state);
-    159 │ 	}
-
-  i All canBuildingProduce signatures must be adjacent.
-
-    161 │ 	// Validate that a building can produce (now handled by ProductionService)
-  > 162 │ 	canBuildingProduce(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^
-    163 │ 		return this.productionService.canBuildingProduce(state, buildingId);
-    164 │ 	}
-
-  i All getAllProductionCalculations signatures must be adjacent.
-
-    166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-  > 167 │ 	getAllProductionCalculations(state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    168 │ 		return this.productionService.getAllProductionCalculations(state);
-    169 │ 	}
-
-  i All getAssignedWorkers signatures must be adjacent.
-
-    191 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
-  > 192 │ 	getAssignedWorkers(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^
-    193 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
-    194 │ 	}
-
-  i All calculateProductionRate signatures must be adjacent.
-
-    196 │ 	// Calculate production rate for a building (now handled by ProductionService)
-  > 197 │ 	calculateProductionRate(building, state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^
-    198 │ 		return this.productionService.calculateProductionRate(building, state);
-    199 │ 	}
-
-  i All canBuildingProduce signatures must be adjacent.
-
-    201 │ 	// Validate that a building can produce (now handled by ProductionService)
-  > 202 │ 	canBuildingProduce(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^
-    203 │ 		return this.productionService.canBuildingProduce(state, buildingId);
-    204 │ 	}
-
-  i All getAllProductionCalculations signatures must be adjacent.
-
-    206 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-  > 207 │ 	getAllProductionCalculations(state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    208 │ 		return this.productionService.getAllProductionCalculations(state);
-    209 │ 	}
-
-
-src/game/engine/GameEngine.js:32:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:28:33 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━
 
   ! This parameter is unused.
 
-    30 │ 		store,
-    31 │ 		{
-  > 32 │ 			inventoryService = InventoryService,
-       │ 			^^^^^^^^^^^^^^^^
-    33 │ 			itemFactory = ItemFactory,
-    34 │ 			productionService = ProductionService,
+    26 │  */
+    27 │ class GameEngine {
+  > 28 │ 	constructor(dispatch, store, { spawnService = SpawnService } = {}) {
+       │ 	                               ^^^^^^^^^^^^
+    29 │ 		this.store = store;
+    30 │ 		this.lastState = store.getState();
 
   i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/game/engine/GameEngine.js:33:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:197:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    196 │ 		// Initialize and hook lifecycle services
+  > 197 │ 		if (this.enemyLifecycleService && this.enemyLifecycleService.initialize) {
+        │ 		    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    198 │ 			this.enemyLifecycleService.eventBusService = null;
+    199 │ 			this.enemyLifecycleService.initialize(this.store.getState());
+
+  i Unsafe fix: Change to an optional chain.
+
+    195 195 │
+    196 196 │   		// Initialize and hook lifecycle services
+    197     │ - → → if·(this.enemyLifecycleService·&&·this.enemyLifecycleService.initialize)·{
+        197 │ + → → if·(this.enemyLifecycleService?.initialize)·{
+    198 198 │   			this.enemyLifecycleService.eventBusService = null;
+    199 199 │   			this.enemyLifecycleService.initialize(this.store.getState());
+
+
+src/game/engine/GameEngine.js:204:4 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    203 │ 		if (
+  > 204 │ 			this.navigationService &&
+        │ 			^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 205 │ 			this.navigationService.subscribeToPlaceChanges
+        │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    206 │ 		) {
+    207 │ 			this.navigationService.eventBus = this.eventBusService;
+
+  i Unsafe fix: Change to an optional chain.
+
+    202 202 │
+    203 203 │   		if (
+    204     │ - → → → this.navigationService·&&
+    205     │ - → → → this.navigationService.subscribeToPlaceChanges
+        204 │ + → → → this.navigationService?.subscribeToPlaceChanges
+    206 205 │   		) {
+    207 206 │   			this.navigationService.eventBus = this.eventBusService;
+
+
+src/game/engine/GameEngine.js:212:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    211 │ 		// Subscribe to combat state changes
+  > 212 │ 		if (this.combatService && this.combatService.handleCombatStateChange) {
+        │ 		    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    213 │ 			this.combatService.eventBusService = this.eventBusService;
+    214 │ 			this.combatService.store = this.store;
+
+  i Unsafe fix: Change to an optional chain.
+
+    210 210 │
+    211 211 │   		// Subscribe to combat state changes
+    212     │ - → → if·(this.combatService·&&·this.combatService.handleCombatStateChange)·{
+        212 │ + → → if·(this.combatService?.handleCombatStateChange)·{
+    213 213 │   			this.combatService.eventBusService = this.eventBusService;
+    214 214 │   			this.combatService.store = this.store;
+
+
+src/game/services/CombatService.js:117:19 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    31 │ 		{
-    32 │ 			inventoryService = InventoryService,
-  > 33 │ 			itemFactory = ItemFactory,
-       │ 			^^^^^^^^^^^
-    34 │ 			productionService = ProductionService,
-    35 │ 			saveService = SaveService,
+    116 │ 	// Handle enemy drops on death
+  > 117 │ 	handleEnemyDrops(enemy) {
+        │ 	                 ^^^^^
+    118 │ 		const currentPlaceId = this.store.getState().places.currentPlaceId;
+    119 │ 		const place = this.store.getState().places[currentPlaceId];
 
   i Unused parameters might be the result of an incomplete refactoring.
 
+  i Unsafe fix: If this is intentional, prepend enemy with an underscore.
 
-src/game/engine/GameEngine.js:34:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+    115 115 │
+    116 116 │   	// Handle enemy drops on death
+    117     │ - → handleEnemyDrops(enemy)·{
+        117 │ + → handleEnemyDrops(_enemy)·{
+    118 118 │   		const currentPlaceId = this.store.getState().places.currentPlaceId;
+    119 119 │   		const place = this.store.getState().places[currentPlaceId];
+
+
+src/game/services/CombatService.js:189:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    187 │ 			if (!updated) return;
+    188 │
+  > 189 │ 			if (updated && updated.isDead) {
+        │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    190 │ 				// Enemy died, handle drops, exp, etc
+    191 │ 				this.store.dispatch({ type: "combat/clearTarget" });
+
+  i Unsafe fix: Change to an optional chain.
+
+    187 187 │   			if (!updated) return;
+    188 188 │
+    189     │ - → → → if·(updated·&&·updated.isDead)·{
+        189 │ + → → → if·(updated?.isDead)·{
+    190 190 │   				// Enemy died, handle drops, exp, etc
+    191 191 │   				this.store.dispatch({ type: "combat/clearTarget" });
+
+
+src/game/services/NavigationService.js:11:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+     9 │ 		if (currentPlaceId !== previousPlaceId) {
+    10 │ 			// Emit enterPlace event for spawn service
+  > 11 │ 			if (this.eventBus && this.eventBus.emit) {
+       │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    12 │ 				this.eventBus.emit("enterPlace", currentPlaceId);
+    13 │ 			}
+
+  i Unsafe fix: Change to an optional chain.
+
+     9  9 │   		if (currentPlaceId !== previousPlaceId) {
+    10 10 │   			// Emit enterPlace event for spawn service
+    11    │ - → → → if·(this.eventBus·&&·this.eventBus.emit)·{
+       11 │ + → → → if·(this.eventBus?.emit)·{
+    12 12 │   				this.eventBus.emit("enterPlace", currentPlaceId);
+    13 13 │   			}
+
+
+src/game/services/ProductionService.js:13:57 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    32 │ 			inventoryService = InventoryService,
-    33 │ 			itemFactory = ItemFactory,
-  > 34 │ 			productionService = ProductionService,
-       │ 			^^^^^^^^^^^^^^^^^
-    35 │ 			saveService = SaveService,
-    36 │ 			navigationService = NavigationService,
+    12 │ 	// Process production for a specific building
+  > 13 │ 	processBuildingProduction(buildingId, building, state, deltaTime) {
+       │ 	                                                       ^^^^^^^^^
+    14 │ 		try {
+    15 │ 			// Check if building has assigned workers
 
   i Unused parameters might be the result of an incomplete refactoring.
 
+  i Unsafe fix: If this is intentional, prepend deltaTime with an underscore.
 
-src/game/engine/GameEngine.js:35:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
-
-  ! This parameter is unused.
-
-    33 │ 			itemFactory = ItemFactory,
-    34 │ 			productionService = ProductionService,
-  > 35 │ 			saveService = SaveService,
-       │ 			^^^^^^^^^^^
-    36 │ 			navigationService = NavigationService,
-    37 │ 			enemyLifecycleService = EnemyLifecycleService,
-
-  i Unused parameters might be the result of an incomplete refactoring.
+     11  11 │
+     12  12 │   	// Process production for a specific building
+     13     │ - → processBuildingProduction(buildingId,·building,·state,·deltaTime)·{
+         13 │ + → processBuildingProduction(buildingId,·building,·state,·_deltaTime)·{
+     14  14 │   		try {
+     15  15 │   			// Check if building has assigned workers
 
 
-src/game/engine/GameEngine.js:36:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
+src/game/services/ProductionService.js:113:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━
 
-  ! This parameter is unused.
+  ! Change to an optional chain.
 
-    34 │ 			productionService = ProductionService,
-    35 │ 			saveService = SaveService,
-  > 36 │ 			navigationService = NavigationService,
-       │ 			^^^^^^^^^^^^^^^^^
-    37 │ 			enemyLifecycleService = EnemyLifecycleService,
-    38 │ 			combatService = CombatService,
+    111 │ 		// Find which place contains this building
+    112 │ 		for (const [placeId, place] of Object.entries(state.places)) {
+  > 113 │ 			if (place.buildings && place.buildings.includes(buildingId)) {
+        │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    114 │ 				return placeId;
+    115 │ 			}
 
-  i Unused parameters might be the result of an incomplete refactoring.
+  i Unsafe fix: Change to an optional chain.
 
-
-src/game/engine/GameEngine.js:37:4 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━━
-
-  ! This parameter is unused.
-
-    35 │ 			saveService = SaveService,
-    36 │ 			navigationService = NavigationService,
-  > 37 │ 			enemyLifecycleService = EnemyLifecycleService,
-       │ 			^^^^^^^^^^^^^^^^^^^^^
-    38 │ 			combatService = CombatService,
-    39 │ 			gameLoop = GameLoop,
-
-  i Unused parameters might be the result of an incomplete refactoring.
+    111 111 │   		// Find which place contains this building
+    112 112 │   		for (const [placeId, place] of Object.entries(state.places)) {
+    113     │ - → → → if·(place.buildings·&&·place.buildings.includes(buildingId))·{
+        113 │ + → → → if·(place.buildings?.includes(buildingId))·{
+    114 114 │   				return placeId;
+    115 115 │   			}
 
 
-src/game/factory/enemyFactory.js:5:8 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/LogSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
 
-  ! Avoid classes that contain only static members.
+  ! Several of these imports are unused.
 
-     4 │ // Factory for creating enemy instances with base stats
-   > 5 │ export class EnemyFactory {
-       │        ^^^^^^^^^^^^^^^^^^^^
-   > 6 │ 	static create(type, options = {}) {
-        ...
-  > 32 │ 	}
-  > 33 │ }
-       │ ^
-    34 │
-    35 │ export default EnemyFactory;
+  > 1 │ import React, { useEffect, useRef, useState } from "react";
+      │        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
 
-  i Prefer using simple functions instead of classes with only static members.
+  i Unused imports might be the result of an incomplete refactoring.
 
+  i Unsafe fix: Remove the unused imports.
 
-src/game/factory/itemFactory.js:4:8 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    1 │ import·React,·{·useEffect,·useRef,·useState·}·from·"react";
+      │        -------           --------
 
-  ! Avoid classes that contain only static members.
-
-     3 │ // Handles item creation logic, including randomization, upgrades, etc.
-   > 4 │ export class ItemFactory {
-       │        ^^^^^^^^^^^^^^^^^^^
-   > 5 │ 	// Create an item object for production, using the itemCatalog and optional randomization
-        ...
-  > 18 │ 		return item;
-  > 19 │ 	}
-  > 20 │ }
-       │ ^
-    21 │
-
-  i Prefer using simple functions instead of classes with only static members.
-
-
-src/ui/components/sections/PlacesSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+src/ui/components/sections/NPCSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
 
   ! This import is unused.
 
   > 1 │ import React from "react";
       │        ^^^^^
     2 │ import { useSelector } from "react-redux";
-    3 │
+    3 │ import { useEffect } from "react";
 
   i Unused imports might be the result of an incomplete refactoring.
 
@@ -239,152 +307,126 @@ src/ui/components/sections/PlacesSection.js:1:8 lint/correctness/noUnusedImports
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/game/engine/GameEngine.js:152:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/NPCSection.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+
+  ! This import is unused.
+
+    1 │ import React from "react";
+    2 │ import { useSelector } from "react-redux";
+  > 3 │ import { useEffect } from "react";
+      │        ^^^^^^^^^^^^^
+    4 │ import { useUIVisibility } from "../../UIVisibilityContext";
+    5 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+     1  1 │   import React from "react";
+     2  2 │   import { useSelector } from "react-redux";
+     3    │ - import·{·useEffect·}·from·"react";
+     4  3 │   import { useUIVisibility } from "../../UIVisibilityContext";
+     5  4 │
+
+
+src/ui/components/sections/NPCSection.js:15:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━
+
+  ! This variable allNpcs is unused.
+
+    13 │ const NPCSection = () => {
+    14 │ 	const npcs = useSelector(selectNPCsForCurrentPlace);
+  > 15 │ 	const allNpcs = useSelector(selectAllNPCs);
+       │ 	      ^^^^^^^
+    16 │ 	const { openNPCDialog, npcSection } = useUIVisibility();
+    17 │
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+  i Unsafe fix: If this is intentional, prepend allNpcs with an underscore.
+
+    13 13 │   const NPCSection = () => {
+    14 14 │   	const npcs = useSelector(selectNPCsForCurrentPlace);
+    15    │ - → const·allNpcs·=·useSelector(selectAllNPCs);
+       15 │ + → const·_allNpcs·=·useSelector(selectAllNPCs);
+    16 16 │   	const { openNPCDialog, npcSection } = useUIVisibility();
+    17 17 │
+
+
+src/game/engine/GameEngine.js:137:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Duplicate class member name "getAssignedWorkers"
 
-    151 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
-  > 152 │ 	getAssignedWorkers(state, buildingId) {
+    136 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
+  > 137 │ 	getAssignedWorkers(state, buildingId) {
         │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 153 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+  > 138 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
+  > 139 │ 	}
+        │ 	^
+    140 │
+    141 │ 	// Calculate production rate for a building (now handled by ProductionService)
+
+
+src/game/engine/GameEngine.js:142:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Duplicate class member name "calculateProductionRate"
+
+    141 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  > 142 │ 	calculateProductionRate(building, state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 143 │ 		return this.productionService.calculateProductionRate(building, state);
+  > 144 │ 	}
+        │ 	^
+    145 │
+    146 │ 	// Validate that a building can produce (now handled by ProductionService)
+
+
+src/game/engine/GameEngine.js:147:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Duplicate class member name "canBuildingProduce"
+
+    146 │ 	// Validate that a building can produce (now handled by ProductionService)
+  > 147 │ 	canBuildingProduce(state, buildingId) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 148 │ 		return this.productionService.canBuildingProduce(state, buildingId);
+  > 149 │ 	}
+        │ 	^
+    150 │
+    151 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+
+
+src/game/engine/GameEngine.js:152:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Duplicate class member name "getAllProductionCalculations"
+
+    151 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
+  > 152 │ 	getAllProductionCalculations(state) {
+        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 153 │ 		return this.productionService.getAllProductionCalculations(state);
   > 154 │ 	}
         │ 	^
     155 │
-    156 │ 	// Calculate production rate for a building (now handled by ProductionService)
+    156 │ 	// Save game state to localStorage
 
 
-src/game/engine/GameEngine.js:157:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/LogSection.js:52:6 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Duplicate class member name "calculateProductionRate"
+  × Provide an explicit type prop for the button element.
 
-    156 │ 	// Calculate production rate for a building (now handled by ProductionService)
-  > 157 │ 	calculateProductionRate(building, state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 158 │ 		return this.productionService.calculateProductionRate(building, state);
-  > 159 │ 	}
-        │ 	^
-    160 │
-    161 │ 	// Validate that a building can produce (now handled by ProductionService)
+    50 │ 				<h2>Log</h2>
+    51 │ 				<div className="log-filter-container">
+  > 52 │ 					<button
+       │ 					^^^^^^^
+  > 53 │ 						className="log-filter-toggle"
+  > 54 │ 						onClick={() => setShowFilter(!showFilter)}
+  > 55 │ 						title="Filter logs"
+  > 56 │ 					>
+       │ 					^
+    57 │ 						≡
+    58 │ 					</button>
 
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
 
-src/game/engine/GameEngine.js:162:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "canBuildingProduce"
-
-    161 │ 	// Validate that a building can produce (now handled by ProductionService)
-  > 162 │ 	canBuildingProduce(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 163 │ 		return this.productionService.canBuildingProduce(state, buildingId);
-  > 164 │ 	}
-        │ 	^
-    165 │
-    166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-
-
-src/game/engine/GameEngine.js:167:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "getAllProductionCalculations"
-
-    166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-  > 167 │ 	getAllProductionCalculations(state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 168 │ 		return this.productionService.getAllProductionCalculations(state);
-  > 169 │ 	}
-        │ 	^
-    170 │
-    171 │ 	// Save game state to localStorage
-
-
-src/game/engine/GameEngine.js:192:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "getAssignedWorkers"
-
-    191 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
-  > 192 │ 	getAssignedWorkers(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 193 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
-  > 194 │ 	}
-        │ 	^
-    195 │
-    196 │ 	// Calculate production rate for a building (now handled by ProductionService)
-
-
-src/game/engine/GameEngine.js:197:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "calculateProductionRate"
-
-    196 │ 	// Calculate production rate for a building (now handled by ProductionService)
-  > 197 │ 	calculateProductionRate(building, state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 198 │ 		return this.productionService.calculateProductionRate(building, state);
-  > 199 │ 	}
-        │ 	^
-    200 │
-    201 │ 	// Validate that a building can produce (now handled by ProductionService)
-
-
-src/game/engine/GameEngine.js:202:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "canBuildingProduce"
-
-    201 │ 	// Validate that a building can produce (now handled by ProductionService)
-  > 202 │ 	canBuildingProduce(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 203 │ 		return this.productionService.canBuildingProduce(state, buildingId);
-  > 204 │ 	}
-        │ 	^
-    205 │
-    206 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-
-
-src/game/engine/GameEngine.js:207:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "getAllProductionCalculations"
-
-    206 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-  > 207 │ 	getAllProductionCalculations(state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 208 │ 		return this.productionService.getAllProductionCalculations(state);
-  > 209 │ 	}
-        │ 	^
-    210 │
-    211 │ 	// Start the game loop
-
-
-src/game/services/EventBusService.js:7:4 lint/suspicious/noAssignInExpressions ━━━━━━━━━━━━━━━━━━━━━
-
-  × The assignment should not be in an expression.
-
-    5 │ 	}
-    6 │ 	on(event, handler) {
-  > 7 │ 		(this.handlers[event] = this.handlers[event] || []).push(handler);
-      │ 		 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    8 │ 	}
-    9 │ 	emit(event, data) {
-
-  i The use of assignments in expressions is confusing.
-    Expressions are often considered as side-effect free.
-
-
-src/game/services/EventBusService.js:10:32 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━
-
-  × This callback passed to forEach() iterable method should not return a value.
-
-     8 │ 	}
-     9 │ 	emit(event, data) {
-  > 10 │ 		(this.handlers[event] || []).forEach((h) => h(data));
-       │ 		                             ^^^^^^^
-    11 │ 	}
-    12 │ }
-
-  i Either remove this return or remove the returned value.
-
-     8 │ 	}
-     9 │ 	emit(event, data) {
-  > 10 │ 		(this.handlers[event] || []).forEach((h) => h(data));
-       │ 		                                            ^^^^^^^
-    11 │ 	}
-    12 │ }
+  i Allowed button types are: submit, button or reset
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -463,10 +505,6 @@ Clone found (javascript):
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [267:24 - 276:18] (9 lines, 113 tokens)
    /github/workspace/src/store/slices/placeInventorySlice.js [253:26 - 262:20]
-
-Clone found (javascript):
- - /github/workspace/src/game/engine/GameEngine.js [188:2 - 211:23] (23 lines, 138 tokens)
-   /github/workspace/src/game/engine/GameEngine.js [148:2 - 171:35]
 
 Clone found (json):
  - /github/workspace/_test_/fixtures/gameStates/testStates.json [53:5 - 77:2] (24 lines, 148 tokens)
@@ -882,35 +920,6 @@ Clone found (javascript):
  274 │ 260 │ );
  275 │ 261 │
  276 │ 262 │ export default npcInventorySlice
-
-Clone found (javascript):
- - /github/workspace/src/game/engine/GameEngine.js [188:2 - 211:23] (23 lines, 138 tokens)
-   /github/workspace/src/game/engine/GameEngine.js [148:2 - 171:35]
-
- 188 │ 148 │ );
- 189 │ 149 │ 	}
- 190 │ 150 │
- 191 │ 151 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
- 192 │ 152 │ 	getAssignedWorkers(state, buildingId) {
- 193 │ 153 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
- 194 │ 154 │ 	}
- 195 │ 155 │
- 196 │ 156 │ 	// Calculate production rate for a building (now handled by ProductionService)
- 197 │ 157 │ 	calculateProductionRate(building, state) {
- 198 │ 158 │ 		return this.productionService.calculateProductionRate(building, state);
- 199 │ 159 │ 	}
- 200 │ 160 │
- 201 │ 161 │ 	// Validate that a building can produce (now handled by ProductionService)
- 202 │ 162 │ 	canBuildingProduce(state, buildingId) {
- 203 │ 163 │ 		return this.productionService.canBuildingProduce(state, buildingId);
- 204 │ 164 │ 	}
- 205 │ 165 │
- 206 │ 166 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
- 207 │ 167 │ 	getAllProductionCalculations(state) {
- 208 │ 168 │ 		return this.productionService.getAllProductionCalculations(state);
- 209 │ 169 │ 	}
- 210 │ 170 │
- 211 │ 171 │ 	// Start the game loop
 
 Clone found (json):
  - /github/workspace/_test_/fixtures/gameStates/testStates.json [53:5 - 77:2] (24 lines, 148 tokens)
@@ -1608,13 +1617,13 @@ Clone found (javascript):
  181 │ 33 │ 				},
  182 │ 34 │ 				player
 
-Found 42 clones.
-Error: ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
+Found 41 clones.
+Error: ERROR: jscpd found too many duplicates (4.57%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.57%) over threshold (0%)
 ```
 
 </details>
