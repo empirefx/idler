@@ -57,7 +57,7 @@ export const selectNPCsForCurrentPlace = createSelector(
 
 // Select NPC by ID
 export const selectNPCById = createSelector(
-	[(state) => state.npcs.npcs, (state, npcId) => npcId],
+	[(state) => state.npcs.npcs, (_state, npcId) => npcId],
 	(npcs, npcId) => npcs[npcId] || null,
 );
 

@@ -19,6 +19,10 @@ import {
 import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const [selectedItem, setSelectedItem] = useState(null);
+	const dispatch = useDispatch();
+
 	// Determine which selector to use based on inventory type
 	const inventory = useSelector((state) => {
 		if (inventoryId === "player") {
@@ -40,9 +44,6 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 			return selectPlaceInventoryById(state, otherInventoryId);
 		}
 	});
-	const [dialogOpen, setDialogOpen] = useState(false);
-	const [selectedItem, setSelectedItem] = useState(null);
-	const dispatch = useDispatch();
 
 	if (!inventory) return null; // If inventory is not found, render nothing
 
@@ -192,11 +193,22 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 
 					return (
 						<div
+							role="button"
+							tabIndex={0}
 							className={`inventory-slot ${item ? "filled" : "empty"}`}
 							key={i}
 							onContextMenu={
 								item && otherInventory
 									? (e) => handleContextMenu(e, item)
+									: undefined
+							}
+							onKeyDown={
+								item && otherInventory
+									? (e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											handleContextMenu(e, item);
+										}
+									}
 									: undefined
 							}
 							// Handle equipment and consumable items

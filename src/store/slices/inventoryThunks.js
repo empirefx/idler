@@ -106,7 +106,7 @@ export const moveItemBetweenInventories = (
 			return false;
 		}
 
-		const { item, itemIndex, moveQuantity } = validation;
+		const { item, moveQuantity } = validation;
 
 		// Create item to move
 		const itemToMove = cloneItem(item);
@@ -140,7 +140,7 @@ export const moveItemBetweenInventories = (
 		} catch (error) {
 			dispatch(
 				addNotification(
-					"Failed to move item: " + error.message,
+					`Failed to move item: ${error.message}`,
 					NOTIFICATION_TYPES.ERROR,
 				),
 			);
@@ -190,7 +190,7 @@ export const removeItemFromInventory = (inventoryId, itemId, quantity) => {
 		} catch (error) {
 			dispatch(
 				addNotification(
-					"Failed to remove item: " + error.message,
+					`Failed to remove item: ${error.message}`,
 					NOTIFICATION_TYPES.ERROR,
 				),
 			);

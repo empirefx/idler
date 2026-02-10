@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-
-const LOG_CATEGORIES = {
+import React, { useEffect, useRef } from "react";
+const _LOG_CATEGORIES = {
 	worker: { label: "Workers", color: "worker" },
 	combat: { label: "Combat", color: "combat" },
 	movement: { label: "Movement", color: "movement" },
@@ -16,7 +14,7 @@ export default function LogDisplay({ filteredLogs }) {
 		if (containerRef.current) {
 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
 		}
-	}, [filteredLogs]);
+	}, []);
 
 	return (
 		<div className="log-display" ref={containerRef}>

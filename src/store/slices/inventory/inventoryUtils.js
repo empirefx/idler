@@ -31,7 +31,7 @@ export const calculateTotalPlayerWeight = (playerInventory) => {
 	if (playerInventory.equipment) {
 		for (const slot of Object.keys(playerInventory.equipment)) {
 			const equipment = playerInventory.equipment[slot];
-			if (equipment && equipment.weight) {
+			if (equipment?.weight) {
 				total += equipment.weight;
 			}
 		}
@@ -98,7 +98,6 @@ export const sortItems = (items, sortBy = "name") => {
 				const weightB = b.weight * (b.quantity || 1);
 				return weightA - weightB;
 			}
-			case "name":
 			default:
 				return a.name.localeCompare(b.name);
 		}
@@ -154,7 +153,7 @@ export const getInventorySummary = (inventory) => {
 	// Add equipment weight for player inventories
 	if (inventory.type === "player" && inventory.equipment) {
 		const equipmentWeight = Object.values(inventory.equipment)
-			.filter((equipment) => equipment && equipment.weight)
+			.filter((equipment) => equipment?.weight)
 			.reduce((total, equipment) => total + equipment.weight, 0);
 
 		summary.totalWeightWithEquipment = totalWeight + equipmentWeight;
