@@ -10,14 +10,14 @@
 		]
 	},
 	 "linter": {
-    "rules": {
-      "recommended": true,
-      "correctness": {
-        "noUnusedFunctionParameters": "warn"
-      },
-      "style": {
-        "noUnusedImports": "warn"
-      }
-    }
-  }
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedFunctionParameters": "warn"
+			},
+			"style": {
+				"noExportedImports": "warn"
+			}
+		}
+	}
 }
