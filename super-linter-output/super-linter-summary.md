@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21881060613)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21881642906)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -91,14 +91,6 @@ Clone found (javascript):
  - src/store/slices/npcInventorySlice.js [261:24 - 270:18] (9 lines, 113 tokens)
    src/store/slices/placeInventorySlice.js [247:26 - 256:20]
 
-Clone found (json):
- - _test_/fixtures/gameStates/testStates.json [77:5 - 101:2] (24 lines, 148 tokens)
-   _test_/fixtures/gameStates/testStates.json [30:2 - 53:2]
-
-Clone found (json):
- - _test_/fixtures/gameStates/testStates.json [132:9 - 152:2] (20 lines, 109 tokens)
-   _test_/fixtures/gameStates/testStates.json [37:2 - 56:2]
-
 Clone found (javascript):
  - src/data/inventory.js [2:2 - 47:15] (45 lines, 301 tokens)
    src/store/slices/playerInventorySlice.js [17:2 - 62:2]
@@ -108,49 +100,37 @@ Clone found (javascript):
    src/store/slices/placeInventorySlice.js [10:2 - 39:6]
 
 Clone found (javascript):
- - _test_/services/ProductionService.test.js [145:58 - 163:2] (18 lines, 141 tokens)
-   _test_/services/ProductionService.test.js [126:43 - 145:3]
-
-Clone found (javascript):
- - _test_/gameEngine/gameEngine.test.js [303:7 - 313:11] (10 lines, 92 tokens)
+ - _test_/gameEngine/gameEngine.test.js [316:7 - 326:11] (10 lines, 92 tokens)
    _test_/services/ProductionService.test.js [123:7 - 133:18]
 
 Clone found (javascript):
- - _test_/gameEngine/gameEngine.test.js [307:2 - 320:2] (13 lines, 86 tokens)
-   _test_/gameEngine/gameEngine.test.js [290:2 - 303:2]
+ - _test_/gameEngine/gameEngine.test.js [320:2 - 333:2] (13 lines, 86 tokens)
+   _test_/gameEngine/gameEngine.test.js [303:2 - 316:2]
 
 Clone found (javascript):
- - _test_/gameEngine/gameEngine.test.js [503:56 - 510:28] (7 lines, 92 tokens)
-   _test_/gameEngine/gameEngine.test.js [476:68 - 484:2]
-
-Clone found (javascript):
- - _test_/fixtures/stateBuilders.js [2:2 - 33:2] (31 lines, 238 tokens)
-   _test_/utils/testHelpers.js [114:2 - 145:2]
-
-Clone found (javascript):
- - _test_/combatService.test.js [121:59 - 141:9] (20 lines, 113 tokens)
-   _test_/combatService.test.js [53:49 - 73:3]
+ - _test_/gameEngine/gameEngine.test.js [506:56 - 512:28] (6 lines, 91 tokens)
+   _test_/gameEngine/gameEngine.test.js [489:68 - 496:2]
 
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 119            │ 11936       │ 94752        │ 23           │ 360 (3.02%)      │ 3017 (3.18%)      │
+│ javascript │ 119            │ 11869       │ 94304        │ 20           │ 290 (2.44%)      │ 2524 (2.68%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ css        │ 17             │ 2721        │ 15614        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ json       │ 9              │ 290         │ 1811         │ 2            │ 44 (15.17%)      │ 257 (14.19%)      │
-├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 146            │ 14958       │ 112284       │ 25           │ 404 (2.7%)       │ 3274 (2.92%)      │
+│ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
+├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ Total:     │ 145            │ 14740       │ 110872       │ 20           │ 290 (1.97%)      │ 2524 (2.28%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 25 clones.
-Error: ERROR: jscpd found too many duplicates (2.7%) over threshold (0%)
+Found 20 clones.
+Error: ERROR: jscpd found too many duplicates (1.97%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (2.7%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (1.97%) over threshold (0%)
 ```
 
 </details>
