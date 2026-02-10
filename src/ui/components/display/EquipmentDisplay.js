@@ -29,7 +29,6 @@ const EquipmentDisplay = () => {
 	return (
 		<div className="equipment-flex">
 			{EQUIPMENT_SLOTS.map(({ key, label }) => (
-				// biome-ignore lint/a11y/useSemanticElements: CSS targets div elements specifically
 				<div
 					role="button"
 					tabIndex={equipment[key] ? 0 : -1}
