@@ -114,7 +114,7 @@ export const CombatService = {
 	},
 
 	// Handle enemy drops on death
-	handleEnemyDrops(enemy) {
+	handleEnemyDrops(_enemy) {
 		const currentPlaceId = this.store.getState().places.currentPlaceId;
 		const place = this.store.getState().places[currentPlaceId];
 		const spawnInfo = place.spawn;

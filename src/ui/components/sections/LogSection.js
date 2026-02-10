@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/log-section.css";
@@ -50,6 +50,7 @@ const LogSection = () => {
 				<h2>Log</h2>
 				<div className="log-filter-container">
 					<button
+						type="button"
 						className="log-filter-toggle"
 						onClick={() => setShowFilter(!showFilter)}
 						title="Filter logs"

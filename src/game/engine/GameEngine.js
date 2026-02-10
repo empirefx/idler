@@ -25,7 +25,7 @@ import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
  * EventBusService: system messaging only
  */
 class GameEngine {
-	constructor(dispatch, store, { spawnService = SpawnService } = {}) {
+	constructor(dispatch, store, { spawnService: _spawnService = SpawnService } = {}) {
 		this.store = store;
 		this.lastState = store.getState();
 		this.dispatch = dispatch;
@@ -133,26 +133,6 @@ class GameEngine {
 		});
 	}
 
-	// Get workers assigned to a specific building (now handled by ProductionService)
-	getAssignedWorkers(state, buildingId) {
-		return this.productionService.getAssignedWorkers(state, buildingId);
-	}
-
-	// Calculate production rate for a building (now handled by ProductionService)
-	calculateProductionRate(building, state) {
-		return this.productionService.calculateProductionRate(building, state);
-	}
-
-	// Validate that a building can produce (now handled by ProductionService)
-	canBuildingProduce(state, buildingId) {
-		return this.productionService.canBuildingProduce(state, buildingId);
-	}
-
-	// Get all production calculations for UI purposes (now handled by ProductionService)
-	getAllProductionCalculations(state) {
-		return this.productionService.getAllProductionCalculations(state);
-	}
-
 	// Save game state to localStorage
 	save() {
 		return this.saveService.saveState(this.store);
@@ -194,22 +174,19 @@ class GameEngine {
 		);
 
 		// Initialize and hook lifecycle services
-		if (this.enemyLifecycleService && this.enemyLifecycleService.initialize) {
+		if (this.enemyLifecycleService?.initialize) {
 			this.enemyLifecycleService.eventBusService = null;
 			this.enemyLifecycleService.initialize(this.store.getState());
 			this.enemyLifecycleService.subscribeToEnemyChanges(this.store);
 		}
 
-		if (
-			this.navigationService &&
-			this.navigationService.subscribeToPlaceChanges
-		) {
+		if (this.navigationService?.subscribeToPlaceChanges) {
 			this.navigationService.eventBus = this.eventBusService;
 			this.navigationService.subscribeToPlaceChanges(this.store);
 		}
 
 		// Subscribe to combat state changes
-		if (this.combatService && this.combatService.handleCombatStateChange) {
+		if (this.combatService?.handleCombatStateChange) {
 			this.combatService.eventBusService = this.eventBusService;
 			this.combatService.store = this.store;
 			let lastCombatState = this.store.getState().combat.isInCombat;

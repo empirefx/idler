@@ -1,6 +1,4 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import { useUIVisibility } from "../../UIVisibilityContext";
 
 import "../../../styles/sections/npc-section.css";
@@ -12,7 +10,7 @@ import {
 
 const NPCSection = () => {
 	const npcs = useSelector(selectNPCsForCurrentPlace);
-	const allNpcs = useSelector(selectAllNPCs);
+	const _allNpcs = useSelector(selectAllNPCs);
 	const { openNPCDialog, npcSection } = useUIVisibility();
 
 	const handleNPCClick = (npcId) => {

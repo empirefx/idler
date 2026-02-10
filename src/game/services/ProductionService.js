@@ -10,7 +10,7 @@ export default class ProductionService {
 	}
 
 	// Process production for a specific building
-	processBuildingProduction(buildingId, building, state, deltaTime) {
+	processBuildingProduction(buildingId, building, state, _deltaTime) {
 		try {
 			// Check if building has assigned workers
 			const assignedWorkers = this.getAssignedWorkers(state, buildingId);
@@ -110,7 +110,7 @@ export default class ProductionService {
 	getBuildingPlaceId(buildingId, state) {
 		// Find which place contains this building
 		for (const [placeId, place] of Object.entries(state.places)) {
-			if (place.buildings && place.buildings.includes(buildingId)) {
+			if (place.buildings?.includes(buildingId)) {
 				return placeId;
 			}
 		}
@@ -157,7 +157,7 @@ export default class ProductionService {
 		}
 
 		// Fallback to village_center if no other place found
-		return placeInventory["village_center"] ? "village_center" : currentPlaceId;
+		return placeInventory.village_center ? "village_center" : currentPlaceId;
 	}
 
 	// Calculate production rate for a building

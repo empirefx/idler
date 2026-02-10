@@ -8,7 +8,7 @@ export const NavigationService = {
 	handleNavigation(state, currentPlaceId, previousPlaceId, dispatch) {
 		if (currentPlaceId !== previousPlaceId) {
 			// Emit enterPlace event for spawn service
-			if (this.eventBus && this.eventBus.emit) {
+			if (this.eventBus?.emit) {
 				this.eventBus.emit("enterPlace", currentPlaceId);
 			}
 
