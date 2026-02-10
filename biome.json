@@ -1,11 +1,5 @@
 {
   "files": {
-    "ignore": [
-      "src/assets",
-      "static",
-      ".release-please-manifest.json",
-      "CHANGELOG.md",
-      "super-linter-output"
-    ]
+    "include": ["src/**/*", "!src/assets/**/*", "!static/**/*", "!.release-please-manifest.json", "!CHANGELOG.md", "!super-linter-output/**/*"]
   }
 }
