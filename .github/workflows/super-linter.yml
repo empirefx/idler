@@ -33,6 +33,7 @@ jobs:
         uses: super-linter/super-linter@61abc07d755095a68f4987d1c2c3d1d64408f1f9 # v8.5.0
         continue-on-error: true
         env:
+          LINTER_RULES_PATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Enable Biome Fixes
           FIX_BIOME_FORMAT: true
