@@ -18,11 +18,11 @@
 | SPELL_CODESPELL            | Pass ✅           |
 | TRIVY                      | Pass ✅           |
 | YAML                       | Pass ✅           |
-| YAML_PRETTIER              | Fail ❌           |
+| YAML_PRETTIER              | Pass ✅           |
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21849510624)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21849701860)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 149.
-Checked 103 files in 739ms. No fixes applied.
+Checked 103 files in 783ms. No fixes applied.
 Found 62 errors.
 Found 102 warnings.
 Found 5 infos.src/App.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1632,18 +1632,6 @@ Error: ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
     at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.7%) over threshold (0%)
-```
-
-</details>
-
-<details>
-
-<summary>YAML_PRETTIER</summary>
-
-```text
-Checking formatting...[[33mwarn[39m] .github/workflows/deploy-pages.yml
-[[33mwarn[39m] .github/workflows/super-linter.yml
-[[33mwarn[39m] Code style issues found in 2 files. Run Prettier with --write to fix.
 ```
 
 </details>
