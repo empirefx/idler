@@ -10,7 +10,7 @@ const initialState = {
 
 // Initialize available connections for the initial state
 const currentPlace = placesData[initialState.currentPlaceId];
-if (currentPlace && currentPlace.connections) {
+if (currentPlace?.connections) {
 	initialState.availableConnections = currentPlace.connections.map(
 		(placeId) => ({
 			id: placeId,

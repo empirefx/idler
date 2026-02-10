@@ -165,6 +165,10 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	}
 	const maxWeight = inventory.maxWeight; // If undefined, no weight limit
 
+	// Calculate total items and max slots
+	const totalItems = inventory.items.length;
+	const maxSlots = inventory.maxSlots;
+
 	return (
 		<>
 			<div className="inventory-info">
@@ -189,8 +193,9 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					const item = inventory.items[i];
 
 					return (
-						<button
-							type="button"
+						<div
+							role="button"
+							tabIndex={item ? 0 : -1}
 							className={`inventory-slot ${item ? "filled" : "empty"}`}
 							key={item ? `slot-${item.id}-${i}` : `empty-${i}`}
 							onContextMenu={
@@ -242,7 +247,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 									</p>
 								</ItemInfo>
 							)}
-						</button>
+						</div>
 					);
 				})}
 			</div>

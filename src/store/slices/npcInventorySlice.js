@@ -250,7 +250,7 @@ export const selectCanAddItemToNpc = createSelector(
 );
 
 export const selectItemCountByType = createSelector(
-	[selectNpcInventoryItems, (state, itemType) => itemType],
+	[selectNpcInventoryItems, (_state, itemType) => itemType],
 	(items, itemType) => {
 		if (!Array.isArray(items)) return 0;
 		return items.filter((item) => item.type === itemType).length;
@@ -258,7 +258,7 @@ export const selectItemCountByType = createSelector(
 );
 
 export const selectTotalQuantityByItemType = createSelector(
-	[selectNpcInventoryItems, (state, itemType) => itemType],
+	[selectNpcInventoryItems, (_state, itemType) => itemType],
 	(items, itemType) => {
 		if (!Array.isArray(items)) return 0;
 		return items

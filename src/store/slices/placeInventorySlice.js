@@ -5,8 +5,6 @@ import {
 } from "./inventory/inventoryValidators.js";
 import {
 	canItemsStack,
-	findItemById,
-	getItemIndex,
 	cloneItem,
 } from "./inventory/inventoryUtils.js";
 
@@ -101,7 +99,7 @@ const placeInventorySlice = createSlice({
 
 		// Move item from place inventory to another inventory
 		moveItem(state, action) {
-			const { fromInventoryId, toInventoryId, itemId, quantity } =
+			const { fromInventoryId, itemId, quantity } =
 				action.payload;
 
 			// This is a complex operation that involves both slices
@@ -198,7 +196,7 @@ export const {
 
 // Memoized selectors
 export const selectPlaceInventoryById = createSelector(
-	[(state) => state.placeInventory, (state, placeId) => placeId],
+	[(state) => state.placeInventory, (_state, placeId) => placeId],
 	(placeInventory, placeId) =>
 		placeInventory ? placeInventory[placeId] : undefined,
 );
@@ -223,7 +221,7 @@ export const selectPlaceInventoryStats = createSelector(
 );
 
 export const selectVaultByPlaceId = createSelector(
-	[(state) => state.placeInventory, (state, placeId) => placeId],
+	[(state) => state.placeInventory, (_state, placeId) => placeId],
 	(placeInventory, placeId) => {
 		// Find inventory by placeId (not inventoryId)
 		const inventory = Object.values(placeInventory || {}).find(
@@ -242,7 +240,7 @@ export const selectCanAddItemToPlace = createSelector(
 );
 
 export const selectItemCountByType = createSelector(
-	[selectPlaceInventoryItems, (state, itemType) => itemType],
+	[selectPlaceInventoryItems, (_state, itemType) => itemType],
 	(items, itemType) => {
 		if (!Array.isArray(items)) return 0;
 		return items.filter((item) => item.type === itemType).length;
@@ -250,7 +248,7 @@ export const selectItemCountByType = createSelector(
 );
 
 export const selectTotalQuantityByItemType = createSelector(
-	[selectPlaceInventoryItems, (state, itemType) => itemType],
+	[selectPlaceInventoryItems, (_state, itemType) => itemType],
 	(items, itemType) => {
 		if (!Array.isArray(items)) return 0;
 		return items

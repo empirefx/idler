@@ -31,9 +31,16 @@ const EquipmentDisplay = () => {
 		<div className="equipment-flex">
 			{EQUIPMENT_SLOTS.map(({ key, label }) => (
 				<div
+					role="button"
+					tabIndex={equipment[key] ? 0 : -1}
 					className={`${key} ${equipment[key] ? "equipped" : ""}`}
 					key={key}
 					onClick={() => equipment[key] && handleUnequip(key)}
+					onKeyDown={(e) => {
+						if ((e.key === 'Enter' || e.key === ' ') && equipment[key]) {
+							handleUnequip(key);
+						}
+					}}
 					style={{ cursor: equipment[key] ? "pointer" : "default" }}
 				>
 					{equipment[key] ? (

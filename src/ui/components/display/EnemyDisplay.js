@@ -1,4 +1,3 @@
-import React from "react";
 import EnemyList from "../list/EnemyList";
 
 const EnemyDisplay = ({ enemies }) => (
