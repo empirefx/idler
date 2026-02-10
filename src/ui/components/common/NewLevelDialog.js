@@ -1,10 +1,12 @@
-import React from "react";
-
 // Modal-style dialog for level-up choices
 const NewLevelDialog = ({ onChoose, onCancel }) => (
-	<div className="dialog" onClick={onCancel}>
+	<div className="dialog" role="dialog" onClick={onCancel} onKeyDown={(e) => {
+		if (e.key === 'Escape') {
+			onCancel();
+		}
+	}} tabIndex={0}>
 		<p>Choose bonus:</p>
-		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+		<div className="player-options" role="group" onClick={(e) => e.stopPropagation()}>
 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
 				+1 STR
 			</button>

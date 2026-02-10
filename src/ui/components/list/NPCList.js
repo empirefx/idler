@@ -1,5 +1,3 @@
-import React from "react";
-
 import NPCCard from "../card/NPCCard";
 
 const NPCList = ({ npcs, onNPCClick }) => (

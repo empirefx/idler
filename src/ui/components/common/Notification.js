@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { removeNotification } from "../../../store/slices/notificationSlice";
 import "../../../styles/sections/notifications.css";
@@ -36,7 +36,6 @@ const Notification = ({ notification }) => {
 				}
 			}}
 			role="alert"
-			tabIndex={0}
 		>
 			<span className="notification-message">{message}</span>
 			<button

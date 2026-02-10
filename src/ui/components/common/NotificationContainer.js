@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import Notification from "./Notification";
 import { selectVisibleNotifications } from "../../../store/slices/notificationSlice";

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 const _LOG_CATEGORIES = {
 	worker: { label: "Workers", color: "worker" },
 	combat: { label: "Combat", color: "combat" },

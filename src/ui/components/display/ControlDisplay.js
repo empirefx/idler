@@ -1,5 +1,3 @@
-import React from "react";
-
 const ControlDisplay = ({ isInCombat, onToggleCombat }) => (
 	<div className="combat">
 		<button

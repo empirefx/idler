@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProgressBar = ({ value, max }) => {
 	// Handle undefined/null values to prevent NaN
 	const safeValue = Number(value) || 0;
