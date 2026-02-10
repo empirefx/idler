@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21873946663)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21874267964)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,145 +32,35 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 42.
-Checked 103 files in 692ms. No fixes applied.
-Found 36 errors.
-Found 26 warnings.src/ui/components/common/NewLevelDialog.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+Diagnostics not shown: 25.
+Checked 103 files in 703ms. No fixes applied.
+Found 34 errors.
+Found 11 warnings.src/styles/sections/workers-section.css:73:15 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━
 
-  ! This import is unused.
+  ! Avoid the use of the !important style.
 
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ // Modal-style dialog for level-up choices
+    71 │ .worker-info p {
+    72 │ 	text-indent: 10px;
+  > 73 │ 	color: black !important;
+       │ 	             ^^^^^^^^^^
+    74 │ }
+    75 │
 
-  i Unused imports might be the result of an incomplete refactoring.
+  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
 
-  i Unsafe fix: Remove the unused imports.
+  i Unsafe fix: Remove the style.
 
-    1 │ import·React·from·"react";
-      │ --------------------------
+    73 │ → color:·black·!important;
+       │               -----------
 
-src/ui/components/common/Notification.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
-
-  ! These imports are unused.
-
-  > 1 │ import React, { useEffect } from "react";
-      │        ^^^^^
-    2 │ import { useDispatch } from "react-redux";
-    3 │ import { removeNotification } from "../../../store/slices/notificationSlice";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React,·{·useEffect·}·from·"react";
-      │        -------
-
-src/ui/components/common/NotificationContainer.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import Notification from "./Notification";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/common/ProgressBar.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ const ProgressBar = ({ value, max }) => {
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/common/QuantitySlider.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ function QuantitySlider({
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/common/ToolTip.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ const ToolTip = ({ text }) => {
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/display/ControlDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ const ControlDisplay = ({ isInCombat, onToggleCombat }) => (
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/display/EquipmentDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useDispatch, useSelector } from "react-redux";
-    3 │ import {
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
+src/ui/components/common/NPCDialog.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━
 
   ! These imports are unused.
 
   > 1 │ import React, { useEffect, useRef } from "react";
       │        ^^^^^
-    2 │ const _LOG_CATEGORIES = {
-    3 │ 	worker: { label: "Workers", color: "worker" },
+    2 │ import { useSelector } from "react-redux";
+    3 │ import { selectPlayer } from "../../../store/slices/playerSlice";
 
   i Unused imports might be the result of an incomplete refactoring.
 
@@ -179,178 +69,322 @@ src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FI
     1 │ import·React,·{·useEffect,·useRef·}·from·"react";
       │        -------
 
-src/ui/components/display/ResourceDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog.js:104:9 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
 
-  ! This import is unused.
+  ! Change to an optional chain.
 
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import { createSelector } from "@reduxjs/toolkit";
+    102 │ 						<div className="npc-response">{getResponseText()}</div>
+    103 │ 						<div className="dialog-options">
+  > 104 │ 							{npc.dialogue && npc.dialogue.options ? (
+        │ 							 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    105 │ 								npc.dialogue.options.map((option, index) => (
+    106 │ 									<button
 
-  i Unused imports might be the result of an incomplete refactoring.
+  i Unsafe fix: Change to an optional chain.
 
-  i Unsafe fix: Remove the unused imports.
+    102 102 │   						<div className="npc-response">{getResponseText()}</div>
+    103 103 │   						<div className="dialog-options">
+    104     │ - → → → → → → → {npc.dialogue·&&·npc.dialogue.options·?·(
+        104 │ + → → → → → → → {npc.dialogue?.options·?·(
+    105 105 │   								npc.dialogue.options.map((option, index) => (
+    106 106 │   									<button
 
-    1 │ import·React·from·"react";
-      │ --------------------------
 
-src/ui/components/list/EnemyList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ import EntityCard from "../card/EntityCard";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/list/NPCList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │
-    3 │ import NPCCard from "../card/NPCCard";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/list/StatList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/sections/BuildingsSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector, useDispatch } from "react-redux";
-    3 │ import { createSelector } from "@reduxjs/toolkit";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/ui/components/common/NewLevelDialog.js:5:2 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━
+src/ui/components/common/MoveItemDialog.js:91:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━
 
   × Static Elements should not be interactive.
 
-    3 │ // Modal-style dialog for level-up choices
-    4 │ const NewLevelDialog = ({ onChoose, onCancel }) => (
-  > 5 │ 	<div className="dialog" onClick={onCancel}>
-      │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    6 │ 		<p>Choose bonus:</p>
-    7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+    90 │ 	return (
+  > 91 │ 		<div className="dialog" onClick={onCancel}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    92 │ 			<div className="move-item-dialog" onClick={(e) => e.stopPropagation()}>
+    93 │ 				<div className="dialog-header">
 
   i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-src/ui/components/common/NewLevelDialog.js:5:2 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/MoveItemDialog.js:91:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━
 
   × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
 
-    3 │ // Modal-style dialog for level-up choices
-    4 │ const NewLevelDialog = ({ onChoose, onCancel }) => (
-  > 5 │ 	<div className="dialog" onClick={onCancel}>
-      │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    6 │ 		<p>Choose bonus:</p>
-    7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+    90 │ 	return (
+  > 91 │ 		<div className="dialog" onClick={onCancel}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    92 │ 			<div className="move-item-dialog" onClick={(e) => e.stopPropagation()}>
+    93 │ 				<div className="dialog-header">
 
   i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
 
 
-src/ui/components/common/NewLevelDialog.js:7:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/NPCDialog.js:61:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
 
-    5 │ 	<div className="dialog" onClick={onCancel}>
-    6 │ 		<p>Choose bonus:</p>
-  > 7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
-      │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    8 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
-    9 │ 				+1 STR
+    60 │ 	return (
+  > 61 │ 		<dialog
+       │ 		^^^^^^^
+  > 62 │ 			ref={dialogRef}
+  > 63 │ 			className="npc-dialog"
+  > 64 │ 			onClick={handleBackdropClick}
+  > 65 │ 		>
+       │ 		^
+    66 │ 			{/* Hidden focus trap */}
+    67 │ 			<div
 
   i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
 
 
-src/ui/components/common/NewLevelDialog.js:7:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    5 │ 	<div className="dialog" onClick={onCancel}>
-    6 │ 		<p>Choose bonus:</p>
-  > 7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
-      │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    8 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
-    9 │ 				+1 STR
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/common/Notification.js:39:4 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog.js:69:5 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━━━
 
   × The HTML element div is non-interactive. Do not use tabIndex.
 
-    37 │ 			}}
-    38 │ 			role="alert"
-  > 39 │ 			tabIndex={0}
-       │ 			^^^^^^^^^^^^
-    40 │ 		>
-    41 │ 			<span className="notification-message">{message}</span>
+    67 │ 			<div
+    68 │ 				style={{ position: "absolute", opacity: 0, height: 0 }}
+  > 69 │ 				tabIndex={0}
+       │ 				^^^^^^^^^^^^
+    70 │ 			></div>
+    71 │ 			<div className="key-bind-container">
 
   i Adding non-interactive elements to the keyboard navigation flow can confuse users.
 
   i Unsafe fix: Remove the tabIndex attribute.
 
-    37 37 │   			}}
-    38 38 │   			role="alert"
-    39    │ - → → → tabIndex={0}
-    40 39 │   		>
-    41 40 │   			<span className="notification-message">{message}</span>
+     67  67 │   			<div
+     68  68 │   				style={{ position: "absolute", opacity: 0, height: 0 }}
+     69     │ - → → → → tabIndex={0}
+     70  69 │   			></div>
+     71  70 │   			<div className="key-bind-container">
+
+
+src/ui/components/common/NPCDialog.js:75:4 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    73 │ 				<span>escape</span>
+    74 │ 			</div>
+  > 75 │ 			<div className="npc-dialog-content" onClick={(e) => e.stopPropagation()}>
+       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    76 │ 				{/* Bottom section with 2 columns */}
+    77 │ 				<div className="dialog-bottom-section">
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/common/NPCDialog.js:75:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    73 │ 				<span>escape</span>
+    74 │ 			</div>
+  > 75 │ 			<div className="npc-dialog-content" onClick={(e) => e.stopPropagation()}>
+       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    76 │ 				{/* Bottom section with 2 columns */}
+    77 │ 				<div className="dialog-bottom-section">
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/common/NPCDialog.js:106:10 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    104 │ 							{npc.dialogue && npc.dialogue.options ? (
+    105 │ 								npc.dialogue.options.map((option, index) => (
+  > 106 │ 									<button
+        │ 									^^^^^^^
+  > 107 │ 										key={index}
+  > 108 │ 										onClick={() => onOptionSelect(index)}
+  > 109 │ 										className="dialog-option-btn"
+  > 110 │ 									>
+        │ 									^
+    111 │ 										{option.text}
+    112 │ 									</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/NPCDialog.js:107:16 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Avoid using the index of an array as key property in an element.
+
+    105 │ 								npc.dialogue.options.map((option, index) => (
+    106 │ 									<button
+  > 107 │ 										key={index}
+        │ 										     ^^^^^
+    108 │ 										onClick={() => onOptionSelect(index)}
+    109 │ 										className="dialog-option-btn"
+
+  i This is the source of the key value.
+
+    103 │ 						<div className="dialog-options">
+    104 │ 							{npc.dialogue && npc.dialogue.options ? (
+  > 105 │ 								npc.dialogue.options.map((option, index) => (
+        │ 								                                  ^^^^^
+    106 │ 									<button
+    107 │ 										key={index}
+
+  i The order of the items may change, and this also affects performances and component state.
+
+  i Check the React documentation.
+
+
+src/ui/components/common/NPCDialog.js:115:9 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    113 │ 								))
+    114 │ 							) : (
+  > 115 │ 								<button
+        │ 								^^^^^^^
+  > 116 │ 									disabled
+  > 117 │ 									className="dialog-option-btn"
+  > 118 │ 									style={{ opacity: 0.5 }}
+  > 119 │ 								>
+        │ 								^
+    120 │ 									No dialogue options available
+    121 │ 								</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/NewLevelDialog.js:12:3 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
+
+  × The HTML element div is non-interactive. Do not use tabIndex.
+
+    10 │ 			}
+    11 │ 		}}
+  > 12 │ 		tabIndex={0}
+       │ 		^^^^^^^^^^^^
+    13 │ 	>
+    14 │ 		<p>Choose bonus:</p>
+
+  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
+
+  i Unsafe fix: Remove the tabIndex attribute.
+
+    10 10 │   			}
+    11 11 │   		}}
+    12    │ - → → tabIndex={0}
+    13 12 │   	>
+    14 13 │   		<p>Choose bonus:</p>
+
+
+src/ui/components/common/NewLevelDialog.js:15:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    13 │ 	>
+    14 │ 		<p>Choose bonus:</p>
+  > 15 │ 		<div
+       │ 		^^^^
+  > 16 │ 			className="player-options"
+  > 17 │ 			role="group"
+  > 18 │ 			onClick={(e) => e.stopPropagation()}
+  > 19 │ 		>
+       │ 		^
+    20 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+    21 │ 				+1 STR
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/common/NewLevelDialog.js:17:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━
+
+  × The elements with this role can be changed to the following elements:
+    <fieldset>
+
+    15 │ 		<div
+    16 │ 			className="player-options"
+  > 17 │ 			role="group"
+       │ 			^^^^^^^^^^^^
+    18 │ 			onClick={(e) => e.stopPropagation()}
+    19 │ 		>
+
+  i For examples and more information, see WAI-ARIA Roles
+
+
+src/ui/components/common/NewLevelDialog.js:20:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    18 │ 			onClick={(e) => e.stopPropagation()}
+    19 │ 		>
+  > 20 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    21 │ 				+1 STR
+    22 │ 			</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/NewLevelDialog.js:23:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    21 │ 				+1 STR
+    22 │ 			</button>
+  > 23 │ 			<button className="select-btn" onClick={() => onChoose({ defense: 2 })}>
+       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    24 │ 				+2 DEF
+    25 │ 			</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/NewLevelDialog.js:26:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    24 │ 				+2 DEF
+    25 │ 			</button>
+  > 26 │ 			<button className="select-btn" onClick={() => onChoose({ agility: 1 })}>
+       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    27 │ 				+1 AGI
+    28 │ 			</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/NewLevelDialog.js:29:4 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    27 │ 				+1 AGI
+    28 │ 			</button>
+  > 29 │ 			<button className="select-btn" onClick={() => onChoose({ vitality: 3 })}>
+       │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    30 │ 				+3 VIT
+    31 │ 			</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/common/NewLevelDialog.js:34:3 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    32 │ 		</div>
+    33 │
+  > 34 │ 		<button onClick={onCancel}>Cancel</button>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    35 │ 	</div>
+    36 │ );
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
