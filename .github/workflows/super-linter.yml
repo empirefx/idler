@@ -24,13 +24,12 @@ jobs:
           persist-credentials: true
       - name: Super-linter
         uses: super-linter/super-linter@61abc07d755095a68f4987d1c2c3d1d64408f1f9
-        continue-on-error: true
         env:
           LINTER_RULES_PATH: .
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
-          BIOME_MAX_DIAGNOSTICS: 20
+          BIOME_MAX_DIAGNOSTICS: 100
           VALIDATE_CSS_PRETTIER: false
           VALIDATE_HTML_PRETTIER: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
@@ -58,6 +57,8 @@ jobs:
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_GIT_COMMITLINT: false
           SAVE_SUPER_LINTER_SUMMARY: false
+      - name: Apply Biome fixes
+        run: npx @biomejs/biome check --apply src/
       - name: Commit and push linting fixes
         if: always()
         uses: >-

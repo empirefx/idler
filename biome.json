@@ -8,5 +8,16 @@
 			"!CHANGELOG.md",
 			"!super-linter-output/**/*"
 		]
-	}
+	},
+	 "linter": {
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedFunctionParameters": "warn"
+      },
+      "style": {
+        "noUnusedImports": "warn"
+      }
+    }
+  }
 }
