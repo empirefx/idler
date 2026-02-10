@@ -27,7 +27,6 @@ jobs:
           # list of files that changed across commits
           fetch-depth: 0
           token: ${{ secrets.SUPER_LINTER_TOKEN }}
-          persist-credentials: false
 
       - name: Super-linter
         uses: super-linter/super-linter@61abc07d755095a68f4987d1c2c3d1d64408f1f9 # v8.5.0
@@ -77,4 +76,3 @@ jobs:
           commit_message: "chore: fix linting issues"
           commit_user_name: super-linter
           commit_user_email: super-linter@super-linter.dev
-          token: ${{ secrets.SUPER_LINTER_TOKEN }}
