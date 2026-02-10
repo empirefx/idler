@@ -3,7 +3,7 @@
 | Language                   | Validation result |
 | -------------------------- | ----------------- |
 | BIOME_FORMAT               | Pass ✅           |
-| BIOME_LINT                 | Fail ❌           |
+| BIOME_LINT                 | Pass ✅           |
 | CHECKOV                    | Pass ✅           |
 | GITHUB_ACTIONS             | Pass ✅           |
 | GITHUB_ACTIONS_ZIZMOR      | Pass ✅           |
@@ -22,51 +22,9 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21882632803)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21883504698)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
-
-<details>
-
-<summary>BIOME_LINT</summary>
-
-```text
-Checked 103 files in 687ms. No fixes applied.
-Found 1 error.src/ui/components/display/LogDisplay.js:13:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
-
-  × This hook specifies more dependencies than necessary: filteredLogs.
-
-    12 │ 	// Scroll to bottom on update
-  > 13 │ 	useEffect(() => {
-       │ 	^^^^^^^^^
-    14 │ 		if (containerRef.current) {
-    15 │ 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
-
-  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
-
-    15 │ 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    16 │ 		}
-  > 17 │ 	}, [filteredLogs]);
-       │ 	    ^^^^^^^^^^^^
-    18 │
-    19 │ 	return (
-
-  i React relies on hook dependencies to determine when to re-compute Effects.
-    Specifying more dependencies than required can lead to unnecessary re-rendering
-    and degraded performance.
-
-  i Unsafe fix: Remove the extra dependencies from the list.
-
-    17 │ → },·[filteredLogs]);
-       │       ------------
-
-lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Some errors were emitted while running checks.
-
-```
-
-</details>
 
 <details>
 
@@ -78,7 +36,7 @@ Clone found (javascript):
    src/ui/components/sections/WorkersSection.js [28:11 - 36:3]
 
 Clone found (javascript):
- - src/ui/components/display/LogDisplay.js [2:2 - 9:7] (7 lines, 88 tokens)
+ - src/ui/components/display/LogDisplay.js [3:2 - 10:7] (7 lines, 88 tokens)
    src/ui/components/sections/LogSection.js [7:2 - 14:6]
 
 Clone found (javascript):
@@ -144,15 +102,15 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 119            │ 11858       │ 94487        │ 17           │ 261 (2.2%)       │ 2255 (2.39%)      │
+│ javascript │ 119            │ 11860       │ 94491        │ 17           │ 261 (2.2%)       │ 2255 (2.39%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 17             │ 2733        │ 15681        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 17             │ 2739        │ 15711        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 145            │ 14741       │ 111122       │ 17           │ 261 (1.77%)      │ 2255 (2.03%)      │
+│ Total:     │ 145            │ 14749       │ 111156       │ 17           │ 261 (1.77%)      │ 2255 (2.03%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 17 clones.
 Error: ERROR: jscpd found too many duplicates (1.77%) over threshold (0%)
