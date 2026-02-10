@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.0.1](https://github.com/empirefx/idler/compare/v3.0.0...v3.0.1) (2026-02-10)
+
+
+### Bug Fixes
+
+* log scroll bottom in new entries ([1557777](https://github.com/empirefx/idler/commit/155777759afd6df9c4fac28fadfaedcc1d6f58f9))
+* log scroll bottom, ignore biome ([8cc85ed](https://github.com/empirefx/idler/commit/8cc85ed2b03891c587dd416f2fee5d7549ff970a))
+* npc dialog animation ([1300f89](https://github.com/empirefx/idler/commit/1300f8912c702370ae1cd8a59e15624b3c5d6a75))
+* prevent player self targeted ([2a7fa1a](https://github.com/empirefx/idler/commit/2a7fa1ad36556be20eb3ef697cfafb01bfff3cbc))
+
 ## [3.0.0](https://github.com/empirefx/idler/compare/v2.0.0...v3.0.0) (2026-02-07)
 
 ### ⚠ BREAKING CHANGES
