@@ -130,8 +130,7 @@ const playerInventorySlice = createSlice({
 
 		// Move item from player inventory to another inventory
 		moveItem(state, action) {
-			const { fromInventoryId, itemId, quantity } =
-				action.payload;
+			const { fromInventoryId, itemId, quantity } = action.payload;
 
 			// This is a complex operation that involves both slices
 			// The actual move logic will be handled by a thunk

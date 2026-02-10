@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21872259816)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21872588083)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,121 +32,124 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 58.
-Checked 103 files in 740ms. No fixes applied.
-Found 42 errors.
-Found 36 warnings.src/store/slices/playerInventorySlice.js:8:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
-
-  ! Several of these imports are unused.
-
-     6 │ 	validateItemExists,
-     7 │ 	validateEquipmentSlot,
-   > 8 │ 	validateInventoryExists,
-       │ 	^^^^^^^^^^^^^^^^^^^^^^^
-     9 │ } from "./inventory/inventoryValidators.js";
-    10 │ import {
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-      6   6 │   	validateItemExists,
-      7   7 │   	validateEquipmentSlot,
-      8     │ - → validateInventoryExists,
-      9   8 │   } from "./inventory/inventoryValidators.js";
-     10   9 │   import {
-
-
-src/store/slices/playerInventorySlice.js:12:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━
-
-  ! Several of these imports are unused.
-
-    10 │ import {
-    11 │ 	canItemsStack,
-  > 12 │ 	calculateWeight,
-       │ 	^^^^^^^^^^^^^^^^
-  > 13 │ 	calculateTotalPlayerWeight,
-  > 14 │ 	findItemById,
-  > 15 │ 	getItemIndex,
-  > 16 │ 	generateItemId,
-       │ 	^^^^^^^^^^^^^^
-    17 │ 	cloneItem,
-    18 │ } from "./inventory/inventoryUtils.js";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-     10  10 │   import {
-     11  11 │   	canItemsStack,
-     12     │ - → calculateWeight,
-     13  12 │   	calculateTotalPlayerWeight,
-     14  13 │   	findItemById,
-     15     │ - → getItemIndex,
-     16     │ - → generateItemId,
-     17  14 │   	cloneItem,
-     18  15 │   } from "./inventory/inventoryUtils.js";
-
-
-src/store/slices/playerInventorySlice.js:137:29 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━
-
-  ! This variable toInventoryId is unused.
-
-    135 │ 		// Move item from player inventory to another inventory
-    136 │ 		moveItem(state, action) {
-  > 137 │ 			const { fromInventoryId, toInventoryId, itemId, quantity } =
-        │ 			                         ^^^^^^^^^^^^^
-    138 │ 				action.payload;
-    139 │
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-
-src/store/slices/playerInventorySlice.js:269:38 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+Diagnostics not shown: 50.
+Checked 103 files in 689ms. No fixes applied.
+Found 39 errors.
+Found 31 warnings.src/store/slices/playerInventorySlice.js:295:27 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    267 │ // Memoized selectors
-    268 │ export const selectPlayerInventoryById = createSelector(
-  > 269 │ 	[(state) => state.playerInventory, (state, playerId) => playerId],
-        │ 	                                    ^^^^^
-    270 │ 	(playerInventory, playerId) =>
-    271 │ 		playerInventory ? playerInventory[playerId] : undefined,
+    294 │ export const selectEquippedItem = createSelector(
+  > 295 │ 	[selectPlayerEquipment, (state, slot) => slot],
+        │ 	                         ^^^^^
+    296 │ 	(equipment, slot) => (equipment ? equipment[slot] : null),
+    297 │ );
 
   i Unused parameters might be the result of an incomplete refactoring.
 
   i Unsafe fix: If this is intentional, prepend state with an underscore.
 
-    267 267 │   // Memoized selectors
-    268 268 │   export const selectPlayerInventoryById = createSelector(
-    269     │ - → [(state)·=>·state.playerInventory,·(state,·playerId)·=>·playerId],
-        269 │ + → [(state)·=>·state.playerInventory,·(_state,·playerId)·=>·playerId],
-    270 270 │   	(playerInventory, playerId) =>
-    271 271 │   		playerInventory ? playerInventory[playerId] : undefined,
+    293 293 │
+    294 294 │   export const selectEquippedItem = createSelector(
+    295     │ - → [selectPlayerEquipment,·(state,·slot)·=>·slot],
+        295 │ + → [selectPlayerEquipment,·(_state,·slot)·=>·slot],
+    296 296 │   	(equipment, slot) => (equipment ? equipment[slot] : null),
+    297 297 │   );
 
 
-src/store/slices/playerSlice.js:88:20 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+src/store/slices/playerInventorySlice.js:300:31 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    86 │ 			state.health = Math.min(state.baseHealth, state.health + amount);
-    87 │ 		},
-  > 88 │ 		setPlayerState: (state, action) => {
-       │ 		                 ^^^^^
-    89 │ 			// This will replace the entire player state with the saved one
-    90 │ 			// Only for loading saved states!
+    299 │ export const selectCanEquipItem = createSelector(
+  > 300 │ 	[selectPlayerInventoryById, (state, itemId) => itemId],
+        │ 	                             ^^^^^
+    301 │ 	(inventory, itemId) => {
+    302 │ 		if (!inventory) return false;
 
   i Unused parameters might be the result of an incomplete refactoring.
 
   i Unsafe fix: If this is intentional, prepend state with an underscore.
 
-     86  86 │   			state.health = Math.min(state.baseHealth, state.health + amount);
-     87  87 │   		},
-     88     │ - → → setPlayerState:·(state,·action)·=>·{
-         88 │ + → → setPlayerState:·(_state,·action)·=>·{
-     89  89 │   			// This will replace the entire player state with the saved one
-     90  90 │   			// Only for loading saved states!
+    298 298 │
+    299 299 │   export const selectCanEquipItem = createSelector(
+    300     │ - → [selectPlayerInventoryById,·(state,·itemId)·=>·itemId],
+        300 │ + → [selectPlayerInventoryById,·(_state,·itemId)·=>·itemId],
+    301 301 │   	(inventory, itemId) => {
+    302 302 │   		if (!inventory) return false;
 
+
+src/styles/components.css:164:29 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Avoid the use of the !important style.
+
+    162 │ 	color: #aed7ff;
+    163 │ 	text-align: center;
+  > 164 │ 	text-transform: capitalize !important;
+        │ 	                           ^^^^^^^^^^
+    165 │ 	border-radius: var(--border-radius-sm);
+    166 │ 	padding: var(--spacing-xs) var(--spacing-sm);
+
+  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
+
+  i Unsafe fix: Remove the style.
+
+    164 │ → text-transform:·capitalize·!important;
+        │                             -----------
+
+src/ui/components/common/Notification.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+
+  ! These imports are unused.
+
+  > 1 │ import React, { useEffect } from "react";
+      │        ^^^^^
+    2 │ import { useDispatch } from "react-redux";
+    3 │ import { removeNotification } from "../../../store/slices/notificationSlice";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React,·{·useEffect·}·from·"react";
+      │        -------
+
+src/ui/components/common/Notification.js:4:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+
+  ! This import is unused.
+
+    2 │ import { useDispatch } from "react-redux";
+    3 │ import { removeNotification } from "../../../store/slices/notificationSlice";
+  > 4 │ import { NOTIFICATION_TYPES } from "../../../store/slices/notificationSlice";
+      │        ^^^^^^^^^^^^^^^^^^^^^^
+    5 │ import "../../../styles/sections/notifications.css";
+    6 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+     2  2 │   import { useDispatch } from "react-redux";
+     3  3 │   import { removeNotification } from "../../../store/slices/notificationSlice";
+     4    │ - import·{·NOTIFICATION_TYPES·}·from·"../../../store/slices/notificationSlice";
+     5  4 │   import "../../../styles/sections/notifications.css";
+     6  5 │
+
+
+src/ui/components/common/NotificationContainer.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │ import Notification from "./Notification";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
 
 src/ui/components/common/ProgressBar.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
 
@@ -340,54 +343,30 @@ src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImport
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/display/ControlDisplay.js:5:3 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/Notification.js:31:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━
 
-  × Provide an explicit type prop for the button element.
+  × Static Elements should not be interactive.
 
-     3 │ const ControlDisplay = ({ isInCombat, onToggleCombat }) => (
-     4 │ 	<div className="combat">
-   > 5 │ 		<button
-       │ 		^^^^^^^
-   > 6 │ 			onClick={onToggleCombat}
-   > 7 │ 			className={`combat-btn ${isInCombat ? "stop" : "engage"}`}
-   > 8 │ 		>
-       │ 		^
-     9 │ 			{isInCombat ? "Stop Combat" : "Engage Combat"}
-    10 │ 		</button>
+    30 │ 	return (
+  > 31 │ 		<div className={getNotificationClass()} onClick={handleDismiss}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    32 │ 			<span className="notification-message">{message}</span>
+    33 │ 			<button
 
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-src/ui/components/display/EquipmentDisplay.js:34:6 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/Notification.js:31:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━
 
-  × The elements with this role can be changed to the following elements:
-    <button>
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
 
-    32 │ 			{EQUIPMENT_SLOTS.map(({ key, label }) => (
-    33 │ 				<div
-  > 34 │ 					role="button"
-       │ 					^^^^^^^^^^^^^
-    35 │ 					tabIndex={equipment[key] ? 0 : -1}
-    36 │ 					className={`${key} ${equipment[key] ? "equipped" : ""}`}
+    30 │ 	return (
+  > 31 │ 		<div className={getNotificationClass()} onClick={handleDismiss}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    32 │ 			<span className="notification-message">{message}</span>
+    33 │ 			<button
 
-  i For examples and more information, see WAI-ARIA Roles
-
-
-src/ui/components/display/InventoryDisplay.js:197:8 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━
-
-  × The elements with this role can be changed to the following elements:
-    <button>
-
-    195 │ 					return (
-    196 │ 						<div
-  > 197 │ 							role="button"
-        │ 							^^^^^^^^^^^^^
-    198 │ 							tabIndex={item ? 0 : -1}
-    199 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
-
-  i For examples and more information, see WAI-ARIA Roles
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -417,19 +396,19 @@ Clone found (css):
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [55:15 - 72:36] (17 lines, 138 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [93:17 - 110:37]
+   /github/workspace/src/store/slices/playerInventorySlice.js [89:17 - 106:37]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [73:3 - 81:31] (8 lines, 96 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [111:3 - 119:32]
+   /github/workspace/src/store/slices/playerInventorySlice.js [107:3 - 115:32]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [81:31 - 97:55] (16 lines, 127 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [119:32 - 135:56]
+   /github/workspace/src/store/slices/playerInventorySlice.js [115:32 - 131:56]
 
 Clone found (javascript):
- - /github/workspace/src/store/slices/placeInventorySlice.js [99:16 - 122:39] (23 lines, 193 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [137:14 - 161:40]
+ - /github/workspace/src/store/slices/placeInventorySlice.js [98:3 - 122:39] (24 lines, 209 tokens)
+   /github/workspace/src/store/slices/playerInventorySlice.js [132:3 - 156:40]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [246:2 - 252:7] (6 lines, 79 tokens)
@@ -437,23 +416,23 @@ Clone found (javascript):
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [100:4 - 119:34] (19 lines, 171 tokens)
-   /github/workspace/src/store/slices/placeInventorySlice.js [53:4 - 110:37]
+   /github/workspace/src/store/slices/placeInventorySlice.js [53:4 - 106:37]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [120:3 - 128:29] (8 lines, 96 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [111:3 - 119:32]
+   /github/workspace/src/store/slices/playerInventorySlice.js [107:3 - 115:32]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [128:29 - 144:53] (16 lines, 127 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [119:32 - 135:56]
+   /github/workspace/src/store/slices/playerInventorySlice.js [115:32 - 131:56]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [148:4 - 166:37] (18 lines, 166 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [143:4 - 161:40]
+   /github/workspace/src/store/slices/playerInventorySlice.js [138:4 - 156:40]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [192:6 - 209:16] (17 lines, 115 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [245:9 - 262:10]
+   /github/workspace/src/store/slices/playerInventorySlice.js [240:9 - 257:10]
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [253:24 - 261:24] (8 lines, 91 tokens)
@@ -477,7 +456,7 @@ Clone found (json):
 
 Clone found (javascript):
  - /github/workspace/src/data/inventory.js [2:2 - 47:15] (45 lines, 301 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [21:2 - 66:2]
+   /github/workspace/src/store/slices/playerInventorySlice.js [17:2 - 62:2]
 
 Clone found (javascript):
  - /github/workspace/src/data/inventory.js [47:2 - 76:7] (29 lines, 184 tokens)
@@ -631,91 +610,92 @@ Clone found (css):
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [55:15 - 72:36] (17 lines, 138 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [93:17 - 110:37]
+   /github/workspace/src/store/slices/playerInventorySlice.js [89:17 - 106:37]
 
- 55 │ 93  │ .message);
- 56 │ 94  │ 				return;
- 57 │ 95  │ 			}
- 58 │ 96  │
- 59 │ 97  │ 			// Try to stack with existing items
- 60 │ 98  │ 			const existingItem = inventory.items.find((i) => canItemsStack(i, item));
- 61 │ 99  │ 			if (existingItem && item.quantity) {
- 62 │ 100 │ 				existingItem.quantity = (existingItem.quantity || 1) + item.quantity;
- 63 │ 101 │ 			} else {
- 64 │ 102 │ 				// Add new item
- 65 │ 103 │ 				inventory.items.push({
- 66 │ 104 │ 					...cloneItem(item),
- 67 │ 105 │ 					quantity: item.quantity || 1,
- 68 │ 106 │ 				});
- 69 │ 107 │ 			}
- 70 │ 108 │ 		},
- 71 │ 109 │
- 72 │ 110 │ 		// Remove item from place inventory
+ 55 │ 89  │ .message);
+ 56 │ 90  │ 				return;
+ 57 │ 91  │ 			}
+ 58 │ 92  │
+ 59 │ 93  │ 			// Try to stack with existing items
+ 60 │ 94  │ 			const existingItem = inventory.items.find((i) => canItemsStack(i, item));
+ 61 │ 95  │ 			if (existingItem && item.quantity) {
+ 62 │ 96  │ 				existingItem.quantity = (existingItem.quantity || 1) + item.quantity;
+ 63 │ 97  │ 			} else {
+ 64 │ 98  │ 				// Add new item
+ 65 │ 99  │ 				inventory.items.push({
+ 66 │ 100 │ 					...cloneItem(item),
+ 67 │ 101 │ 					quantity: item.quantity || 1,
+ 68 │ 102 │ 				});
+ 69 │ 103 │ 			}
+ 70 │ 104 │ 		},
+ 71 │ 105 │
+ 72 │ 106 │ 		// Remove item from place inventory
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [73:3 - 81:31] (8 lines, 96 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [111:3 - 119:32]
+   /github/workspace/src/store/slices/playerInventorySlice.js [107:3 - 115:32]
 
- 73 │ 111 │ removeItem(state, action) {
- 74 │ 112 │ 			const { inventoryId, itemId, quantity } = action.payload;
- 75 │ 113 │ 			const inventory = state[inventoryId];
- 76 │ 114 │ 			if (!inventory) return;
- 77 │ 115 │
- 78 │ 116 │ 			const itemValidation = validateItemExists(inventory, itemId);
- 79 │ 117 │ 			if (!itemValidation.isValid) {
- 80 │ 118 │ 				console.warn(
- 81 │ 119 │ 					`Item ${itemId} not found in place inventory
+ 73 │ 107 │ removeItem(state, action) {
+ 74 │ 108 │ 			const { inventoryId, itemId, quantity } = action.payload;
+ 75 │ 109 │ 			const inventory = state[inventoryId];
+ 76 │ 110 │ 			if (!inventory) return;
+ 77 │ 111 │
+ 78 │ 112 │ 			const itemValidation = validateItemExists(inventory, itemId);
+ 79 │ 113 │ 			if (!itemValidation.isValid) {
+ 80 │ 114 │ 				console.warn(
+ 81 │ 115 │ 					`Item ${itemId} not found in place inventory
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [81:31 - 97:55] (16 lines, 127 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [119:32 - 135:56]
+   /github/workspace/src/store/slices/playerInventorySlice.js [115:32 - 131:56]
 
- 81 │ 119 │ ${inventoryId}`,
- 82 │ 120 │ 				);
- 83 │ 121 │ 				return;
- 84 │ 122 │ 			}
- 85 │ 123 │
- 86 │ 124 │ 			const itemIndex = itemValidation.itemIndex;
- 87 │ 125 │ 			const item = inventory.items[itemIndex];
- 88 │ 126 │ 			const removeQuantity = quantity || item.quantity || 1;
- 89 │ 127 │
- 90 │ 128 │ 			if (removeQuantity >= (item.quantity || 1)) {
- 91 │ 129 │ 				inventory.items.splice(itemIndex, 1);
- 92 │ 130 │ 			} else {
- 93 │ 131 │ 				item.quantity -= removeQuantity;
- 94 │ 132 │ 			}
- 95 │ 133 │ 		},
- 96 │ 134 │
- 97 │ 135 │ 		// Move item from place inventory to another inventory
+ 81 │ 115 │ ${inventoryId}`,
+ 82 │ 116 │ 				);
+ 83 │ 117 │ 				return;
+ 84 │ 118 │ 			}
+ 85 │ 119 │
+ 86 │ 120 │ 			const itemIndex = itemValidation.itemIndex;
+ 87 │ 121 │ 			const item = inventory.items[itemIndex];
+ 88 │ 122 │ 			const removeQuantity = quantity || item.quantity || 1;
+ 89 │ 123 │
+ 90 │ 124 │ 			if (removeQuantity >= (item.quantity || 1)) {
+ 91 │ 125 │ 				inventory.items.splice(itemIndex, 1);
+ 92 │ 126 │ 			} else {
+ 93 │ 127 │ 				item.quantity -= removeQuantity;
+ 94 │ 128 │ 			}
+ 95 │ 129 │ 		},
+ 96 │ 130 │
+ 97 │ 131 │ 		// Move item from place inventory to another inventory
 
 Clone found (javascript):
- - /github/workspace/src/store/slices/placeInventorySlice.js [99:16 - 122:39] (23 lines, 193 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [137:14 - 161:40]
+ - /github/workspace/src/store/slices/placeInventorySlice.js [98:3 - 122:39] (24 lines, 209 tokens)
+   /github/workspace/src/store/slices/playerInventorySlice.js [132:3 - 156:40]
 
- 99  │ 137 │ , itemId, quantity } = action.payload;
- 100 │ 138 │
- 101 │ 139 │ 			// This is a complex operation that involves both slices
- 102 │ 140 │ 			// The actual move logic will be handled by a thunk
- 103 │ 141 │ 			// This reducer just updates the local state
- 104 │ 142 │ 			const inventory = state[fromInventoryId];
- 105 │ 143 │ 			if (!inventory) return;
- 106 │ 144 │
- 107 │ 145 │ 			const itemValidation = validateItemExists(inventory, itemId);
- 108 │ 146 │ 			if (!itemValidation.isValid) return;
- 109 │ 147 │
- 110 │ 148 │ 			const itemIndex = itemValidation.itemIndex;
- 111 │ 149 │ 			const item = inventory.items[itemIndex];
- 112 │ 150 │ 			const moveQuantity = quantity || item.quantity || 1;
- 113 │ 151 │
- 114 │ 152 │ 			// Update source inventory
- 115 │ 153 │ 			if (moveQuantity < (item.quantity || 1)) {
- 116 │ 154 │ 				item.quantity -= moveQuantity;
- 117 │ 155 │ 			} else {
- 118 │ 156 │ 				inventory.items.splice(itemIndex, 1);
- 119 │ 157 │ 			}
- 120 │ 158 │ 		},
- 121 │ 159 │
- 122 │ 160 │ 		// Update entire place inventory state
+ 98  │ 132 │ moveItem(state, action) {
+ 99  │ 133 │ 			const { fromInventoryId, itemId, quantity } = action.payload;
+ 100 │ 134 │
+ 101 │ 135 │ 			// This is a complex operation that involves both slices
+ 102 │ 136 │ 			// The actual move logic will be handled by a thunk
+ 103 │ 137 │ 			// This reducer just updates the local state
+ 104 │ 138 │ 			const inventory = state[fromInventoryId];
+ 105 │ 139 │ 			if (!inventory) return;
+ 106 │ 140 │
+ 107 │ 141 │ 			const itemValidation = validateItemExists(inventory, itemId);
+ 108 │ 142 │ 			if (!itemValidation.isValid) return;
+ 109 │ 143 │
+ 110 │ 144 │ 			const itemIndex = itemValidation.itemIndex;
+ 111 │ 145 │ 			const item = inventory.items[itemIndex];
+ 112 │ 146 │ 			const moveQuantity = quantity || item.quantity || 1;
+ 113 │ 147 │
+ 114 │ 148 │ 			// Update source inventory
+ 115 │ 149 │ 			if (moveQuantity < (item.quantity || 1)) {
+ 116 │ 150 │ 				item.quantity -= moveQuantity;
+ 117 │ 151 │ 			} else {
+ 118 │ 152 │ 				inventory.items.splice(itemIndex, 1);
+ 119 │ 153 │ 			}
+ 120 │ 154 │ 		},
+ 121 │ 155 │
+ 122 │ 156 │ 		// Update entire place inventory state
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/placeInventorySlice.js [246:2 - 252:7] (6 lines, 79 tokens)
@@ -731,7 +711,7 @@ Clone found (javascript):
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [100:4 - 119:34] (19 lines, 171 tokens)
-   /github/workspace/src/store/slices/placeInventorySlice.js [53:4 - 110:37]
+   /github/workspace/src/store/slices/placeInventorySlice.js [53:4 - 106:37]
 
  100 │ 53 │ const slotValidation = validateSlotLimit(inventory, 1);
  101 │ 54 │ 			if (!slotValidation.isValid) {
@@ -756,86 +736,86 @@ Clone found (javascript):
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [120:3 - 128:29] (8 lines, 96 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [111:3 - 119:32]
+   /github/workspace/src/store/slices/playerInventorySlice.js [107:3 - 115:32]
 
- 120 │ 111 │ removeItem(state, action) {
- 121 │ 112 │ 			const { inventoryId, itemId, quantity } = action.payload;
- 122 │ 113 │ 			const inventory = state[inventoryId];
- 123 │ 114 │ 			if (!inventory) return;
- 124 │ 115 │
- 125 │ 116 │ 			const itemValidation = validateItemExists(inventory, itemId);
- 126 │ 117 │ 			if (!itemValidation.isValid) {
- 127 │ 118 │ 				console.warn(
- 128 │ 119 │ 					`Item ${itemId} not found in NPC inventory
+ 120 │ 107 │ removeItem(state, action) {
+ 121 │ 108 │ 			const { inventoryId, itemId, quantity } = action.payload;
+ 122 │ 109 │ 			const inventory = state[inventoryId];
+ 123 │ 110 │ 			if (!inventory) return;
+ 124 │ 111 │
+ 125 │ 112 │ 			const itemValidation = validateItemExists(inventory, itemId);
+ 126 │ 113 │ 			if (!itemValidation.isValid) {
+ 127 │ 114 │ 				console.warn(
+ 128 │ 115 │ 					`Item ${itemId} not found in NPC inventory
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [128:29 - 144:53] (16 lines, 127 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [119:32 - 135:56]
+   /github/workspace/src/store/slices/playerInventorySlice.js [115:32 - 131:56]
 
- 128 │ 119 │ ${inventoryId}`,
- 129 │ 120 │ 				);
- 130 │ 121 │ 				return;
- 131 │ 122 │ 			}
- 132 │ 123 │
- 133 │ 124 │ 			const itemIndex = itemValidation.itemIndex;
- 134 │ 125 │ 			const item = inventory.items[itemIndex];
- 135 │ 126 │ 			const removeQuantity = quantity || item.quantity || 1;
- 136 │ 127 │
- 137 │ 128 │ 			if (removeQuantity >= (item.quantity || 1)) {
- 138 │ 129 │ 				inventory.items.splice(itemIndex, 1);
- 139 │ 130 │ 			} else {
- 140 │ 131 │ 				item.quantity -= removeQuantity;
- 141 │ 132 │ 			}
- 142 │ 133 │ 		},
- 143 │ 134 │
- 144 │ 135 │ 		// Move item from NPC inventory to another inventory
+ 128 │ 115 │ ${inventoryId}`,
+ 129 │ 116 │ 				);
+ 130 │ 117 │ 				return;
+ 131 │ 118 │ 			}
+ 132 │ 119 │
+ 133 │ 120 │ 			const itemIndex = itemValidation.itemIndex;
+ 134 │ 121 │ 			const item = inventory.items[itemIndex];
+ 135 │ 122 │ 			const removeQuantity = quantity || item.quantity || 1;
+ 136 │ 123 │
+ 137 │ 124 │ 			if (removeQuantity >= (item.quantity || 1)) {
+ 138 │ 125 │ 				inventory.items.splice(itemIndex, 1);
+ 139 │ 126 │ 			} else {
+ 140 │ 127 │ 				item.quantity -= removeQuantity;
+ 141 │ 128 │ 			}
+ 142 │ 129 │ 		},
+ 143 │ 130 │
+ 144 │ 131 │ 		// Move item from NPC inventory to another inventory
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [148:4 - 166:37] (18 lines, 166 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [143:4 - 161:40]
+   /github/workspace/src/store/slices/playerInventorySlice.js [138:4 - 156:40]
 
- 148 │ 143 │ const inventory = state[fromInventoryId];
- 149 │ 144 │ 			if (!inventory) return;
- 150 │ 145 │
- 151 │ 146 │ 			const itemValidation = validateItemExists(inventory, itemId);
- 152 │ 147 │ 			if (!itemValidation.isValid) return;
- 153 │ 148 │
- 154 │ 149 │ 			const itemIndex = itemValidation.itemIndex;
- 155 │ 150 │ 			const item = inventory.items[itemIndex];
- 156 │ 151 │ 			const moveQuantity = quantity || item.quantity || 1;
- 157 │ 152 │
- 158 │ 153 │ 			// Update source inventory
- 159 │ 154 │ 			if (moveQuantity < (item.quantity || 1)) {
- 160 │ 155 │ 				item.quantity -= moveQuantity;
- 161 │ 156 │ 			} else {
- 162 │ 157 │ 				inventory.items.splice(itemIndex, 1);
- 163 │ 158 │ 			}
- 164 │ 159 │ 		},
- 165 │ 160 │
- 166 │ 161 │ 		// Update entire NPC inventory state
+ 148 │ 138 │ const inventory = state[fromInventoryId];
+ 149 │ 139 │ 			if (!inventory) return;
+ 150 │ 140 │
+ 151 │ 141 │ 			const itemValidation = validateItemExists(inventory, itemId);
+ 152 │ 142 │ 			if (!itemValidation.isValid) return;
+ 153 │ 143 │
+ 154 │ 144 │ 			const itemIndex = itemValidation.itemIndex;
+ 155 │ 145 │ 			const item = inventory.items[itemIndex];
+ 156 │ 146 │ 			const moveQuantity = quantity || item.quantity || 1;
+ 157 │ 147 │
+ 158 │ 148 │ 			// Update source inventory
+ 159 │ 149 │ 			if (moveQuantity < (item.quantity || 1)) {
+ 160 │ 150 │ 				item.quantity -= moveQuantity;
+ 161 │ 151 │ 			} else {
+ 162 │ 152 │ 				inventory.items.splice(itemIndex, 1);
+ 163 │ 153 │ 			}
+ 164 │ 154 │ 		},
+ 165 │ 155 │
+ 166 │ 156 │ 		// Update entire NPC inventory state
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [192:6 - 209:16] (17 lines, 115 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [245:9 - 262:10]
+   /github/workspace/src/store/slices/playerInventorySlice.js [240:9 - 257:10]
 
- 192 │ 245 │ ) {
- 193 │ 246 │ 				if (typeof maxSlots === "number" && maxSlots > 0) {
- 194 │ 247 │ 					inventory.maxSlots = maxSlots;
- 195 │ 248 │ 				}
- 196 │ 249 │ 				if (typeof maxWeight === "number" && maxWeight > 0) {
- 197 │ 250 │ 					inventory.maxWeight = maxWeight;
- 198 │ 251 │ 				}
- 199 │ 252 │ 			}
- 200 │ 253 │ 		},
- 201 │ 254 │ 	},
- 202 │ 255 │ });
- 203 │ 256 │
- 204 │ 257 │ export const {
- 205 │ 258 │ 	addItem,
- 206 │ 259 │ 	removeItem,
- 207 │ 260 │ 	moveItem,
- 208 │ 261 │ 	updateInventory,
- 209 │ 262 │ 	addNpcInventory
+ 192 │ 240 │ ) {
+ 193 │ 241 │ 				if (typeof maxSlots === "number" && maxSlots > 0) {
+ 194 │ 242 │ 					inventory.maxSlots = maxSlots;
+ 195 │ 243 │ 				}
+ 196 │ 244 │ 				if (typeof maxWeight === "number" && maxWeight > 0) {
+ 197 │ 245 │ 					inventory.maxWeight = maxWeight;
+ 198 │ 246 │ 				}
+ 199 │ 247 │ 			}
+ 200 │ 248 │ 		},
+ 201 │ 249 │ 	},
+ 202 │ 250 │ });
+ 203 │ 251 │
+ 204 │ 252 │ export const {
+ 205 │ 253 │ 	addItem,
+ 206 │ 254 │ 	removeItem,
+ 207 │ 255 │ 	moveItem,
+ 208 │ 256 │ 	updateInventory,
+ 209 │ 257 │ 	addNpcInventory
 
 Clone found (javascript):
  - /github/workspace/src/store/slices/npcInventorySlice.js [253:24 - 261:24] (8 lines, 91 tokens)
@@ -936,54 +916,54 @@ Clone found (json):
 
 Clone found (javascript):
  - /github/workspace/src/data/inventory.js [2:2 - 47:15] (45 lines, 301 tokens)
-   /github/workspace/src/store/slices/playerInventorySlice.js [21:2 - 66:2]
+   /github/workspace/src/store/slices/playerInventorySlice.js [17:2 - 62:2]
 
- 2  │ 21 │ = {
- 3  │ 22 │ 	player: {
- 4  │ 23 │ 		id: "player",
- 5  │ 24 │ 		type: "player",
- 6  │ 25 │ 		playerId: "1",
- 7  │ 26 │ 		maxSlots: 20,
- 8  │ 27 │ 		maxWeight: 100,
- 9  │ 28 │ 		items: [
- 10 │ 29 │ 			{
- 11 │ 30 │ 				id: 1,
- 12 │ 31 │ 				name: "apple",
- 13 │ 32 │ 				description: "A fresh apple",
- 14 │ 33 │ 				type: "consumable",
- 15 │ 34 │ 				quantity: 5,
- 16 │ 35 │ 				weight: 0.5,
- 17 │ 36 │ 				consumable: { heal: 10 },
- 18 │ 37 │ 			},
- 19 │ 38 │ 			{
- 20 │ 39 │ 				id: "leather-hood",
- 21 │ 40 │ 				name: "rusty armor",
- 22 │ 41 │ 				description: "A sturdy piece of armor",
- 23 │ 42 │ 				type: "equipment",
- 24 │ 43 │ 				piece: "body",
- 25 │ 44 │ 				quantity: 1,
- 26 │ 45 │ 				stats: { defense: 10 },
- 27 │ 46 │ 				weight: 15,
- 28 │ 47 │ 			},
- 29 │ 48 │ 			{
- 30 │ 49 │ 				id: 2,
- 31 │ 50 │ 				name: "banana",
- 32 │ 51 │ 				description: "A ripe banana",
- 33 │ 52 │ 				type: "consumable",
- 34 │ 53 │ 				quantity: 3,
- 35 │ 54 │ 				weight: 0.5,
- 36 │ 55 │ 				consumable: { heal: 12 },
- 37 │ 56 │ 			},
- 38 │ 57 │ 		],
- 39 │ 58 │ 		equipment: {
- 40 │ 59 │ 			head: null,
- 41 │ 60 │ 			body: null,
- 42 │ 61 │ 			pants: null,
- 43 │ 62 │ 			"main-weapon": null,
- 44 │ 63 │ 			"second-weapon": null,
- 45 │ 64 │ 		},
- 46 │ 65 │ 	},
- 47 │ 66 │ 	village_center
+ 2  │ 17 │ = {
+ 3  │ 18 │ 	player: {
+ 4  │ 19 │ 		id: "player",
+ 5  │ 20 │ 		type: "player",
+ 6  │ 21 │ 		playerId: "1",
+ 7  │ 22 │ 		maxSlots: 20,
+ 8  │ 23 │ 		maxWeight: 100,
+ 9  │ 24 │ 		items: [
+ 10 │ 25 │ 			{
+ 11 │ 26 │ 				id: 1,
+ 12 │ 27 │ 				name: "apple",
+ 13 │ 28 │ 				description: "A fresh apple",
+ 14 │ 29 │ 				type: "consumable",
+ 15 │ 30 │ 				quantity: 5,
+ 16 │ 31 │ 				weight: 0.5,
+ 17 │ 32 │ 				consumable: { heal: 10 },
+ 18 │ 33 │ 			},
+ 19 │ 34 │ 			{
+ 20 │ 35 │ 				id: "leather-hood",
+ 21 │ 36 │ 				name: "rusty armor",
+ 22 │ 37 │ 				description: "A sturdy piece of armor",
+ 23 │ 38 │ 				type: "equipment",
+ 24 │ 39 │ 				piece: "body",
+ 25 │ 40 │ 				quantity: 1,
+ 26 │ 41 │ 				stats: { defense: 10 },
+ 27 │ 42 │ 				weight: 15,
+ 28 │ 43 │ 			},
+ 29 │ 44 │ 			{
+ 30 │ 45 │ 				id: 2,
+ 31 │ 46 │ 				name: "banana",
+ 32 │ 47 │ 				description: "A ripe banana",
+ 33 │ 48 │ 				type: "consumable",
+ 34 │ 49 │ 				quantity: 3,
+ 35 │ 50 │ 				weight: 0.5,
+ 36 │ 51 │ 				consumable: { heal: 12 },
+ 37 │ 52 │ 			},
+ 38 │ 53 │ 		],
+ 39 │ 54 │ 		equipment: {
+ 40 │ 55 │ 			head: null,
+ 41 │ 56 │ 			body: null,
+ 42 │ 57 │ 			pants: null,
+ 43 │ 58 │ 			"main-weapon": null,
+ 44 │ 59 │ 			"second-weapon": null,
+ 45 │ 60 │ 		},
+ 46 │ 61 │ 	},
+ 47 │ 62 │ 	village_center
 
 Clone found (javascript):
  - /github/workspace/src/data/inventory.js [47:2 - 76:7] (29 lines, 184 tokens)
@@ -1575,12 +1555,12 @@ Clone found (javascript):
  182 │ 34 │ 				player
 
 Found 41 clones.
-Error: ERROR: jscpd found too many duplicates (4.55%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.56%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.55%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.56%) over threshold (0%)
 ```
 
 </details>
