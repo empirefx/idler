@@ -37,7 +37,7 @@ const EquipmentDisplay = () => {
 					key={key}
 					onClick={() => equipment[key] && handleUnequip(key)}
 					onKeyDown={(e) => {
-						if ((e.key === 'Enter' || e.key === ' ') && equipment[key]) {
+						if ((e.key === "Enter" || e.key === " ") && equipment[key]) {
 							handleUnequip(key);
 						}
 					}}

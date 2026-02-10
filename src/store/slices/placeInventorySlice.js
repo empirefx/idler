@@ -3,10 +3,7 @@ import {
 	validateSlotLimit,
 	validateItemExists,
 } from "./inventory/inventoryValidators.js";
-import {
-	canItemsStack,
-	cloneItem,
-} from "./inventory/inventoryUtils.js";
+import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
 
 // Initial place inventory state
 const initialState = {
@@ -99,8 +96,7 @@ const placeInventorySlice = createSlice({
 
 		// Move item from place inventory to another inventory
 		moveItem(state, action) {
-			const { fromInventoryId, itemId, quantity } =
-				action.payload;
+			const { fromInventoryId, itemId, quantity } = action.payload;
 
 			// This is a complex operation that involves both slices
 			// The actual move logic will be handled by a thunk
