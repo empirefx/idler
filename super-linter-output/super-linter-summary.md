@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850411509)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850457716)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 125.
-Checked 103 files in 768ms. No fixes applied.
+Checked 103 files in 770ms. No fixes applied.
 Found 56 errors.
 Found 84 warnings.
 Found 5 infos.src/game/services/ProductionService.js:160:25 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━
@@ -190,27 +190,6 @@ src/game/services/CombatService.js:117:19 lint/correctness/noUnusedFunctionParam
     119 119 │   		const place = this.store.getState().places[currentPlaceId];
 
 
-src/game/services/CombatService.js:189:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    187 │ 			if (!updated) return;
-    188 │
-  > 189 │ 			if (updated && updated.isDead) {
-        │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^
-    190 │ 				// Enemy died, handle drops, exp, etc
-    191 │ 				this.store.dispatch({ type: "combat/clearTarget" });
-
-  i Unsafe fix: Change to an optional chain.
-
-    187 187 │   			if (!updated) return;
-    188 188 │
-    189     │ - → → → if·(updated·&&·updated.isDead)·{
-        189 │ + → → → if·(updated?.isDead)·{
-    190 190 │   				// Enemy died, handle drops, exp, etc
-    191 191 │   				this.store.dispatch({ type: "combat/clearTarget" });
-
-
 src/game/services/NavigationService.js:11:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
 
   ! Change to an optional chain.
@@ -274,6 +253,22 @@ src/game/services/ProductionService.js:113:8 lint/complexity/useOptionalChain  F
     114 114 │   				return placeId;
     115 115 │   			}
 
+
+src/ui/components/sections/EnemySection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
 
 src/ui/components/sections/LogSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
 
