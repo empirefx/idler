@@ -57,7 +57,9 @@ const WorkerCard = ({ worker, buildings }) => {
 						))}
 					</select>
 				) : worker.assignedBuildingId ? (
-					<button type="button" onClick={handleUnassign}>Unassign</button>
+					<button type="button" onClick={handleUnassign}>
+						Unassign
+					</button>
 				) : null}
 			</div>
 			{worker.assignedBuildingId && (
