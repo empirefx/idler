@@ -5,7 +5,7 @@
 	position: fixed;
 	inset: 0;
 	will-change: transform;
-	animation: .02s cubic-bezier(.4, 0, .2, 1) slideUp forwards;
+	animation: 0.02s cubic-bezier(0.4, 0, 0.2, 1) slideUp forwards;
 	max-width: none;
 	max-height: none;
 	border: none;
@@ -218,8 +218,12 @@
 }
 
 @keyframes slideUp {
-	from { transform: translateY(100%); }
-	to { transform: translateY(0); }
+	from {
+		transform: translateY(100%);
+	}
+	to {
+		transform: translateY(0);
+	}
 }
 
 /* Responsive design */
