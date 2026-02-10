@@ -34,7 +34,6 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILTER_REGEX_EXCLUDE: "(.release-please-manifest.json|CHANGELOG.md|static/.*)"
           # Enable Biome Fixes
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
@@ -75,8 +74,6 @@ jobs:
         if: always()
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
         with:
-          # Only commit changed files that are NOT in the output directory
-          file_pattern: ":!super-linter-output/* :!static/*"
           commit_message: "chore: fix linting issues"
           commit_user_name: super-linter
           commit_user_email: super-linter@super-linter.dev
