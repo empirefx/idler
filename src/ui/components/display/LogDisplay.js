@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 const _LOG_CATEGORIES = {
 	worker: { label: "Workers", color: "worker" },
 	combat: { label: "Combat", color: "combat" },
@@ -9,7 +10,8 @@ const _LOG_CATEGORIES = {
 export default function LogDisplay({ filteredLogs }) {
 	const containerRef = useRef(null);
 
-	// Scroll to bottom on update
+	// Auto-scroll to bottom when new logs are added
+	// biome-ignore lint/correctness/useExhaustiveDependencies(filteredLogs): scroll whenever logs change
 	useEffect(() => {
 		if (containerRef.current) {
 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
