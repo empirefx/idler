@@ -193,6 +193,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					const item = inventory.items[i];
 
 					return (
+						// biome-ignore lint/a11y/useSemanticElements: CSS targets div elements specifically
 						<div
 							role="button"
 							tabIndex={item ? 0 : -1}

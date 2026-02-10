@@ -85,7 +85,7 @@ export const playerSlice = createSlice({
 			const { amount } = action.payload;
 			state.health = Math.min(state.baseHealth, state.health + amount);
 		},
-		setPlayerState: (state, action) => {
+		setPlayerState: (_state, action) => {
 			// This will replace the entire player state with the saved one
 			// Only for loading saved states!
 			return action.payload; // Replace entire state with payload

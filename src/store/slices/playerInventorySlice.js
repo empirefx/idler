@@ -5,16 +5,12 @@ import {
 	validateWeightLimit,
 	validateItemExists,
 	validateEquipmentSlot,
-	validateInventoryExists,
 } from "./inventory/inventoryValidators.js";
 import {
 	canItemsStack,
-	calculateWeight,
+	cloneItem,
 	calculateTotalPlayerWeight,
 	findItemById,
-	getItemIndex,
-	generateItemId,
-	cloneItem,
 } from "./inventory/inventoryUtils.js";
 
 // Initial player inventory state
@@ -134,7 +130,7 @@ const playerInventorySlice = createSlice({
 
 		// Move item from player inventory to another inventory
 		moveItem(state, action) {
-			const { fromInventoryId, toInventoryId, itemId, quantity } =
+			const { fromInventoryId, itemId, quantity } =
 				action.payload;
 
 			// This is a complex operation that involves both slices
@@ -266,7 +262,7 @@ export const {
 
 // Memoized selectors
 export const selectPlayerInventoryById = createSelector(
-	[(state) => state.playerInventory, (state, playerId) => playerId],
+	[(state) => state.playerInventory, (_state, playerId) => playerId],
 	(playerInventory, playerId) =>
 		playerInventory ? playerInventory[playerId] : undefined,
 );
