@@ -12,6 +12,9 @@
 	"linter": {
 		"rules": {
 			"recommended": true,
+			"a11y": {
+				"useButtonTag": "off"
+			},
 			"correctness": {
 				"noUnusedFunctionParameters": "warn"
 			},
