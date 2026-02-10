@@ -4,7 +4,6 @@ import "./../../../styles/components/CircularProgressTimer.css";
 const CircularProgressTimer = ({
 	time = 0,
 	isRunning = false,
-	enemyId,
 	onComplete,
 	size = 30,
 	displayText = true,

@@ -6,8 +6,6 @@ const ItemInfo = ({ item, children }) => {
 	return (
 		<div
 			className="item-info-wrapper"
-			role="button"
-			tabIndex={0}
 			onMouseEnter={() => setShow(true)}
 			onMouseLeave={() => setShow(false)}
 		>

@@ -2,8 +2,6 @@ import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import {
-	assignWorkerToBuilding,
-	unassignWorker,
 	assignWorkerToBuildingWithEvent,
 	unassignWorkerWithEvent,
 } from "../../../store/slices/playerSlice";
@@ -59,7 +57,7 @@ const WorkerCard = ({ worker, buildings }) => {
 						))}
 					</select>
 				) : worker.assignedBuildingId ? (
-					<button onClick={handleUnassign}>Unassign</button>
+					<button type="button" onClick={handleUnassign}>Unassign</button>
 				) : null}
 			</div>
 			{worker.assignedBuildingId && (
