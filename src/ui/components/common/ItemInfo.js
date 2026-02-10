@@ -5,6 +5,7 @@ const ItemInfo = ({ item, children }) => {
 
 	return (
 		<div
+			role="tooltip"
 			className="item-info-wrapper"
 			onMouseEnter={() => setShow(true)}
 			onMouseLeave={() => setShow(false)}

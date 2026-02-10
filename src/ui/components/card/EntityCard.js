@@ -56,6 +56,8 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 
 	return (
 		<div
+			role="button"
+			tabIndex={0}
 			onClick={handleClick}
 			onKeyDown={(e) => {
 				if (e.key === "Enter" || e.key === " ") {

@@ -15,6 +15,8 @@ const NPCCard = ({ npc, onClick }) => {
 
 	return (
 		<div
+			role="button"
+			tabIndex={0}
 			className="npc-card"
 			onClick={handleClick}
 			onKeyDown={(e) => {
