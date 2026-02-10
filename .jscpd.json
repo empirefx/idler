@@ -1,0 +1,7 @@
+{
+  "ignore": [
+    "static/**/*",
+    "src/assets/**/*",
+    "**/node_modules/**"
+  ]
+}
