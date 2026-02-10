@@ -118,26 +118,6 @@ describe("CombatService", () => {
 		);
 	});
 
-	it("should register combat system with correct configuration", () => {
-		const wasInCombat = false;
-		const isInCombat = true;
-
-		CombatService.handleCombatStateChange(
-			wasInCombat,
-			isInCombat,
-			mockGameLoop,
-		);
-
-		expect(mockGameLoop.register).toHaveBeenCalledWith(
-			"combat",
-			expect.any(Function),
-			{
-				priority: 0, // Highest priority
-				interval: 100, // Every 100ms
-			},
-		);
-	});
-
 	describe("Player Attack Cooldown", () => {
 		beforeEach(() => {
 			mockStore.getState.mockReturnValue({

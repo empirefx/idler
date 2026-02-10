@@ -110,36 +110,5 @@ export const expectMockNotCalled = (mock) => {
 	expect(mock).not.toHaveBeenCalled();
 };
 
-// Helper to create test state with common overrides
-export const createTestState = (overrides = {}) => ({
-	enemies: { byId: {} },
-	places: { currentPlaceId: "village_center" },
-	player: { workers: [], gold: 100 },
-	buildings: {},
-	playerInventory: {
-		player: {
-			id: "player",
-			type: "player",
-			maxSlots: 20,
-			maxWeight: 100,
-			items: [],
-			equipment: {
-				head: null,
-				body: null,
-				pants: null,
-				"main-weapon": null,
-				"second-weapon": null,
-			},
-		},
-	},
-	placeInventory: {
-		village_center: {
-			id: "village_center",
-			placeId: "village_center",
-			type: "place",
-			maxSlots: 30,
-			items: [],
-		},
-	},
-	...overrides,
-});
+// Import state builders to avoid duplication
+export { createBaseState, createTestState } from '../fixtures/stateBuilders.js';

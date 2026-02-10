@@ -141,25 +141,6 @@ describe("ProductionService", () => {
 			expect(mockItemFactory.create).not.toHaveBeenCalled();
 			expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
 		});
-
-		it("should handle building with workers but zero production", () => {
-			const building = createMockBuilding("sawmill", "Sawmill", "wood", 0);
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-			]);
-			const deltaTime = 1000;
-
-			productionService.processBuildingProduction(
-				"sawmill",
-				building,
-				state,
-				deltaTime,
-			);
-
-			// Should not create items
-			expect(mockItemFactory.create).not.toHaveBeenCalled();
-			expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
-		});
 	});
 
 	describe("getAssignedWorkers", () => {

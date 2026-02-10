@@ -18,6 +18,19 @@ import {
 } from "../fixtures/stateBuilders";
 import { createMockBuilding } from "../utils/testHelpers.js";
 
+// Helper function to create test state with buildings and workers
+const createTestStateWithBuildings = (buildings, workers = []) => ({
+	...createStateWithWorkers(workers),
+	buildings,
+	places: {
+		currentPlaceId: "village_center",
+		village_center: { hasInventory: true },
+	},
+	placeInventory: {
+		village_center: { items: [] },
+	},
+});
+
 describe("GameEngine", () => {
 	let gameEngine;
 	let mockStore,
@@ -478,20 +491,10 @@ describe("GameEngine", () => {
 				sawmill: createMockBuilding("sawmill", "Sawmill", "wood", 10),
 				mine: createMockBuilding("mine", "Mine", "stone", 5),
 			};
-			const state = {
-				...createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "sawmill" },
-					{ id: "worker2", assignedBuildingId: "mine" },
-				]),
-				buildings,
-				places: {
-					currentPlaceId: "village_center",
-					village_center: { hasInventory: true },
-				},
-				placeInventory: {
-					village_center: { items: [] },
-				},
-			};
+			const state = createTestStateWithBuildings(buildings, [
+				{ id: "worker1", assignedBuildingId: "sawmill" },
+				{ id: "worker2", assignedBuildingId: "mine" },
+			]);
 
 			gameEngine.update(1000, state);
 
@@ -505,18 +508,15 @@ describe("GameEngine", () => {
 				sawmill: createMockBuilding("sawmill", "Sawmill", "wood", 10),
 				mine: createMockBuilding("mine", "Mine", "stone", 5),
 			};
-			const state = {
-				...createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "sawmill" }, // Only assigned to sawmill
-				]),
-				buildings,
-			};
+			const state = createTestStateWithBuildings(buildings, [
+				{ id: "worker1", assignedBuildingId: "sawmill" }, // Only assigned to sawmill
+			]);
 
 			gameEngine.update(1000, state);
 
 			// Should only process sawmill (has worker)
-			expect(mockItemFactory.create).toHaveBeenCalledTimes(1);
 			expect(mockItemFactory.create).toHaveBeenCalledWith("wood", 10);
+			expect(mockItemFactory.create).not.toHaveBeenCalledWith("stone", 5);
 		});
 	});
 

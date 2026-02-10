@@ -32,6 +32,9 @@ export const createBaseState = (overrides = {}) => ({
 	...overrides,
 });
 
+// Alias for backward compatibility
+export const createTestState = createBaseState;
+
 export const createStateWithBuilding = (building, overrides = {}) => ({
 	...createBaseState(),
 	buildings: {
