@@ -7,9 +7,7 @@ import {
 	PLAYER_DAMAGED,
 } from "../../game/events";
 import { addLog } from "../slices/logSlice";
-import {
-	getEnemyDisplayName,
-} from "../../utils/enemyUtils";
+import { getEnemyDisplayName } from "../../utils/enemyUtils";
 
 const logMiddleware = (store) => (next) => (action) => {
 	// Don't process log actions to prevent recursion

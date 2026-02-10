@@ -14,9 +14,7 @@ function handleRepeats(key) {
 
 	// If previous message was repeated, show count
 	if (repeatCounts[key] > 1) {
-		console.log(
-			`${lastMessages[key]} (repeated ${repeatCounts[key]} times)`,
-		);
+		console.log(`${lastMessages[key]} (repeated ${repeatCounts[key]} times)`);
 		repeatCounts[key] = 0;
 	}
 

@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850749518)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850951402)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,234 +32,216 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 105.
-Checked 103 files in 772ms. No fixes applied.
-Found 51 errors.
-Found 70 warnings.
-Found 4 infos.src/game/services/SpawnService.js:75:2 lint/complexity/noUselessConstructor  FIXABLE  ━━━━━━━━━━━━━━
+Diagnostics not shown: 92.
+Checked 103 files in 969ms. No fixes applied.
+Found 50 errors.
+Found 59 warnings.
+Found 3 infos.src/store/slices/inventory/inventoryUtils.js:101:4 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━
 
-  i This constructor is unnecessary.
+  i Useless case clause.
 
-    74 │ 	// For testing purposes
-  > 75 │ 	constructor(placeId, config, eventBus) {
-       │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 76 │ 		super(placeId, config, eventBus);
-  > 77 │ 	}
-       │ 	^
-    78 │
-    79 │ 	get isActive() {
+     99 │ 				return weightA - weightB;
+    100 │ 			}
+  > 101 │ 			case "name":
+        │ 			^^^^^^^^^^^^
+    102 │ 			default:
+    103 │ 				return a.name.localeCompare(b.name);
 
-  i Unsafe fix: Remove the unnecessary constructor.
+  i because the default clause is present:
 
-     71  71 │   	#respawnTimer = null;
-     72  72 │   	#aliveIds = new Set(); // Set to track alive enemy IDs
-     73     │ -
-     74     │ - → //·For·testing·purposes
-     75     │ - → constructor(placeId,·config,·eventBus)·{
-     76     │ - → → super(placeId,·config,·eventBus);
-     77     │ - → }
-     78  73 │
-     79  74 │   	get isActive() {
+    100 │ 			}
+    101 │ 			case "name":
+  > 102 │ 			default:
+        │ 			^^^^^^^^
+  > 103 │ 				return a.name.localeCompare(b.name);
+        │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    104 │ 		}
+    105 │ 	});
 
+  i Unsafe fix: Remove the useless case.
 
-src/game/services/CombatService.js:189:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    187 │ 			if (!updated) return;
-    188 │
-  > 189 │ 			if (updated && updated.isDead) {
-        │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^
-    190 │ 				// Enemy died, handle drops, exp, etc
-    191 │ 				this.store.dispatch({ type: "combat/clearTarget" });
-
-  i Unsafe fix: Change to an optional chain.
-
-    187 187 │   			if (!updated) return;
-    188 188 │
-    189     │ - → → → if·(updated·&&·updated.isDead)·{
-        189 │ + → → → if·(updated?.isDead)·{
-    190 190 │   				// Enemy died, handle drops, exp, etc
-    191 191 │   				this.store.dispatch({ type: "combat/clearTarget" });
+     99  99 │   				return weightA - weightB;
+    100 100 │   			}
+    101     │ - → → → case·"name":
+    102 101 │   			default:
+    103 102 │   				return a.name.localeCompare(b.name);
 
 
-src/game/utils/Logger.js:1:16 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/store/slices/inventoryThunks.js:143:6 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  ! Avoid classes that contain only static members.
+  i Template literals are preferred over string concatenation.
 
-   > 1 │ export default class Logger {
-       │                ^^^^^^^^^^^^^^
-   > 2 │ 	static debugLevel = 0; // Global debug level
-   > 3 │ 	static lastMessages = {}; // Track repeated messages
-   > 4 │ 	static repeatCounts = {}; // Count repeats
-        ...
-  > 55 │ 		Logger.debugLevel = level;
-  > 56 │ 	}
-  > 57 │ }
-       │ ^
-    58 │
+    141 │ 			dispatch(
+    142 │ 				addNotification(
+  > 143 │ 					"Failed to move item: " + error.message,
+        │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    144 │ 					NOTIFICATION_TYPES.ERROR,
+    145 │ 				),
 
-  i Prefer using simple functions instead of classes with only static members.
+  i Unsafe fix: Use a template literal.
 
-
-src/index.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { Provider } from "react-redux";
-    3 │ import { createRoot } from "react-dom/client";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
-
-src/store/middleware/logMiddleware.js:12:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
-
-  ! Several of these imports are unused.
-
-    10 │ import {
-    11 │ 	getEnemyDisplayName,
-  > 12 │ 	getEnemyTypeDisplayName,
-       │ 	^^^^^^^^^^^^^^^^^^^^^^^
-    13 │ } from "../../utils/enemyUtils";
-    14 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-     10  10 │   import {
-     11  11 │   	getEnemyDisplayName,
-     12     │ - → getEnemyTypeDisplayName,
-     13  12 │   } from "../../utils/enemyUtils";
-     14  13 │
+    141 141 │   			dispatch(
+    142 142 │   				addNotification(
+    143     │ - → → → → → "Failed·to·move·item:·"·+·error.message,
+        143 │ + → → → → → `Failed·to·move·item:·${error.message}`,
+    144 144 │   					NOTIFICATION_TYPES.ERROR,
+    145 145 │   				),
 
 
-src/store/middleware/logMiddleware.js:17:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━
+src/store/slices/inventoryThunks.js:193:6 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i Template literals are preferred over string concatenation.
+
+    191 │ 			dispatch(
+    192 │ 				addNotification(
+  > 193 │ 					"Failed to remove item: " + error.message,
+        │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    194 │ 					NOTIFICATION_TYPES.ERROR,
+    195 │ 				),
+
+  i Unsafe fix: Use a template literal.
+
+    191 191 │   			dispatch(
+    192 192 │   				addNotification(
+    193     │ - → → → → → "Failed·to·remove·item:·"·+·error.message,
+        193 │ + → → → → → `Failed·to·remove·item:·${error.message}`,
+    194 194 │   					NOTIFICATION_TYPES.ERROR,
+    195 195 │   				),
+
+
+src/store/slices/inventory/inventoryUtils.js:34:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
 
   ! Change to an optional chain.
 
-    15 │ const logMiddleware = (store) => (next) => (action) => {
-    16 │ 	// Don't process log actions to prevent recursion
-  > 17 │ 	if (action.type && action.type.startsWith("logs/")) {
-       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    18 │ 		return next(action);
-    19 │ 	}
+    32 │ 		for (const slot of Object.keys(playerInventory.equipment)) {
+    33 │ 			const equipment = playerInventory.equipment[slot];
+  > 34 │ 			if (equipment && equipment.weight) {
+       │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    35 │ 				total += equipment.weight;
+    36 │ 			}
 
   i Unsafe fix: Change to an optional chain.
 
-     15  15 │   const logMiddleware = (store) => (next) => (action) => {
-     16  16 │   	// Don't process log actions to prevent recursion
-     17     │ - → if·(action.type·&&·action.type.startsWith("logs/"))·{
-         17 │ + → if·(action.type?.startsWith("logs/"))·{
-     18  18 │   		return next(action);
-     19  19 │   	}
+     32  32 │   		for (const slot of Object.keys(playerInventory.equipment)) {
+     33  33 │   			const equipment = playerInventory.equipment[slot];
+     34     │ - → → → if·(equipment·&&·equipment.weight)·{
+         34 │ + → → → if·(equipment?.weight)·{
+     35  35 │   				total += equipment.weight;
+     36  36 │   			}
 
 
-src/store/middleware/logMiddleware.js:88:5 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━━━
+src/store/slices/inventory/inventoryUtils.js:157:27 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
 
-  ! This variable attackerType is unused.
+  ! Change to an optional chain.
 
-    86 │ 			const {
-    87 │ 				attackerId: playerAttackerId,
-  > 88 │ 				attackerType,
-       │ 				^^^^^^^^^^^^
-    89 │ 				targetId: playerTargetId,
-    90 │ 				damage,
+    155 │ 	if (inventory.type === "player" && inventory.equipment) {
+    156 │ 		const equipmentWeight = Object.values(inventory.equipment)
+  > 157 │ 			.filter((equipment) => equipment && equipment.weight)
+        │ 			                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    158 │ 			.reduce((total, equipment) => total + equipment.weight, 0);
+    159 │
+
+  i Unsafe fix: Change to an optional chain.
+
+    155 155 │   	if (inventory.type === "player" && inventory.equipment) {
+    156 156 │   		const equipmentWeight = Object.values(inventory.equipment)
+    157     │ - → → → .filter((equipment)·=>·equipment·&&·equipment.weight)
+        157 │ + → → → .filter((equipment)·=>·equipment?.weight)
+    158 158 │   			.reduce((total, equipment) => total + equipment.weight, 0);
+    159 159 │
+
+
+src/store/slices/inventoryThunks.js:109:17 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━━━
+
+  ! This variable itemIndex is unused.
+
+    107 │ 		}
+    108 │
+  > 109 │ 		const { item, itemIndex, moveQuantity } = validation;
+        │ 		              ^^^^^^^^^
+    110 │
+    111 │ 		// Create item to move
 
   i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
 
-src/store/middleware/logMiddleware.js:107:11 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━
-
-  ! This variable attackerName is unused.
-
-    105 │ 				);
-    106 │ 			} else if (damageType === "received") {
-  > 107 │ 				const attackerName = getEnemyDisplayName(
-        │ 				      ^^^^^^^^^^^^
-    108 │ 					currentState,
-    109 │ 					playerAttackerId,
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend attackerName with an underscore.
-
-    105 105 │   				);
-    106 106 │   			} else if (damageType === "received") {
-    107     │ - → → → → const·attackerName·=·getEnemyDisplayName(
-        107 │ + → → → → const·_attackerName·=·getEnemyDisplayName(
-    108 108 │   					currentState,
-    109 109 │   					playerAttackerId,
-
-
-src/store/middleware/notificationMiddleware.js:9:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-     8 │ 	// Handle failed inventory actions by checking for error types
-   > 9 │ 	if (action.type && action.type.includes("moveItem") && action.error) {
-       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    10 │ 		const error = action.error;
-    11 │ 		let message = "";
-
-  i Unsafe fix: Change to an optional chain.
-
-     7  7 │
-     8  8 │   	// Handle failed inventory actions by checking for error types
-     9    │ - → if·(action.type·&&·action.type.includes("moveItem")·&&·action.error)·{
-        9 │ + → if·(action.type?.includes("moveItem")·&&·action.error)·{
-    10 10 │   		const error = action.error;
-    11 11 │   		let message = "";
-
-
-src/store/slices/buildingsSlice.js:26:18 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+src/store/slices/npcSlice.js:60:32 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━
 
   ! This parameter is unused.
 
-    24 │ 		},
-    25 │ 		// Set entire buildings state (used for loading saved state)
-  > 26 │ 		setBuildings: (state, action) => action.payload,
-       │ 		               ^^^^^
-    27 │ 	},
-    28 │ });
+    58 │ // Select NPC by ID
+    59 │ export const selectNPCById = createSelector(
+  > 60 │ 	[(state) => state.npcs.npcs, (state, npcId) => npcId],
+       │ 	                              ^^^^^
+    61 │ 	(npcs, npcId) => npcs[npcId] || null,
+    62 │ );
 
   i Unused parameters might be the result of an incomplete refactoring.
 
   i Unsafe fix: If this is intentional, prepend state with an underscore.
 
-    24 24 │   		},
-    25 25 │   		// Set entire buildings state (used for loading saved state)
-    26    │ - → → setBuildings:·(state,·action)·=>·action.payload,
-       26 │ + → → setBuildings:·(_state,·action)·=>·action.payload,
-    27 27 │   	},
-    28 28 │   });
+    58 58 │   // Select NPC by ID
+    59 59 │   export const selectNPCById = createSelector(
+    60    │ - → [(state)·=>·state.npcs.npcs,·(state,·npcId)·=>·npcId],
+       60 │ + → [(state)·=>·state.npcs.npcs,·(_state,·npcId)·=>·npcId],
+    61 61 │   	(npcs, npcId) => npcs[npcId] || null,
+    62 62 │   );
 
 
-src/store/slices/enemiesSlice.js:97:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━
+src/store/slices/placesSlice.js:65:5 lint/complexity/noCommaOperator ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! The comma operator is disallowed.
+
+    63 │ 		builder.addCase("@@INIT", (state) => {
+    64 │ 			updateAvailableConnections(state);
+  > 65 │ 		}),
+       │ 		  ^
+    66 │ 			builder.addMatcher(
+    67 │ 				(action) => action.type === "places/navigateToPlace",
+
+  i Its use is often confusing and obscures side effects.
+
+
+src/store/slices/placesSlice.js:13:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
 
   ! Change to an optional chain.
 
-    95 │ 			const { id, deltaTime } = action.payload;
-    96 │ 			const enemy = state.byId[id];
-  > 97 │ 			if (enemy && enemy.isCountdownActive && enemy.countdown > 0) {
-       │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    98 │ 				// Convert deltaTime from seconds to milliseconds
-    99 │ 				enemy.countdown = Math.max(0, enemy.countdown - deltaTime * 1000);
+    11 │ // Initialize available connections for the initial state
+    12 │ const currentPlace = placesData[initialState.currentPlaceId];
+  > 13 │ if (currentPlace && currentPlace.connections) {
+       │     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    14 │ 	initialState.availableConnections = currentPlace.connections.map(
+    15 │ 		(placeId) => ({
 
   i Unsafe fix: Change to an optional chain.
 
-     95  95 │   			const { id, deltaTime } = action.payload;
-     96  96 │   			const enemy = state.byId[id];
-     97     │ - → → → if·(enemy·&&·enemy.isCountdownActive·&&·enemy.countdown·>·0)·{
-         97 │ + → → → if·(enemy?.isCountdownActive·&&·enemy.countdown·>·0)·{
-     98  98 │   				// Convert deltaTime from seconds to milliseconds
-     99  99 │   				enemy.countdown = Math.max(0, enemy.countdown - deltaTime * 1000);
+    11 11 │   // Initialize available connections for the initial state
+    12 12 │   const currentPlace = placesData[initialState.currentPlaceId];
+    13    │ - if·(currentPlace·&&·currentPlace.connections)·{
+       13 │ + if·(currentPlace?.connections)·{
+    14 14 │   	initialState.availableConnections = currentPlace.connections.map(
+    15 15 │   		(placeId) => ({
+
+
+src/store/slices/placesSlice.js:25:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    23 │ const updateAvailableConnections = (state) => {
+    24 │ 	const currentPlace = state[state.currentPlaceId];
+  > 25 │ 	if (currentPlace && currentPlace.connections) {
+       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    26 │ 		state.availableConnections = currentPlace.connections.map((placeId) => ({
+    27 │ 			id: placeId,
+
+  i Unsafe fix: Change to an optional chain.
+
+    23 23 │   const updateAvailableConnections = (state) => {
+    24 24 │   	const currentPlace = state[state.currentPlaceId];
+    25    │ - → if·(currentPlace·&&·currentPlace.connections)·{
+       25 │ + → if·(currentPlace?.connections)·{
+    26 26 │   		state.availableConnections = currentPlace.connections.map((placeId) => ({
+    27 27 │   			id: placeId,
 
 
 src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
@@ -277,6 +259,49 @@ src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FI
 
     1 │ import·React,·{·useEffect,·useRef,·useState·}·from·"react";
       │        -------                    ---------
+
+src/ui/components/display/LogDisplay.js:2:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+    1 │ import React, { useEffect, useRef, useState } from "react";
+  > 2 │ import { useSelector } from "react-redux";
+      │        ^^^^^^^^^^^^^^^
+    3 │
+    4 │ const LOG_CATEGORIES = {
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+     1  1 │   import React, { useEffect, useRef, useState } from "react";
+     2    │ - import·{·useSelector·}·from·"react-redux";
+     3  2 │
+     4  3 │   const LOG_CATEGORIES = {
+
+
+src/ui/components/display/LogDisplay.js:4:7 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━
+
+  ! This variable LOG_CATEGORIES is unused.
+
+    2 │ import { useSelector } from "react-redux";
+    3 │
+  > 4 │ const LOG_CATEGORIES = {
+      │       ^^^^^^^^^^^^^^
+    5 │ 	worker: { label: "Workers", color: "worker" },
+    6 │ 	combat: { label: "Combat", color: "combat" },
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+  i Unsafe fix: If this is intentional, prepend LOG_CATEGORIES with an underscore.
+
+     2  2 │   import { useSelector } from "react-redux";
+     3  3 │
+     4    │ - const·LOG_CATEGORIES·=·{
+        4 │ + const·_LOG_CATEGORIES·=·{
+     5  5 │   	worker: { label: "Workers", color: "worker" },
+     6  6 │   	combat: { label: "Combat", color: "combat" },
+
 
 src/ui/components/display/ResourceDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
@@ -342,27 +367,6 @@ src/ui/components/list/StatList.js:1:8 lint/correctness/noUnusedImports  FIXABLE
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/list/StatList.js:17:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    15 │ 	const equipmentBonus = {};
-    16 │ 	Object.values(equipment).forEach((item) => {
-  > 17 │ 		if (item && item.stats) {
-       │ 		    ^^^^^^^^^^^^^^^^^^
-    18 │ 			Object.entries(item.stats).forEach(([stat, value]) => {
-    19 │ 				equipmentBonus[stat] = (equipmentBonus[stat] || 0) + value;
-
-  i Unsafe fix: Change to an optional chain.
-
-    15 15 │   	const equipmentBonus = {};
-    16 16 │   	Object.values(equipment).forEach((item) => {
-    17    │ - → → if·(item·&&·item.stats)·{
-       17 │ + → → if·(item?.stats)·{
-    18 18 │   			Object.entries(item.stats).forEach(([stat, value]) => {
-    19 19 │   				equipmentBonus[stat] = (equipmentBonus[stat] || 0) + value;
-
-
 src/ui/components/sections/BuildingsSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
   ! This import is unused.
@@ -395,20 +399,33 @@ src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImport
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/sections/ControlSection.js:50:6 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/display/LogDisplay.js:15:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
 
-  × Provide an explicit type prop for the button element.
+  × This hook specifies more dependencies than necessary: filteredLogs.
 
-    49 │ 				<div className="cache">
-  > 50 │ 					<button onClick={clearCache} className="clear-cache-btn">
-       │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    51 │ 						Clear Cache
-    52 │ 					</button>
+    14 │ 	// Scroll to bottom on update
+  > 15 │ 	useEffect(() => {
+       │ 	^^^^^^^^^
+    16 │ 		if (containerRef.current) {
+    17 │ 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
 
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
 
-  i Allowed button types are: submit, button or reset
+    17 │ 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    18 │ 		}
+  > 19 │ 	}, [filteredLogs]);
+       │ 	    ^^^^^^^^^^^^
+    20 │
+    21 │ 	return (
 
+  i React relies on hook dependencies to determine when to re-compute Effects.
+    Specifying more dependencies than required can lead to unnecessary re-rendering
+    and degraded performance.
+
+  i Unsafe fix: Remove the extra dependencies from the list.
+
+    19 │ → },·[filteredLogs]);
+       │       ------------
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

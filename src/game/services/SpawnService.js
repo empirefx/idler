@@ -71,7 +71,6 @@ export class WaveSpawner extends BaseSpawner {
 	#respawnTimer = null;
 	#aliveIds = new Set(); // Set to track alive enemy IDs
 
-	
 	get isActive() {
 		return this.#active;
 	}
