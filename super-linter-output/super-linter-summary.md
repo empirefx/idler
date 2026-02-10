@@ -3,7 +3,7 @@
 | Language                   | Validation result |
 | -------------------------- | ----------------- |
 | BIOME_FORMAT               | Pass ✅           |
-| BIOME_LINT                 | Fail ❌           |
+| BIOME_LINT                 | Pass ✅           |
 | CHECKOV                    | Pass ✅           |
 | GITHUB_ACTIONS             | Pass ✅           |
 | GITHUB_ACTIONS_ZIZMOR      | Pass ✅           |
@@ -22,46 +22,9 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21876944593)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21877097781)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
-
-<details>
-
-<summary>BIOME_LINT</summary>
-
-```text
-Checked 103 files in 671ms. No fixes applied.
-Found 2 warnings.src/ui/components/display/EquipmentDisplay.js:32:5 suppressions/unused ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! Suppression comment has no effect. Remove the suppression or make sure you are suppressing the correct rule.
-
-    30 │ 		<div className="equipment-flex">
-    31 │ 			{EQUIPMENT_SLOTS.map(({ key, label }) => (
-  > 32 │ 				// biome-ignore lint/a11y/useSemanticElements: CSS targets div elements specifically
-       │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    33 │ 				<div
-    34 │ 					role="button"
-
-
-src/ui/components/display/InventoryDisplay.js:196:7 suppressions/unused ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! Suppression comment has no effect. Remove the suppression or make sure you are suppressing the correct rule.
-
-    195 │ 					return (
-  > 196 │ 						// biome-ignore lint/a11y/useSemanticElements: CSS targets div elements specifically
-        │ 						^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    197 │ 						<div
-    198 │ 							role="button"
-
-
-lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Some warnings were emitted while running checks.
-
-```
-
-</details>
 
 <details>
 
@@ -227,7 +190,7 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 117            │ 11870       │ 93841        │ 36           │ 573 (4.83%)      │ 4351 (4.64%)      │
+│ javascript │ 117            │ 11868       │ 93835        │ 36           │ 573 (4.83%)      │ 4351 (4.64%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ css        │ 17             │ 2745        │ 15759        │ 1            │ 29 (1.06%)       │ 150 (0.95%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
@@ -237,7 +200,7 @@ Clone found (javascript):
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ jsx        │ 1              │ 103         │ 623          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 145            │ 14995       │ 112002       │ 39           │ 646 (4.31%)      │ 4758 (4.25%)      │
+│ Total:     │ 145            │ 14993       │ 111996       │ 39           │ 646 (4.31%)      │ 4758 (4.25%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 39 clones.
 Error: ERROR: jscpd found too many duplicates (4.31%) over threshold (0%)
