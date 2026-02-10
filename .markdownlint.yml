@@ -1,5 +1,0 @@
-exclude:
-  - ".release-please-manifest.json"
-  - "CHANGELOG.md"
-  - "super-linter-output/**/*"
-  - "static/**/*"

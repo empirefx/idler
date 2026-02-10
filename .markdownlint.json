@@ -1,0 +1,11 @@
+{
+  "default": true,
+  "MD024": false,
+  "MD013": false,
+  "ignore": [
+    ".release-please-manifest.json",
+    "CHANGELOG.md",
+    "super-linter-output/**/*",
+    "static/**/*"
+  ]
+}
