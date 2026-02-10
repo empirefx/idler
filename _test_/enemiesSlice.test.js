@@ -8,6 +8,7 @@ import enemiesReducer, {
 	selectEnemiesForCurrentPlace,
 	initializeCountdownsForPlace,
 } from "../src/store/slices/enemiesSlice";
+import { createMockEnemy, createStaggeredEnemy, createNormalEnemy } from "./utils/testHelpers.js";
 
 describe("enemiesSlice reducer and selectors", () => {
 	let state;
@@ -89,11 +90,11 @@ describe("enemiesSlice reducer and selectors", () => {
 	it("selectEnemiesForCurrentPlace filters by currentPlaceId", () => {
 		let s = enemiesReducer(
 			state,
-			addEnemy({ placeId: "p1", enemy: { id: "e1", health: 1 } }),
+			addEnemy({ placeId: "p1", enemy: createMockEnemy("e1", "p1") }),
 		);
 		s = enemiesReducer(
 			s,
-			addEnemy({ placeId: "p2", enemy: { id: "e2", health: 1 } }),
+			addEnemy({ placeId: "p2", enemy: createMockEnemy("e2", "p2") }),
 		);
 		const globalState = { enemies: s, places: { currentPlaceId: "p1" } };
 		const list = selectEnemiesForCurrentPlace(globalState);
@@ -106,12 +107,7 @@ describe("enemiesSlice reducer and selectors", () => {
 				state,
 				addEnemy({
 					placeId: "test_place",
-					enemy: {
-						id: "enemy1",
-						health: 50,
-						attackPattern: "staggered",
-						attackDelayRange: [2000, 5000],
-					},
+					enemy: createStaggeredEnemy("enemy1", "test_place"),
 				}),
 			);
 			s = enemiesReducer(
@@ -167,24 +163,14 @@ describe("enemiesSlice reducer and selectors", () => {
 				state,
 				addEnemy({
 					placeId: "test_place",
-					enemy: {
-						id: "enemy1",
-						health: 50,
-						attackPattern: "staggered",
-						attackDelayRange: [2000, 5000],
-					},
+					enemy: createStaggeredEnemy("enemy1", "test_place"),
 				}),
 			);
 			s = enemiesReducer(
 				s,
 				addEnemy({
 					placeId: "test_place",
-					enemy: {
-						id: "enemy2",
-						health: 30,
-						attackPattern: "normal",
-						attackDelayRange: [2000, 5000],
-					},
+					enemy: createNormalEnemy("enemy2", "test_place"),
 				}),
 			);
 

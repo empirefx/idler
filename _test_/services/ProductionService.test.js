@@ -5,6 +5,7 @@ import {
 	createBaseState,
 } from "../fixtures/stateBuilders.js";
 import { createMockStore } from "../mocks/services.mock.js";
+import { createMockItemFactory, createMockInventoryService, createMockBuilding, createPlaceState } from "../utils/testHelpers.js";
 import ProductionService from "../../src/game/services/ProductionService.js";
 
 describe("ProductionService", () => {
@@ -15,18 +16,8 @@ describe("ProductionService", () => {
 		// Setup mocks
 		mockStore = createMockStore(createBaseState());
 		mockDispatch = vi.fn();
-		mockItemFactory = {
-			create: vi.fn((type, quantity) => ({
-				id: `${type}-${Date.now()}`,
-				name: type,
-				type: "material",
-				quantity: Math.max(1, Math.floor(quantity || 1)),
-				weight: 1,
-			})),
-		};
-		mockInventoryService = {
-			addItemToInventory: vi.fn(),
-		};
+		mockItemFactory = createMockItemFactory();
+		mockInventoryService = createMockInventoryService();
 
 		// Create ProductionService instance
 		productionService = new ProductionService(
@@ -133,11 +124,7 @@ describe("ProductionService", () => {
 		});
 
 		it("should handle zero production gracefully", () => {
-			const building = {
-				id: "sawmill",
-				calculateProduction: () => 0,
-				productionType: "wood",
-			};
+			const building = createMockBuilding("sawmill", "Sawmill", "wood", 0);
 			const state = createStateWithWorkers([
 				{ id: "worker1", assignedBuildingId: "sawmill" },
 			]);
@@ -156,11 +143,7 @@ describe("ProductionService", () => {
 		});
 
 		it("should handle building with workers but zero production", () => {
-			const building = {
-				id: "sawmill",
-				calculateProduction: () => 0, // Zero production
-				productionType: "wood",
-			};
+			const building = createMockBuilding("sawmill", "Sawmill", "wood", 0);
 			const state = createStateWithWorkers([
 				{ id: "worker1", assignedBuildingId: "sawmill" },
 			]);
@@ -293,25 +276,20 @@ describe("ProductionService", () => {
 		});
 
 		it("should find closest connected place with inventory", () => {
-			const state = {
-				places: {
-					river_crossing: {
-						hasInventory: false,
-						connections: ["village_center", "farmlands"],
-					},
-					village_center: {
-						hasInventory: true,
-						connections: ["river_crossing"],
-					},
-					farmlands: {
-						hasInventory: false,
-						connections: ["river_crossing"],
-					},
+			const state = createPlaceState({
+				river_crossing: {
+					hasInventory: false,
+					connections: ["village_center", "farmlands"],
 				},
-				placeInventory: {
-					village_center: { items: [] },
+				village_center: {
+					hasInventory: true,
+					connections: ["river_crossing"],
 				},
-			};
+				farmlands: {
+					hasInventory: false,
+					connections: ["river_crossing"],
+				},
+			});
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
@@ -321,25 +299,20 @@ describe("ProductionService", () => {
 		});
 
 		it("should search multiple levels for closest inventory", () => {
-			const state = {
-				places: {
-					river_crossing: {
-						hasInventory: false,
-						connections: ["farmlands"],
-					},
-					farmlands: {
-						hasInventory: false,
-						connections: ["river_crossing", "village_center"],
-					},
-					village_center: {
-						hasInventory: true,
-						connections: ["farmlands"],
-					},
+			const state = createPlaceState({
+				river_crossing: {
+					hasInventory: false,
+					connections: ["farmlands"],
 				},
-				placeInventory: {
-					village_center: { items: [] },
+				farmlands: {
+					hasInventory: false,
+					connections: ["river_crossing", "village_center"],
 				},
-			};
+				village_center: {
+					hasInventory: true,
+					connections: ["farmlands"],
+				},
+			});
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",

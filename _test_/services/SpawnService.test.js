@@ -4,6 +4,7 @@ import SpawnService, {
 } from "../../src/game/services/SpawnService";
 import { placesData } from "../../src/data/places";
 import { enemyCatalog } from "../../src/data/enemyCatalog";
+import { getEventHandler } from "../utils/testHelpers.js";
 
 describe("SpawnService", () => {
 	let eventBusService;
@@ -49,9 +50,7 @@ describe("SpawnService", () => {
 		it("should create spawner when entering place with spawn config", () => {
 			const placeId = "forest_edge";
 			// Get the enterPlace handler and call it directly
-			const enterPlaceHandler = eventBusService.on.mock.calls.find(
-				(call) => call[0] === "enterPlace",
-			)?.[1];
+			const enterPlaceHandler = getEventHandler(eventBusService, "enterPlace");
 			if (enterPlaceHandler) {
 				enterPlaceHandler(placeId);
 			}
@@ -63,9 +62,7 @@ describe("SpawnService", () => {
 		it("should not create spawner when entering place without spawn config", () => {
 			const placeId = "village_center";
 			// Get the enterPlace handler and call it directly
-			const enterPlaceHandler = eventBusService.on.mock.calls.find(
-				(call) => call[0] === "enterPlace",
-			)?.[1];
+			const enterPlaceHandler = getEventHandler(eventBusService, "enterPlace");
 			if (enterPlaceHandler) {
 				enterPlaceHandler(placeId);
 			}

@@ -16,6 +16,7 @@ import {
 	createStateWithBuilding,
 	createStateWithWorkers,
 } from "../fixtures/stateBuilders";
+import { createMockBuilding } from "../utils/testHelpers.js";
 
 describe("GameEngine", () => {
 	let gameEngine;
@@ -303,11 +304,7 @@ describe("GameEngine", () => {
 			});
 
 			it("should handle zero production gracefully", () => {
-				const building = {
-					id: "sawmill",
-					calculateProduction: () => 0,
-					productionType: "wood",
-				};
+				const building = createMockBuilding("sawmill", "Sawmill", "wood", 0);
 				const state = createStateWithWorkers([
 					{ id: "worker1", assignedBuildingId: "sawmill" },
 				]);
@@ -478,16 +475,8 @@ describe("GameEngine", () => {
 
 		it("should process building production for all buildings with workers", () => {
 			const buildings = {
-				sawmill: {
-					id: "sawmill",
-					calculateProduction: () => 10,
-					productionType: "wood",
-				},
-				mine: {
-					id: "mine",
-					baseProductionRate: 5,
-					productionType: "stone",
-				},
+				sawmill: createMockBuilding("sawmill", "Sawmill", "wood", 10),
+				mine: createMockBuilding("mine", "Mine", "stone", 5),
 			};
 			const state = {
 				...createStateWithWorkers([
@@ -513,16 +502,8 @@ describe("GameEngine", () => {
 
 		it("should not process buildings without assigned workers", () => {
 			const buildings = {
-				sawmill: {
-					id: "sawmill",
-					calculateProduction: () => 10,
-					productionType: "wood",
-				},
-				mine: {
-					id: "mine",
-					baseProductionRate: 5,
-					productionType: "stone",
-				},
+				sawmill: createMockBuilding("sawmill", "Sawmill", "wood", 10),
+				mine: createMockBuilding("mine", "Mine", "stone", 5),
 			};
 			const state = {
 				...createStateWithWorkers([

@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CombatService } from "../src/game/services/CombatService";
 import { addItem } from "../src/store/slices/playerInventorySlice";
 import { gainExp } from "../src/store/slices/playerSlice";
+import { createCombatState, createMockEnemy } from "./utils/testHelpers.js";
 
 describe("CombatService", () => {
 	let mockStore;
@@ -11,27 +12,13 @@ describe("CombatService", () => {
 	let mockState;
 
 	beforeEach(() => {
-		mockState = {
-			places: {
-				currentPlaceId: "village_center",
-				village_center: {
-					spawn: {
-						drops: [
-							{ itemId: "apple", dropRate: 0.5 },
-							{ itemId: "wood", dropRate: 0.3 },
-						],
-					},
-				},
-			},
+		mockState = createCombatState({
 			enemies: {
 				byId: {
-					enemy1: {
-						id: "enemy1",
-						placeId: "village_center",
-					},
+					enemy1: createMockEnemy("enemy1", "village_center"),
 				},
 			},
-		};
+		});
 
 		mockStore = {
 			dispatch: vi.fn(),
@@ -110,10 +97,7 @@ describe("CombatService", () => {
 	it("should handle empty drops array", () => {
 		mockState.places.village_center.spawn.drops = [];
 
-		const enemy = {
-			id: "enemy1",
-			maxHealth: 10,
-		};
+		const enemy = createMockEnemy("enemy1", "village_center");
 
 		CombatService.handleEnemyDrops(enemy);
 
@@ -125,10 +109,7 @@ describe("CombatService", () => {
 	it("should handle missing spawn info", () => {
 		mockState.places.village_center.spawn = null;
 
-		const enemy = {
-			id: "enemy1",
-			maxHealth: 10,
-		};
+		const enemy = createMockEnemy("enemy1", "village_center");
 
 		CombatService.handleEnemyDrops(enemy);
 

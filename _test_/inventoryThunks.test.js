@@ -6,6 +6,7 @@ import {
 	moveItemBetweenInventories,
 	removeItemFromInventory,
 } from "../src/store/slices/inventoryThunks.js";
+import { createTestState, createTestItem } from "./utils/testHelpers.js";
 
 // Helper to create a test store with both inventory slices
 const createTestStore = (initialState = {}) => {
@@ -29,40 +30,16 @@ describe("inventoryThunks", () => {
 	describe("moveItemBetweenInventories", () => {
 		it("should move item from player inventory to place inventory", () => {
 			// Setup: Player has an apple
-			const playerState = {
+			const playerState = createTestState({
 				playerInventory: {
 					player: {
-						id: "player",
-						type: "player",
-						maxSlots: 20,
-						maxWeight: 100,
+						...createTestState().playerInventory.player,
 						items: [
-							{
-								id: "apple1",
-								name: "apple",
-								type: "consumable",
-								quantity: 5,
-								weight: 0.5,
-							},
+							createTestItem("apple1", "apple", "consumable", 5, 0.5),
 						],
-						equipment: {
-							head: null,
-							body: null,
-							pants: null,
-							"main-weapon": null,
-							"second-weapon": null,
-						},
 					},
 				},
-				placeInventory: {
-					village_center: {
-						id: "village_center",
-						type: "place",
-						maxSlots: 30,
-						items: [],
-					},
-				},
-			};
+			});
 
 			const testStore = createTestStore(playerState);
 
@@ -91,41 +68,19 @@ describe("inventoryThunks", () => {
 
 		it("should move item from place inventory to player inventory", () => {
 			// Setup: Place has an item
-			const placeState = {
-				playerInventory: {
-					player: {
-						id: "player",
-						type: "player",
-						maxSlots: 20,
-						maxWeight: 100,
-						items: [],
-						equipment: {
-							head: null,
-							body: null,
-							pants: null,
-							"main-weapon": null,
-							"second-weapon": null,
-						},
-					},
-				},
+			const placeState = createTestState({
 				placeInventory: {
 					village_center: {
-						id: "village_center",
-						type: "place",
-						maxSlots: 30,
+						...createTestState().placeInventory.village_center,
 						items: [
 							{
-								id: "sword1",
-								name: "iron sword",
-								type: "equipment",
+								...createTestItem("sword1", "iron sword", "equipment", 1, 5),
 								piece: "main-weapon",
-								quantity: 1,
-								weight: 5,
 							},
 						],
 					},
 				},
-			};
+			});
 
 			const testStore = createTestStore(placeState);
 
@@ -152,40 +107,16 @@ describe("inventoryThunks", () => {
 
 		it("should handle partial stack moves correctly", () => {
 			// Setup: Player has 10 of an item
-			const partialState = {
+			const partialState = createTestState({
 				playerInventory: {
 					player: {
-						id: "player",
-						type: "player",
-						maxSlots: 20,
-						maxWeight: 100,
+						...createTestState().playerInventory.player,
 						items: [
-							{
-								id: "berries1",
-								name: "berries",
-								type: "consumable",
-								quantity: 10,
-								weight: 0.1,
-							},
+							createTestItem("berries1", "berries", "consumable", 10, 0.1),
 						],
-						equipment: {
-							head: null,
-							body: null,
-							pants: null,
-							"main-weapon": null,
-							"second-weapon": null,
-						},
 					},
 				},
-				placeInventory: {
-					village_center: {
-						id: "village_center",
-						type: "place",
-						maxSlots: 30,
-						items: [],
-					},
-				},
-			};
+			});
 
 			const testStore = createTestStore(partialState);
 
@@ -300,40 +231,23 @@ describe("inventoryThunks", () => {
 
 		it("should return false when player weight limit exceeded", () => {
 			// Setup: Player overweight if item added
-			const overweightState = {
+			const overweightState = createTestState({
 				playerInventory: {
 					player: {
-						id: "player",
-						type: "player",
-						maxSlots: 20,
+						...createTestState().playerInventory.player,
 						maxWeight: 10, // Very low weight limit
 						items: [],
-						equipment: {
-							head: null,
-							body: null,
-							pants: null,
-							"main-weapon": null,
-							"second-weapon": null,
-						},
 					},
 				},
 				placeInventory: {
 					village_center: {
-						id: "village_center",
-						type: "place",
-						maxSlots: 30,
+						...createTestState().placeInventory.village_center,
 						items: [
-							{
-								id: "heavy",
-								name: "heavy item",
-								type: "material",
-								quantity: 1,
-								weight: 100,
-							},
+							createTestItem("heavy", "heavy item", "material", 1, 100),
 						],
 					},
 				},
-			};
+			});
 
 			const testStore = createTestStore(overweightState);
 
@@ -348,33 +262,17 @@ describe("inventoryThunks", () => {
 	describe("removeItemFromInventory", () => {
 		it("should remove item from player inventory", () => {
 			// Setup: Player has an item
-			const playerState = {
+			const playerState = createTestState({
 				playerInventory: {
 					player: {
-						id: "player",
-						type: "player",
-						maxSlots: 20,
-						maxWeight: 100,
+						...createTestState().playerInventory.player,
 						items: [
-							{
-								id: "apple1",
-								name: "apple",
-								type: "consumable",
-								quantity: 5,
-								weight: 0.5,
-							},
+							createTestItem("apple1", "apple", "consumable", 5, 0.5),
 						],
-						equipment: {
-							head: null,
-							body: null,
-							pants: null,
-							"main-weapon": null,
-							"second-weapon": null,
-						},
 					},
 				},
 				placeInventory: {},
-			};
+			});
 
 			const testStore = createTestStore(playerState);
 
@@ -395,25 +293,17 @@ describe("inventoryThunks", () => {
 
 		it("should remove item from place inventory", () => {
 			// Setup: Place has an item
-			const placeState = {
+			const placeState = createTestState({
 				playerInventory: {},
 				placeInventory: {
 					village_center: {
-						id: "village_center",
-						type: "place",
-						maxSlots: 30,
+						...createTestState().placeInventory.village_center,
 						items: [
-							{
-								id: "berry1",
-								name: "berries",
-								type: "consumable",
-								quantity: 10,
-								weight: 0.1,
-							},
+							createTestItem("berry1", "berries", "consumable", 10, 0.1),
 						],
 					},
 				},
-			};
+			});
 
 			const testStore = createTestStore(placeState);
 
