@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21872165944)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21872259816)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 58.
-Checked 103 files in 729ms. No fixes applied.
+Checked 103 files in 740ms. No fixes applied.
 Found 42 errors.
 Found 36 warnings.src/store/slices/playerInventorySlice.js:8:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
 
