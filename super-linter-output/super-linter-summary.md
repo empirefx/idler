@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850457716)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850706120)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,236 +32,84 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 125.
-Checked 103 files in 770ms. No fixes applied.
-Found 56 errors.
-Found 84 warnings.
-Found 5 infos.src/game/services/ProductionService.js:160:25 lint/complexity/useLiteralKeys  FIXABLE  ━━━━━━━━━━━━━
+Diagnostics not shown: 105.
+Checked 103 files in 717ms. No fixes applied.
+Found 51 errors.
+Found 70 warnings.
+Found 4 infos.src/game/services/SpawnService.js:75:2 lint/complexity/noUselessConstructor  FIXABLE  ━━━━━━━━━━━━━━
 
-  i The computed expression can be simplified without the use of a string literal.
+  i This constructor is unnecessary.
 
-    159 │ 		// Fallback to village_center if no other place found
-  > 160 │ 		return placeInventory["village_center"] ? "village_center" : currentPlaceId;
-        │ 		                      ^^^^^^^^^^^^^^^^
-    161 │ 	}
-    162 │
+    74 │ 	// For testing purposes
+  > 75 │ 	constructor(placeId, config, eventBus) {
+       │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 76 │ 		super(placeId, config, eventBus);
+  > 77 │ 	}
+       │ 	^
+    78 │
+    79 │ 	get isActive() {
 
-  i Unsafe fix: Use a literal key instead.
+  i Unsafe fix: Remove the unnecessary constructor.
 
-    158 158 │
-    159 159 │   		// Fallback to village_center if no other place found
-    160     │ - → → return·placeInventory["village_center"]·?·"village_center"·:·currentPlaceId;
-        160 │ + → → return·placeInventory.village_center·?·"village_center"·:·currentPlaceId;
-    161 161 │   	}
-    162 162 │
-
-
-src/game/engine/GameEngine.js:137:2 lint/suspicious/useAdjacentOverloadSignatures ━━━━━━━━━━━━━━━━━━
-
-  ! All getAssignedWorkers signatures must be adjacent.
-
-    136 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
-  > 137 │ 	getAssignedWorkers(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^
-    138 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
-    139 │ 	}
-
-  i All calculateProductionRate signatures must be adjacent.
-
-    141 │ 	// Calculate production rate for a building (now handled by ProductionService)
-  > 142 │ 	calculateProductionRate(building, state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^
-    143 │ 		return this.productionService.calculateProductionRate(building, state);
-    144 │ 	}
-
-  i All canBuildingProduce signatures must be adjacent.
-
-    146 │ 	// Validate that a building can produce (now handled by ProductionService)
-  > 147 │ 	canBuildingProduce(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^
-    148 │ 		return this.productionService.canBuildingProduce(state, buildingId);
-    149 │ 	}
-
-  i All getAllProductionCalculations signatures must be adjacent.
-
-    151 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-  > 152 │ 	getAllProductionCalculations(state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    153 │ 		return this.productionService.getAllProductionCalculations(state);
-    154 │ 	}
+     71  71 │   	#respawnTimer = null;
+     72  72 │   	#aliveIds = new Set(); // Set to track alive enemy IDs
+     73     │ -
+     74     │ - → //·For·testing·purposes
+     75     │ - → constructor(placeId,·config,·eventBus)·{
+     76     │ - → → super(placeId,·config,·eventBus);
+     77     │ - → }
+     78  73 │
+     79  74 │   	get isActive() {
 
 
-src/game/engine/GameEngine.js:28:33 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━━━━━━━━━━━
-
-  ! This parameter is unused.
-
-    26 │  */
-    27 │ class GameEngine {
-  > 28 │ 	constructor(dispatch, store, { spawnService = SpawnService } = {}) {
-       │ 	                               ^^^^^^^^^^^^
-    29 │ 		this.store = store;
-    30 │ 		this.lastState = store.getState();
-
-  i Unused parameters might be the result of an incomplete refactoring.
-
-
-src/game/engine/GameEngine.js:197:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
+src/game/services/CombatService.js:189:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━
 
   ! Change to an optional chain.
 
-    196 │ 		// Initialize and hook lifecycle services
-  > 197 │ 		if (this.enemyLifecycleService && this.enemyLifecycleService.initialize) {
-        │ 		    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    198 │ 			this.enemyLifecycleService.eventBusService = null;
-    199 │ 			this.enemyLifecycleService.initialize(this.store.getState());
+    187 │ 			if (!updated) return;
+    188 │
+  > 189 │ 			if (updated && updated.isDead) {
+        │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    190 │ 				// Enemy died, handle drops, exp, etc
+    191 │ 				this.store.dispatch({ type: "combat/clearTarget" });
 
   i Unsafe fix: Change to an optional chain.
 
-    195 195 │
-    196 196 │   		// Initialize and hook lifecycle services
-    197     │ - → → if·(this.enemyLifecycleService·&&·this.enemyLifecycleService.initialize)·{
-        197 │ + → → if·(this.enemyLifecycleService?.initialize)·{
-    198 198 │   			this.enemyLifecycleService.eventBusService = null;
-    199 199 │   			this.enemyLifecycleService.initialize(this.store.getState());
+    187 187 │   			if (!updated) return;
+    188 188 │
+    189     │ - → → → if·(updated·&&·updated.isDead)·{
+        189 │ + → → → if·(updated?.isDead)·{
+    190 190 │   				// Enemy died, handle drops, exp, etc
+    191 191 │   				this.store.dispatch({ type: "combat/clearTarget" });
 
 
-src/game/engine/GameEngine.js:204:4 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
+src/game/utils/Logger.js:1:16 lint/complexity/noStaticOnlyClass ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  ! Change to an optional chain.
+  ! Avoid classes that contain only static members.
 
-    203 │ 		if (
-  > 204 │ 			this.navigationService &&
-        │ 			^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 205 │ 			this.navigationService.subscribeToPlaceChanges
-        │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    206 │ 		) {
-    207 │ 			this.navigationService.eventBus = this.eventBusService;
+   > 1 │ export default class Logger {
+       │                ^^^^^^^^^^^^^^
+   > 2 │ 	static debugLevel = 0; // Global debug level
+   > 3 │ 	static lastMessages = {}; // Track repeated messages
+   > 4 │ 	static repeatCounts = {}; // Count repeats
+        ...
+  > 55 │ 		Logger.debugLevel = level;
+  > 56 │ 	}
+  > 57 │ }
+       │ ^
+    58 │
 
-  i Unsafe fix: Change to an optional chain.
-
-    202 202 │
-    203 203 │   		if (
-    204     │ - → → → this.navigationService·&&
-    205     │ - → → → this.navigationService.subscribeToPlaceChanges
-        204 │ + → → → this.navigationService?.subscribeToPlaceChanges
-    206 205 │   		) {
-    207 206 │   			this.navigationService.eventBus = this.eventBusService;
+  i Prefer using simple functions instead of classes with only static members.
 
 
-src/game/engine/GameEngine.js:212:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    211 │ 		// Subscribe to combat state changes
-  > 212 │ 		if (this.combatService && this.combatService.handleCombatStateChange) {
-        │ 		    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    213 │ 			this.combatService.eventBusService = this.eventBusService;
-    214 │ 			this.combatService.store = this.store;
-
-  i Unsafe fix: Change to an optional chain.
-
-    210 210 │
-    211 211 │   		// Subscribe to combat state changes
-    212     │ - → → if·(this.combatService·&&·this.combatService.handleCombatStateChange)·{
-        212 │ + → → if·(this.combatService?.handleCombatStateChange)·{
-    213 213 │   			this.combatService.eventBusService = this.eventBusService;
-    214 214 │   			this.combatService.store = this.store;
-
-
-src/game/services/CombatService.js:117:19 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
-
-  ! This parameter is unused.
-
-    116 │ 	// Handle enemy drops on death
-  > 117 │ 	handleEnemyDrops(enemy) {
-        │ 	                 ^^^^^
-    118 │ 		const currentPlaceId = this.store.getState().places.currentPlaceId;
-    119 │ 		const place = this.store.getState().places[currentPlaceId];
-
-  i Unused parameters might be the result of an incomplete refactoring.
-
-  i Unsafe fix: If this is intentional, prepend enemy with an underscore.
-
-    115 115 │
-    116 116 │   	// Handle enemy drops on death
-    117     │ - → handleEnemyDrops(enemy)·{
-        117 │ + → handleEnemyDrops(_enemy)·{
-    118 118 │   		const currentPlaceId = this.store.getState().places.currentPlaceId;
-    119 119 │   		const place = this.store.getState().places[currentPlaceId];
-
-
-src/game/services/NavigationService.js:11:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-     9 │ 		if (currentPlaceId !== previousPlaceId) {
-    10 │ 			// Emit enterPlace event for spawn service
-  > 11 │ 			if (this.eventBus && this.eventBus.emit) {
-       │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    12 │ 				this.eventBus.emit("enterPlace", currentPlaceId);
-    13 │ 			}
-
-  i Unsafe fix: Change to an optional chain.
-
-     9  9 │   		if (currentPlaceId !== previousPlaceId) {
-    10 10 │   			// Emit enterPlace event for spawn service
-    11    │ - → → → if·(this.eventBus·&&·this.eventBus.emit)·{
-       11 │ + → → → if·(this.eventBus?.emit)·{
-    12 12 │   				this.eventBus.emit("enterPlace", currentPlaceId);
-    13 13 │   			}
-
-
-src/game/services/ProductionService.js:13:57 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
-
-  ! This parameter is unused.
-
-    12 │ 	// Process production for a specific building
-  > 13 │ 	processBuildingProduction(buildingId, building, state, deltaTime) {
-       │ 	                                                       ^^^^^^^^^
-    14 │ 		try {
-    15 │ 			// Check if building has assigned workers
-
-  i Unused parameters might be the result of an incomplete refactoring.
-
-  i Unsafe fix: If this is intentional, prepend deltaTime with an underscore.
-
-     11  11 │
-     12  12 │   	// Process production for a specific building
-     13     │ - → processBuildingProduction(buildingId,·building,·state,·deltaTime)·{
-         13 │ + → processBuildingProduction(buildingId,·building,·state,·_deltaTime)·{
-     14  14 │   		try {
-     15  15 │   			// Check if building has assigned workers
-
-
-src/game/services/ProductionService.js:113:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    111 │ 		// Find which place contains this building
-    112 │ 		for (const [placeId, place] of Object.entries(state.places)) {
-  > 113 │ 			if (place.buildings && place.buildings.includes(buildingId)) {
-        │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    114 │ 				return placeId;
-    115 │ 			}
-
-  i Unsafe fix: Change to an optional chain.
-
-    111 111 │   		// Find which place contains this building
-    112 112 │   		for (const [placeId, place] of Object.entries(state.places)) {
-    113     │ - → → → if·(place.buildings·&&·place.buildings.includes(buildingId))·{
-        113 │ + → → → if·(place.buildings?.includes(buildingId))·{
-    114 114 │   				return placeId;
-    115 115 │   			}
-
-
-src/ui/components/sections/EnemySection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+src/index.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   ! This import is unused.
 
   > 1 │ import React from "react";
       │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │
+    2 │ import { Provider } from "react-redux";
+    3 │ import { createRoot } from "react-dom/client";
 
   i Unused imports might be the result of an incomplete refactoring.
 
@@ -270,12 +118,156 @@ src/ui/components/sections/EnemySection.js:1:8 lint/correctness/noUnusedImports 
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/sections/LogSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+src/store/middleware/logMiddleware.js:12:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
+
+  ! Several of these imports are unused.
+
+    10 │ import {
+    11 │ 	getEnemyDisplayName,
+  > 12 │ 	getEnemyTypeDisplayName,
+       │ 	^^^^^^^^^^^^^^^^^^^^^^^
+    13 │ } from "../../utils/enemyUtils";
+    14 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+     10  10 │   import {
+     11  11 │   	getEnemyDisplayName,
+     12     │ - → getEnemyTypeDisplayName,
+     13  12 │   } from "../../utils/enemyUtils";
+     14  13 │
+
+
+src/store/middleware/logMiddleware.js:17:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    15 │ const logMiddleware = (store) => (next) => (action) => {
+    16 │ 	// Don't process log actions to prevent recursion
+  > 17 │ 	if (action.type && action.type.startsWith("logs/")) {
+       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    18 │ 		return next(action);
+    19 │ 	}
+
+  i Unsafe fix: Change to an optional chain.
+
+     15  15 │   const logMiddleware = (store) => (next) => (action) => {
+     16  16 │   	// Don't process log actions to prevent recursion
+     17     │ - → if·(action.type·&&·action.type.startsWith("logs/"))·{
+         17 │ + → if·(action.type?.startsWith("logs/"))·{
+     18  18 │   		return next(action);
+     19  19 │   	}
+
+
+src/store/middleware/logMiddleware.js:88:5 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━━━
+
+  ! This variable attackerType is unused.
+
+    86 │ 			const {
+    87 │ 				attackerId: playerAttackerId,
+  > 88 │ 				attackerType,
+       │ 				^^^^^^^^^^^^
+    89 │ 				targetId: playerTargetId,
+    90 │ 				damage,
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+
+src/store/middleware/logMiddleware.js:107:11 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━
+
+  ! This variable attackerName is unused.
+
+    105 │ 				);
+    106 │ 			} else if (damageType === "received") {
+  > 107 │ 				const attackerName = getEnemyDisplayName(
+        │ 				      ^^^^^^^^^^^^
+    108 │ 					currentState,
+    109 │ 					playerAttackerId,
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+  i Unsafe fix: If this is intentional, prepend attackerName with an underscore.
+
+    105 105 │   				);
+    106 106 │   			} else if (damageType === "received") {
+    107     │ - → → → → const·attackerName·=·getEnemyDisplayName(
+        107 │ + → → → → const·_attackerName·=·getEnemyDisplayName(
+    108 108 │   					currentState,
+    109 109 │   					playerAttackerId,
+
+
+src/store/middleware/notificationMiddleware.js:9:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+     8 │ 	// Handle failed inventory actions by checking for error types
+   > 9 │ 	if (action.type && action.type.includes("moveItem") && action.error) {
+       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    10 │ 		const error = action.error;
+    11 │ 		let message = "";
+
+  i Unsafe fix: Change to an optional chain.
+
+     7  7 │
+     8  8 │   	// Handle failed inventory actions by checking for error types
+     9    │ - → if·(action.type·&&·action.type.includes("moveItem")·&&·action.error)·{
+        9 │ + → if·(action.type?.includes("moveItem")·&&·action.error)·{
+    10 10 │   		const error = action.error;
+    11 11 │   		let message = "";
+
+
+src/store/slices/buildingsSlice.js:26:18 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    24 │ 		},
+    25 │ 		// Set entire buildings state (used for loading saved state)
+  > 26 │ 		setBuildings: (state, action) => action.payload,
+       │ 		               ^^^^^
+    27 │ 	},
+    28 │ });
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+  i Unsafe fix: If this is intentional, prepend state with an underscore.
+
+    24 24 │   		},
+    25 25 │   		// Set entire buildings state (used for loading saved state)
+    26    │ - → → setBuildings:·(state,·action)·=>·action.payload,
+       26 │ + → → setBuildings:·(_state,·action)·=>·action.payload,
+    27 27 │   	},
+    28 28 │   });
+
+
+src/store/slices/enemiesSlice.js:97:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    95 │ 			const { id, deltaTime } = action.payload;
+    96 │ 			const enemy = state.byId[id];
+  > 97 │ 			if (enemy && enemy.isCountdownActive && enemy.countdown > 0) {
+       │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    98 │ 				// Convert deltaTime from seconds to milliseconds
+    99 │ 				enemy.countdown = Math.max(0, enemy.countdown - deltaTime * 1000);
+
+  i Unsafe fix: Change to an optional chain.
+
+     95  95 │   			const { id, deltaTime } = action.payload;
+     96  96 │   			const enemy = state.byId[id];
+     97     │ - → → → if·(enemy·&&·enemy.isCountdownActive·&&·enemy.countdown·>·0)·{
+         97 │ + → → → if·(enemy?.isCountdownActive·&&·enemy.countdown·>·0)·{
+     98  98 │   				// Convert deltaTime from seconds to milliseconds
+     99  99 │   				enemy.countdown = Math.max(0, enemy.countdown - deltaTime * 1000);
+
+
+src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
 
   ! Several of these imports are unused.
 
   > 1 │ import React, { useEffect, useRef, useState } from "react";
-      │        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      │        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     2 │ import { useSelector } from "react-redux";
     3 │
 
@@ -284,16 +276,16 @@ src/ui/components/sections/LogSection.js:1:8 lint/correctness/noUnusedImports  F
   i Unsafe fix: Remove the unused imports.
 
     1 │ import·React,·{·useEffect,·useRef,·useState·}·from·"react";
-      │        -------           --------
+      │        -------                    ---------
 
-src/ui/components/sections/NPCSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+src/ui/components/display/ResourceDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
   ! This import is unused.
 
   > 1 │ import React from "react";
       │        ^^^^^
     2 │ import { useSelector } from "react-redux";
-    3 │ import { useEffect } from "react";
+    3 │ import { createSelector } from "@reduxjs/toolkit";
 
   i Unused imports might be the result of an incomplete refactoring.
 
@@ -302,122 +294,116 @@ src/ui/components/sections/NPCSection.js:1:8 lint/correctness/noUnusedImports  F
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/sections/NPCSection.js:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
+src/ui/components/list/EnemyList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━
 
   ! This import is unused.
 
-    1 │ import React from "react";
-    2 │ import { useSelector } from "react-redux";
-  > 3 │ import { useEffect } from "react";
-      │        ^^^^^^^^^^^^^
-    4 │ import { useUIVisibility } from "../../UIVisibilityContext";
-    5 │
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ import EntityCard from "../card/EntityCard";
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-     1  1 │   import React from "react";
-     2  2 │   import { useSelector } from "react-redux";
-     3    │ - import·{·useEffect·}·from·"react";
-     4  3 │   import { useUIVisibility } from "../../UIVisibilityContext";
-     5  4 │
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/list/NPCList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ import NPCCard from "../card/NPCCard";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/list/StatList.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·React·from·"react";
+      │ --------------------------
+
+src/ui/components/list/StatList.js:17:7 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    15 │ 	const equipmentBonus = {};
+    16 │ 	Object.values(equipment).forEach((item) => {
+  > 17 │ 		if (item && item.stats) {
+       │ 		    ^^^^^^^^^^^^^^^^^^
+    18 │ 			Object.entries(item.stats).forEach(([stat, value]) => {
+    19 │ 				equipmentBonus[stat] = (equipmentBonus[stat] || 0) + value;
+
+  i Unsafe fix: Change to an optional chain.
+
+    15 15 │   	const equipmentBonus = {};
+    16 16 │   	Object.values(equipment).forEach((item) => {
+    17    │ - → → if·(item·&&·item.stats)·{
+       17 │ + → → if·(item?.stats)·{
+    18 18 │   			Object.entries(item.stats).forEach(([stat, value]) => {
+    19 19 │   				equipmentBonus[stat] = (equipmentBonus[stat] || 0) + value;
 
 
-src/ui/components/sections/NPCSection.js:15:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━
+src/ui/components/sections/BuildingsSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
-  ! This variable allNpcs is unused.
+  ! This import is unused.
 
-    13 │ const NPCSection = () => {
-    14 │ 	const npcs = useSelector(selectNPCsForCurrentPlace);
-  > 15 │ 	const allNpcs = useSelector(selectAllNPCs);
-       │ 	      ^^^^^^^
-    16 │ 	const { openNPCDialog, npcSection } = useUIVisibility();
-    17 │
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector } from "react-redux";
+    3 │
 
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+  i Unused imports might be the result of an incomplete refactoring.
 
-  i Unsafe fix: If this is intentional, prepend allNpcs with an underscore.
+  i Unsafe fix: Remove the unused imports.
 
-    13 13 │   const NPCSection = () => {
-    14 14 │   	const npcs = useSelector(selectNPCsForCurrentPlace);
-    15    │ - → const·allNpcs·=·useSelector(selectAllNPCs);
-       15 │ + → const·_allNpcs·=·useSelector(selectAllNPCs);
-    16 16 │   	const { openNPCDialog, npcSection } = useUIVisibility();
-    17 17 │
+    1 │ import·React·from·"react";
+      │ --------------------------
 
+src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
-src/game/engine/GameEngine.js:137:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+  ! This import is unused.
 
-  × Duplicate class member name "getAssignedWorkers"
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │ import { useSelector, useDispatch } from "react-redux";
+    3 │ import { createSelector } from "@reduxjs/toolkit";
 
-    136 │ 	// Get workers assigned to a specific building (now handled by ProductionService)
-  > 137 │ 	getAssignedWorkers(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 138 │ 		return this.productionService.getAssignedWorkers(state, buildingId);
-  > 139 │ 	}
-        │ 	^
-    140 │
-    141 │ 	// Calculate production rate for a building (now handled by ProductionService)
+  i Unused imports might be the result of an incomplete refactoring.
 
+  i Unsafe fix: Remove the unused imports.
 
-src/game/engine/GameEngine.js:142:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
+    1 │ import·React·from·"react";
+      │ --------------------------
 
-  × Duplicate class member name "calculateProductionRate"
-
-    141 │ 	// Calculate production rate for a building (now handled by ProductionService)
-  > 142 │ 	calculateProductionRate(building, state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 143 │ 		return this.productionService.calculateProductionRate(building, state);
-  > 144 │ 	}
-        │ 	^
-    145 │
-    146 │ 	// Validate that a building can produce (now handled by ProductionService)
-
-
-src/game/engine/GameEngine.js:147:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "canBuildingProduce"
-
-    146 │ 	// Validate that a building can produce (now handled by ProductionService)
-  > 147 │ 	canBuildingProduce(state, buildingId) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 148 │ 		return this.productionService.canBuildingProduce(state, buildingId);
-  > 149 │ 	}
-        │ 	^
-    150 │
-    151 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-
-
-src/game/engine/GameEngine.js:152:2 lint/suspicious/noDuplicateClassMembers ━━━━━━━━━━━━━━━━━━━━━━━━
-
-  × Duplicate class member name "getAllProductionCalculations"
-
-    151 │ 	// Get all production calculations for UI purposes (now handled by ProductionService)
-  > 152 │ 	getAllProductionCalculations(state) {
-        │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 153 │ 		return this.productionService.getAllProductionCalculations(state);
-  > 154 │ 	}
-        │ 	^
-    155 │
-    156 │ 	// Save game state to localStorage
-
-
-src/ui/components/sections/LogSection.js:52:6 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/ControlSection.js:50:6 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Provide an explicit type prop for the button element.
 
-    50 │ 				<h2>Log</h2>
-    51 │ 				<div className="log-filter-container">
-  > 52 │ 					<button
-       │ 					^^^^^^^
-  > 53 │ 						className="log-filter-toggle"
-  > 54 │ 						onClick={() => setShowFilter(!showFilter)}
-  > 55 │ 						title="Filter logs"
-  > 56 │ 					>
-       │ 					^
-    57 │ 						≡
-    58 │ 					</button>
+    49 │ 				<div className="cache">
+  > 50 │ 					<button onClick={clearCache} className="clear-cache-btn">
+       │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    51 │ 						Clear Cache
+    52 │ 					</button>
 
   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
 
@@ -1613,12 +1599,12 @@ Clone found (javascript):
  182 │ 34 │ 				player
 
 Found 41 clones.
-Error: ERROR: jscpd found too many duplicates (4.57%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.58%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.57%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.58%) over threshold (0%)
 ```
 
 </details>
