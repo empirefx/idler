@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21876043034)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21876254884)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,59 +31,35 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 103 files in 693ms. No fixes applied.
-Found 3 errors.src/ui/components/card/EntityCard.js:58:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━
+Checked 103 files in 1012ms. No fixes applied.
+Found 2 errors.src/ui/components/card/EntityCard.js:59:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Static Elements should not be interactive.
+  × The elements with this role can be changed to the following elements:
+    <button>
 
     57 │ 	return (
-  > 58 │ 		<div
-       │ 		^^^^
-  > 59 │ 			onClick={handleClick}
-        ...
-  > 66 │ 			data-enemy-id={entity.id}
-  > 67 │ 		>
-       │ 		^
-    68 │ 			<div className="block-gradient"></div>
-    69 │ 			<img
+    58 │ 		<div
+  > 59 │ 			role="button"
+       │ 			^^^^^^^^^^^^^
+    60 │ 			tabIndex={0}
+    61 │ 			onClick={handleClick}
 
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+  i For examples and more information, see WAI-ARIA Roles
 
 
-src/ui/components/card/NPCCard.js:17:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/card/NPCCard.js:18:4 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  × Static Elements should not be interactive.
+  × The elements with this role can be changed to the following elements:
+    <button>
 
     16 │ 	return (
-  > 17 │ 		<div
-       │ 		^^^^
-  > 18 │ 			className="npc-card"
-        ...
-  > 24 │ 			}}
-  > 25 │ 		>
-       │ 		^
-    26 │ 			<div className={`npc-avatar avatar avatar_${avatar} small`}></div>
-    27 │ 			<div className="npc-info">
+    17 │ 		<div
+  > 18 │ 			role="button"
+       │ 			^^^^^^^^^^^^^
+    19 │ 			tabIndex={0}
+    20 │ 			className="npc-card"
 
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/common/ItemInfo.js:7:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-     6 │ 	return (
-   > 7 │ 		<div
-       │ 		^^^^
-   > 8 │ 			className="item-info-wrapper"
-   > 9 │ 			onMouseEnter={() => setShow(true)}
-  > 10 │ 			onMouseLeave={() => setShow(false)}
-  > 11 │ 		>
-       │ 		^
-    12 │ 			{children}
-    13 │ 			{show && (
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+  i For examples and more information, see WAI-ARIA Roles
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
