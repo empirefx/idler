@@ -5,8 +5,8 @@
 | BIOME_FORMAT               | Pass ✅           |
 | BIOME_LINT                 | Fail ❌           |
 | CHECKOV                    | Pass ✅           |
-| GITHUB_ACTIONS             | Fail ❌           |
-| GITHUB_ACTIONS_ZIZMOR      | Fail ❌           |
+| GITHUB_ACTIONS             | Pass ✅           |
+| GITHUB_ACTIONS_ZIZMOR      | Pass ✅           |
 | GITLEAKS                   | Pass ✅           |
 | GIT_MERGE_CONFLICT_MARKERS | Pass ✅           |
 | HTML                       | Pass ✅           |
@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21849370527)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21849462507)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 149.
-Checked 103 files in 779ms. No fixes applied.
+Checked 103 files in 756ms. No fixes applied.
 Found 62 errors.
 Found 102 warnings.
 Found 5 infos.src/App.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -408,40 +408,6 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Some warnings were emitted while running checks.
 
-```
-
-</details>
-
-<details>
-
-<summary>GITHUB_ACTIONS</summary>
-
-```text
-.github/workflows/release-please.yml:13:15: specifying action "googleapis/release-please-action" in invalid format because ref is missing. available formats are "{owner}/{repo}@{ref}" or "{owner}/{repo}/{path}@{ref}" [action]
-   |
-13 |       - uses: googleapis/release-please-action
-   |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-```
-
-</details>
-
-<details>
-
-<summary>GITHUB_ACTIONS_ZIZMOR</summary>
-
-```text
-🌈 zizmor v1.22.0
-[31mERROR[0m [1mcollect_inputs[0m[2m:[0m [2mgithub_actions_models::common[0m[2m:[0m [3mmsg[0m[2m=[0m"malformed `uses` ref: missing `@<ref>` in googleapis/release-please-action"
-[1m[31mfatal[39m[0m: no audit was performed
-[1m[91merror[0m[1m: failed to load file:///github/workspace/.github/workflows/release-please.yml as workflow[0m
-  [1m[94m|[0m
-  [1m[94m= [0m[1mhelp[0m: this typically indicates a bug in zizmor; please report it
-  [1m[94m= [0m[1mhelp[0m: https://github.com/zizmorcore/zizmor/issues/new?template=bug-report.yml
-
-Caused by:
-    0: failed to load file:///github/workspace/.github/workflows/release-please.yml as workflow
-    1: couldn't turn input into a an appropriate model
-    2: jobs: data did not match any variant of untagged enum Job at line 10 column 3
 ```
 
 </details>
