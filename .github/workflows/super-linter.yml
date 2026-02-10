@@ -30,6 +30,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
+          BIOME_MAX_DIAGNOSTICS: 20
           VALIDATE_CSS_PRETTIER: false
           VALIDATE_HTML_PRETTIER: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
