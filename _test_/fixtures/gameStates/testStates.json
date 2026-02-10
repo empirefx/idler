@@ -1,4 +1,28 @@
 {
+  "_templates": {
+    "basePlayerInventory": {
+      "id": "player",
+      "type": "player",
+      "maxSlots": 20,
+      "maxWeight": 100,
+      "equipment": {
+        "head": null,
+        "body": null,
+        "pants": null,
+        "main-weapon": null,
+        "second-weapon": null
+      }
+    },
+    "basePlaceInventory": {
+      "village_center": {
+        "id": "village_center",
+        "placeId": "village_center",
+        "type": "place",
+        "maxSlots": 30,
+        "items": []
+      }
+    }
+  },
   "emptyState": {
     "enemies": { "byId": {} },
     "places": { "currentPlaceId": "village_center" },
@@ -46,7 +70,7 @@
       "sawmill": {
         "id": "sawmill",
         "name": "Sawmill",
-        "calculateProduction": () => 10,
+        "calculateProduction": "() => 10",
         "productionType": "wood",
         "baseProductionRate": 5
       }
