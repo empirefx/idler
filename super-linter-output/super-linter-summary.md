@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21851659868)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21871360450)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 69.
-Checked 103 files in 748ms. No fixes applied.
+Checked 103 files in 722ms. No fixes applied.
 Found 42 errors.
 Found 47 warnings.src/store/slices/npcInventorySlice.js:253:29 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
@@ -185,6 +185,28 @@ src/store/slices/placeInventorySlice.js:245:31 lint/correctness/noUnusedFunction
     247 247 │   		if (!Array.isArray(items)) return 0;
 
 
+src/store/slices/placeInventorySlice.js:253:31 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    252 │ export const selectTotalQuantityByItemType = createSelector(
+  > 253 │ 	[selectPlaceInventoryItems, (state, itemType) => itemType],
+        │ 	                             ^^^^^
+    254 │ 	(items, itemType) => {
+    255 │ 		if (!Array.isArray(items)) return 0;
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+  i Unsafe fix: If this is intentional, prepend state with an underscore.
+
+    251 251 │
+    252 252 │   export const selectTotalQuantityByItemType = createSelector(
+    253     │ - → [selectPlaceInventoryItems,·(state,·itemType)·=>·itemType],
+        253 │ + → [selectPlaceInventoryItems,·(_state,·itemType)·=>·itemType],
+    254 254 │   	(items, itemType) => {
+    255 255 │   		if (!Array.isArray(items)) return 0;
+
+
 src/store/slices/placesSlice.js:13:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
 
   ! Change to an optional chain.
@@ -205,22 +227,6 @@ src/store/slices/placesSlice.js:13:5 lint/complexity/useOptionalChain  FIXABLE  
     14 14 │   	initialState.availableConnections = currentPlace.connections.map(
     15 15 │   		(placeId) => ({
 
-
-src/ui/components/display/CurrentPlaceDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! This import is unused.
-
-  > 1 │ import React from "react";
-      │        ^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │ import { selectCurrentPlace } from "../../../store/slices/placesSlice";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React·from·"react";
-      │ --------------------------
 
 src/ui/components/display/EnemyDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━
 
