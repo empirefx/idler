@@ -205,10 +205,10 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 							onKeyDown={
 								item && otherInventory
 									? (e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											handleContextMenu(e, item);
+											if (e.key === "Enter" || e.key === " ") {
+												handleContextMenu(e, item);
+											}
 										}
-									}
 									: undefined
 							}
 							// Handle equipment and consumable items

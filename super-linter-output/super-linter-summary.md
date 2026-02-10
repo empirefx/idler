@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21850994997)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21851395156)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,220 +32,165 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 92.
-Checked 103 files in 888ms. No fixes applied.
-Found 50 errors.
-Found 59 warnings.
-Found 3 infos.src/store/slices/inventory/inventoryUtils.js:101:4 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━
+Diagnostics not shown: 81.
+Checked 103 files in 733ms. No fixes applied.
+Found 48 errors.
+Found 53 warnings.src/store/slices/npcInventorySlice.js:8:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━
 
-  i Useless case clause.
+  ! Several of these imports are unused.
 
-     99 │ 				return weightA - weightB;
-    100 │ 			}
-  > 101 │ 			case "name":
-        │ 			^^^^^^^^^^^^
-    102 │ 			default:
-    103 │ 				return a.name.localeCompare(b.name);
+     6 │ import {
+     7 │ 	canItemsStack,
+   > 8 │ 	findItemById,
+       │ 	^^^^^^^^^^^^^
+   > 9 │ 	getItemIndex,
+       │ 	^^^^^^^^^^^^
+    10 │ 	cloneItem,
+    11 │ } from "./inventory/inventoryUtils.js";
 
-  i because the default clause is present:
+  i Unused imports might be the result of an incomplete refactoring.
 
-    100 │ 			}
-    101 │ 			case "name":
-  > 102 │ 			default:
-        │ 			^^^^^^^^
-  > 103 │ 				return a.name.localeCompare(b.name);
-        │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    104 │ 		}
-    105 │ 	});
+  i Unsafe fix: Remove the unused imports.
 
-  i Unsafe fix: Remove the useless case.
-
-     99  99 │   				return weightA - weightB;
-    100 100 │   			}
-    101     │ - → → → case·"name":
-    102 101 │   			default:
-    103 102 │   				return a.name.localeCompare(b.name);
+      6   6 │   import {
+      7   7 │   	canItemsStack,
+      8     │ - → findItemById,
+      9     │ - → getItemIndex,
+     10   8 │   	cloneItem,
+     11   9 │   } from "./inventory/inventoryUtils.js";
 
 
-src/store/slices/inventoryThunks.js:143:6 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
+src/store/slices/npcInventorySlice.js:151:29 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━
 
-  i Template literals are preferred over string concatenation.
+  ! This variable toInventoryId is unused.
 
-    141 │ 			dispatch(
-    142 │ 				addNotification(
-  > 143 │ 					"Failed to move item: " + error.message,
-        │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    144 │ 					NOTIFICATION_TYPES.ERROR,
-    145 │ 				),
-
-  i Unsafe fix: Use a template literal.
-
-    141 141 │   			dispatch(
-    142 142 │   				addNotification(
-    143     │ - → → → → → "Failed·to·move·item:·"·+·error.message,
-        143 │ + → → → → → `Failed·to·move·item:·${error.message}`,
-    144 144 │   					NOTIFICATION_TYPES.ERROR,
-    145 145 │   				),
-
-
-src/store/slices/inventoryThunks.js:193:6 lint/style/useTemplate  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  i Template literals are preferred over string concatenation.
-
-    191 │ 			dispatch(
-    192 │ 				addNotification(
-  > 193 │ 					"Failed to remove item: " + error.message,
-        │ 					^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    194 │ 					NOTIFICATION_TYPES.ERROR,
-    195 │ 				),
-
-  i Unsafe fix: Use a template literal.
-
-    191 191 │   			dispatch(
-    192 192 │   				addNotification(
-    193     │ - → → → → → "Failed·to·remove·item:·"·+·error.message,
-        193 │ + → → → → → `Failed·to·remove·item:·${error.message}`,
-    194 194 │   					NOTIFICATION_TYPES.ERROR,
-    195 195 │   				),
-
-
-src/store/slices/inventory/inventoryUtils.js:34:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    32 │ 		for (const slot of Object.keys(playerInventory.equipment)) {
-    33 │ 			const equipment = playerInventory.equipment[slot];
-  > 34 │ 			if (equipment && equipment.weight) {
-       │ 			    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    35 │ 				total += equipment.weight;
-    36 │ 			}
-
-  i Unsafe fix: Change to an optional chain.
-
-     32  32 │   		for (const slot of Object.keys(playerInventory.equipment)) {
-     33  33 │   			const equipment = playerInventory.equipment[slot];
-     34     │ - → → → if·(equipment·&&·equipment.weight)·{
-         34 │ + → → → if·(equipment?.weight)·{
-     35  35 │   				total += equipment.weight;
-     36  36 │   			}
-
-
-src/store/slices/inventory/inventoryUtils.js:157:27 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    155 │ 	if (inventory.type === "player" && inventory.equipment) {
-    156 │ 		const equipmentWeight = Object.values(inventory.equipment)
-  > 157 │ 			.filter((equipment) => equipment && equipment.weight)
-        │ 			                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    158 │ 			.reduce((total, equipment) => total + equipment.weight, 0);
-    159 │
-
-  i Unsafe fix: Change to an optional chain.
-
-    155 155 │   	if (inventory.type === "player" && inventory.equipment) {
-    156 156 │   		const equipmentWeight = Object.values(inventory.equipment)
-    157     │ - → → → .filter((equipment)·=>·equipment·&&·equipment.weight)
-        157 │ + → → → .filter((equipment)·=>·equipment?.weight)
-    158 158 │   			.reduce((total, equipment) => total + equipment.weight, 0);
-    159 159 │
-
-
-src/store/slices/inventoryThunks.js:109:17 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This variable itemIndex is unused.
-
-    107 │ 		}
-    108 │
-  > 109 │ 		const { item, itemIndex, moveQuantity } = validation;
-        │ 		              ^^^^^^^^^
-    110 │
-    111 │ 		// Create item to move
+    149 │ 		// Move item from NPC inventory to another inventory
+    150 │ 		moveItem(state, action) {
+  > 151 │ 			const { fromInventoryId, toInventoryId, itemId, quantity } =
+        │ 			                         ^^^^^^^^^^^^^
+    152 │ 				action.payload;
+    153 │
 
   i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
 
-src/store/slices/npcSlice.js:60:32 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━
+src/store/slices/npcInventorySlice.js:222:35 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    58 │ // Select NPC by ID
-    59 │ export const selectNPCById = createSelector(
-  > 60 │ 	[(state) => state.npcs.npcs, (state, npcId) => npcId],
-       │ 	                              ^^^^^
-    61 │ 	(npcs, npcId) => npcs[npcId] || null,
-    62 │ );
+    220 │ // Memoized selectors
+    221 │ export const selectNpcInventoryById = createSelector(
+  > 222 │ 	[(state) => state.npcInventory, (state, npcId) => npcId],
+        │ 	                                 ^^^^^
+    223 │ 	(npcInventory, npcId) => (npcInventory ? npcInventory[npcId] : undefined),
+    224 │ );
 
   i Unused parameters might be the result of an incomplete refactoring.
 
   i Unsafe fix: If this is intentional, prepend state with an underscore.
 
-    58 58 │   // Select NPC by ID
-    59 59 │   export const selectNPCById = createSelector(
-    60    │ - → [(state)·=>·state.npcs.npcs,·(state,·npcId)·=>·npcId],
-       60 │ + → [(state)·=>·state.npcs.npcs,·(_state,·npcId)·=>·npcId],
-    61 61 │   	(npcs, npcId) => npcs[npcId] || null,
-    62 62 │   );
+    220 220 │   // Memoized selectors
+    221 221 │   export const selectNpcInventoryById = createSelector(
+    222     │ - → [(state)·=>·state.npcInventory,·(state,·npcId)·=>·npcId],
+        222 │ + → [(state)·=>·state.npcInventory,·(_state,·npcId)·=>·npcId],
+    223 223 │   	(npcInventory, npcId) => (npcInventory ? npcInventory[npcId] : undefined),
+    224 224 │   );
+
+
+src/store/slices/placesSlice.js:65:5 lint/complexity/noCommaOperator ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! The comma operator is disallowed.
+
+    63 │ 		builder.addCase("@@INIT", (state) => {
+    64 │ 			updateAvailableConnections(state);
+  > 65 │ 		}),
+       │ 		  ^
+    66 │ 			builder.addMatcher(
+    67 │ 				(action) => action.type === "places/navigateToPlace",
+
+  i Its use is often confusing and obscures side effects.
+
+
+src/store/slices/placesSlice.js:13:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    11 │ // Initialize available connections for the initial state
+    12 │ const currentPlace = placesData[initialState.currentPlaceId];
+  > 13 │ if (currentPlace && currentPlace.connections) {
+       │     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    14 │ 	initialState.availableConnections = currentPlace.connections.map(
+    15 │ 		(placeId) => ({
+
+  i Unsafe fix: Change to an optional chain.
+
+    11 11 │   // Initialize available connections for the initial state
+    12 12 │   const currentPlace = placesData[initialState.currentPlaceId];
+    13    │ - if·(currentPlace·&&·currentPlace.connections)·{
+       13 │ + if·(currentPlace?.connections)·{
+    14 14 │   	initialState.availableConnections = currentPlace.connections.map(
+    15 15 │   		(placeId) => ({
+
+
+src/store/slices/placesSlice.js:25:6 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    23 │ const updateAvailableConnections = (state) => {
+    24 │ 	const currentPlace = state[state.currentPlaceId];
+  > 25 │ 	if (currentPlace && currentPlace.connections) {
+       │ 	    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    26 │ 		state.availableConnections = currentPlace.connections.map((placeId) => ({
+    27 │ 			id: placeId,
+
+  i Unsafe fix: Change to an optional chain.
+
+    23 23 │   const updateAvailableConnections = (state) => {
+    24 24 │   	const currentPlace = state[state.currentPlaceId];
+    25    │ - → if·(currentPlace·&&·currentPlace.connections)·{
+       25 │ + → if·(currentPlace?.connections)·{
+    26 26 │   		state.availableConnections = currentPlace.connections.map((placeId) => ({
+    27 27 │   			id: placeId,
+
+
+src/store/slices/placesSlice.js:58:15 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    56 │ 		},
+    57 │ 		// Set entire places state (used for loading saved state)
+  > 58 │ 		setPlaces: (state, action) => action.payload,
+       │ 		            ^^^^^
+    59 │ 	},
+    60 │
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+  i Unsafe fix: If this is intentional, prepend state with an underscore.
+
+    56 56 │   		},
+    57 57 │   		// Set entire places state (used for loading saved state)
+    58    │ - → → setPlaces:·(state,·action)·=>·action.payload,
+       58 │ + → → setPlaces:·(_state,·action)·=>·action.payload,
+    59 59 │   	},
+    60 60 │
 
 
 src/ui/components/display/LogDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
 
-  ! Several of these imports are unused.
+  ! These imports are unused.
 
-  > 1 │ import React, { useEffect, useRef, useState } from "react";
-      │        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    2 │ import { useSelector } from "react-redux";
-    3 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·React,·{·useEffect,·useRef,·useState·}·from·"react";
-      │        -------                    ---------
-
-src/ui/components/display/LogDisplay.js:2:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━
-
-  ! This import is unused.
-
-    1 │ import React, { useEffect, useRef, useState } from "react";
-  > 2 │ import { useSelector } from "react-redux";
-      │        ^^^^^^^^^^^^^^^
-    3 │
-    4 │ const LOG_CATEGORIES = {
+  > 1 │ import React, { useEffect, useRef } from "react";
+      │        ^^^^^
+    2 │ const _LOG_CATEGORIES = {
+    3 │ 	worker: { label: "Workers", color: "worker" },
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-     1  1 │   import React, { useEffect, useRef, useState } from "react";
-     2    │ - import·{·useSelector·}·from·"react-redux";
-     3  2 │
-     4  3 │   const LOG_CATEGORIES = {
-
-
-src/ui/components/display/LogDisplay.js:4:7 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━
-
-  ! This variable LOG_CATEGORIES is unused.
-
-    2 │ import { useSelector } from "react-redux";
-    3 │
-  > 4 │ const LOG_CATEGORIES = {
-      │       ^^^^^^^^^^^^^^
-    5 │ 	worker: { label: "Workers", color: "worker" },
-    6 │ 	combat: { label: "Combat", color: "combat" },
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend LOG_CATEGORIES with an underscore.
-
-     2  2 │   import { useSelector } from "react-redux";
-     3  3 │
-     4    │ - const·LOG_CATEGORIES·=·{
-        4 │ + const·_LOG_CATEGORIES·=·{
-     5  5 │   	worker: { label: "Workers", color: "worker" },
-     6  6 │   	combat: { label: "Combat", color: "combat" },
-
+    1 │ import·React,·{·useEffect,·useRef·}·from·"react";
+      │        -------
 
 src/ui/components/display/ResourceDisplay.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
@@ -343,93 +288,141 @@ src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImport
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/display/InventoryDisplay.js:194:7 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
+src/ui/components/display/InventoryDisplay.js:196:8 lint/a11y/useSemanticElements ━━━━━━━━━━━━━━━━━━
 
-  × Static Elements should not be interactive.
+  × The elements with this role can be changed to the following elements:
+    <button>
 
-    193 │ 					return (
-  > 194 │ 						<div
-        │ 						^^^^
-  > 195 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
-         ...
-  > 218 │ 							}
-  > 219 │ 						>
-        │ 						^
-    220 │ 							{item?.type === "equipment" && (
-    221 │ 								// Display armor/weapon sprite
+    194 │ 					return (
+    195 │ 						<div
+  > 196 │ 							role="button"
+        │ 							^^^^^^^^^^^^^
+    197 │ 							tabIndex={0}
+    198 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
 
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+  i For examples and more information, see WAI-ARIA Roles
 
 
-src/ui/components/display/InventoryDisplay.js:194:7 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    193 │ 					return (
-  > 194 │ 						<div
-        │ 						^^^^
-  > 195 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
-         ...
-  > 218 │ 							}
-  > 219 │ 						>
-        │ 						^
-    220 │ 							{item?.type === "equipment" && (
-    221 │ 								// Display armor/weapon sprite
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/display/InventoryDisplay.js:50:28 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━
+src/ui/components/display/InventoryDisplay.js:51:28 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━
 
   × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
 
-    49 │ 	// Handle right-click context menu for moving items between inventories
-  > 50 │ 	const handleContextMenu = useCallback(
+    50 │ 	// Handle right-click context menu for moving items between inventories
+  > 51 │ 	const handleContextMenu = useCallback(
        │ 	                          ^^^^^^^^^^^
-    51 │ 		(e, item) => {
-    52 │ 			if (!otherInventory) return; // Do nothing if no target inventory
+    52 │ 		(e, item) => {
+    53 │ 			if (!otherInventory) return; // Do nothing if no target inventory
 
   i Hooks should not be called after an early return.
 
-    45 │ 	const dispatch = useDispatch();
-    46 │
-  > 47 │ 	if (!inventory) return null; // If inventory is not found, render nothing
+    46 │ 	});
+    47 │
+  > 48 │ 	if (!inventory) return null; // If inventory is not found, render nothing
        │ 	                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    48 │
-    49 │ 	// Handle right-click context menu for moving items between inventories
+    49 │
+    50 │ 	// Handle right-click context menu for moving items between inventories
 
   i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
 
   i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
 
 
-src/ui/components/display/LogDisplay.js:15:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+src/ui/components/display/InventoryDisplay.js:112:28 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━
 
-  × This hook specifies more dependencies than necessary: filteredLogs.
+  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
 
-    14 │ 	// Scroll to bottom on update
-  > 15 │ 	useEffect(() => {
-       │ 	^^^^^^^^^
-    16 │ 		if (containerRef.current) {
-    17 │ 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    111 │ 	// Handle confirm button for moving items between inventories
+  > 112 │ 	const handleConfirmMove = useCallback(
+        │ 	                          ^^^^^^^^^^^
+    113 │ 		(quantity = null) => {
+    114 │ 			if (!otherInventoryId || !selectedItem) return; // Do nothing if no target inventory or no item selected
 
-  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
+  i Hooks should not be called after an early return.
 
-    17 │ 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    18 │ 		}
-  > 19 │ 	}, [filteredLogs]);
-       │ 	    ^^^^^^^^^^^^
-    20 │
-    21 │ 	return (
+    46 │ 	});
+    47 │
+  > 48 │ 	if (!inventory) return null; // If inventory is not found, render nothing
+       │ 	                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    49 │
+    50 │ 	// Handle right-click context menu for moving items between inventories
 
-  i React relies on hook dependencies to determine when to re-compute Effects.
-    Specifying more dependencies than required can lead to unnecessary re-rendering
-    and degraded performance.
+  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
 
-  i Unsafe fix: Remove the extra dependencies from the list.
+  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
 
-    19 │ → },·[filteredLogs]);
-       │       ------------
+
+src/ui/components/display/InventoryDisplay.js:135:23 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━
+
+  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
+
+    134 │ 	// Handle cancel button for moving items between inventories
+  > 135 │ 	const handleCancel = useCallback(() => {
+        │ 	                     ^^^^^^^^^^^
+    136 │ 		setDialogOpen(false);
+    137 │ 		setSelectedItem(null);
+
+  i Hooks should not be called after an early return.
+
+    46 │ 	});
+    47 │
+  > 48 │ 	if (!inventory) return null; // If inventory is not found, render nothing
+       │ 	                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    49 │
+    50 │ 	// Handle right-click context menu for moving items between inventories
+
+  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
+
+  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
+
+src/ui/components/display/InventoryDisplay.js:141:24 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━
+
+  × This hook is being called conditionally, but all hooks must be called in the exact same order in every component render.
+
+    140 │ 	// Consume consumable items: lookup heal from the item directly
+  > 141 │ 	const handleConsume = useCallback(
+        │ 	                      ^^^^^^^^^^^
+    142 │ 		(item) => {
+    143 │ 			const healAmount = item.consumable?.heal;
+
+  i Hooks should not be called after an early return.
+
+    46 │ 	});
+    47 │
+  > 48 │ 	if (!inventory) return null; // If inventory is not found, render nothing
+       │ 	                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    49 │
+    50 │ 	// Handle right-click context menu for moving items between inventories
+
+  i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
+
+  i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
+
+src/ui/components/display/InventoryDisplay.js:199:13 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━
+
+  × Avoid using the index of an array as key property in an element.
+
+    197 │ 							tabIndex={0}
+    198 │ 							className={`inventory-slot ${item ? "filled" : "empty"}`}
+  > 199 │ 							key={i}
+        │ 							     ^
+    200 │ 							onContextMenu={
+    201 │ 								item && otherInventory
+
+  i This is the source of the key value.
+
+    189 │ 			</div>
+    190 │ 			<div className="inventory-flex">
+  > 191 │ 				{Array.from({ length: inventory.maxSlots }, (_, i) => {
+        │ 				                                                ^
+    192 │ 					const item = inventory.items[i];
+    193 │
+
+  i The order of the items may change, and this also affects performances and component state.
+
+  i Check the React documentation.
+
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -449,8 +442,8 @@ Clone found (javascript):
    /github/workspace/src/ui/components/sections/WorkersSection.js [28:11 - 36:3]
 
 Clone found (javascript):
- - /github/workspace/src/ui/components/display/LogDisplay.js [2:14 - 11:7] (9 lines, 95 tokens)
-   /github/workspace/src/ui/components/sections/LogSection.js [5:24 - 14:6]
+ - /github/workspace/src/ui/components/display/LogDisplay.js [2:2 - 9:7] (7 lines, 88 tokens)
+   /github/workspace/src/ui/components/sections/LogSection.js [7:2 - 14:6]
 
 Clone found (css):
  - /github/workspace/src/styles/sections/places-section.css [131:7 - 160:19] (29 lines, 150 tokens)
@@ -623,19 +616,17 @@ Clone found (javascript):
  50 │ 36 │ 						<div className="no-workers-message">Currently
 
 Clone found (javascript):
- - /github/workspace/src/ui/components/display/LogDisplay.js [2:14 - 11:7] (9 lines, 95 tokens)
-   /github/workspace/src/ui/components/sections/LogSection.js [5:24 - 14:6]
+ - /github/workspace/src/ui/components/display/LogDisplay.js [2:2 - 9:7] (7 lines, 88 tokens)
+   /github/workspace/src/ui/components/sections/LogSection.js [7:2 - 14:6]
 
- 2  │ 5  │ ;
- 3  │ 6  │
- 4  │ 7  │ const LOG_CATEGORIES = {
- 5  │ 8  │ 	worker: { label: "Workers", color: "worker" },
- 6  │ 9  │ 	combat: { label: "Combat", color: "combat" },
- 7  │ 10 │ 	movement: { label: "Movement", color: "movement" },
- 8  │ 11 │ 	default: { label: "Default", color: "default" },
- 9  │ 12 │ };
- 10 │ 13 │
- 11 │ 14 │ export
+ 2 │ 7  │ = {
+ 3 │ 8  │ 	worker: { label: "Workers", color: "worker" },
+ 4 │ 9  │ 	combat: { label: "Combat", color: "combat" },
+ 5 │ 10 │ 	movement: { label: "Movement", color: "movement" },
+ 6 │ 11 │ 	default: { label: "Default", color: "default" },
+ 7 │ 12 │ };
+ 8 │ 13 │
+ 9 │ 14 │ export
 
 Clone found (css):
  - /github/workspace/src/styles/sections/places-section.css [131:7 - 160:19] (29 lines, 150 tokens)
@@ -1620,12 +1611,12 @@ Clone found (javascript):
  182 │ 34 │ 				player
 
 Found 41 clones.
-Error: ERROR: jscpd found too many duplicates (4.58%) over threshold (0%)
+Error: ERROR: jscpd found too many duplicates (4.57%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.58%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (4.57%) over threshold (0%)
 ```
 
 </details>
