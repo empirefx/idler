@@ -417,6 +417,11 @@ describe("GameEngine", () => {
 	});
 
 	describe("update() method", () => {
+		const standardBuildingsConfig = [
+			{ id: "sawmill", name: "Sawmill", productionType: "wood", baseRate: 10 },
+			{ id: "mine", name: "Mine", productionType: "stone", baseRate: 5 },
+		];
+
 		it("should save initial state when no localStorage data exists", () => {
 			global.localStorage.getItem.mockReturnValue(null);
 
@@ -436,16 +441,12 @@ describe("GameEngine", () => {
 		});
 
 		it("should process building production for all buildings with workers", () => {
-			const buildingsConfig = [
-				{ id: "sawmill", name: "Sawmill", productionType: "wood", baseRate: 10 },
-				{ id: "mine", name: "Mine", productionType: "stone", baseRate: 5 },
-			];
 			const workersConfig = [
 				{ id: "worker1", assignedBuildingId: "sawmill" },
 				{ id: "worker2", assignedBuildingId: "mine" },
 			];
 			
-			const { buildings, state } = createMultipleBuildingsScenario(buildingsConfig, workersConfig);
+			const { buildings, state } = createMultipleBuildingsScenario(standardBuildingsConfig, workersConfig);
 
 			gameEngine.update(1000, state);
 
@@ -455,15 +456,11 @@ describe("GameEngine", () => {
 		});
 
 		it("should not process buildings without assigned workers", () => {
-			const buildingsConfig = [
-				{ id: "sawmill", name: "Sawmill", productionType: "wood", baseRate: 10 },
-				{ id: "mine", name: "Mine", productionType: "stone", baseRate: 5 },
-			];
 			const workersConfig = [
 				{ id: "worker1", assignedBuildingId: "sawmill" }, // Only assigned to sawmill
 			];
 			
-			const { buildings, state } = createMultipleBuildingsScenario(buildingsConfig, workersConfig);
+			const { buildings, state } = createMultipleBuildingsScenario(standardBuildingsConfig, workersConfig);
 
 			gameEngine.update(1000, state);
 
