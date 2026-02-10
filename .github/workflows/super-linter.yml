@@ -5,6 +5,8 @@ on: # yamllint disable-line rule:truthy
   push:
     branches-ignore:
       - 'dependabot/**'
+    paths-ignore:
+      - 'super-linter-output/**'
   pull_request: null
 
 permissions:
