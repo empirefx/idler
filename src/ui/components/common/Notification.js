@@ -27,11 +27,11 @@ const Notification = ({ notification }) => {
 	};
 
 	return (
-		<div 
-			className={getNotificationClass()} 
+		<div
+			className={getNotificationClass()}
 			onClick={handleDismiss}
 			onKeyDown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
+				if (e.key === "Enter" || e.key === " ") {
 					handleDismiss();
 				}
 			}}
@@ -43,7 +43,7 @@ const Notification = ({ notification }) => {
 				className="notification-close"
 				onClick={handleDismiss}
 				onKeyDown={(e) => {
-					if (e.key === 'Enter' || e.key === ' ') {
+					if (e.key === "Enter" || e.key === " ") {
 						handleDismiss();
 					}
 				}}

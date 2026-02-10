@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21872674798)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21873281160)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,70 +32,24 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 50.
-Checked 103 files in 731ms. No fixes applied.
-Found 39 errors.
-Found 31 warnings.src/store/slices/playerInventorySlice.js:295:27 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+Diagnostics not shown: 42.
+Checked 103 files in 694ms. No fixes applied.
+Found 36 errors.
+Found 26 warnings.src/ui/components/common/NewLevelDialog.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
-  ! This parameter is unused.
+  ! This import is unused.
 
-    294 │ export const selectEquippedItem = createSelector(
-  > 295 │ 	[selectPlayerEquipment, (state, slot) => slot],
-        │ 	                         ^^^^^
-    296 │ 	(equipment, slot) => (equipment ? equipment[slot] : null),
-    297 │ );
+  > 1 │ import React from "react";
+      │        ^^^^^
+    2 │
+    3 │ // Modal-style dialog for level-up choices
 
-  i Unused parameters might be the result of an incomplete refactoring.
+  i Unused imports might be the result of an incomplete refactoring.
 
-  i Unsafe fix: If this is intentional, prepend state with an underscore.
+  i Unsafe fix: Remove the unused imports.
 
-    293 293 │
-    294 294 │   export const selectEquippedItem = createSelector(
-    295     │ - → [selectPlayerEquipment,·(state,·slot)·=>·slot],
-        295 │ + → [selectPlayerEquipment,·(_state,·slot)·=>·slot],
-    296 296 │   	(equipment, slot) => (equipment ? equipment[slot] : null),
-    297 297 │   );
-
-
-src/store/slices/playerInventorySlice.js:300:31 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
-
-  ! This parameter is unused.
-
-    299 │ export const selectCanEquipItem = createSelector(
-  > 300 │ 	[selectPlayerInventoryById, (state, itemId) => itemId],
-        │ 	                             ^^^^^
-    301 │ 	(inventory, itemId) => {
-    302 │ 		if (!inventory) return false;
-
-  i Unused parameters might be the result of an incomplete refactoring.
-
-  i Unsafe fix: If this is intentional, prepend state with an underscore.
-
-    298 298 │
-    299 299 │   export const selectCanEquipItem = createSelector(
-    300     │ - → [selectPlayerInventoryById,·(state,·itemId)·=>·itemId],
-        300 │ + → [selectPlayerInventoryById,·(_state,·itemId)·=>·itemId],
-    301 301 │   	(inventory, itemId) => {
-    302 302 │   		if (!inventory) return false;
-
-
-src/styles/components.css:164:29 lint/complexity/noImportantStyles  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! Avoid the use of the !important style.
-
-    162 │ 	color: #aed7ff;
-    163 │ 	text-align: center;
-  > 164 │ 	text-transform: capitalize !important;
-        │ 	                           ^^^^^^^^^^
-    165 │ 	border-radius: var(--border-radius-sm);
-    166 │ 	padding: var(--spacing-xs) var(--spacing-sm);
-
-  i This style reverses the cascade logic, and precedence is reversed. This could lead to having styles with higher specificity being overridden by styles with lower specificity.
-
-  i Unsafe fix: Remove the style.
-
-    164 │ → text-transform:·capitalize·!important;
-        │                             -----------
+    1 │ import·React·from·"react";
+      │ --------------------------
 
 src/ui/components/common/Notification.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
 
@@ -112,28 +66,6 @@ src/ui/components/common/Notification.js:1:8 lint/correctness/noUnusedImports  F
 
     1 │ import·React,·{·useEffect·}·from·"react";
       │        -------
-
-src/ui/components/common/Notification.js:4:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━
-
-  ! This import is unused.
-
-    2 │ import { useDispatch } from "react-redux";
-    3 │ import { removeNotification } from "../../../store/slices/notificationSlice";
-  > 4 │ import { NOTIFICATION_TYPES } from "../../../store/slices/notificationSlice";
-      │        ^^^^^^^^^^^^^^^^^^^^^^
-    5 │ import "../../../styles/sections/notifications.css";
-    6 │
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-     2  2 │   import { useDispatch } from "react-redux";
-     3  3 │   import { removeNotification } from "../../../store/slices/notificationSlice";
-     4    │ - import·{·NOTIFICATION_TYPES·}·from·"../../../store/slices/notificationSlice";
-     5  4 │   import "../../../styles/sections/notifications.css";
-     6  5 │
-
 
 src/ui/components/common/NotificationContainer.js:1:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
@@ -343,30 +275,82 @@ src/ui/components/sections/ControlSection.js:1:8 lint/correctness/noUnusedImport
     1 │ import·React·from·"react";
       │ --------------------------
 
-src/ui/components/common/Notification.js:31:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━
+src/ui/components/common/NewLevelDialog.js:5:2 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━
 
   × Static Elements should not be interactive.
 
-    30 │ 	return (
-  > 31 │ 		<div className={getNotificationClass()} onClick={handleDismiss}>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    32 │ 			<span className="notification-message">{message}</span>
-    33 │ 			<button
+    3 │ // Modal-style dialog for level-up choices
+    4 │ const NewLevelDialog = ({ onChoose, onCancel }) => (
+  > 5 │ 	<div className="dialog" onClick={onCancel}>
+      │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    6 │ 		<p>Choose bonus:</p>
+    7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
 
   i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-src/ui/components/common/Notification.js:31:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/common/NewLevelDialog.js:5:2 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━
 
   × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
 
-    30 │ 	return (
-  > 31 │ 		<div className={getNotificationClass()} onClick={handleDismiss}>
-       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    32 │ 			<span className="notification-message">{message}</span>
-    33 │ 			<button
+    3 │ // Modal-style dialog for level-up choices
+    4 │ const NewLevelDialog = ({ onChoose, onCancel }) => (
+  > 5 │ 	<div className="dialog" onClick={onCancel}>
+      │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    6 │ 		<p>Choose bonus:</p>
+    7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
 
   i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/common/NewLevelDialog.js:7:3 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    5 │ 	<div className="dialog" onClick={onCancel}>
+    6 │ 		<p>Choose bonus:</p>
+  > 7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+      │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    8 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+    9 │ 				+1 STR
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/common/NewLevelDialog.js:7:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    5 │ 	<div className="dialog" onClick={onCancel}>
+    6 │ 		<p>Choose bonus:</p>
+  > 7 │ 		<div className="player-options" onClick={(e) => e.stopPropagation()}>
+      │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    8 │ 			<button className="select-btn" onClick={() => onChoose({ strength: 1 })}>
+    9 │ 				+1 STR
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/common/Notification.js:39:4 lint/a11y/noNoninteractiveTabindex  FIXABLE  ━━━━━━━━━━
+
+  × The HTML element div is non-interactive. Do not use tabIndex.
+
+    37 │ 			}}
+    38 │ 			role="alert"
+  > 39 │ 			tabIndex={0}
+       │ 			^^^^^^^^^^^^
+    40 │ 		>
+    41 │ 			<span className="notification-message">{message}</span>
+
+  i Adding non-interactive elements to the keyboard navigation flow can confuse users.
+
+  i Unsafe fix: Remove the tabIndex attribute.
+
+    37 37 │   			}}
+    38 38 │   			role="alert"
+    39    │ - → → → tabIndex={0}
+    40 39 │   		>
+    41 40 │   			<span className="notification-message">{message}</span>
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
