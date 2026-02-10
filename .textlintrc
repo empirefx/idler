@@ -1,0 +1,16 @@
+{
+  "filters": {
+    "comments": true
+  },
+  "rules": {
+    "terminology": {
+      "defaultTerms": false
+    }
+  },
+  "ignorePaths": [
+    "CHANGELOG.md",
+    ".release-please-manifest.json",
+    "super-linter-output/**/*",
+    "static/**/*"
+  ]
+}
