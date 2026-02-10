@@ -56,7 +56,7 @@ jobs:
           VALIDATE_PYTHON_RUFF: false
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_GIT_COMMITLINT: false
-          SAVE_SUPER_LINTER_SUMMARY: false
+          SAVE_SUPER_LINTER_SUMMARY: true
       - name: Apply Biome fixes
         run: npx @biomejs/biome check --apply src/
       - name: Commit and push linting fixes

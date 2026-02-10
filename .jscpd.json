@@ -1,6 +1,8 @@
 {
   "ignore": [
     "**/static/**",
-    "**/node_modules/**"
-  ]
+    "static/**"
+  ],
+  "output": "json",
+  "threshold": 0
 }
