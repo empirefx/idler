@@ -19,23 +19,30 @@ const NPCDialog = ({
 	const dispatch = useDispatch();
 	const player = useSelector(selectPlayer);
 	const npc = useSelector((state) => selectNPCById(state, npcId));
+	const questsState = useSelector((state) => state.quests);
 	const dialogRef = useRef(null);
 
-	// Determine if this NPC offers a quest
-	const npcQuest = npc
-		? Object.values(questCatalog).find(
+	// Get all quests offered by this NPC
+	const npcQuests = npc
+		? Object.values(questCatalog).filter(
 				(quest) => quest.giverNpcId === npc.id,
 		  )
-		: null;
-
-	const isQuestActive = useSelector((state) =>
-		npcQuest ? selectIsQuestActive(npcQuest.id)(state) : false,
-	);
-	const isQuestCompleted = useSelector((state) =>
-		npcQuest ? selectIsQuestCompleted(npcQuest.id)(state) : false,
-	);
+		: [];
 
 	const [questConversationState, setQuestConversationState] = useState(null);
+
+	// Get the current quest from conversation state
+	const currentQuest =
+		questConversationState && questCatalog[questConversationState.questId]
+			? questCatalog[questConversationState.questId]
+			: null;
+
+	const isQuestActive = currentQuest
+		? Boolean(questsState?.activeById?.[currentQuest.id])
+		: false;
+	const isQuestCompleted = currentQuest
+		? Boolean(questsState?.completedIds?.includes(currentQuest.id))
+		: false;
 
 	// Handle ESC key and native dialog API
 	useEffect(() => {
@@ -65,8 +72,8 @@ const NPCDialog = ({
 	};
 
 	const handleAcceptQuestClick = () => {
-		if (!npcQuest || !npc) return;
-		dispatch(playerIntentAcceptQuest(npcQuest.id, npc.id));
+		if (!currentQuest || !npc) return;
+		dispatch(playerIntentAcceptQuest(currentQuest.id, npc.id));
 		resetQuestConversation();
 	};
 
@@ -79,18 +86,29 @@ const NPCDialog = ({
 
 		const option = npc.dialogue.options[index];
 
-		// If this option starts a quest conversation and the quest is not completed
-		if (option?.startsQuestId && !isQuestCompleted) {
-			if (npcQuest && npcQuest.id === option.startsQuestId) {
-				setQuestConversationState({
-					questId: npcQuest.id,
-					stepIndex: 0,
-				});
-				// Clear standard selected option to switch into quest conversation mode
-				if (onOptionSelect) {
-					onOptionSelect(null);
+		// If this option starts a quest conversation
+		if (option?.startsQuestId) {
+			// Look up the quest directly from the startsQuestId
+			const questForOption = questCatalog[option.startsQuestId];
+			
+			// Verify the quest exists and is given by this NPC
+			if (questForOption && questForOption.giverNpcId === npc.id) {
+				// Check if quest is already completed using current state
+				const isThisQuestCompleted = questsState?.completedIds?.includes(
+					option.startsQuestId,
+				);
+				
+				if (!isThisQuestCompleted) {
+					setQuestConversationState({
+						questId: option.startsQuestId,
+						stepIndex: 0,
+					});
+					// Clear standard selected option to switch into quest conversation mode
+					if (onOptionSelect) {
+						onOptionSelect(null);
+					}
+					return;
 				}
-				return;
 			}
 		}
 
@@ -101,10 +119,9 @@ const NPCDialog = ({
 	};
 
 	const advanceQuestConversation = () => {
-		if (!questConversationState || !npcQuest) return;
+		if (!questConversationState || !currentQuest) return;
 
-		const quest = questCatalog[npcQuest.id];
-		const steps = quest?.conversation || [];
+		const steps = currentQuest?.conversation || [];
 		if (steps.length === 0) {
 			resetQuestConversation();
 			return;
@@ -130,9 +147,8 @@ const NPCDialog = ({
 
 	const getResponseText = () => {
 		// Quest conversation overrides normal dialogue
-		if (questConversationState && npcQuest) {
-			const quest = questCatalog[npcQuest.id];
-			const steps = quest?.conversation || [];
+		if (questConversationState && currentQuest) {
+			const steps = currentQuest?.conversation || [];
 			const step =
 				steps[questConversationState.stepIndex] ||
 				steps[steps.length - 1] ||
@@ -153,9 +169,8 @@ const NPCDialog = ({
 
 	const getPlayerText = () => {
 		// Quest conversation overrides normal dialogue
-		if (questConversationState && npcQuest) {
-			const quest = questCatalog[npcQuest.id];
-			const steps = quest?.conversation || [];
+		if (questConversationState && currentQuest) {
+			const steps = currentQuest?.conversation || [];
 			const step =
 				steps[questConversationState.stepIndex] ||
 				steps[steps.length - 1] ||
@@ -229,11 +244,10 @@ const NPCDialog = ({
 						</div>
 						<div className="npc-response">{getResponseText()}</div>
 						<div className="dialog-options">
-							{questConversationState && npcQuest ? (
+							{questConversationState && currentQuest ? (
 								// Quest conversation mode: show Continue / Accept / Maybe later
 								(() => {
-									const quest = questCatalog[npcQuest.id];
-									const steps = quest?.conversation || [];
+									const steps = currentQuest?.conversation || [];
 									const step =
 										steps[questConversationState.stepIndex] ||
 										steps[steps.length - 1] ||

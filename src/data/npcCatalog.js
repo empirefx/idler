@@ -22,6 +22,12 @@ export const npcCatalog = {
 						"Gather resources from the forest, clear out the monsters that threaten us, and build structures to strengthen our community.",
 					startsQuestId: "help_village_gather_wood",
 				},
+				{
+					text: "I can help clear out the monsters.",
+					response:
+						"That would be a great help to our village. Many creatures have been seen near our borders.",
+					startsQuestId: "help_village_kill_monsters",
+				},
 			],
 		},
 	},

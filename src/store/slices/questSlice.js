@@ -20,7 +20,19 @@ const questSlice = createSlice({
 			state.activeById[questId] = {
 				questId,
 				acceptedAt: Date.now(),
+				progress: {},
 			};
+		},
+
+		questProgressUpdated: (state, action) => {
+			const { questId, progressKey, value } = action.payload;
+			if (!questId || !state.activeById[questId]) return;
+
+			if (!state.activeById[questId].progress) {
+				state.activeById[questId].progress = {};
+			}
+
+			state.activeById[questId].progress[progressKey] = value;
 		},
 
 		questCompleted: (state, action) => {
@@ -47,7 +59,7 @@ const questSlice = createSlice({
 	},
 });
 
-export const { questAccepted, questCompleted, questAbandoned } = questSlice.actions;
+export const { questAccepted, questCompleted, questAbandoned, questProgressUpdated } = questSlice.actions;
 
 // Selectors
 export const selectQuestState = (state) => state.quests;
@@ -64,6 +76,11 @@ export const selectIsQuestCompleted =
 	(questId) =>
 	(state) =>
 		Boolean(state.quests.completedIds?.includes(questId));
+
+export const selectQuestProgress =
+	(questId, progressKey) =>
+	(state) =>
+		state.quests.activeById?.[questId]?.progress?.[progressKey] ?? 0;
 
 export default questSlice.reducer;
 

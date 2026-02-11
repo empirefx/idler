@@ -12,6 +12,7 @@ import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
 import { NavigationService } from "../services/NavigationService";
 import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
+import { QuestService } from "../services/QuestService";
 
 /**
  * GameEngine: wires systems + runs game loop
@@ -60,6 +61,11 @@ class GameEngine {
 
 		// Initialize services
 		this.combatService.initialize(this.store, this.eventBusService);
+		this.questService = new QuestService(
+			this.store,
+			this.dispatch,
+			this.eventBusService,
+		);
 
 		// Listen for spawn events and add enemies to store
 		this.eventBusService.on("spawnEnemy", ({ placeId, enemy }) => {

@@ -1,6 +1,62 @@
 import { useSelector } from "react-redux";
-import { selectActiveQuestIds } from "../../../store/slices/questSlice";
+import {
+	selectActiveQuestIds,
+	selectQuestProgress,
+} from "../../../store/slices/questSlice";
 import { questCatalog } from "../../../data/questCatalog";
+
+const QuestItem = ({ questId }) => {
+	const quest = questCatalog[questId];
+	if (!quest) return null;
+
+	// Get progress for each objective
+	const progressData =
+		quest.objectives &&
+		Object.entries(quest.objectives).map(([key, objective]) => {
+			const progress = useSelector(
+				selectQuestProgress(quest.id, objective.progressKey),
+			);
+			return {
+				key,
+				objective,
+				progress: progress || 0,
+			};
+		});
+
+	return (
+		<li className="quest-list-item">
+			<strong>{quest.title}</strong>
+			{quest.requirementSummary ? (
+				<span className="quest-summary">
+					{" "}
+					- {quest.requirementSummary}
+				</span>
+			) : null}
+			{progressData && progressData.length > 0 ? (
+				<div className="quest-progress">
+					{progressData.map(({ objective, progress }) => {
+						if (objective.type === "kill") {
+							const targetText =
+								objective.target === "any"
+									? "any monster"
+									: objective.target;
+							return (
+								<span
+									key={objective.progressKey}
+									className="quest-progress-item"
+								>
+									{" "}
+									- Kill {targetText}: {progress}/{objective.required}
+								</span>
+							);
+						}
+						return null;
+					})}
+				</div>
+			) : null}
+		</li>
+	);
+};
 
 const QuestSection = () => {
 	const activeQuestIds = useSelector(selectActiveQuestIds);
@@ -15,22 +71,9 @@ const QuestSection = () => {
 				<div className="quest-section-content">
 					<h2 className="quest-section-title">Active quests</h2>
 					<ul className="quest-list">
-						{activeQuestIds.map((questId) => {
-							const quest = questCatalog[questId];
-							if (!quest) return null;
-
-							return (
-								<li key={questId} className="quest-list-item">
-									<strong>{quest.title}</strong>
-									{quest.requirementSummary ? (
-										<span className="quest-summary">
-											{" "}
-											- {quest.requirementSummary}
-										</span>
-									) : null}
-								</li>
-							);
-						})}
+						{activeQuestIds.map((questId) => (
+							<QuestItem key={questId} questId={questId} />
+						))}
 					</ul>
 				</div>
 			)}

@@ -197,6 +197,11 @@ export const CombatService = {
 					placeId: enemySnapshot.placeId,
 					enemy: enemySnapshot,
 				});
+				// Also emit generic enemyDead event for quest tracking
+				this.eventBusService.emit("enemyDead", {
+					placeId: enemySnapshot.placeId,
+					enemy: enemySnapshot,
+				});
 
 				// Check if all enemies in this place are dead and trigger cleanup
 				this.checkAllEnemiesDead(enemySnapshot.placeId);
