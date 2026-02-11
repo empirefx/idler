@@ -41,7 +41,7 @@ export const placesData = {
 			pool: ["woodland_predator", "forest_beast"], // Multiple enemy types - pool concept
 			waveSize: [2, 4],
 			respawnDelay: 8,
-			drops: [{ itemId: "or", dropRate: 0.3 }],
+			drops: [{ itemId: "iron-ore", dropRate: 0.3 }],
 		},
 	},
 	river_crossing: {
@@ -103,7 +103,7 @@ export const placesData = {
 			waveSize: [3, 6],
 			respawnDelay: 10,
 			drops: [
-				{ itemId: "or", dropRate: 0.5 },
+				{ itemId: "iron-ore", dropRate: 0.5 },
 				{ itemId: "apple", dropRate: 0.2 },
 			],
 		},
@@ -111,6 +111,6 @@ export const placesData = {
 };
 
 export const metadata = {
-	version: "2.0.0",
-	lastUpdated: "2025-01-28",
+	version: "2.0.1",
+	lastUpdated: "2026-02-11",
 };

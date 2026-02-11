@@ -17,17 +17,17 @@ export const itemCatalog = {
 		weight: 0.5,
 		consumable: { heal: 12 },
 	},
-	or: {
+	"iron-ore": {
 		id: 3,
 		type: "material",
-		name: "or",
-		description: "A piece of or",
+		name: "iron ore",
+		description: "A piece of iron ore",
 		quantity: 0,
 		weight: 2,
 	},
 };
 
 export const metadata = {
-	version: "1.0.6",
-	lastUpdated: "2025-04-23",
+	version: "1.0.7",
+	lastUpdated: "2026-02-11",
 };
