@@ -6,6 +6,7 @@ export const npcCatalog = {
 			"The wise leader of the settlement, with years of knowledge about the region.",
 		avatar: 1,
 		location: "village_center",
+		hasQuestToGive: true,
 		dialogue: {
 			initial:
 				"Welcome, traveler. Our village has seen better days, but we endure.",
@@ -19,6 +20,7 @@ export const npcCatalog = {
 					text: "How can I help the village?",
 					response:
 						"Gather resources from the forest, clear out the monsters that threaten us, and build structures to strengthen our community.",
+					startsQuestId: "help_village_gather_wood",
 				},
 			],
 		},
@@ -120,6 +122,6 @@ export const npcCatalog = {
 };
 
 export const metadata = {
-	version: "1.0.0",
-	lastUpdated: "2025-01-29",
+	version: "1.0.1",
+	lastUpdated: "2026-02-11",
 };

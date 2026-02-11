@@ -12,6 +12,8 @@ import logReducer from "./slices/logSlice";
 import notificationReducer from "./slices/notificationSlice";
 import logMiddleware from "./middleware/logMiddleware";
 import gameEventMiddleware from "./middleware/gameEventMiddleware";
+import questsReducer from "./slices/questSlice";
+import gameplayMiddleware from "./middleware/gameplayMiddleware";
 
 export const store = configureStore({
 	reducer: {
@@ -26,9 +28,14 @@ export const store = configureStore({
 		combat: combatReducer,
 		logs: logReducer,
 		notifications: notificationReducer,
+		quests: questsReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(logMiddleware, gameEventMiddleware),
+		getDefaultMiddleware().concat(
+			logMiddleware,
+			gameEventMiddleware,
+			gameplayMiddleware,
+		),
 });
 
 export default store;

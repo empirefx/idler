@@ -5,6 +5,7 @@ export const WORKER_ASSIGNED = "game/WORKER_ASSIGNED";
 export const WORKER_UNASSIGNED = "game/WORKER_UNASSIGNED";
 export const LOCATION_CHANGED = "game/LOCATION_CHANGED";
 export const PLAYER_DAMAGED = "game/PLAYER_DAMAGED";
+export const PLAYER_INTENT_ACCEPT_QUEST = "game/PLAYER_INTENT_ACCEPT_QUEST";
 
 // Action creators
 export const workerCreatedItem = (workerId, itemType) => ({
@@ -46,6 +47,11 @@ export const workerUnassigned = (
 export const locationChanged = (fromPlace, toPlace) => ({
 	type: LOCATION_CHANGED,
 	payload: { fromPlace, toPlace },
+});
+
+export const playerIntentAcceptQuest = (questId, npcId) => ({
+	type: PLAYER_INTENT_ACCEPT_QUEST,
+	payload: { questId, npcId },
 });
 
 export const playerDamaged = (

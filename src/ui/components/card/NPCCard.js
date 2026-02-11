@@ -29,10 +29,11 @@ const NPCCard = ({ npc, onClick }) => {
 			<div className="npc-info">
 				<h3>{name}</h3>
 				<p>{description}</p>
-				{npc.hasInventory && (
+				{(npc.hasInventory || npc.hasQuestToGive) && (
 					<>
 						<h4>Actions</h4>
-						<span className="npc-inventory-badge">⇆ Shop</span>
+						{npc.hasInventory && <span className="npc-badge"><span className="icon" role="img">⇆</span> Shop</span>}
+						{npc.hasQuestToGive && <span className="npc-badge"><span className="icon" role="img">🗪</span> Quest</span>}
 					</>
 				)}
 			</div>

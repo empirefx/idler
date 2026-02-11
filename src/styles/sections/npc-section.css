@@ -98,6 +98,12 @@
 	font-size: 0.8rem;
 }
 
+.npc-info .icon {
+	font-size: 1.3rem;
+	vertical-align: middle;
+	margin: auto 5
+}
+
 .npc-info p {
 	margin: var(--spacing-xs) 0 0 0;
 	color: var(--color-gray-dark);
@@ -108,10 +114,10 @@
 	padding: 15px 12px;
 }
 
-.npc-inventory-badge {
+.npc-badge {
 	display: inline-block;
 	margin: 0;
-	padding: var(--spacing-xs) var(--spacing-sm);
+	padding: 0 var(--spacing-xs);
 	background: #4a4943;
 	color: white;
 	border-radius: var(--border-radius-sm);
