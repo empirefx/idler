@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlayer } from "../../../store/slices/playerSlice";
+import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
 import { selectNPCById } from "../../../store/slices/npcSlice";
+import { selectNpcInventoryById } from "../../../store/slices/npcInventorySlice";
 import { questCatalog } from "../../../data/questCatalog";
 import {
 	selectIsQuestActive,
 	selectIsQuestCompleted,
 } from "../../../store/slices/questSlice";
 import { playerIntentAcceptQuest } from "../../../game/events";
+import InventoryGrid from "./InventoryGrid";
 
 const NPCDialog = ({
 	isOpen,
@@ -18,7 +21,9 @@ const NPCDialog = ({
 }) => {
 	const dispatch = useDispatch();
 	const player = useSelector(selectPlayer);
+	const playerInventory = useSelector((state) => selectPlayerInventoryById(state, "player"));
 	const npc = useSelector((state) => selectNPCById(state, npcId));
+	const npcInventory = useSelector((state) => selectNpcInventoryById(state, npcId));
 	const questsState = useSelector((state) => state.quests);
 	const dialogRef = useRef(null);
 
@@ -201,8 +206,30 @@ const NPCDialog = ({
 				}
 			}}
 		>
-			{/* Hidden focus trap */}
-			<div style={{ position: "absolute", opacity: 0, height: 0 }}></div>
+			{npc?.hasInventory && npcInventory && (
+				<div className="npc-trade-section">
+					<div className="trade-inventories">
+						<div className="player-inventory-section">
+							<h4>Your Inventory</h4>
+							<InventoryGrid 
+								inventory={playerInventory}
+								otherInventory={npcInventory}
+								onContextMenu={() => {}}
+								columns={5}
+							/>
+						</div>
+						<div className="npc-inventory-section">
+							<h4>NPC Inventory</h4>
+							<InventoryGrid 
+								inventory={npcInventory}
+								otherInventory={playerInventory}
+								onContextMenu={() => {}}
+								columns={5}
+							/>
+						</div>
+					</div>
+				</div>
+			)}
 			<div className="key-bind-container">
 				<span className="key-bind">ESC</span>
 				<span>escape</span>

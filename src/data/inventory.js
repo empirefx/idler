@@ -78,14 +78,6 @@ export const inventoryData = {
 		maxSlots: 20,
 		items: [
 			{
-				id: "iron-ore",
-				name: "iron ore",
-				description: "A piece of iron ore",
-				type: "material",
-				quantity: 15,
-				weight: 2,
-			},
-			{
 				id: "iron-helmet",
 				name: "iron helmet",
 				description: "A sturdy iron helmet forged by the blacksmith",
@@ -151,7 +143,7 @@ export const inventoryData = {
 		id: "trader",
 		npcId: "trader",
 		type: "npc",
-		maxSlots: 25,
+		maxSlots: 20,
 		items: [
 			{
 				id: 1,
@@ -171,28 +163,11 @@ export const inventoryData = {
 				weight: 0.5,
 				consumable: { heal: 12 },
 			},
-			{
-				id: "health-potion",
-				name: "health potion",
-				description: "A magical healing potion",
-				type: "consumable",
-				quantity: 8,
-				weight: 0.3,
-				consumable: { heal: 50 },
-			},
-			{
-				id: "gold-coin",
-				name: "gold coins",
-				description: "Shiny gold coins for trading",
-				type: "currency",
-				quantity: 100,
-				weight: 0.1,
-			},
 		],
 	},
 };
 
 export const metadata = {
-	version: "1.1.0",
+	version: "1.1.2",
 	lastUpdated: "2026-02-12",
 };
