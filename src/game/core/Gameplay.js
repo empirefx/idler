@@ -1,5 +1,5 @@
 import Logger from "../utils/Logger";
-import { checkQuestEligibility } from "../quests/questValidators";
+import { checkQuestEligibility } from "../utils/questValidators";
 import { questAccepted, questProgressUpdated, questCompleted } from "../../store/slices/questSlice";
 import {
 	addNotification,
