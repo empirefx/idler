@@ -192,12 +192,7 @@ export const CombatService = {
 				this.handleEnemyDrops(enemySnapshot);
 				this.handleEnemyExpGain(enemySnapshot);
 
-				// Only CombatService emits enemyDead
-				this.eventBusService.emit(`enemyDead:${enemySnapshot.placeId}`, {
-					placeId: enemySnapshot.placeId,
-					enemy: enemySnapshot,
-				});
-				// Also emit generic enemyDead event for quest tracking
+				// Emit enemyDead event for other systems
 				this.eventBusService.emit("enemyDead", {
 					placeId: enemySnapshot.placeId,
 					enemy: enemySnapshot,
