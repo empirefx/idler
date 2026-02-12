@@ -12,54 +12,21 @@ import {
 	calculateTotalPlayerWeight,
 	findItemById,
 } from "./inventory/inventoryUtils.js";
+import { inventoryData } from "../../data/inventory.js";
 
-// Initial player inventory state
-const initialState = {
-	player: {
-		id: "player",
-		type: "player",
-		playerId: "1",
-		maxSlots: 20,
-		maxWeight: 100,
-		items: [
-			{
-				id: 1,
-				name: "apple",
-				description: "A fresh apple",
-				type: "consumable",
-				quantity: 5,
-				weight: 0.5,
-				consumable: { heal: 10 },
-			},
-			{
-				id: "leather-hood",
-				name: "rusty armor",
-				description: "A sturdy piece of armor",
-				type: "equipment",
-				piece: "body",
-				quantity: 1,
-				stats: { defense: 10 },
-				weight: 15,
-			},
-			{
-				id: 2,
-				name: "banana",
-				description: "A ripe banana",
-				type: "consumable",
-				quantity: 3,
-				weight: 0.5,
-				consumable: { heal: 12 },
-			},
-		],
-		equipment: {
-			head: null,
-			body: null,
-			pants: null,
-			"main-weapon": null,
-			"second-weapon": null,
-		},
-	},
+// Filter player inventories from the main inventory data
+const getPlayerInventories = () => {
+	const playerInventories = {};
+	Object.entries(inventoryData).forEach(([key, inventory]) => {
+		if (inventory.type === "player") {
+			playerInventories[key] = inventory;
+		}
+	});
+	return playerInventories;
 };
+
+// Initial player inventory state from data
+const initialState = getPlayerInventories();
 
 const playerInventorySlice = createSlice({
 	name: "playerInventory",
