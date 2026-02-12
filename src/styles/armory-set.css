@@ -10,27 +10,27 @@
 }
 
 /* Row 1 - Helmets and Head Armor */
-#leather-hood {
+#light-armor {
 	background-position: 0 0;
 }
 
-#dark-hood {
+#light-hood {
 	background-position: -32px 0;
 }
 
-#brown-tunic {
+#light-tunic {
 	background-position: -64px 0;
 }
 
-#leather-bracer-1 {
+#light-pants {
 	background-position: -96px 0;
 }
 
-#leather-bracer-2 {
+#light-boots {
 	background-position: -128px 0;
 }
 
-#dark-boots {
+#light-gloves {
 	background-position: -160px 0;
 }
 
@@ -38,143 +38,143 @@
 	background-position: -192px 0;
 }
 
-#bronze-helmet-1 {
+#heavy-helmet {
 	background-position: -224px 0;
 }
 
-#ring-1 {
+#wooden-buckler-shield {
 	background-position: -256px 0;
 }
 
-#ring-2 {
+#metal-buckler-shield {
 	background-position: -288px 0;
 }
 
 /* Row 2 - Body Armor and Accessories */
-#red-tunic {
+#leather-armor {
 	background-position: 0 -32px;
 }
 
-#orange-hood {
+#leather-hood {
 	background-position: -32px -32px;
 }
 
-#leather-armor {
+#leather-mail {
 	background-position: -64px -32px;
 }
 
-#studded-bracer {
+#leather-pants {
 	background-position: -96px -32px;
 }
 
-#leather-glove {
+#leather-boots {
 	background-position: -128px -32px;
 }
 
-#leather-boots {
+#leather-gloves {
 	background-position: -160px -32px;
 }
 
-#wooden-shield {
+#leather-bracer {
 	background-position: -192px -32px;
 }
 
-#iron-helmet {
+#iron-bracer {
 	background-position: -224px -32px;
 }
 
-#amulet-1 {
+#medium-wooden-shield {
 	background-position: -256px -32px;
 }
 
-#bronze-shield-1 {
+#medium-metal-shield {
 	background-position: -288px -32px;
 }
 
 /* Row 3 - Medium Armor */
-#scale-mail {
+#studded-armor {
 	background-position: 0 -64px;
 }
 
-#chainmail-hood {
+#studded-hood {
 	background-position: -32px -64px;
 }
 
-#chainmail {
+#studded-mail {
 	background-position: -64px -64px;
 }
 
-#metal-bracer-1 {
+#studded-pants {
 	background-position: -96px -64px;
 }
 
-#chainmail-glove {
+#studded-boots {
 	background-position: -128px -64px;
 }
 
-#metal-boots-1 {
+#studded-gloves {
 	background-position: -160px -64px;
 }
 
-#round-shield {
+#blue-cape {
 	background-position: -192px -64px;
 }
 
-#winged-helmet {
+#white-shirt {
 	background-position: -224px -64px;
 }
 
-#blue-tunic {
+#large-wooden-shield {
 	background-position: -256px -64px;
 }
 
-#kite-shield-1 {
+#metal-tower-shield {
 	background-position: -288px -64px;
 }
 
 /* Row 4 - Heavy Armor */
-#bronze-armor {
+#plate-armor {
 	background-position: 0 -96px;
 }
 
-#bronze-helmet-2 {
+#plate-helmet {
 	background-position: -32px -96px;
 }
 
-#bronze-chestplate {
+#plate-mail {
 	background-position: -64px -96px;
 }
 
-#plate-bracer {
+#plate-pants {
 	background-position: -96px -96px;
 }
 
-#plate-gauntlet {
+#plate-boots {
 	background-position: -128px -96px;
 }
 
-#plate-boots {
+#plate-gloves {
 	background-position: -160px -96px;
 }
 
-#heater-shield {
+#bronze-ring {
 	background-position: -192px -96px;
 }
 
-#golden-helmet {
+#plate-ring {
 	background-position: -224px -96px;
 }
 
-#belt-1 {
+#heavy-ring {
 	background-position: -256px -96px;
 }
 
-#tower-shield {
+#gold-ring {
 	background-position: -288px -96px;
 }
 
 /* Row 5 - Elite Armor */
-#plate-mail {
+#heavy-mail {
 	background-position: 0 -128px;
 }
 
@@ -182,34 +182,34 @@
 	background-position: -32px -128px;
 }
 
-#plate-armor {
+#heavy-armor {
 	background-position: -64px -128px;
 }
 
-#heavy-bracer {
+#heavy-pants {
 	background-position: -96px -128px;
 }
 
-#heavy-gauntlet {
+#heavy-boots {
 	background-position: -128px -128px;
 }
 
-#armored-boots {
+#heavy-gloves {
 	background-position: -160px -128px;
 }
 
-#ring-3 {
+#necklace-amber {
 	background-position: -192px -128px;
 }
 
-#ring-4 {
+#necklace-amethyst {
 	background-position: -224px -128px;
 }
 
-#ring-5 {
+#necklace-emerald {
 	background-position: -256px -128px;
 }
 
-#ring-6 {
+#necklace-aquamarine {
 	background-position: -288px -128px;
 }
