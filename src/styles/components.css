@@ -65,17 +65,17 @@
 	margin: 0 0 1rem;
 }
 
-/* inventory styles (ui/components/display/InventoryDisplay.js) */
+/* inventory grid styles (ui/components/common/InventoryGrid.js) */
 
-.inventory-flex {
-	display: flex;
-	flex-wrap: wrap;
+.inventory-grid {
+	display: grid;
+	grid-template-columns: repeat(var(--grid-columns, 10), 50px);
 	gap: var(--spacing-sm);
 	justify-content: center;
 	align-items: center;
 }
 
-.inventory-flex > div {
+.inventory-grid > div {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -87,16 +87,16 @@
 	text-shadow: 0 0 3px black;
 }
 
-.inventory-flex > .filled:hover {
+.inventory-grid > .filled:hover {
 	cursor: pointer;
 	background-color: var(--color-gray);
 }
 
-.inventory-flex .empty {
+.inventory-grid .empty {
 	background-color: var(--color-dark);
 }
 
-.inventory-flex > div span {
+.inventory-grid > div span {
 	position: absolute;
 	bottom: 0;
 	right: 5px;
