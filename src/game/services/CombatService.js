@@ -1,7 +1,7 @@
 // Combat Service - coordinates combat state with game loop
 import Logger from "../utils/Logger";
 import { batch } from "react-redux";
-import { enemyAttacked, playerDamaged } from "../events";
+import { enemyAttacked, playerDamaged, enemyDead } from "../events";
 import { addItem } from "../../store/slices/playerInventorySlice";
 import { gainExp, updateLastAttackTime } from "../../store/slices/playerSlice";
 import { createItem } from "../factory/itemFactory";
@@ -197,6 +197,15 @@ export const CombatService = {
 					placeId: enemySnapshot.placeId,
 					enemy: enemySnapshot,
 				});
+
+				// Dispatch Redux action for enemy death
+				this.store.dispatch(
+					enemyDead(
+						enemySnapshot.id,
+						enemySnapshot.placeId,
+						enemySnapshot
+					)
+				);
 
 				// Check if all enemies in this place are dead and trigger cleanup
 				this.checkAllEnemiesDead(enemySnapshot.placeId);

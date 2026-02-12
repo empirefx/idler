@@ -4,7 +4,7 @@ import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice
 import { InventoryService } from "../services/InventoryService";
 import { createItem } from "../factory/itemFactory";
 import SpawnService from "../services/SpawnService";
-import { EventBusService } from "../services/EventBusService";
+import { EventBusService, globalEventBus } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
 import { workerCreatedItem } from "../events";
 import GameLoop from "../core/GameLoop";
@@ -12,7 +12,6 @@ import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
 import { NavigationService } from "../services/NavigationService";
 import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
-import { QuestService } from "../services/QuestService";
 
 /**
  * GameEngine: wires systems + runs game loop
@@ -53,7 +52,7 @@ class GameEngine {
 		this.enemyLifecycleService =
 			this.enemyLifecycleService || EnemyLifecycleService;
 		this.combatService = this.combatService || CombatService;
-		this.eventBusService = this.eventBusService || new EventBusService();
+		this.eventBusService = this.eventBusService || globalEventBus;
 		this.spawnService = SpawnService
 			? new SpawnService(this.eventBusService)
 			: { spawners: {}, currentPlaceId: null };
@@ -61,11 +60,6 @@ class GameEngine {
 
 		// Initialize services
 		this.combatService.initialize(this.store, this.eventBusService);
-		this.questService = new QuestService(
-			this.store,
-			this.dispatch,
-			this.eventBusService,
-		);
 
 		// Listen for spawn events and add enemies to store
 		this.eventBusService.on("spawnEnemy", ({ placeId, enemy }) => {

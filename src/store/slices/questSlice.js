@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
 	activeById: {},
@@ -64,8 +64,10 @@ export const { questAccepted, questCompleted, questAbandoned, questProgressUpdat
 // Selectors
 export const selectQuestState = (state) => state.quests;
 
-export const selectActiveQuestIds = (state) =>
-	Object.keys(state.quests.activeById || {});
+export const selectActiveQuestIds = createSelector(
+	[selectQuestState],
+	(questState) => Object.keys(questState.activeById || {})
+);
 
 export const selectIsQuestActive =
 	(questId) =>
