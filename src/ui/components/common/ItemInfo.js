@@ -24,6 +24,9 @@ const ItemInfo = ({ item, children }) => {
 					)}
 					<hr></hr>
 					<p>weight: {item.weight}</p>
+					{item.sellable?.gold && (
+						<p style={{ color: "#ffd700" }}>sell: {item.sellable.gold} gold</p>
+					)}
 					{item.stats && (
 						<div className="item-info-stats">
 							{Object.entries(item.stats).map(([stat, value]) => (
