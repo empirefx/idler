@@ -24,12 +24,6 @@ const ItemInfo = ({ item, showBuyPrice = false, children }) => {
 					)}
 					<hr></hr>
 					<p>weight: {item.weight}</p>
-					{showBuyPrice && item.buy?.gold && (
-						<p style={{ color: "#ffd700" }}>buy: {item.buy.gold} gold</p>
-					)}
-					{!showBuyPrice && item.sellable?.gold && (
-						<p style={{ color: "#ffd700" }}>sell: {item.sellable.gold} gold</p>
-					)}
 					{item.stats && (
 						<div className="item-info-stats">
 							{Object.entries(item.stats).map(([stat, value]) => (
@@ -38,6 +32,18 @@ const ItemInfo = ({ item, showBuyPrice = false, children }) => {
 								</p>
 							))}
 						</div>
+					)}
+					{showBuyPrice && item.buy?.gold && (
+						<>
+							<hr></hr>
+							<p style={{ color: "#ffd700" }}>buy: {item.buy.gold} gold</p>
+						</>
+					)}
+					{!showBuyPrice && item.sellable?.gold && (
+						<>
+							<hr></hr>
+							<p style={{ color: "#ffd700" }}>sell: {item.sellable.gold} gold</p>
+						</>
 					)}
 				</div>
 			)}
