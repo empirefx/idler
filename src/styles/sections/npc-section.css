@@ -117,6 +117,7 @@
 .npc-badge {
 	display: inline-block;
 	margin: 0;
+	margin-right: 10px;
 	padding: 0 var(--spacing-xs);
 	background: #4a4943;
 	color: white;

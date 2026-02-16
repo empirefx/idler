@@ -19,8 +19,7 @@ export const npcCatalog = {
 				{
 					text: "How can I help the village?",
 					response:
-						"Gather resources from the forest, clear out the monsters that threaten us, and build structures to strengthen our community.",
-					startsQuestId: "help_village_gather_wood",
+						"Clear out the monsters that threaten us, and build structures to strengthen our community.",
 				},
 				{
 					text: "I can help clear out the monsters.",
@@ -38,6 +37,7 @@ export const npcCatalog = {
 		avatar: 2,
 		location: "village_center",
 		hasInventory: true,
+		hasQuestToGive: true,
 		dialogue: {
 			initial:
 				"Need some equipment forged? I can work with any materials you bring me.",
@@ -51,6 +51,12 @@ export const npcCatalog = {
 					text: "Can you upgrade my gear?",
 					response:
 						"Bring me better materials and enough gold, and I'll improve whatever you have.",
+				},
+				{
+					text: "I can bring you some iron ore.",
+					response:
+						"Aye, I'm running low on iron ore. Bring me 5 pieces and I'll reward you well.",
+					startsQuestId: "blacksmith_iron_ore",
 				},
 			],
 		},

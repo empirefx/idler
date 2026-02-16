@@ -1,36 +1,4 @@
 export const questCatalog = {
-	help_village_gather_wood: {
-		id: "help_village_gather_wood",
-		title: "Help the Village: Gather Wood",
-		description:
-			"The village needs extra firewood and building materials. Gather wood to support the settlement.",
-		giverNpcId: "village_elder",
-		requirementSummary: "Be at least level 1 and speak to the Village Elder in the village center.",
-		requirements: {
-			minLevel: 1,
-			requiredPlaceId: "village_center",
-			requiredQuestIds: [],
-		},
-		acceptMessage: "You agree to help gather wood for the village.",
-		conversation: [
-			{
-				npcText:
-					"Our wood stores are running low, and winter nights grow colder.",
-				playerText: "Is there something I can do to help?",
-			},
-			{
-				npcText:
-					"If you could gather extra wood from the nearby forest, the villagers would be grateful.",
-				playerText: "I can help with that. What exactly do you need?",
-			},
-			{
-				npcText:
-					"Bring back enough good wood so our fires keep burning and repairs can continue. Will you take on this task?",
-				playerText: "Let me think about it for a moment.",
-				final: true,
-			},
-		],
-	},
 	help_village_kill_monsters: {
 		id: "help_village_kill_monsters",
 		title: "Help the Village: Clear the Threats",
@@ -66,6 +34,46 @@ export const questCatalog = {
 			{
 				npcText:
 					"If you can eliminate five of these threats, the village will be much safer. Will you take on this task?",
+				playerText: "Let me think about it for a moment.",
+				final: true,
+			},
+		],
+	},
+	blacksmith_iron_ore: {
+		id: "blacksmith_iron_ore",
+		title: "Grum's Request: Iron Ore",
+		description:
+			"Grum the Blacksmith needs iron ore to forge better equipment. Bring him 5 iron ore.",
+		giverNpcId: "blacksmith",
+		requirementSummary: "Speak to Grum the Blacksmith in the village center.",
+		requirements: {
+			minLevel: 1,
+			requiredPlaceId: "village_center",
+			requiredQuestIds: [],
+		},
+		objectives: {
+			collectIronOre: {
+				type: "collect",
+				target: "iron-ore",
+				required: 5,
+				progressKey: "ironOreCollected",
+			},
+		},
+		acceptMessage: "You agree to bring iron ore to Grum.",
+		conversation: [
+			{
+				npcText:
+					"I'm running low on iron ore. Can't forge good equipment without it.",
+				playerText: "What do you need?",
+			},
+			{
+				npcText:
+					"Bring me 5 iron ore from the mines. The harder the ore, the better the gear I can make.",
+				playerText: "I can help with that. Where can I find iron ore?",
+			},
+			{
+				npcText:
+					"The mines to the north have plenty. Bring me 5 pieces and I'll reward you well. Will you take on this task?",
 				playerText: "Let me think about it for a moment.",
 				final: true,
 			},
