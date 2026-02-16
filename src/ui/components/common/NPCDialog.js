@@ -282,6 +282,7 @@ const NPCDialog = ({
 								otherInventory={playerInventory}
 								onContextMenu={(e, item) => handleNpcItemBuy(item)}
 								columns={5}
+								showBuyPrice={true}
 							/>
 						</div>
 					</div>

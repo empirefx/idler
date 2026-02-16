@@ -10,7 +10,8 @@ const InventoryGrid = ({
 	inventory, 
 	otherInventory, 
 	onContextMenu, 
-	columns = 10 
+	columns = 10,
+	showBuyPrice = false
 }) => {
 	const dispatch = useDispatch();
 
@@ -91,7 +92,7 @@ const InventoryGrid = ({
 						)}
 						{item && (
 							// Show quantity & stats for items (no quantity for equipment)
-							<ItemInfo item={item}>
+							<ItemInfo item={item} showBuyPrice={showBuyPrice}>
 								<p>
 									<span>
 										{(item.type === "equipment" || item.type === "armor" || 

@@ -32,8 +32,9 @@ export const itemCatalog = {
 		name: "Light Armor",
 		description: "Basic light armor providing minimal protection",
 		weight: 5,
+		buy: { gold: 30 },
 		sellable: { gold: 10 },
-		buy: { gold: 10 },
+		stats: { defense: 2 },
 	},
 	"light-hood": {
 		id: 5,
@@ -41,8 +42,9 @@ export const itemCatalog = {
 		name: "Light Hood",
 		description: "A simple cloth hood",
 		weight: 1,
+		buy: { gold: 15 },
 		sellable: { gold: 5 },
-		buy: { gold: 5 },
+		stats: { defense: 1 },
 	},
 	"light-tunic": {
 		id: 6,
@@ -50,8 +52,9 @@ export const itemCatalog = {
 		name: "Light Tunic",
 		description: "A comfortable light tunic",
 		weight: 2,
+		buy: { gold: 24 },
 		sellable: { gold: 8 },
-		buy: { gold: 8 },
+		stats: { defense: 1 },
 	},
 	"light-pants": {
 		id: 7,
@@ -59,8 +62,9 @@ export const itemCatalog = {
 		name: "Light Pants",
 		description: "Light cloth pants",
 		weight: 2,
+		buy: { gold: 21 },
 		sellable: { gold: 7 },
-		buy: { gold: 7 },
+		stats: { defense: 1 },
 	},
 	"light-boots": {
 		id: 8,
@@ -68,8 +72,9 @@ export const itemCatalog = {
 		name: "Light Boots",
 		description: "Simple light boots",
 		weight: 2,
+		buy: { gold: 18 },
 		sellable: { gold: 6 },
-		buy: { gold: 6 },
+		stats: { defense: 1 },
 	},
 	"light-gloves": {
 		id: 9,
@@ -77,8 +82,9 @@ export const itemCatalog = {
 		name: "Light Gloves",
 		description: "Light cloth gloves",
 		weight: 1,
+		buy: { gold: 12 },
 		sellable: { gold: 4 },
-		buy: { gold: 4 },
+		stats: { defense: 1 },
 	},
 	"wooden-buckler-shield": {
 		id: 10,
@@ -86,8 +92,9 @@ export const itemCatalog = {
 		name: "Wooden Buckler Shield",
 		description: "A small wooden shield",
 		weight: 3,
+		buy: { gold: 36 },
 		sellable: { gold: 12 },
-		buy: { gold: 12 },
+		stats: { defense: 2 },
 	},
 	"metal-buckler-shield": {
 		id: 11,
@@ -95,8 +102,9 @@ export const itemCatalog = {
 		name: "Metal Buckler Shield",
 		description: "A small metal shield",
 		weight: 4,
+		buy: { gold: 54 },
 		sellable: { gold: 18 },
-		buy: { gold: 18 },
+		stats: { defense: 3 },
 	},
 	// Leather Armor
 	"leather-armor": {
@@ -105,7 +113,9 @@ export const itemCatalog = {
 		name: "Leather Armor",
 		description: "Sturdy leather armor",
 		weight: 8,
+		buy: { gold: 75 },
 		sellable: { gold: 25 },
+		stats: { defense: 4 },
 	},
 	"leather-hood": {
 		id: 13,
@@ -113,7 +123,9 @@ export const itemCatalog = {
 		name: "Leather Hood",
 		description: "A protective leather hood",
 		weight: 2,
+		buy: { gold: 36 },
 		sellable: { gold: 12 },
+		stats: { defense: 2 },
 	},
 	"leather-mail": {
 		id: 14,
@@ -121,7 +133,9 @@ export const itemCatalog = {
 		name: "Leather Mail",
 		description: "Reinforced leather mail",
 		weight: 6,
+		buy: { gold: 60 },
 		sellable: { gold: 20 },
+		stats: { defense: 3 },
 	},
 	"leather-pants": {
 		id: 15,
@@ -129,7 +143,9 @@ export const itemCatalog = {
 		name: "Leather Pants",
 		description: "Durable leather pants",
 		weight: 4,
+		buy: { gold: 45 },
 		sellable: { gold: 15 },
+		stats: { defense: 2 },
 	},
 	"leather-boots": {
 		id: 16,
@@ -137,7 +153,9 @@ export const itemCatalog = {
 		name: "Leather Boots",
 		description: "Sturdy leather boots",
 		weight: 3,
+		buy: { gold: 42 },
 		sellable: { gold: 14 },
+		stats: { defense: 2 },
 	},
 	"leather-gloves": {
 		id: 17,
@@ -145,7 +163,9 @@ export const itemCatalog = {
 		name: "Leather Gloves",
 		description: "Protective leather gloves",
 		weight: 2,
+		buy: { gold: 30 },
 		sellable: { gold: 10 },
+		stats: { defense: 1 },
 	},
 	"leather-bracer": {
 		id: 18,
@@ -153,7 +173,9 @@ export const itemCatalog = {
 		name: "Leather Bracer",
 		description: "A leather arm bracer",
 		weight: 2,
+		buy: { gold: 33 },
 		sellable: { gold: 11 },
+		stats: { defense: 1 },
 	},
 	"medium-wooden-shield": {
 		id: 19,
@@ -161,7 +183,9 @@ export const itemCatalog = {
 		name: "Medium Wooden Shield",
 		description: "A medium-sized wooden shield",
 		weight: 5,
+		buy: { gold: 66 },
 		sellable: { gold: 22 },
+		stats: { defense: 3 },
 	},
 	// Medium Armor
 	"studded-armor": {
@@ -170,7 +194,9 @@ export const itemCatalog = {
 		name: "Studded Armor",
 		description: "Leather armor reinforced with metal studs",
 		weight: 10,
+		buy: { gold: 105 },
 		sellable: { gold: 35 },
+		stats: { defense: 6, attack: 2 },
 	},
 	"studded-hood": {
 		id: 21,
@@ -178,7 +204,9 @@ export const itemCatalog = {
 		name: "Studded Hood",
 		description: "A studded leather hood",
 		weight: 3,
+		buy: { gold: 54 },
 		sellable: { gold: 18 },
+		stats: { defense: 3, attack: 1 },
 	},
 	"studded-mail": {
 		id: 22,
@@ -186,7 +214,9 @@ export const itemCatalog = {
 		name: "Studded Mail",
 		description: "Reinforced studded leather mail",
 		weight: 8,
+		buy: { gold: 90 },
 		sellable: { gold: 30 },
+		stats: { defense: 5, attack: 2 },
 	},
 	"studded-pants": {
 		id: 23,
@@ -194,7 +224,9 @@ export const itemCatalog = {
 		name: "Studded Pants",
 		description: "Studded leather pants",
 		weight: 6,
+		buy: { gold: 75 },
 		sellable: { gold: 25 },
+		stats: { defense: 4, attack: 1 },
 	},
 	"studded-boots": {
 		id: 24,
@@ -202,7 +234,9 @@ export const itemCatalog = {
 		name: "Studded Boots",
 		description: "Reinforced studded boots",
 		weight: 4,
+		buy: { gold: 66 },
 		sellable: { gold: 22 },
+		stats: { defense: 3, attack: 1 },
 	},
 	"studded-gloves": {
 		id: 25,
@@ -210,7 +244,9 @@ export const itemCatalog = {
 		name: "Studded Gloves",
 		description: "Studded leather gloves",
 		weight: 3,
+		buy: { gold: 48 },
 		sellable: { gold: 16 },
+		stats: { defense: 2, attack: 1 },
 	},
 	"large-wooden-shield": {
 		id: 26,
@@ -218,7 +254,9 @@ export const itemCatalog = {
 		name: "Large Wooden Shield",
 		description: "A large wooden shield",
 		weight: 7,
+		buy: { gold: 90 },
 		sellable: { gold: 30 },
+		stats: { defense: 5, attack: 1 },
 	},
 	// Heavy Armor
 	"plate-armor": {
@@ -227,7 +265,9 @@ export const itemCatalog = {
 		name: "Plate Armor",
 		description: "Heavy plate armor offering excellent protection",
 		weight: 15,
+		buy: { gold: 180 },
 		sellable: { gold: 60 },
+		stats: { defense: 10, attack: 4, strength: 3, agility: 2 },
 	},
 	"plate-helmet": {
 		id: 28,
@@ -235,7 +275,9 @@ export const itemCatalog = {
 		name: "Plate Helmet",
 		description: "A protective plate helmet",
 		weight: 5,
+		buy: { gold: 105 },
 		sellable: { gold: 35 },
+		stats: { defense: 5, attack: 2, strength: 1, agility: 1 },
 	},
 	"plate-mail": {
 		id: 29,
@@ -243,7 +285,9 @@ export const itemCatalog = {
 		name: "Plate Mail",
 		description: "Heavy plate mail armor",
 		weight: 12,
+		buy: { gold: 150 },
 		sellable: { gold: 50 },
+		stats: { defense: 8, attack: 3, strength: 2, agility: 1 },
 	},
 	"plate-pants": {
 		id: 30,
@@ -251,7 +295,9 @@ export const itemCatalog = {
 		name: "Plate Pants",
 		description: "Heavy plate leg armor",
 		weight: 8,
+		buy: { gold: 120 },
 		sellable: { gold: 40 },
+		stats: { defense: 6, attack: 2, strength: 2, agility: 1 },
 	},
 	"plate-boots": {
 		id: 31,
@@ -259,7 +305,9 @@ export const itemCatalog = {
 		name: "Plate Boots",
 		description: "Heavy plate boots",
 		weight: 5,
+		buy: { gold: 96 },
 		sellable: { gold: 32 },
+		stats: { defense: 4, attack: 1, strength: 1, agility: 2 },
 	},
 	"plate-gloves": {
 		id: 32,
@@ -267,7 +315,9 @@ export const itemCatalog = {
 		name: "Plate Gloves",
 		description: "Heavy plate gauntlets",
 		weight: 4,
+		buy: { gold: 84 },
 		sellable: { gold: 28 },
+		stats: { defense: 3, attack: 2, strength: 1, agility: 1 },
 	},
 	"medium-metal-shield": {
 		id: 33,
@@ -275,7 +325,9 @@ export const itemCatalog = {
 		name: "Medium Metal Shield",
 		description: "A medium-sized metal shield",
 		weight: 8,
+		buy: { gold: 135 },
 		sellable: { gold: 45 },
+		stats: { defense: 7, attack: 2, strength: 1, agility: 1 },
 	},
 	// Elite Armor
 	"heavy-mail": {
@@ -284,7 +336,9 @@ export const itemCatalog = {
 		name: "Heavy Mail",
 		description: "Premium heavy mail armor",
 		weight: 14,
+		buy: { gold: 240 },
 		sellable: { gold: 80 },
+		stats: { defense: 12, attack: 5, strength: 4, agility: 3 },
 	},
 	"heavy-helmet": {
 		id: 35,
@@ -292,7 +346,9 @@ export const itemCatalog = {
 		name: "Heavy Helmet",
 		description: "A premium heavy helmet",
 		weight: 6,
+		buy: { gold: 135 },
 		sellable: { gold: 45 },
+		stats: { defense: 6, attack: 2, strength: 2, agility: 2 },
 	},
 	"heavy-armor": {
 		id: 36,
@@ -300,7 +356,9 @@ export const itemCatalog = {
 		name: "Heavy Armor",
 		description: "Elite heavy armor",
 		weight: 18,
+		buy: { gold: 300 },
 		sellable: { gold: 100 },
+		stats: { defense: 15, attack: 6, strength: 5, agility: 3 },
 	},
 	"heavy-pants": {
 		id: 37,
@@ -308,7 +366,9 @@ export const itemCatalog = {
 		name: "Heavy Pants",
 		description: "Elite heavy leg armor",
 		weight: 10,
+		buy: { gold: 165 },
 		sellable: { gold: 55 },
+		stats: { defense: 8, attack: 3, strength: 3, agility: 2 },
 	},
 	"heavy-boots": {
 		id: 38,
@@ -316,7 +376,9 @@ export const itemCatalog = {
 		name: "Heavy Boots",
 		description: "Elite heavy boots",
 		weight: 6,
+		buy: { gold: 120 },
 		sellable: { gold: 40 },
+		stats: { defense: 5, attack: 2, strength: 2, agility: 3 },
 	},
 	"heavy-gloves": {
 		id: 39,
@@ -324,7 +386,9 @@ export const itemCatalog = {
 		name: "Heavy Gloves",
 		description: "Elite heavy gauntlets",
 		weight: 5,
+		buy: { gold: 105 },
 		sellable: { gold: 35 },
+		stats: { defense: 4, attack: 3, strength: 2, agility: 1 },
 	},
 	"metal-tower-shield": {
 		id: 40,
@@ -332,7 +396,9 @@ export const itemCatalog = {
 		name: "Metal Tower Shield",
 		description: "A large metal tower shield",
 		weight: 12,
+		buy: { gold: 210 },
 		sellable: { gold: 70 },
+		stats: { defense: 10, attack: 3, strength: 3, agility: 2 },
 	},
 	// Accessories - Rings & Necklaces
 	"bronze-ring": {
@@ -341,7 +407,9 @@ export const itemCatalog = {
 		name: "Bronze Ring",
 		description: "A simple bronze ring",
 		weight: 0.5,
+		buy: { gold: 45 },
 		sellable: { gold: 15 },
+		stats: { defense: 1 },
 	},
 	"plate-ring": {
 		id: 42,
@@ -349,7 +417,9 @@ export const itemCatalog = {
 		name: "Plate Ring",
 		description: "A sturdy plate ring",
 		weight: 1,
+		buy: { gold: 75 },
 		sellable: { gold: 25 },
+		stats: { defense: 2 },
 	},
 	"heavy-ring": {
 		id: 43,
@@ -357,7 +427,9 @@ export const itemCatalog = {
 		name: "Heavy Ring",
 		description: "A heavy ornate ring",
 		weight: 1.5,
+		buy: { gold: 120 },
 		sellable: { gold: 40 },
+		stats: { defense: 3, strength: 1 },
 	},
 	"gold-ring": {
 		id: 44,
@@ -365,7 +437,9 @@ export const itemCatalog = {
 		name: "Gold Ring",
 		description: "A valuable gold ring",
 		weight: 1,
+		buy: { gold: 180 },
 		sellable: { gold: 60 },
+		stats: { defense: 4, agility: 2 },
 	},
 	"necklace-amber": {
 		id: 45,
@@ -373,7 +447,9 @@ export const itemCatalog = {
 		name: "Necklace Amber",
 		description: "An amber necklace",
 		weight: 1,
+		buy: { gold: 105 },
 		sellable: { gold: 35 },
+		stats: { defense: 2, strength: 1 },
 	},
 	"necklace-amethyst": {
 		id: 46,
@@ -381,7 +457,9 @@ export const itemCatalog = {
 		name: "Necklace Amethyst",
 		description: "An amethyst necklace",
 		weight: 1,
+		buy: { gold: 135 },
 		sellable: { gold: 45 },
+		stats: { defense: 3, agility: 1 },
 	},
 	"necklace-emerald": {
 		id: 47,
@@ -389,7 +467,9 @@ export const itemCatalog = {
 		name: "Necklace Emerald",
 		description: "An emerald necklace",
 		weight: 1,
+		buy: { gold: 165 },
 		sellable: { gold: 55 },
+		stats: { defense: 3, strength: 2 },
 	},
 	"necklace-aquamarine": {
 		id: 48,
@@ -397,7 +477,9 @@ export const itemCatalog = {
 		name: "Necklace Aquamarine",
 		description: "An aquamarine necklace",
 		weight: 1,
+		buy: { gold: 150 },
 		sellable: { gold: 50 },
+		stats: { defense: 2, agility: 2 },
 	},
 	// Others
 	"buckler-1": {
@@ -406,7 +488,9 @@ export const itemCatalog = {
 		name: "Buckler",
 		description: "A basic buckler shield",
 		weight: 3,
+		buy: { gold: 24 },
 		sellable: { gold: 8 },
+		stats: { defense: 1 },
 	},
 	"iron-bracer": {
 		id: 50,
@@ -414,7 +498,9 @@ export const itemCatalog = {
 		name: "Iron Bracer",
 		description: "An iron arm bracer",
 		weight: 3,
+		buy: { gold: 60 },
 		sellable: { gold: 20 },
+		stats: { defense: 2, attack: 1 },
 	},
 	"blue-cape": {
 		id: 51,
@@ -422,7 +508,9 @@ export const itemCatalog = {
 		name: "Blue Cape",
 		description: "A flowing blue cape",
 		weight: 2,
+		buy: { gold: 90 },
 		sellable: { gold: 30 },
+		stats: { defense: 1, agility: 2 },
 	},
 	"white-shirt": {
 		id: 52,
@@ -430,7 +518,9 @@ export const itemCatalog = {
 		name: "White Shirt",
 		description: "A clean white shirt",
 		weight: 1,
+		buy: { gold: 15 },
 		sellable: { gold: 5 },
+		stats: { defense: 1 },
 	},
 	"full-helm": {
 		id: 53,
@@ -438,7 +528,9 @@ export const itemCatalog = {
 		name: "Full Helm",
 		description: "A full covering helmet",
 		weight: 6,
+		buy: { gold: 150 },
 		sellable: { gold: 50 },
+		stats: { defense: 6, attack: 1, strength: 1, agility: 1 },
 	},
 };
 
