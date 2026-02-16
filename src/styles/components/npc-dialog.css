@@ -141,6 +141,23 @@
 
 }
 
+.npc-trade-section .trade-gold-display {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-sm);
+	padding: var(--spacing-sm) var(--spacing-md);
+	border-radius: var(--border-radius-md);
+	margin-bottom: var(--spacing-md);
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #ffd700;
+}
+
+.npc-trade-section .trade-gold-display .gold-icon {
+	font-size: 1.4rem;
+}
+
 .npc-trade-section .trade-inventories {
 	display: flex;
 	justify-content: center;

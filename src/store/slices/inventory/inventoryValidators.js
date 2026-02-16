@@ -89,7 +89,10 @@ export const validateItemExists = (inventory, itemId) => {
 };
 
 export const validateEquipmentSlot = (item, slot) => {
-	if (!item || item.type !== "equipment") {
+	// Equipment types that can be equipped
+	const equippableTypes = ["equipment", "head", "body", "pants", "boots", "hands", "shield", "accessory"];
+	
+	if (!item || !equippableTypes.includes(item.type)) {
 		return {
 			isValid: false,
 			error: INVENTORY_ERRORS.INVALID_ITEM_TYPE,
@@ -97,13 +100,19 @@ export const validateEquipmentSlot = (item, slot) => {
 		};
 	}
 
-	if (!item.piece) {
-		return {
-			isValid: false,
-			error: INVENTORY_ERRORS.INVALID_ITEM_TYPE,
-			message: "Equipment item must specify a piece",
-		};
-	}
+	// Map item type to equipment slot
+	const typeToSlot = {
+		head: "head",
+		body: "body",
+		pants: "pants",
+		boots: "boots",
+		hands: "hands",
+		shield: "second-weapon",
+		accessory: "second-weapon",
+		equipment: item.piece,
+	};
+
+	const expectedSlot = typeToSlot[item.type];
 
 	if (!EQUIPMENT_SLOTS.includes(slot)) {
 		return {
@@ -113,11 +122,11 @@ export const validateEquipmentSlot = (item, slot) => {
 		};
 	}
 
-	if (item.piece !== slot) {
+	if (expectedSlot && slot !== expectedSlot) {
 		return {
 			isValid: false,
 			error: INVENTORY_ERRORS.EQUIPMENT_SLOT_INVALID,
-			message: `Item ${item.id} belongs to slot ${item.piece}, not ${slot}`,
+			message: `Item ${item.id} belongs to slot ${expectedSlot}, not ${slot}`,
 		};
 	}
 

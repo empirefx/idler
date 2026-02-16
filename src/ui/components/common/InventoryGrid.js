@@ -57,10 +57,14 @@ const InventoryGrid = ({
 								: undefined
 						}
 						// Handle equipment and consumable items
-						// left click for equipment/consumable, right click for move to vault/inventory
+						// left click for equipment/armor types/consumable, right click for move to vault/inventory
 						onClick={
 							item
-								? item.type === "equipment"
+								? item.type === "equipment" || item.type === "armor" || 
+								  item.type === "head" || item.type === "body" || 
+								  item.type === "pants" || item.type === "boots" || 
+								  item.type === "hands" || item.type === "shield" ||
+								  item.type === "accessory"
 									? () =>
 											dispatch(
 												equipItem({
@@ -74,19 +78,27 @@ const InventoryGrid = ({
 								: undefined
 						}
 					>
-						{item?.type === "equipment" && (
+						{(item?.type === "equipment" || item?.type === "armor" || 
+						  item?.type === "head" || item?.type === "body" || 
+						  item?.type === "pants" || item?.type === "boots" || 
+						  item?.type === "hands" || item?.type === "shield" ||
+						  item?.type === "accessory") && (
 							// Display armor/weapon sprite
 							<div
 								className="armor-sprite"
-								id={item?.id ? item?.id : "empty"}
+								id={item?.itemKey ? item.itemKey : item?.id ? item?.id : "empty"}
 							></div>
 						)}
 						{item && (
-							// Show quantity & stats for items
+							// Show quantity & stats for items (no quantity for equipment)
 							<ItemInfo item={item}>
 								<p>
 									<span>
-										{item.type === "equipment" ? "" : item.quantity || ""}
+										{(item.type === "equipment" || item.type === "armor" || 
+										  item.type === "head" || item.type === "body" || 
+										  item.type === "pants" || item.type === "boots" || 
+										  item.type === "hands" || item.type === "shield" ||
+										  item.type === "accessory") ? "" : item.quantity || ""}
 									</span>
 								</p>
 							</ItemInfo>

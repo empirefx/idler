@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlayer } from "../../../store/slices/playerSlice";
-import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
+import { selectPlayer, addGold, spendGold } from "../../../store/slices/playerSlice";
+import { selectPlayerInventoryById, addItem as addPlayerItem, removeItem as removePlayerItem } from "../../../store/slices/playerInventorySlice";
 import { selectNPCById } from "../../../store/slices/npcSlice";
-import { selectNpcInventoryById } from "../../../store/slices/npcInventorySlice";
+import { selectNpcInventoryById, addItem as addNpcItem, removeItem as removeNpcItem } from "../../../store/slices/npcInventorySlice";
 import { questCatalog } from "../../../data/questCatalog";
 import {
 	selectIsQuestActive,
@@ -11,6 +11,8 @@ import {
 } from "../../../store/slices/questSlice";
 import { playerIntentAcceptQuest } from "../../../game/events";
 import InventoryGrid from "./InventoryGrid";
+import TradeMessageDialog from "./TradeMessageDialog";
+import { itemCatalog } from "../../../data/itemCatalog";
 
 const NPCDialog = ({
 	isOpen,
@@ -35,6 +37,13 @@ const NPCDialog = ({
 		: [];
 
 	const [questConversationState, setQuestConversationState] = useState(null);
+	const [tradeMessage, setTradeMessage] = useState(null);
+
+	// Get player gold amount
+	const playerGold = useMemo(() => {
+		const goldResource = player.resources?.find(r => r.name === "gold");
+		return goldResource?.amount || 0;
+	}, [player.resources]);
 
 	// Get the current quest from conversation state
 	const currentQuest =
@@ -148,6 +157,54 @@ const NPCDialog = ({
 		});
 	};
 
+	// Handle selling item from player inventory (right-click)
+	const handlePlayerItemSell = (item) => {
+		if (!item.sellable?.gold) {
+			setTradeMessage({ type: "error", message: "This item cannot be sold." });
+			return;
+		}
+		const sellPrice = item.sellable.gold;
+		dispatch(removePlayerItem({ inventoryId: "player", itemId: item.id, quantity: 1 }));
+		dispatch(addGold(sellPrice));
+		setTradeMessage({ type: "success", message: `Sold ${item.name} for ${sellPrice} gold.` });
+	};
+
+	// Handle buying item from NPC inventory (right-click)
+	const handleNpcItemBuy = (item) => {
+		if (!item.buy?.gold) {
+			setTradeMessage({ type: "error", message: "This item cannot be bought." });
+			return;
+		}
+		const buyPrice = item.buy.gold;
+
+		// Validate: enough gold?
+		if (playerGold < buyPrice) {
+			setTradeMessage({ type: "error", message: "Not enough gold!" });
+			return;
+		}
+
+		// Validate: inventory space?
+		if (playerInventory.items.length >= playerInventory.maxSlots) {
+			setTradeMessage({ type: "error", message: "Inventory is full!" });
+			return;
+		}
+
+		// Execute trade
+		dispatch(spendGold(buyPrice));
+
+		// Create new item from catalog using itemFactory pattern
+		const catalogItem = itemCatalog[item.itemKey] || item;
+		const isStackable = catalogItem.type === "consumable" || catalogItem.type === "material";
+		const newItem = {
+			...catalogItem,
+			itemKey: item.itemKey || catalogItem.id,
+			quantity: isStackable ? 1 : undefined,
+		};
+		dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
+
+		setTradeMessage({ type: "success", message: `Bought ${item.name} for ${buyPrice} gold.` });
+	};
+
 	if (!npc || !isOpen) return null;
 
 	const getResponseText = () => {
@@ -206,7 +263,7 @@ const NPCDialog = ({
 				}
 			}}
 		>
-			{npc?.hasInventory && npcInventory && (
+		{npc?.hasInventory && npcInventory && (
 				<div className="npc-trade-section">
 					<div className="trade-inventories">
 						<div className="player-inventory-section">
@@ -214,7 +271,7 @@ const NPCDialog = ({
 							<InventoryGrid 
 								inventory={playerInventory}
 								otherInventory={npcInventory}
-								onContextMenu={() => {}}
+								onContextMenu={(e, item) => handlePlayerItemSell(item)}
 								columns={5}
 							/>
 						</div>
@@ -223,10 +280,14 @@ const NPCDialog = ({
 							<InventoryGrid 
 								inventory={npcInventory}
 								otherInventory={playerInventory}
-								onContextMenu={() => {}}
+								onContextMenu={(e, item) => handleNpcItemBuy(item)}
 								columns={5}
 							/>
 						</div>
+					</div>
+					<div className="trade-gold-display">
+						<span className="gold-icon">🪙</span>
+						<span className="gold-amount">Your Gold: {playerGold}</span>
 					</div>
 				</div>
 			)}
@@ -341,6 +402,12 @@ const NPCDialog = ({
 					</div>
 				</div>
 			</fieldset>
+			<TradeMessageDialog
+				isOpen={!!tradeMessage}
+				message={tradeMessage?.message}
+				type={tradeMessage?.type}
+				onClose={() => setTradeMessage(null)}
+			/>
 		</dialog>
 	);
 };

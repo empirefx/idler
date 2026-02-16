@@ -242,9 +242,8 @@
 .equipment-flex {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--spacing-xl);
 	justify-content: space-between;
-	height: 90%;
+	height: 100%;
 	width: 90%;
 }
 

@@ -139,14 +139,30 @@ const playerInventorySlice = createSlice({
 
 			const item = inventory.items[itemValidation.itemIndex];
 
+			// Determine slot based on item type
+			const typeToSlot = {
+				head: "head",
+				body: "body",
+				pants: "pants",
+				boots: "boots",
+				hands: "hands",
+				shield: "second-weapon",
+				accessory: "second-weapon",
+				equipment: item.piece,
+			};
+
+			const slot = typeToSlot[item.type];
+			if (!slot) {
+				console.warn("Cannot determine equipment slot for item type:", item.type);
+				return;
+			}
+
 			// Validate that item can be equipped in its intended slot
-			const equipmentValidation = validateEquipmentSlot(item, item.piece);
+			const equipmentValidation = validateEquipmentSlot(item, slot);
 			if (!equipmentValidation.isValid) {
 				console.warn(equipmentValidation.message);
 				return;
 			}
-
-			const slot = item.piece;
 
 			// If slot already has an item, swap it back to inventory
 			const equippedItem = inventory.equipment[slot];
