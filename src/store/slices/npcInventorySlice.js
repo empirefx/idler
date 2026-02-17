@@ -4,84 +4,21 @@ import {
 	validateItemExists,
 } from "./inventory/inventoryValidators.js";
 import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
+import { inventoryData } from "../../data/inventory.js";
 
-// Initial NPC inventory state
-const initialState = {
-	blacksmith: {
-		id: "blacksmith",
-		npcId: "blacksmith",
-		type: "npc",
-		maxSlots: 20,
-		maxWeight: 200,
-		items: [
-			{
-				id: "iron_sword",
-				name: "Iron Sword",
-				description: "A sturdy iron sword",
-				type: "equipment",
-				piece: "main-weapon",
-				quantity: 3,
-				stats: { attack: 15 },
-				weight: 5,
-			},
-			{
-				id: "iron_helmet",
-				name: "Iron Helmet",
-				description: "Protective headgear",
-				type: "equipment",
-				piece: "head",
-				quantity: 2,
-				stats: { defense: 8 },
-				weight: 4,
-			},
-			{
-				id: "iron_chestplate",
-				name: "Iron Chestplate",
-				description: "Strong chest armor",
-				type: "equipment",
-				piece: "body",
-				quantity: 2,
-				stats: { defense: 15 },
-				weight: 12,
-			},
-		],
-	},
-	trader: {
-		id: "trader",
-		npcId: "trader",
-		type: "npc",
-		maxSlots: 25,
-		maxWeight: 150,
-		items: [
-			{
-				id: "apple",
-				name: "apple",
-				description: "A fresh apple",
-				type: "consumable",
-				quantity: 15,
-				weight: 0.5,
-				consumable: { heal: 10 },
-			},
-			{
-				id: "banana",
-				name: "banana",
-				description: "A ripe banana",
-				type: "consumable",
-				quantity: 10,
-				weight: 0.5,
-				consumable: { heal: 12 },
-			},
-			{
-				id: "or",
-				name: "or",
-				description: "A piece of or",
-				type: "material",
-				quantity: 20,
-				weight: 2,
-			},
-		],
-	},
+// Filter NPC inventories from the main inventory data
+const getNpcInventories = () => {
+	const npcInventories = {};
+	Object.entries(inventoryData).forEach(([key, inventory]) => {
+		if (inventory.type === "npc") {
+			npcInventories[key] = inventory;
+		}
+	});
+	return npcInventories;
 };
+
+// Initial NPC inventory state from data
+const initialState = getNpcInventories();
 
 const npcInventorySlice = createSlice({
 	name: "npcInventory",

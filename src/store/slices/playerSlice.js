@@ -115,6 +115,18 @@ export const playerSlice = createSlice({
 			const { timestamp } = action.payload;
 			state.lastAttackTime = timestamp;
 		},
+		addGold: (state, action) => {
+			const resource = state.resources.find((r) => r.name === "gold");
+			if (resource) {
+				resource.amount += action.payload;
+			}
+		},
+		spendGold: (state, action) => {
+			const resource = state.resources.find((r) => r.name === "gold");
+			if (resource) {
+				resource.amount = Math.max(0, resource.amount - action.payload);
+			}
+		},
 	},
 });
 
@@ -128,6 +140,8 @@ export const {
 	gainExp,
 	levelUp,
 	updateLastAttackTime,
+	addGold,
+	spendGold,
 } = playerSlice.actions;
 
 // Selectors
@@ -148,6 +162,7 @@ export const selectPlayer = createSelector(
 		level: player.level,
 		exp: player.exp,
 		expToNext: player.level * 100,
+		resources: player.resources,
 	}),
 );
 export const listBuildingsWithAssignedWorkers = createSelector(

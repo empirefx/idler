@@ -12,12 +12,12 @@ export const buildingsData = {
 		name: "Mine",
 		description: "Extracts valuable resources from the earth",
 		icon: "mine.jpg",
-		productionType: "or",
+		productionType: "iron-ore",
 		baseProductionRate: 1,
 	},
 };
 
 export const metadata = {
-	version: "1.0.10",
-	lastUpdated: "2025-04-23",
+	version: "1.0.11",
+	lastUpdated: "2026-02-11",
 };

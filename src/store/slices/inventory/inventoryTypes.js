@@ -3,6 +3,8 @@ export const EQUIPMENT_SLOTS = [
 	"head",
 	"body",
 	"pants",
+	"boots",
+	"hands",
 	"main-weapon",
 	"second-weapon",
 ];
@@ -26,6 +28,8 @@ export const EQUIPMENT_PIECES = {
 	HEAD: "head",
 	BODY: "body",
 	PANTS: "pants",
+	BOOTS: "boots",
+	HANDS: "hands",
 	MAIN_WEAPON: "main-weapon",
 	SECOND_WEAPON: "second-weapon",
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ItemInfo = ({ item, children }) => {
+const ItemInfo = ({ item, showBuyPrice = false, children }) => {
 	const [show, setShow] = useState(false);
 
 	return (
@@ -32,6 +32,20 @@ const ItemInfo = ({ item, children }) => {
 								</p>
 							))}
 						</div>
+					)}
+					{showBuyPrice && item.buy?.gold && (
+						<>
+							<hr></hr>
+							<p style={{ color: "#ffd700" }}>buy: {item.buy.gold} gold</p>
+						</>
+					)}
+					{!showBuyPrice && item.sellable?.gold && (
+						<>
+							<hr></hr>
+							<p style={{ color: "#ffd700" }}>
+								sell: {item.sellable.gold} gold
+							</p>
+						</>
 					)}
 				</div>
 			)}

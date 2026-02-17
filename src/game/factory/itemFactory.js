@@ -7,6 +7,7 @@ export const createItem = (productionType, quantity, options = {}) => {
 	// Example: add random quality if requested
 	const item = {
 		...itemDef,
+		itemKey: productionType,
 		quantity,
 	};
 	if (options.randomQuality) {

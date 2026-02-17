@@ -405,15 +405,6 @@
 		calc(11 * var(--portrait-height) * -1);
 }
 
-/* Hover effect */
-.portrait:hover {
-	transform: scale(1.05);
-	box-shadow: 0 8px 16px rgb(0 0 0 / 50%);
-	cursor: pointer;
-	transition: all 0.3s ease;
-	z-index: 10;
-}
-
 /* Optional: Different display sizes */
 .portrait.small {
 	width: 175px;

@@ -5,11 +5,14 @@ import InventoryDisplay from "../display/InventoryDisplay";
 import EquipmentDisplay from "../display/EquipmentDisplay";
 import StatList from "../list/StatList";
 import NewLevelDialog from "../common/NewLevelDialog";
+import QuestSection from "../sections/QuestSection";
 import { levelUp } from "../../../store/slices/playerSlice";
 
 const PlayerCard = ({ player, vaultId }) => {
 	const dispatch = useDispatch();
 	const [showLevelUp, setShowLevelUp] = useState(false);
+	const [activeTab, setActiveTab] = useState("character");
+
 	const handleLevelChoice = (bonuses) => {
 		dispatch(levelUp(bonuses));
 		setShowLevelUp(false);
@@ -43,27 +46,62 @@ const PlayerCard = ({ player, vaultId }) => {
 					</div>
 				</div>
 
-				<div className="player-Equipment">
-					<EquipmentDisplay />
-				</div>
+				<div className="player-panel">
+					<div className="player-tabs">
+						<button
+							type="button"
+							className={`player-tab-button${
+								activeTab === "character" ? " player-tab-button--active" : ""
+							}`}
+							onClick={() => setActiveTab("character")}
+						>
+							Character
+						</button>
+						<button
+							type="button"
+							className={`player-tab-button${
+								activeTab === "quests" ? " player-tab-button--active" : ""
+							}`}
+							onClick={() => setActiveTab("quests")}
+						>
+							Quests
+						</button>
+					</div>
 
-				<div className="player-stats">
-					<p>Base stats</p>
-					{player.stats && <StatList baseStats={player.stats} />}
-					<ul>
-						<li>
-							<span>EXP</span> {player.exp}/{player.expToNext}
-						</li>
-					</ul>
-				</div>
+					<div className="player-tab-content">
+						{activeTab === "character" && (
+							<div className="player-character-layout">
+								<div className="player-Equipment">
+									<EquipmentDisplay />
+								</div>
 
-				<div className="player-inventory">
-					<h3>Inventory</h3>
-					<InventoryDisplay
-						inventoryId="player"
-						otherInventoryId={vaultId}
-						isVault={false}
-					/>
+								<div className="player-stats">
+									<p>Base stats</p>
+									{player.stats && <StatList baseStats={player.stats} />}
+									<ul>
+										<li>
+											<span>EXP</span> {player.exp}/{player.expToNext}
+										</li>
+									</ul>
+								</div>
+
+								<div className="player-inventory">
+									<h3>Inventory</h3>
+									<InventoryDisplay
+										inventoryId="player"
+										otherInventoryId={vaultId}
+										isVault={false}
+									/>
+								</div>
+							</div>
+						)}
+
+						{activeTab === "quests" && (
+							<div className="player-quests">
+								<QuestSection />
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

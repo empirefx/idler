@@ -1,0 +1,40 @@
+import { itemCatalog } from "../../../../data/itemCatalog";
+
+const NPCDialogQuestPanel = ({ objectives, rewards }) => (
+	<div className="quest-details-panel">
+		<div className="quest-objectives-display">
+			<h4>Objectives:</h4>
+			<ul>
+				{objectives.map((obj, i) => (
+					<li
+						key={i}
+						className={obj.current >= obj.required ? "completed" : ""}
+					>
+						{obj.type === "collect"
+							? `Collect: ${obj.current}/${obj.required} ${obj.targetName}`
+							: obj.type === "kill"
+								? `Defeat: ${obj.current}/${obj.required} ${obj.target} monster`
+								: `${obj.progressKey}: ${obj.current}/${obj.required}`}
+					</li>
+				))}
+			</ul>
+		</div>
+		{rewards && (
+			<div className="quest-rewards-display">
+				<h4>Rewards:</h4>
+				<ul>
+					{rewards.gold && <li>🪙 {rewards.gold} gold</li>}
+					{rewards.exp && <li>✨ {rewards.exp} exp</li>}
+					{rewards.items?.map((item, i) => (
+						<li key={i}>
+							📦 {itemCatalog[item.itemKey]?.name || item.itemKey} x
+							{item.quantity}
+						</li>
+					))}
+				</ul>
+			</div>
+		)}
+	</div>
+);
+
+export default NPCDialogQuestPanel;

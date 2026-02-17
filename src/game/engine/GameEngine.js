@@ -4,7 +4,7 @@ import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice
 import { InventoryService } from "../services/InventoryService";
 import { createItem } from "../factory/itemFactory";
 import SpawnService from "../services/SpawnService";
-import { EventBusService } from "../services/EventBusService";
+import { EventBusService, globalEventBus } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
 import { workerCreatedItem } from "../events";
 import GameLoop from "../core/GameLoop";
@@ -52,7 +52,7 @@ class GameEngine {
 		this.enemyLifecycleService =
 			this.enemyLifecycleService || EnemyLifecycleService;
 		this.combatService = this.combatService || CombatService;
-		this.eventBusService = this.eventBusService || new EventBusService();
+		this.eventBusService = this.eventBusService || globalEventBus;
 		this.spawnService = SpawnService
 			? new SpawnService(this.eventBusService)
 			: { spawners: {}, currentPlaceId: null };

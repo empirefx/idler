@@ -4,37 +4,21 @@ import {
 	validateItemExists,
 } from "./inventory/inventoryValidators.js";
 import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
+import { inventoryData } from "../../data/inventory.js";
 
-// Initial place inventory state
-const initialState = {
-	village_center: {
-		id: "village_center",
-		placeId: "village_center",
-		type: "place",
-		maxSlots: 30,
-		items: [
-			{
-				id: 1,
-				name: "apple",
-				description: "A fresh apple",
-				type: "consumable",
-				quantity: 10,
-				weight: 0.5,
-				consumable: { heal: 10 },
-			},
-			{
-				id: "leather-hood",
-				name: "rusty armor",
-				description: "A sturdy piece of armor",
-				type: "equipment",
-				piece: "body",
-				quantity: 1,
-				stats: { defense: 12 },
-				weight: 18,
-			},
-		],
-	},
+// Filter place inventories from the main inventory data
+const getPlaceInventories = () => {
+	const placeInventories = {};
+	Object.entries(inventoryData).forEach(([key, inventory]) => {
+		if (inventory.type === "place") {
+			placeInventories[key] = inventory;
+		}
+	});
+	return placeInventories;
 };
+
+// Initial place inventory state from data
+const initialState = getPlaceInventories();
 
 const placeInventorySlice = createSlice({
 	name: "placeInventory",

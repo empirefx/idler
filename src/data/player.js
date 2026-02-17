@@ -17,7 +17,7 @@ export const playerData = {
 		agility: 7,
 		vitality: 12,
 	},
-	resources: [{ name: "gold", amount: 0 }],
+	resources: [{ name: "gold", amount: 100 }],
 	workers: [
 		{
 			id: 1,
@@ -41,6 +41,6 @@ export const playerData = {
 };
 
 export const metadata = {
-	version: "1.0.12",
-	lastUpdated: "2025-04-23",
+	version: "1.0.13",
+	lastUpdated: "2026-02-16",
 };

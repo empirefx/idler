@@ -2,7 +2,7 @@
 	margin: auto;
 	position: absolute;
 	inset: 0;
-	max-height: 480px;
+	max-height: 500px;
 	max-width: 970px;
 	background: var(--color-dark);
 	color: white;
@@ -20,8 +20,8 @@
 	grid-template-rows: repeat(2, 1fr);
 	gap: 8px;
 	grid-template-areas:
-		"display equipment stats"
-		"display inventory inventory";
+		"display panel panel"
+		"display panel panel";
 	width: 100%;
 	height: 100%;
 }
@@ -61,6 +61,63 @@
 	height: 380px;
 	margin-top: 40px;
 	z-index: 1;
+}
+
+.player-panel {
+	grid-area: panel;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+}
+
+.player-tabs {
+	display: flex;
+	gap: var(--spacing-sm);
+	margin-bottom: var(--spacing-sm);
+}
+
+.player-tab-button {
+	flex: 1;
+	padding: var(--spacing-sm) var(--spacing-md);
+	border-radius: var(--border-radius-sm);
+	border: 1px solid var(--color-gray-dark);
+	background: rgba(0, 0, 0, 0.4);
+	color: var(--color-gray);
+	cursor: pointer;
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.05em;
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease,
+		border-color 0.15s ease;
+}
+
+.player-tab-button:hover {
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.player-tab-button--active {
+	background: var(--color-secondary);
+	color: #fff;
+	border-color: var(--color-secondary);
+}
+
+.player-tab-content {
+	flex: 1;
+	min-height: 0;
+}
+
+.player-character-layout {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: 3fr 2fr;
+	gap: 8px;
+	grid-template-areas:
+		"equipment stats"
+		"inventory inventory";
+	height: 100%;
 }
 
 .player-options {
@@ -103,6 +160,68 @@
 	background-color: var(--color-gray-dark);
 }
 
+.player-quests {
+	height: 100%;
+}
+
+.player-quests .quest-section {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+}
+
+.player-quests .quest-section-content {
+	flex: 1;
+	padding: var(--spacing-md) var(--spacing-sm);
+	border-radius: var(--border-radius-lg);
+	background-color: var(--color-gray-dark);
+	overflow-y: auto;
+}
+
+.player-quests .quest-section-empty {
+	display: flex;
+	flex-grow: 0;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.player-quests .quest-section-title {
+	margin: 0 0 var(--spacing-md);
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	color: var(--color-secondary);
+}
+
+.player-quests .quest-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+	font-size: 0.85rem;
+}
+
+.player-quests .quest-list-item {
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border-radius: var(--border-radius-sm);
+	background: rgba(0, 0, 0, 0.35);
+}
+
+.player-quests .quest-summary {
+	color: var(--color-gray);
+	font-size: 0.8rem;
+}
+
+.player-quests .no-quests-message {
+	margin: 50px 0;
+	color: var(--color-gray);
+	font-size: 0.9rem;
+}
+
 .place-vault {
 	margin-bottom: 20px;
 	color: white;
@@ -124,9 +243,8 @@
 .equipment-flex {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--spacing-xl);
 	justify-content: space-between;
-	height: 90%;
+	height: 100%;
 	width: 90%;
 }
 

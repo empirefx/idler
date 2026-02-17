@@ -16,6 +16,10 @@
 	background: none;
 	z-index: 1000;
 	overflow: visible;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 .npc-dialog::backdrop {
@@ -48,7 +52,7 @@
 
 .npc-dialog-content {
 	height: auto;
-	width: auto;
+	width: inherit;
 }
 
 .dialog-bottom-section {
@@ -58,14 +62,10 @@
 	align-items: flex-end;
 }
 
-.dialog-bottom-section > div {
-	width: 600px;
-}
-
 .key-bind-container {
 	position: absolute;
 	right: 20px;
-	top: -40px;
+	bottom: 450px;
 	display: flex;
 	align-items: center;
 	gap: var(--spacing-sm);
@@ -83,6 +83,7 @@
 	height: 400px;
 	position: relative;
 	overflow: hidden;
+	width: 600px;
 }
 
 .player-background-image {
@@ -136,6 +137,80 @@
 	flex-direction: column;
 	gap: var(--spacing-md);
 	padding: var(--spacing-md);
+	overflow: hidden;
+	width: 700px;
+}
+
+.npc-background-image {
+	position: absolute;
+	bottom: -60px;
+	right: -80px;
+	z-index: 11;
+}
+
+/* Use existing portrait classes for positioning */
+.npc-background-image.portrait {
+	margin: 0;
+	box-shadow: none;
+}
+
+.npc-content-overlay {
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+	max-width: 500px;
+}
+
+.npc-trade-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: fit-content;
+}
+
+.npc-trade-section .trade-gold-display {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-sm);
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #ffd700;
+	position: absolute;
+	top: 330px;
+}
+
+.npc-trade-section .trade-gold-display .gold-icon {
+	font-size: 1.4rem;
+}
+
+.npc-trade-section .trade-inventories {
+	display: flex;
+	justify-content: center;
+}
+
+.npc-trade-section .trade-inventories > div {
+	padding: var(--spacing-md);
+	border-radius: var(--border-radius-lg);
+	background-color: #585858;
+	color: white;
+}
+
+.npc-trade-section .trade-inventories > div:first-child {
+	margin-right: var(--spacing-xl);
+}
+
+.npc-inventory-section h4,
+.player-inventory-section h4 {
+	margin: var(--spacing-md) 0;
+	margin-top: 0;
+	color: var(--color-secondary);
+	font-family: var(--font-family-secondary);
+	font-size: 1rem;
+	text-transform: uppercase;
+	text-align: center;
 }
 
 .npc-avatar-name {
@@ -168,7 +243,79 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-sm);
-	margin-top: var(--spacing-sm);
+}
+
+.quest-objectives-display {
+	background: #1a2233;
+	border-radius: var(--border-radius-sm);
+	padding: var(--spacing-md);
+	margin-bottom: var(--spacing-sm);
+	border: 1px solid #3a4a63;
+}
+
+.quest-details-panel {
+	display: flex;
+	gap: var(--spacing-md);
+	margin-bottom: var(--spacing-sm);
+}
+
+.quest-objectives-display,
+.quest-rewards-display {
+	flex: 1;
+	background: #1a2233;
+	border-radius: var(--border-radius-sm);
+	padding: var(--spacing-md);
+	border: 1px solid #3a4a63;
+}
+
+.quest-objectives-display {
+	margin-bottom: 0;
+}
+
+.quest-rewards-display h4 {
+	margin: 0 0 var(--spacing-sm) 0;
+	color: var(--color-secondary);
+	font-size: 0.9rem;
+	text-transform: uppercase;
+}
+
+.quest-rewards-display ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.quest-rewards-display li {
+	padding: var(--spacing-xs) 0;
+	color: #ffd700;
+	font-size: 0.9rem;
+}
+
+.quest-objectives-display h4 {
+	margin: 0 0 var(--spacing-sm) 0;
+	color: var(--color-secondary);
+	font-size: 0.9rem;
+	text-transform: uppercase;
+}
+
+.quest-objectives-display ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.quest-objectives-display li {
+	padding: var(--spacing-xs) 0;
+	color: #8a9bb5;
+	font-size: 0.9rem;
+}
+
+.quest-objectives-display li.completed {
+	color: #4ade80;
+}
+
+.quest-objectives-display li.completed::before {
+	content: "✓ ";
 }
 
 .dialog-option-btn {

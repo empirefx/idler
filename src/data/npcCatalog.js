@@ -6,6 +6,7 @@ export const npcCatalog = {
 			"The wise leader of the settlement, with years of knowledge about the region.",
 		avatar: 1,
 		location: "village_center",
+		hasQuestToGive: true,
 		dialogue: {
 			initial:
 				"Welcome, traveler. Our village has seen better days, but we endure.",
@@ -18,7 +19,13 @@ export const npcCatalog = {
 				{
 					text: "How can I help the village?",
 					response:
-						"Gather resources from the forest, clear out the monsters that threaten us, and build structures to strengthen our community.",
+						"Clear out the monsters that threaten us, and build structures to strengthen our community.",
+				},
+				{
+					text: "I can help clear out the monsters.",
+					response:
+						"That would be a great help to our village. Many creatures have been seen near our borders.",
+					startsQuestId: "help_village_kill_monsters",
 				},
 			],
 		},
@@ -27,9 +34,10 @@ export const npcCatalog = {
 		id: "blacksmith",
 		name: "Grum the Blacksmith",
 		description: "A burly man with soot-covered hands and a warm heart.",
-		avatar: 2,
+		avatar: 47,
 		location: "village_center",
 		hasInventory: true,
+		hasQuestToGive: true,
 		dialogue: {
 			initial:
 				"Need some equipment forged? I can work with any materials you bring me.",
@@ -43,6 +51,12 @@ export const npcCatalog = {
 					text: "Can you upgrade my gear?",
 					response:
 						"Bring me better materials and enough gold, and I'll improve whatever you have.",
+				},
+				{
+					text: "I can bring you some iron or.",
+					response:
+						"Aye, I'm running low on iron or. Bring me 5 pieces and I'll reward you well.",
+					startsQuestId: "blacksmith_iron_ore",
 				},
 			],
 		},
@@ -120,6 +134,6 @@ export const npcCatalog = {
 };
 
 export const metadata = {
-	version: "1.0.0",
-	lastUpdated: "2025-01-29",
+	version: "1.0.1",
+	lastUpdated: "2026-02-11",
 };

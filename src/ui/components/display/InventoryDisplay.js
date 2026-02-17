@@ -1,15 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { equipItem } from "../../../store/slices/playerInventorySlice";
-import {
-	moveItemBetweenInventories,
-	removeItemFromInventory,
-} from "../../../store/slices/inventoryThunks.js";
-import { healPlayer } from "../../../store/slices/playerSlice";
+import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
 import MoveItemDialog from "../common/MoveItemDialog";
-import ItemInfo from "../common/ItemInfo";
 import KeyBind from "../common/KeyBind";
+import InventoryGrid from "../common/InventoryGrid";
 
 import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
 import {
@@ -135,18 +130,6 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 		setSelectedItem(null);
 	}, []);
 
-	// Consume consumable items: lookup heal from the item directly
-	const handleConsume = useCallback(
-		(item) => {
-			const healAmount = item.consumable?.heal;
-			if (healAmount > 0) {
-				dispatch(healPlayer({ amount: healAmount }));
-				dispatch(removeItemFromInventory(inventory.id, item.id, 1));
-			}
-		},
-		[dispatch, inventory.id],
-	);
-
 	if (!inventory) return null; // If inventory is not found, render nothing
 
 	const hasWeightLimit = typeof inventory.maxWeight !== "undefined";
@@ -188,69 +171,12 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					</span>
 				)}
 			</div>
-			<div className="inventory-flex">
-				{Array.from({ length: inventory.maxSlots }, (_, i) => {
-					const item = inventory.items[i];
-
-					return (
-						<div
-							role="button"
-							tabIndex={item ? 0 : -1}
-							className={`inventory-slot ${item ? "filled" : "empty"}`}
-							key={item ? `slot-${item.id}-${i}` : `empty-${i}`}
-							onContextMenu={
-								item && otherInventory
-									? (e) => handleContextMenu(e, item)
-									: undefined
-							}
-							onKeyDown={
-								item && otherInventory
-									? (e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												handleContextMenu(e, item);
-											}
-										}
-									: undefined
-							}
-							// Handle equipment and consumable items
-							// left click for equipment/consumable, right click for move to vault/inventory
-							onClick={
-								item
-									? item.type === "equipment"
-										? () =>
-												dispatch(
-													equipItem({
-														inventoryId: inventory.id,
-														itemId: item.id,
-													}),
-												)
-										: item.type === "consumable"
-											? () => handleConsume(item)
-											: undefined
-									: undefined
-							}
-						>
-							{item?.type === "equipment" && (
-								// Display armor/weapon sprite
-								<div
-									className="armor-sprite"
-									id={item?.id ? item?.id : "empty"}
-								></div>
-							)}
-							{item && (
-								// Show quantity & stats for items
-								<ItemInfo item={item}>
-									<p>
-										<span>
-											{item.type === "equipment" ? "" : item.quantity || ""}
-										</span>
-									</p>
-								</ItemInfo>
-							)}
-						</div>
-					);
-				})}
-			</div>
+			<InventoryGrid
+				inventory={inventory}
+				otherInventory={otherInventory}
+				onContextMenu={handleContextMenu}
+				columns={10}
+			/>
 			{dialogOpen &&
 				selectedItem && ( // Open dialog if an item is selected
 					<MoveItemDialog
