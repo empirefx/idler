@@ -63,7 +63,12 @@ export const playerIntentCompleteQuest = (questId, npcId) => ({
 	payload: { questId, npcId },
 });
 
-export const questProgressUpdated = (questId, objectiveKey, progress, required) => ({
+export const questProgressUpdated = (
+	questId,
+	objectiveKey,
+	progress,
+	required,
+) => ({
 	type: QUEST_PROGRESS_UPDATED,
 	payload: { questId, objectiveKey, progress, required },
 });

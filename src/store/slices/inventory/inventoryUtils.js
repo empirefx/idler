@@ -4,7 +4,10 @@
 export const canItemsStack = (item1, item2) => {
 	// Only consumable and material types can stack
 	const stackableTypes = ["consumable", "material"];
-	if (!stackableTypes.includes(item1.type) || !stackableTypes.includes(item2.type)) {
+	if (
+		!stackableTypes.includes(item1.type) ||
+		!stackableTypes.includes(item2.type)
+	) {
 		return false;
 	}
 

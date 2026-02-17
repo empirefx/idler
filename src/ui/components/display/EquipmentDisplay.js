@@ -47,14 +47,14 @@ const EquipmentDisplay = () => {
 					{equipment[key] ? (
 						<ItemInfo item={equipment[key]}>
 							<div>
-								{(equipment[key].type === "equipment" || 
-								  equipment[key].type === "head" ||
-								  equipment[key].type === "body" ||
-								  equipment[key].type === "pants" ||
-								  equipment[key].type === "boots" ||
-								  equipment[key].type === "hands" ||
-								  equipment[key].type === "shield" ||
-								  equipment[key].type === "accessory") && (
+								{(equipment[key].type === "equipment" ||
+									equipment[key].type === "head" ||
+									equipment[key].type === "body" ||
+									equipment[key].type === "pants" ||
+									equipment[key].type === "boots" ||
+									equipment[key].type === "hands" ||
+									equipment[key].type === "shield" ||
+									equipment[key].type === "accessory") && (
 									<div
 										className="armor-sprite"
 										id={equipment[key].itemKey || equipment[key].id || "empty"}

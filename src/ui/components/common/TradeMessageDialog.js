@@ -46,11 +46,7 @@ function TradeMessageDialog({ isOpen, message, type = "success", onClose }) {
 					{type === "success" ? "✓" : "✗"}
 				</div>
 				<p className="trade-message-text">{message}</p>
-				<button
-					type="button"
-					className="trade-message-btn"
-					onClick={onClose}
-				>
+				<button type="button" className="trade-message-btn" onClick={onClose}>
 					OK
 				</button>
 			</div>

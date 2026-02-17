@@ -1,15 +1,30 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlayer, addGold, spendGold } from "../../../store/slices/playerSlice";
-import { selectPlayerInventoryById, addItem as addPlayerItem, removeItem as removePlayerItem } from "../../../store/slices/playerInventorySlice";
+import {
+	selectPlayer,
+	addGold,
+	spendGold,
+} from "../../../store/slices/playerSlice";
+import {
+	selectPlayerInventoryById,
+	addItem as addPlayerItem,
+	removeItem as removePlayerItem,
+} from "../../../store/slices/playerInventorySlice";
 import { selectNPCById } from "../../../store/slices/npcSlice";
-import { selectNpcInventoryById, addItem as addNpcItem, removeItem as removeNpcItem } from "../../../store/slices/npcInventorySlice";
+import {
+	selectNpcInventoryById,
+	addItem as addNpcItem,
+	removeItem as removeNpcItem,
+} from "../../../store/slices/npcInventorySlice";
 import { questCatalog } from "../../../data/questCatalog";
 import {
 	selectIsQuestActive,
 	selectIsQuestCompleted,
 } from "../../../store/slices/questSlice";
-import { playerIntentAcceptQuest, playerIntentCompleteQuest } from "../../../game/events";
+import {
+	playerIntentAcceptQuest,
+	playerIntentCompleteQuest,
+} from "../../../game/events";
 import InventoryGrid from "./InventoryGrid";
 import TradeMessageDialog from "./TradeMessageDialog";
 import { itemCatalog } from "../../../data/itemCatalog";
@@ -23,17 +38,19 @@ const NPCDialog = ({
 }) => {
 	const dispatch = useDispatch();
 	const player = useSelector(selectPlayer);
-	const playerInventory = useSelector((state) => selectPlayerInventoryById(state, "player"));
+	const playerInventory = useSelector((state) =>
+		selectPlayerInventoryById(state, "player"),
+	);
 	const npc = useSelector((state) => selectNPCById(state, npcId));
-	const npcInventory = useSelector((state) => selectNpcInventoryById(state, npcId));
+	const npcInventory = useSelector((state) =>
+		selectNpcInventoryById(state, npcId),
+	);
 	const questsState = useSelector((state) => state.quests);
 	const dialogRef = useRef(null);
 
 	// Get all quests offered by this NPC
 	const npcQuests = npc
-		? Object.values(questCatalog).filter(
-				(quest) => quest.giverNpcId === npc.id,
-		  )
+		? Object.values(questCatalog).filter((quest) => quest.giverNpcId === npc.id)
 		: [];
 
 	const [questConversationState, setQuestConversationState] = useState(null);
@@ -41,7 +58,7 @@ const NPCDialog = ({
 
 	// Get player gold amount
 	const playerGold = useMemo(() => {
-		const goldResource = player.resources?.find(r => r.name === "gold");
+		const goldResource = player.resources?.find((r) => r.name === "gold");
 		return goldResource?.amount || 0;
 	}, [player.resources]);
 
@@ -61,7 +78,7 @@ const NPCDialog = ({
 	// Check if quest is ready to complete (all objectives met)
 	const isQuestReadyToComplete = useMemo(() => {
 		if (!currentQuest || !isQuestActive || isQuestCompleted) return false;
-		
+
 		if (!currentQuest.objectives) return false;
 
 		return Object.values(currentQuest.objectives).every((objective) => {
@@ -75,10 +92,19 @@ const NPCDialog = ({
 				}, 0);
 				return count >= objective.required;
 			}
-			const questProgress = questsState?.activeById?.[currentQuest.id]?.progress;
-			return (questProgress?.[objective.progressKey] || 0) >= objective.required;
+			const questProgress =
+				questsState?.activeById?.[currentQuest.id]?.progress;
+			return (
+				(questProgress?.[objective.progressKey] || 0) >= objective.required
+			);
 		});
-	}, [currentQuest, isQuestActive, isQuestCompleted, questsState, playerInventory]);
+	}, [
+		currentQuest,
+		isQuestActive,
+		isQuestCompleted,
+		questsState,
+		playerInventory,
+	]);
 
 	// Handle ESC key and native dialog API
 	useEffect(() => {
@@ -132,14 +158,13 @@ const NPCDialog = ({
 		if (option?.startsQuestId) {
 			// Look up the quest directly from the startsQuestId
 			const questForOption = questCatalog[option.startsQuestId];
-			
+
 			// Verify the quest exists and is given by this NPC
 			if (questForOption && questForOption.giverNpcId === npc.id) {
 				// Check if quest is already completed using current state
-			const isThisQuestCompleted = questsState?.completedQuests?.[
-					option.startsQuestId
-				];
-				
+				const isThisQuestCompleted =
+					questsState?.completedQuests?.[option.startsQuestId];
+
 				if (!isThisQuestCompleted) {
 					setQuestConversationState({
 						questId: option.startsQuestId,
@@ -192,15 +217,23 @@ const NPCDialog = ({
 			return;
 		}
 		const sellPrice = item.sellable.gold;
-		dispatch(removePlayerItem({ inventoryId: "player", itemId: item.id, quantity: 1 }));
+		dispatch(
+			removePlayerItem({ inventoryId: "player", itemId: item.id, quantity: 1 }),
+		);
 		dispatch(addGold(sellPrice));
-		setTradeMessage({ type: "success", message: `Sold ${item.name} for ${sellPrice} gold.` });
+		setTradeMessage({
+			type: "success",
+			message: `Sold ${item.name} for ${sellPrice} gold.`,
+		});
 	};
 
 	// Handle buying item from NPC inventory (right-click)
 	const handleNpcItemBuy = (item) => {
 		if (!item.buy?.gold) {
-			setTradeMessage({ type: "error", message: "This item cannot be bought." });
+			setTradeMessage({
+				type: "error",
+				message: "This item cannot be bought.",
+			});
 			return;
 		}
 		const buyPrice = item.buy.gold;
@@ -222,7 +255,8 @@ const NPCDialog = ({
 
 		// Create new item from catalog using itemFactory pattern
 		const catalogItem = itemCatalog[item.itemKey] || item;
-		const isStackable = catalogItem.type === "consumable" || catalogItem.type === "material";
+		const isStackable =
+			catalogItem.type === "consumable" || catalogItem.type === "material";
 		const newItem = {
 			...catalogItem,
 			itemKey: item.itemKey || catalogItem.id,
@@ -230,7 +264,10 @@ const NPCDialog = ({
 		};
 		dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
 
-		setTradeMessage({ type: "success", message: `Bought ${item.name} for ${buyPrice} gold.` });
+		setTradeMessage({
+			type: "success",
+			message: `Bought ${item.name} for ${buyPrice} gold.`,
+		});
 	};
 
 	if (!npc || !isOpen) return null;
@@ -291,12 +328,12 @@ const NPCDialog = ({
 				}
 			}}
 		>
-		{npc?.hasInventory && npcInventory && (
+			{npc?.hasInventory && npcInventory && (
 				<div className="npc-trade-section">
 					<div className="trade-inventories">
 						<div className="player-inventory-section">
 							<h4>Your Inventory</h4>
-							<InventoryGrid 
+							<InventoryGrid
 								inventory={playerInventory}
 								otherInventory={npcInventory}
 								onContextMenu={(e, item) => handlePlayerItemSell(item)}
@@ -305,7 +342,7 @@ const NPCDialog = ({
 						</div>
 						<div className="npc-inventory-section">
 							<h4>NPC Inventory</h4>
-							<InventoryGrid 
+							<InventoryGrid
 								inventory={npcInventory}
 								otherInventory={playerInventory}
 								onContextMenu={(e, item) => handleNpcItemBuy(item)}

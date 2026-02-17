@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-	moveItemBetweenInventories,
-} from "../../../store/slices/inventoryThunks.js";
+import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
 import MoveItemDialog from "../common/MoveItemDialog";
 import KeyBind from "../common/KeyBind";
 import InventoryGrid from "../common/InventoryGrid";
@@ -173,7 +171,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					</span>
 				)}
 			</div>
-			<InventoryGrid 
+			<InventoryGrid
 				inventory={inventory}
 				otherInventory={otherInventory}
 				onContextMenu={handleContextMenu}

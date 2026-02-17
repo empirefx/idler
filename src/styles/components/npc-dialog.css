@@ -138,7 +138,6 @@
 }
 
 .npc-trade-section {
-
 }
 
 .npc-trade-section .trade-gold-display {
@@ -171,7 +170,8 @@
 	color: white;
 }
 
-.npc-inventory-section h4, .player-inventory-section h4 {
+.npc-inventory-section h4,
+.player-inventory-section h4 {
 	margin: var(--spacing-md) 0;
 	margin-top: 0;
 	color: var(--color-secondary);

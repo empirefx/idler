@@ -1,5 +1,9 @@
 import Gameplay from "../../game/core/Gameplay";
-import { PLAYER_INTENT_ACCEPT_QUEST, PLAYER_INTENT_COMPLETE_QUEST, ENEMY_DEAD } from "../../game/events";
+import {
+	PLAYER_INTENT_ACCEPT_QUEST,
+	PLAYER_INTENT_COMPLETE_QUEST,
+	ENEMY_DEAD,
+} from "../../game/events";
 
 let gameplayInstance = null;
 
@@ -30,4 +34,3 @@ const gameplayMiddleware = (store) => (next) => (action) => {
 };
 
 export default gameplayMiddleware;
-

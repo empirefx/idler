@@ -153,7 +153,10 @@ const playerInventorySlice = createSlice({
 
 			const slot = typeToSlot[item.type];
 			if (!slot) {
-				console.warn("Cannot determine equipment slot for item type:", item.type);
+				console.warn(
+					"Cannot determine equipment slot for item type:",
+					item.type,
+				);
 				return;
 			}
 
