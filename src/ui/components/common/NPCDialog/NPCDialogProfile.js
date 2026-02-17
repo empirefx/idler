@@ -1,4 +1,10 @@
-const NPCDialogProfile = ({ player, npc, getResponseText, getPlayerText, children }) => (
+const NPCDialogProfile = ({
+	player,
+	npc,
+	getResponseText,
+	getPlayerText,
+	children,
+}) => (
 	<div className="dialog-bottom-section">
 		{/* Left: Player Profile */}
 		<div

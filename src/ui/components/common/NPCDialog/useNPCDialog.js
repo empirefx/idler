@@ -100,11 +100,16 @@ const useNPCDialog = ({
 			const questProgress =
 				questsState?.activeById?.[currentQuest.id]?.progress;
 			return (
-				(questProgress?.[objective.progressKey] || 0) >=
-				objective.required
+				(questProgress?.[objective.progressKey] || 0) >= objective.required
 			);
 		});
-	}, [currentQuest, isQuestActive, isQuestCompleted, questsState, playerInventory]);
+	}, [
+		currentQuest,
+		isQuestActive,
+		isQuestCompleted,
+		questsState,
+		playerInventory,
+	]);
 
 	// Get quest objectives with current progress
 	const questObjectivesWithProgress = useMemo(() => {
@@ -241,12 +246,19 @@ const useNPCDialog = ({
 	const handlePlayerItemSell = useCallback(
 		(_event, item) => {
 			if (!item.sellable?.gold) {
-				setTradeMessage({ type: "error", message: "This item cannot be sold." });
+				setTradeMessage({
+					type: "error",
+					message: "This item cannot be sold.",
+				});
 				return;
 			}
 			const sellPrice = item.sellable.gold;
 			dispatch(
-				removePlayerItem({ inventoryId: "player", itemId: item.id, quantity: 1 }),
+				removePlayerItem({
+					inventoryId: "player",
+					itemId: item.id,
+					quantity: 1,
+				}),
 			);
 			dispatch(addGold(sellPrice));
 			setTradeMessage({
@@ -263,9 +275,15 @@ const useNPCDialog = ({
 			let buyPrice = null;
 			if (item && item.buy && typeof item.buy.gold === "number") {
 				buyPrice = item.buy.gold;
-			} 
+			}
 			// Fallback to itemCatalog
-			else if (item && item.itemKey && itemCatalog[item.itemKey] && itemCatalog[item.itemKey].buy && typeof itemCatalog[item.itemKey].buy.gold === "number") {
+			else if (
+				item &&
+				item.itemKey &&
+				itemCatalog[item.itemKey] &&
+				itemCatalog[item.itemKey].buy &&
+				typeof itemCatalog[item.itemKey].buy.gold === "number"
+			) {
 				buyPrice = itemCatalog[item.itemKey].buy.gold;
 			}
 

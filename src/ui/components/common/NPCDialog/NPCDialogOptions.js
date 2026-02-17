@@ -51,11 +51,7 @@ const NPCDialogOptions = ({
 								Complete Quest
 							</button>
 						) : isQuestActive ? (
-							<button
-								type="button"
-								className="dialog-option-btn"
-								disabled
-							>
+							<button type="button" className="dialog-option-btn" disabled>
 								Quest in progress
 							</button>
 						) : (
