@@ -1,15 +1,30 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlayer, addGold, spendGold } from "../../../store/slices/playerSlice";
-import { selectPlayerInventoryById, addItem as addPlayerItem, removeItem as removePlayerItem } from "../../../store/slices/playerInventorySlice";
+import {
+	selectPlayer,
+	addGold,
+	spendGold,
+} from "../../../store/slices/playerSlice";
+import {
+	selectPlayerInventoryById,
+	addItem as addPlayerItem,
+	removeItem as removePlayerItem,
+} from "../../../store/slices/playerInventorySlice";
 import { selectNPCById } from "../../../store/slices/npcSlice";
-import { selectNpcInventoryById, addItem as addNpcItem, removeItem as removeNpcItem } from "../../../store/slices/npcInventorySlice";
+import {
+	selectNpcInventoryById,
+	addItem as addNpcItem,
+	removeItem as removeNpcItem,
+} from "../../../store/slices/npcInventorySlice";
 import { questCatalog } from "../../../data/questCatalog";
 import {
 	selectIsQuestActive,
 	selectIsQuestCompleted,
 } from "../../../store/slices/questSlice";
-import { playerIntentAcceptQuest, playerIntentCompleteQuest } from "../../../game/events";
+import {
+	playerIntentAcceptQuest,
+	playerIntentCompleteQuest,
+} from "../../../game/events";
 import InventoryGrid from "./InventoryGrid";
 import TradeMessageDialog from "./TradeMessageDialog";
 import { itemCatalog } from "../../../data/itemCatalog";
@@ -23,24 +38,29 @@ const NPCDialog = ({
 }) => {
 	const dispatch = useDispatch();
 	const player = useSelector(selectPlayer);
-	const playerInventory = useSelector((state) => selectPlayerInventoryById(state, "player"));
+	const playerInventory = useSelector((state) =>
+		selectPlayerInventoryById(state, "player"),
+	);
 	const npc = useSelector((state) => selectNPCById(state, npcId));
-	const npcInventory = useSelector((state) => selectNpcInventoryById(state, npcId));
+	const npcInventory = useSelector((state) =>
+		selectNpcInventoryById(state, npcId),
+	);
 	const questsState = useSelector((state) => state.quests);
 	const dialogRef = useRef(null);
 
 	// Get all quests offered by this NPC
 	const npcQuests = npc
-		? Object.values(questCatalog).filter(
-				(quest) => quest.giverNpcId === npc.id,
-		  )
+		? Object.values(questCatalog).filter((quest) => quest.giverNpcId === npc.id)
 		: [];
 
-	const visibleDialogueOptions = useMemo(() => 
-		npc?.dialogue?.options?.filter(o => 
-			!o.startsQuestId || !questsState?.completedQuests?.[o.startsQuestId]
-		) ?? [], 
-	[npc?.dialogue?.options, questsState?.completedQuests]);
+	const visibleDialogueOptions = useMemo(
+		() =>
+			npc?.dialogue?.options?.filter(
+				(o) =>
+					!o.startsQuestId || !questsState?.completedQuests?.[o.startsQuestId],
+			) ?? [],
+		[npc?.dialogue?.options, questsState?.completedQuests],
+	);
 
 	const [questConversationState, setQuestConversationState] = useState(null);
 	const [tradeMessage, setTradeMessage] = useState(null);
@@ -53,7 +73,7 @@ const NPCDialog = ({
 
 	// Get player gold amount
 	const playerGold = useMemo(() => {
-		const goldResource = player.resources?.find(r => r.name === "gold");
+		const goldResource = player.resources?.find((r) => r.name === "gold");
 		return goldResource?.amount || 0;
 	}, [player.resources]);
 
@@ -73,7 +93,7 @@ const NPCDialog = ({
 	// Check if quest is ready to complete (all objectives met)
 	const isQuestReadyToComplete = useMemo(() => {
 		if (!currentQuest || !isQuestActive || isQuestCompleted) return false;
-		
+
 		if (!currentQuest.objectives) return false;
 
 		return Object.values(currentQuest.objectives).every((objective) => {
@@ -87,15 +107,24 @@ const NPCDialog = ({
 				}, 0);
 				return count >= objective.required;
 			}
-			const questProgress = questsState?.activeById?.[currentQuest.id]?.progress;
-			return (questProgress?.[objective.progressKey] || 0) >= objective.required;
+			const questProgress =
+				questsState?.activeById?.[currentQuest.id]?.progress;
+			return (
+				(questProgress?.[objective.progressKey] || 0) >= objective.required
+			);
 		});
-	}, [currentQuest, isQuestActive, isQuestCompleted, questsState, playerInventory]);
+	}, [
+		currentQuest,
+		isQuestActive,
+		isQuestCompleted,
+		questsState,
+		playerInventory,
+	]);
 
 	// Get quest objectives with current progress
 	const questObjectivesWithProgress = useMemo(() => {
 		if (!currentQuest?.objectives) return [];
-		
+
 		return Object.values(currentQuest.objectives).map((objective) => {
 			let current = 0;
 			let targetName = objective.target;
@@ -110,7 +139,10 @@ const NPCDialog = ({
 					return total;
 				}, 0);
 			} else {
-				current = questsState?.activeById?.[currentQuest.id]?.progress?.[objective.progressKey] || 0;
+				current =
+					questsState?.activeById?.[currentQuest.id]?.progress?.[
+						objective.progressKey
+					] || 0;
 			}
 			return { ...objective, current, targetName };
 		});
@@ -170,14 +202,13 @@ const NPCDialog = ({
 		if (option?.startsQuestId) {
 			// Look up the quest directly from the startsQuestId
 			const questForOption = questCatalog[option.startsQuestId];
-			
+
 			// Verify the quest exists and is given by this NPC
 			if (questForOption && questForOption.giverNpcId === npc.id) {
 				// Check if quest is already completed using current state
-			const isThisQuestCompleted = questsState?.completedQuests?.[
-					option.startsQuestId
-				];
-				
+				const isThisQuestCompleted =
+					questsState?.completedQuests?.[option.startsQuestId];
+
 				if (!isThisQuestCompleted) {
 					setQuestConversationState({
 						questId: option.startsQuestId,
@@ -230,15 +261,23 @@ const NPCDialog = ({
 			return;
 		}
 		const sellPrice = item.sellable.gold;
-		dispatch(removePlayerItem({ inventoryId: "player", itemId: item.id, quantity: 1 }));
+		dispatch(
+			removePlayerItem({ inventoryId: "player", itemId: item.id, quantity: 1 }),
+		);
 		dispatch(addGold(sellPrice));
-		setTradeMessage({ type: "success", message: `Sold ${item.name} for ${sellPrice} gold.` });
+		setTradeMessage({
+			type: "success",
+			message: `Sold ${item.name} for ${sellPrice} gold.`,
+		});
 	};
 
 	// Handle buying item from NPC inventory (right-click)
 	const handleNpcItemBuy = (item) => {
 		if (!item.buy?.gold) {
-			setTradeMessage({ type: "error", message: "This item cannot be bought." });
+			setTradeMessage({
+				type: "error",
+				message: "This item cannot be bought.",
+			});
 			return;
 		}
 		const buyPrice = item.buy.gold;
@@ -260,7 +299,8 @@ const NPCDialog = ({
 
 		// Create new item from catalog using itemFactory pattern
 		const catalogItem = itemCatalog[item.itemKey] || item;
-		const isStackable = catalogItem.type === "consumable" || catalogItem.type === "material";
+		const isStackable =
+			catalogItem.type === "consumable" || catalogItem.type === "material";
 		const newItem = {
 			...catalogItem,
 			itemKey: item.itemKey || catalogItem.id,
@@ -268,7 +308,10 @@ const NPCDialog = ({
 		};
 		dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
 
-		setTradeMessage({ type: "success", message: `Bought ${item.name} for ${buyPrice} gold.` });
+		setTradeMessage({
+			type: "success",
+			message: `Bought ${item.name} for ${buyPrice} gold.`,
+		});
 	};
 
 	if (!npc || !isOpen) return null;
@@ -329,12 +372,12 @@ const NPCDialog = ({
 				}
 			}}
 		>
-		{npc?.hasInventory && npcInventory && (
+			{npc?.hasInventory && npcInventory && (
 				<div className="npc-trade-section">
 					<div className="trade-inventories">
 						<div className="player-inventory-section">
 							<h4>Your Inventory</h4>
-							<InventoryGrid 
+							<InventoryGrid
 								inventory={playerInventory}
 								otherInventory={npcInventory}
 								onContextMenu={(e, item) => handlePlayerItemSell(item)}
@@ -343,7 +386,7 @@ const NPCDialog = ({
 						</div>
 						<div className="npc-inventory-section">
 							<h4>NPC Inventory</h4>
-							<InventoryGrid 
+							<InventoryGrid
 								inventory={npcInventory}
 								otherInventory={playerInventory}
 								onContextMenu={(e, item) => handleNpcItemBuy(item)}
@@ -394,122 +437,152 @@ const NPCDialog = ({
 								<h3>{npc.name}</h3>
 							</div>
 							<div className="npc-response">{getResponseText()}</div>
-						<fieldset className="dialog-options">
-							{questConversationState && currentQuest ? (
-								// Quest conversation mode: show Continue / Accept / Maybe later
-								(() => {
-									const steps = currentQuest?.conversation || [];
-									const step =
-										steps[questConversationState.stepIndex] ||
-										steps[steps.length - 1] ||
-										null;
-									const isFinal = step?.final || false;
+							<fieldset className="dialog-options">
+								{questConversationState && currentQuest ? (
+									// Quest conversation mode: show Continue / Accept / Maybe later
+									(() => {
+										const steps = currentQuest?.conversation || [];
+										const step =
+											steps[questConversationState.stepIndex] ||
+											steps[steps.length - 1] ||
+											null;
+										const isFinal = step?.final || false;
 
-									return (
-										<>
-											{!isFinal && (
-												<button
-													type="button"
-													className="dialog-option-btn"
-													onClick={advanceQuestConversation}
-												>
-													Continue
-												</button>
-											)}
-											{isFinal && (
-												<>
-													{questObjectivesWithProgress.length > 0 && (
-														<div className="quest-details-panel">
-															<div className="quest-objectives-display">
-																<h4>Objectives:</h4>
-																<ul>
-																	{questObjectivesWithProgress.map((obj, i) => (
-																		<li key={i} className={obj.current >= obj.required ? "completed" : ""}>
-																			{obj.type === "collect" ? `Collect: ${obj.current}/${obj.required} ${obj.targetName}` : 
-																			 obj.type === "kill" ? `Defeat: ${obj.current}/${obj.required} ${obj.target} monster` :
-																			 `${obj.progressKey}: ${obj.current}/${obj.required}`}
-																		</li>
-																	))}
-																</ul>
-															</div>
-															{currentQuest.rewards && (
-																<div className="quest-rewards-display">
-																	<h4>Rewards:</h4>
-																	<ul>
-																		{currentQuest.rewards.gold && <li>🪙 {currentQuest.rewards.gold} gold</li>}
-																		{currentQuest.rewards.exp && <li>✨ {currentQuest.rewards.exp} exp</li>}
-																		{currentQuest.rewards.items?.map((item, i) => {
-																			const itemData = itemCatalog[item.itemKey];
-																			return <li key={i}>📦 {itemData?.name || item.itemKey} x{item.quantity}</li>;
-																		})}
-																	</ul>
-																</div>
-															)}
-														</div>
-													)}
-													{isQuestReadyToComplete ? (
-														<button
-															type="button"
-															className="dialog-option-btn quest-complete-btn"
-															onClick={handleCompleteQuestClick}
-														>
-															Complete Quest
-														</button>
-													) : isQuestActive ? (
-														<button
-															type="button"
-															className="dialog-option-btn"
-															disabled
-														>
-															Quest in progress
-														</button>
-													) : (
-														<button
-															type="button"
-															className="dialog-option-btn"
-															onClick={handleAcceptQuestClick}
-														>
-															Accept quest
-														</button>
-													)}
+										return (
+											<>
+												{!isFinal && (
 													<button
 														type="button"
 														className="dialog-option-btn"
-														onClick={handleDeclineQuestClick}
+														onClick={advanceQuestConversation}
 													>
-														Maybe later
+														Continue
 													</button>
-												</>
-											)}
-										</>
-									);
-								})()
-							) : visibleDialogueOptions.length > 0 ? (
-								visibleDialogueOptions.map((option) => {
-									const originalIndex = npc.dialogue.options.indexOf(option);
-									return (
-										<button
-											key={`option-${option.id || originalIndex}`}
-											onClick={() => handleOptionClick(originalIndex)}
-											className="dialog-option-btn"
-											type="button"
-										>
-											{option.text}
-										</button>
-									);
-								})
-							) : (
-								<button
-									disabled
-									className="dialog-option-btn"
-									style={{ opacity: 0.5 }}
-									type="button"
-								>
-									No dialogue options available
-								</button>
-							)}
-						</fieldset>
-							<div className={`npc-background-image portrait portrait_${npc.avatar}`}></div>
+												)}
+												{isFinal && (
+													<>
+														{questObjectivesWithProgress.length > 0 && (
+															<div className="quest-details-panel">
+																<div className="quest-objectives-display">
+																	<h4>Objectives:</h4>
+																	<ul>
+																		{questObjectivesWithProgress.map(
+																			(obj, i) => (
+																				<li
+																					key={i}
+																					className={
+																						obj.current >= obj.required
+																							? "completed"
+																							: ""
+																					}
+																				>
+																					{obj.type === "collect"
+																						? `Collect: ${obj.current}/${obj.required} ${obj.targetName}`
+																						: obj.type === "kill"
+																							? `Defeat: ${obj.current}/${obj.required} ${obj.target} monster`
+																							: `${obj.progressKey}: ${obj.current}/${obj.required}`}
+																				</li>
+																			),
+																		)}
+																	</ul>
+																</div>
+																{currentQuest.rewards && (
+																	<div className="quest-rewards-display">
+																		<h4>Rewards:</h4>
+																		<ul>
+																			{currentQuest.rewards.gold && (
+																				<li>
+																					🪙 {currentQuest.rewards.gold} gold
+																				</li>
+																			)}
+																			{currentQuest.rewards.exp && (
+																				<li>
+																					✨ {currentQuest.rewards.exp} exp
+																				</li>
+																			)}
+																			{currentQuest.rewards.items?.map(
+																				(item, i) => {
+																					const itemData =
+																						itemCatalog[item.itemKey];
+																					return (
+																						<li key={i}>
+																							📦{" "}
+																							{itemData?.name || item.itemKey} x
+																							{item.quantity}
+																						</li>
+																					);
+																				},
+																			)}
+																		</ul>
+																	</div>
+																)}
+															</div>
+														)}
+														{isQuestReadyToComplete ? (
+															<button
+																type="button"
+																className="dialog-option-btn quest-complete-btn"
+																onClick={handleCompleteQuestClick}
+															>
+																Complete Quest
+															</button>
+														) : isQuestActive ? (
+															<button
+																type="button"
+																className="dialog-option-btn"
+																disabled
+															>
+																Quest in progress
+															</button>
+														) : (
+															<button
+																type="button"
+																className="dialog-option-btn"
+																onClick={handleAcceptQuestClick}
+															>
+																Accept quest
+															</button>
+														)}
+														<button
+															type="button"
+															className="dialog-option-btn"
+															onClick={handleDeclineQuestClick}
+														>
+															Maybe later
+														</button>
+													</>
+												)}
+											</>
+										);
+									})()
+								) : visibleDialogueOptions.length > 0 ? (
+									visibleDialogueOptions.map((option) => {
+										const originalIndex = npc.dialogue.options.indexOf(option);
+										return (
+											<button
+												key={`option-${option.id || originalIndex}`}
+												onClick={() => handleOptionClick(originalIndex)}
+												className="dialog-option-btn"
+												type="button"
+											>
+												{option.text}
+											</button>
+										);
+									})
+								) : (
+									<button
+										disabled
+										className="dialog-option-btn"
+										style={{ opacity: 0.5 }}
+										type="button"
+									>
+										No dialogue options available
+									</button>
+								)}
+							</fieldset>
+							<div
+								className={`npc-background-image portrait portrait_${npc.avatar}`}
+							></div>
 						</div>
 					</div>
 				</div>

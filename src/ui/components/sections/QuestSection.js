@@ -10,7 +10,9 @@ import { itemCatalog } from "../../../data/itemCatalog";
 
 const QuestItem = ({ questId }) => {
 	const quest = questCatalog[questId];
-	const playerInventory = useSelector((state) => selectPlayerInventoryById(state, "player"));
+	const playerInventory = useSelector((state) =>
+		selectPlayerInventoryById(state, "player"),
+	);
 	if (!quest) return null;
 
 	// Get progress for each objective

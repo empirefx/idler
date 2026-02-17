@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22082632706)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22113223297)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,9 +31,9 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 112 files in 1414ms. No fixes applied.
-Found 3 errors.
-Found 11 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
+Checked 112 files in 1140ms. No fixes applied.
+Found 7 errors.
+Found 10 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
   ! This parameter is unused.
 
@@ -125,22 +125,6 @@ src/game/engine/GameEngine.js:7:10 lint/correctness/noUnusedImports  FIXABLE  �
     7 │ import·{·EventBusService,·globalEventBus·}·from·"../services/EventBusService";
       │          -----------------
 
-src/styles/components/npc-dialog.css:140:20 lint/suspicious/noEmptyBlock ━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! An empty block isn't allowed.
-
-    138 │ }
-    139 │
-  > 140 │ .npc-trade-section {
-        │                    ^
-  > 141 │ }
-        │ ^
-    142 │
-    143 │ .npc-trade-section .trade-gold-display {
-
-  i Consider removing the empty block or adding styles inside it.
-
-
 src/ui/components/common/NPCDialog.js:16:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
 
   ! Several of these imports are unused.
@@ -217,50 +201,50 @@ src/ui/components/common/NPCDialog.js:52:8 lint/correctness/noUnusedVariables  F
      54  54 │   		: [];
 
 
-src/ui/components/common/NPCDialog.js:339:25 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog.js:383:25 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    337 │ 								inventory={playerInventory}
-    338 │ 								otherInventory={npcInventory}
-  > 339 │ 								onContextMenu={(e, item) => handlePlayerItemSell(item)}
+    381 │ 								inventory={playerInventory}
+    382 │ 								otherInventory={npcInventory}
+  > 383 │ 								onContextMenu={(e, item) => handlePlayerItemSell(item)}
         │ 								                ^
-    340 │ 								columns={5}
-    341 │ 							/>
+    384 │ 								columns={5}
+    385 │ 							/>
 
   i Unused parameters might be the result of an incomplete refactoring.
 
   i Unsafe fix: If this is intentional, prepend e with an underscore.
 
-    337 337 │   								inventory={playerInventory}
-    338 338 │   								otherInventory={npcInventory}
-    339     │ - → → → → → → → → onContextMenu={(e,·item)·=>·handlePlayerItemSell(item)}
-        339 │ + → → → → → → → → onContextMenu={(_e,·item)·=>·handlePlayerItemSell(item)}
-    340 340 │   								columns={5}
-    341 341 │   							/>
+    381 381 │   								inventory={playerInventory}
+    382 382 │   								otherInventory={npcInventory}
+    383     │ - → → → → → → → → onContextMenu={(e,·item)·=>·handlePlayerItemSell(item)}
+        383 │ + → → → → → → → → onContextMenu={(_e,·item)·=>·handlePlayerItemSell(item)}
+    384 384 │   								columns={5}
+    385 385 │   							/>
 
 
-src/ui/components/common/NPCDialog.js:348:25 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog.js:392:25 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    346 │ 								inventory={npcInventory}
-    347 │ 								otherInventory={playerInventory}
-  > 348 │ 								onContextMenu={(e, item) => handleNpcItemBuy(item)}
+    390 │ 								inventory={npcInventory}
+    391 │ 								otherInventory={playerInventory}
+  > 392 │ 								onContextMenu={(e, item) => handleNpcItemBuy(item)}
         │ 								                ^
-    349 │ 								columns={5}
-    350 │ 								showBuyPrice={true}
+    393 │ 								columns={5}
+    394 │ 								showBuyPrice={true}
 
   i Unused parameters might be the result of an incomplete refactoring.
 
   i Unsafe fix: If this is intentional, prepend e with an underscore.
 
-    346 346 │   								inventory={npcInventory}
-    347 347 │   								otherInventory={playerInventory}
-    348     │ - → → → → → → → → onContextMenu={(e,·item)·=>·handleNpcItemBuy(item)}
-        348 │ + → → → → → → → → onContextMenu={(_e,·item)·=>·handleNpcItemBuy(item)}
-    349 349 │   								columns={5}
-    350 350 │   								showBuyPrice={true}
+    390 390 │   								inventory={npcInventory}
+    391 391 │   								otherInventory={playerInventory}
+    392     │ - → → → → → → → → onContextMenu={(e,·item)·=>·handleNpcItemBuy(item)}
+        392 │ + → → → → → → → → onContextMenu={(_e,·item)·=>·handleNpcItemBuy(item)}
+    393 393 │   								columns={5}
+    394 394 │   								showBuyPrice={true}
 
 
 src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━
@@ -284,6 +268,103 @@ src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackRe
     29 │ }
 
 
+src/ui/components/common/NPCDialog.js:404:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    402 │ 				</div>
+    403 │ 			)}
+  > 404 │ 			<div
+        │ 			^^^^
+  > 405 │ 				className="npc-dialog-content"
+         ...
+  > 411 │ 				}}
+  > 412 │ 			>
+        │ 			^
+    413 │ 				<div className="dialog-bottom-section">
+    414 │ 					{/* Left: Player Profile */}
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/common/NPCDialog.js:69:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+
+  × This hook specifies more dependencies than necessary: npcId.
+
+    68 │ 	// Reset conversation state when switching NPCs
+  > 69 │ 	useEffect(() => {
+       │ 	^^^^^^^^^
+    70 │ 		setQuestConversationState(null);
+    71 │ 		setTradeMessage(null);
+
+  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
+
+    70 │ 		setQuestConversationState(null);
+    71 │ 		setTradeMessage(null);
+  > 72 │ 	}, [npcId]);
+       │ 	    ^^^^^
+    73 │
+    74 │ 	// Get player gold amount
+
+  i React relies on hook dependencies to determine when to re-compute Effects.
+    Specifying more dependencies than required can lead to unnecessary re-rendering
+    and degraded performance.
+
+  i Unsafe fix: Remove the extra dependencies from the list.
+
+    72 │ → },·[npcId]);
+       │       -----
+
+src/ui/components/common/NPCDialog.js:472:27 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Avoid using the index of an array as key property in an element.
+
+    470 │ 																			(obj, i) => (
+    471 │ 																				<li
+  > 472 │ 																					key={i}
+        │ 																					     ^
+    473 │ 																					className={
+    474 │ 																						obj.current >= obj.required
+
+  i This is the source of the key value.
+
+    468 │ 																	<ul>
+    469 │ 																		{questObjectivesWithProgress.map(
+  > 470 │ 																			(obj, i) => (
+        │ 																			      ^
+    471 │ 																				<li
+    472 │ 																					key={i}
+
+  i The order of the items may change, and this also affects performances and component state.
+
+  i Check the React documentation.
+
+
+src/ui/components/common/NPCDialog.js:508:32 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Avoid using the index of an array as key property in an element.
+
+    506 │ 																						itemCatalog[item.itemKey];
+    507 │ 																					return (
+  > 508 │ 																						<li key={i}>
+        │ 																						         ^
+    509 │ 																							📦{" "}
+    510 │ 																							{itemData?.name || item.itemKey} x
+
+  i This is the source of the key value.
+
+    502 │ 																			)}
+    503 │ 																			{currentQuest.rewards.items?.map(
+  > 504 │ 																				(item, i) => {
+        │ 																				       ^
+    505 │ 																					const itemData =
+    506 │ 																						itemCatalog[item.itemKey];
+
+  i The order of the items may change, and this also affects performances and component state.
+
+  i Check the React documentation.
+
+
 src/ui/components/common/TradeMessageDialog.js:36:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
 
   × Static Elements should not be interactive.
@@ -303,16 +384,16 @@ src/ui/components/common/TradeMessageDialog.js:36:4 lint/a11y/noStaticElementInt
   i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-src/ui/components/sections/QuestSection.js:17:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━
+src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━
 
   × This hook is being called from a nested function, but all hooks must be called unconditionally from the top-level component.
 
-    15 │ 		quest.objectives &&
-    16 │ 		Object.entries(quest.objectives).map(([key, objective]) => {
-  > 17 │ 			const progress = useSelector(
+    20 │ 		quest.objectives &&
+    21 │ 		Object.entries(quest.objectives).map(([key, objective]) => {
+  > 22 │ 			const progress = useSelector(
        │ 			                 ^^^^^^^^^^^
-    18 │ 				selectQuestProgress(quest.id, objective.progressKey),
-    19 │ 			);
+    23 │ 				selectQuestProgress(quest.id, objective.progressKey),
+    24 │ 			);
 
   i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
 
@@ -341,8 +422,12 @@ Clone found (javascript):
    src/ui/components/sections/LogSection.js [7:2 - 14:6]
 
 Clone found (javascript):
- - src/ui/components/common/NPCDialog.js [297:2 - 306:11] (9 lines, 86 tokens)
-   src/ui/components/common/NPCDialog.js [275:2 - 284:8]
+ - src/ui/components/common/NPCDialog.js [341:2 - 350:11] (9 lines, 86 tokens)
+   src/ui/components/common/NPCDialog.js [319:2 - 328:8]
+
+Clone found (javascript):
+ - src/ui/components/common/NPCDialog.js [406:5 - 413:24] (7 lines, 77 tokens)
+   src/ui/components/common/TradeMessageDialog.js [38:5 - 45:2]
 
 Clone found (javascript):
  - src/ui/components/common/InventoryGrid.js [106:2 - 115:3] (9 lines, 99 tokens)
@@ -403,23 +488,23 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 127            │ 13808       │ 110726       │ 17           │ 205 (1.48%)      │ 1955 (1.77%)      │
+│ javascript │ 127            │ 13942       │ 111962       │ 18           │ 212 (1.52%)      │ 2032 (1.81%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 18             │ 2974        │ 17126        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 19             │ 4072        │ 23510        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 154            │ 16932       │ 128806       │ 17           │ 205 (1.21%)      │ 1955 (1.52%)      │
+│ Total:     │ 155            │ 18164       │ 136426       │ 18           │ 212 (1.17%)      │ 2032 (1.49%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 17 clones.
-Error: ERROR: jscpd found too many duplicates (1.21%) over threshold (0%)
+Found 18 clones.
+Error: ERROR: jscpd found too many duplicates (1.17%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (1.21%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (1.17%) over threshold (0%)
 ```
 
 </details>

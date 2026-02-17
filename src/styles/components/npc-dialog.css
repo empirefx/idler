@@ -202,7 +202,8 @@
 	margin-right: var(--spacing-xl);
 }
 
-.npc-inventory-section h4, .player-inventory-section h4 {
+.npc-inventory-section h4,
+.player-inventory-section h4 {
 	margin: var(--spacing-md) 0;
 	margin-top: 0;
 	color: var(--color-secondary);
