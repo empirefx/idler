@@ -34,7 +34,7 @@ export const npcCatalog = {
 		id: "blacksmith",
 		name: "Grum the Blacksmith",
 		description: "A burly man with soot-covered hands and a warm heart.",
-		avatar: 2,
+		avatar: 47,
 		location: "village_center",
 		hasInventory: true,
 		hasQuestToGive: true,
