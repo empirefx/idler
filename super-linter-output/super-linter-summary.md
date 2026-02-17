@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/21883504698)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22115925525)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
