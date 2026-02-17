@@ -1,17 +1,15 @@
 name: Lint
 "on":
   push:
-    branches:
-      - main
+    branches: [main]
     paths-ignore:
       - super-linter-output/**
-  pull_request:
-    branches:
-      - main
 permissions:
   contents: read
 jobs:
   build:
+    # This "if" is the safety net: it will skip the job if not on main
+    if: github.ref == 'refs/heads/main'
     name: Lint
     runs-on: ubuntu-latest
     permissions:
