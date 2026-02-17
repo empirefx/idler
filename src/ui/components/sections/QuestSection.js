@@ -4,10 +4,13 @@ import {
 	selectQuestProgress,
 	selectCompletedQuestIds,
 } from "../../../store/slices/questSlice";
+import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
 import { questCatalog } from "../../../data/questCatalog";
+import { itemCatalog } from "../../../data/itemCatalog";
 
 const QuestItem = ({ questId }) => {
 	const quest = questCatalog[questId];
+	const playerInventory = useSelector((state) => selectPlayerInventoryById(state, "player"));
 	if (!quest) return null;
 
 	// Get progress for each objective
@@ -48,6 +51,26 @@ const QuestItem = ({ questId }) => {
 								>
 									{" "}
 									- Kill {targetText}: {progress}/{objective.required}
+								</span>
+							);
+						}
+						if (objective.type === "collect") {
+							const itemData = itemCatalog[objective.target];
+							const itemName = itemData?.name || objective.target;
+							const inventory = playerInventory?.items || [];
+							const current = inventory.reduce((total, item) => {
+								if (item.itemKey === objective.target) {
+									return total + (item.quantity || 1);
+								}
+								return total;
+							}, 0);
+							return (
+								<span
+									key={objective.progressKey}
+									className="quest-progress-item"
+								>
+									{" "}
+									- Collect {itemName}: {current}/{objective.required}
 								</span>
 							);
 						}

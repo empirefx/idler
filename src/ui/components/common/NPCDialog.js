@@ -36,8 +36,20 @@ const NPCDialog = ({
 		  )
 		: [];
 
+	const visibleDialogueOptions = useMemo(() => 
+		npc?.dialogue?.options?.filter(o => 
+			!o.startsQuestId || !questsState?.completedQuests?.[o.startsQuestId]
+		) ?? [], 
+	[npc?.dialogue?.options, questsState?.completedQuests]);
+
 	const [questConversationState, setQuestConversationState] = useState(null);
 	const [tradeMessage, setTradeMessage] = useState(null);
+
+	// Reset conversation state when switching NPCs
+	useEffect(() => {
+		setQuestConversationState(null);
+		setTradeMessage(null);
+	}, [npcId]);
 
 	// Get player gold amount
 	const playerGold = useMemo(() => {
@@ -80,6 +92,30 @@ const NPCDialog = ({
 		});
 	}, [currentQuest, isQuestActive, isQuestCompleted, questsState, playerInventory]);
 
+	// Get quest objectives with current progress
+	const questObjectivesWithProgress = useMemo(() => {
+		if (!currentQuest?.objectives) return [];
+		
+		return Object.values(currentQuest.objectives).map((objective) => {
+			let current = 0;
+			let targetName = objective.target;
+			if (objective.type === "collect") {
+				const itemData = itemCatalog[objective.target];
+				if (itemData) targetName = itemData.name;
+				const inventory = playerInventory?.items || [];
+				current = inventory.reduce((total, item) => {
+					if (item.itemKey === objective.target) {
+						return total + (item.quantity || 1);
+					}
+					return total;
+				}, 0);
+			} else {
+				current = questsState?.activeById?.[currentQuest.id]?.progress?.[objective.progressKey] || 0;
+			}
+			return { ...objective, current, targetName };
+		});
+	}, [currentQuest, playerInventory, questsState]);
+
 	// Handle ESC key and native dialog API
 	useEffect(() => {
 		const dialog = dialogRef.current;
@@ -111,12 +147,14 @@ const NPCDialog = ({
 		if (!currentQuest || !npc) return;
 		dispatch(playerIntentAcceptQuest(currentQuest.id, npc.id));
 		resetQuestConversation();
+		onClose();
 	};
 
 	const handleCompleteQuestClick = () => {
 		if (!currentQuest || !npc) return;
 		dispatch(playerIntentCompleteQuest(currentQuest.id, npc.id));
 		resetQuestConversation();
+		onClose();
 	};
 
 	const handleDeclineQuestClick = () => {
@@ -320,11 +358,7 @@ const NPCDialog = ({
 					</div>
 				</div>
 			)}
-			<div className="key-bind-container">
-				<span className="key-bind">ESC</span>
-				<span>escape</span>
-			</div>
-			<fieldset
+			<div
 				className="npc-dialog-content"
 				onClick={(e) => e.stopPropagation()}
 				onKeyDown={(e) => {
@@ -334,6 +368,10 @@ const NPCDialog = ({
 				}}
 			>
 				{/* Bottom section with 2 columns */}
+				<div className="key-bind-container">
+					<span className="key-bind">ESC</span>
+					<span>escape</span>
+				</div>
 				<div className="dialog-bottom-section">
 					{/* Left: Player Profile */}
 					<div
@@ -360,7 +398,7 @@ const NPCDialog = ({
 							<h3>{npc.name}</h3>
 						</div>
 						<div className="npc-response">{getResponseText()}</div>
-						<div className="dialog-options">
+						<fieldset className="dialog-options">
 							{questConversationState && currentQuest ? (
 								// Quest conversation mode: show Continue / Accept / Maybe later
 								(() => {
@@ -384,6 +422,35 @@ const NPCDialog = ({
 											)}
 											{isFinal && (
 												<>
+													{questObjectivesWithProgress.length > 0 && (
+														<div className="quest-details-panel">
+															<div className="quest-objectives-display">
+																<h4>Objectives:</h4>
+																<ul>
+																	{questObjectivesWithProgress.map((obj, i) => (
+																		<li key={i} className={obj.current >= obj.required ? "completed" : ""}>
+																			{obj.type === "collect" ? `Collect: ${obj.current}/${obj.required} ${obj.targetName}` : 
+																			 obj.type === "kill" ? `Defeat: ${obj.current}/${obj.required} ${obj.target} monster` :
+																			 `${obj.progressKey}: ${obj.current}/${obj.required}`}
+																		</li>
+																	))}
+																</ul>
+															</div>
+															{currentQuest.rewards && (
+																<div className="quest-rewards-display">
+																	<h4>Rewards:</h4>
+																	<ul>
+																		{currentQuest.rewards.gold && <li>🪙 {currentQuest.rewards.gold} gold</li>}
+																		{currentQuest.rewards.exp && <li>✨ {currentQuest.rewards.exp} exp</li>}
+																		{currentQuest.rewards.items?.map((item, i) => {
+																			const itemData = itemCatalog[item.itemKey];
+																			return <li key={i}>📦 {itemData?.name || item.itemKey} x{item.quantity}</li>;
+																		})}
+																	</ul>
+																</div>
+															)}
+														</div>
+													)}
 													{isQuestReadyToComplete ? (
 														<button
 															type="button"
@@ -421,17 +488,20 @@ const NPCDialog = ({
 										</>
 									);
 								})()
-							) : npc.dialogue?.options ? (
-								npc.dialogue.options.map((option, index) => (
-									<button
-										key={`option-${option.id || index}`}
-										onClick={() => handleOptionClick(index)}
-										className="dialog-option-btn"
-										type="button"
-									>
-										{option.text}
-									</button>
-								))
+							) : visibleDialogueOptions.length > 0 ? (
+								visibleDialogueOptions.map((option) => {
+									const originalIndex = npc.dialogue.options.indexOf(option);
+									return (
+										<button
+											key={`option-${option.id || originalIndex}`}
+											onClick={() => handleOptionClick(originalIndex)}
+											className="dialog-option-btn"
+											type="button"
+										>
+											{option.text}
+										</button>
+									);
+								})
 							) : (
 								<button
 									disabled
@@ -442,10 +512,10 @@ const NPCDialog = ({
 									No dialogue options available
 								</button>
 							)}
-						</div>
+						</fieldset>
 					</div>
 				</div>
-			</fieldset>
+			</div>
 			<TradeMessageDialog
 				isOpen={!!tradeMessage}
 				message={tradeMessage?.message}
