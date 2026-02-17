@@ -9,7 +9,7 @@ import {
 	selectIsQuestActive,
 	selectIsQuestCompleted,
 } from "../../../store/slices/questSlice";
-import { playerIntentAcceptQuest } from "../../../game/events";
+import { playerIntentAcceptQuest, playerIntentCompleteQuest } from "../../../game/events";
 import InventoryGrid from "./InventoryGrid";
 import TradeMessageDialog from "./TradeMessageDialog";
 import { itemCatalog } from "../../../data/itemCatalog";
@@ -55,8 +55,30 @@ const NPCDialog = ({
 		? Boolean(questsState?.activeById?.[currentQuest.id])
 		: false;
 	const isQuestCompleted = currentQuest
-		? Boolean(questsState?.completedIds?.includes(currentQuest.id))
+		? Boolean(questsState?.completedQuests?.[currentQuest.id])
 		: false;
+
+	// Check if quest is ready to complete (all objectives met)
+	const isQuestReadyToComplete = useMemo(() => {
+		if (!currentQuest || !isQuestActive || isQuestCompleted) return false;
+		
+		if (!currentQuest.objectives) return false;
+
+		return Object.values(currentQuest.objectives).every((objective) => {
+			if (objective.type === "collect") {
+				const inventory = playerInventory?.items || [];
+				const count = inventory.reduce((total, item) => {
+					if (item.itemKey === objective.target) {
+						return total + (item.quantity || 1);
+					}
+					return total;
+				}, 0);
+				return count >= objective.required;
+			}
+			const questProgress = questsState?.activeById?.[currentQuest.id]?.progress;
+			return (questProgress?.[objective.progressKey] || 0) >= objective.required;
+		});
+	}, [currentQuest, isQuestActive, isQuestCompleted, questsState, playerInventory]);
 
 	// Handle ESC key and native dialog API
 	useEffect(() => {
@@ -91,6 +113,12 @@ const NPCDialog = ({
 		resetQuestConversation();
 	};
 
+	const handleCompleteQuestClick = () => {
+		if (!currentQuest || !npc) return;
+		dispatch(playerIntentCompleteQuest(currentQuest.id, npc.id));
+		resetQuestConversation();
+	};
+
 	const handleDeclineQuestClick = () => {
 		resetQuestConversation();
 	};
@@ -108,9 +136,9 @@ const NPCDialog = ({
 			// Verify the quest exists and is given by this NPC
 			if (questForOption && questForOption.giverNpcId === npc.id) {
 				// Check if quest is already completed using current state
-				const isThisQuestCompleted = questsState?.completedIds?.includes(
-					option.startsQuestId,
-				);
+			const isThisQuestCompleted = questsState?.completedQuests?.[
+					option.startsQuestId
+				];
 				
 				if (!isThisQuestCompleted) {
 					setQuestConversationState({
@@ -356,16 +384,31 @@ const NPCDialog = ({
 											)}
 											{isFinal && (
 												<>
-													<button
-														type="button"
-														className="dialog-option-btn"
-														onClick={handleAcceptQuestClick}
-														disabled={isQuestActive}
-													>
-														{isQuestActive
-															? "Quest already accepted"
-															: "Accept quest"}
-													</button>
+													{isQuestReadyToComplete ? (
+														<button
+															type="button"
+															className="dialog-option-btn quest-complete-btn"
+															onClick={handleCompleteQuestClick}
+														>
+															Complete Quest
+														</button>
+													) : isQuestActive ? (
+														<button
+															type="button"
+															className="dialog-option-btn"
+															disabled
+														>
+															Quest in progress
+														</button>
+													) : (
+														<button
+															type="button"
+															className="dialog-option-btn"
+															onClick={handleAcceptQuestClick}
+														>
+															Accept quest
+														</button>
+													)}
 													<button
 														type="button"
 														className="dialog-option-btn"

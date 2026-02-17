@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import {
 	selectActiveQuestIds,
 	selectQuestProgress,
+	selectCompletedQuestIds,
 } from "../../../store/slices/questSlice";
 import { questCatalog } from "../../../data/questCatalog";
 
@@ -60,6 +61,7 @@ const QuestItem = ({ questId }) => {
 
 const QuestSection = () => {
 	const activeQuestIds = useSelector(selectActiveQuestIds);
+	const completedQuestIds = useSelector(selectCompletedQuestIds);
 
 	return (
 		<section className="quest-section">
@@ -74,6 +76,32 @@ const QuestSection = () => {
 						{activeQuestIds.map((questId) => (
 							<QuestItem key={questId} questId={questId} />
 						))}
+					</ul>
+				</div>
+			)}
+			{completedQuestIds && completedQuestIds.length > 0 && (
+				<div className="quest-section-content completed-quests">
+					<h2 className="quest-section-title">Completed quests</h2>
+					<ul className="quest-list">
+						{completedQuestIds.map((questId) => {
+							const quest = questCatalog[questId];
+							if (!quest) return null;
+							return (
+								<li key={questId} className="quest-list-item completed">
+									<strong>{quest.title}</strong>
+									{quest.rewards && (
+										<span className="quest-rewards">
+											{" "}
+											- Rewarded: {quest.rewards.gold || 0} gold,{" "}
+											{quest.rewards.exp || 0} exp
+											{quest.rewards.items &&
+												quest.rewards.items.length > 0 &&
+												`, ${quest.rewards.items.map((i) => i.itemKey).join(", ")}`}
+										</span>
+									)}
+								</li>
+							);
+						})}
 					</ul>
 				</div>
 			)}

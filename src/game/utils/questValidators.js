@@ -44,7 +44,7 @@ export const checkQuestEligibility = (state, questId, npcId = null) => {
 	}
 
 	// Already completed
-	if (questsState?.completedIds?.includes(questId)) {
+	if (questsState?.completedQuests?.[questId]) {
 		return {
 			canAccept: false,
 			reasonCode: QUEST_ELIGIBILITY_REASONS.ALREADY_COMPLETED,
@@ -82,9 +82,9 @@ export const checkQuestEligibility = (state, questId, npcId = null) => {
 		Array.isArray(quest.requirements?.requiredQuestIds) &&
 		quest.requirements.requiredQuestIds.length > 0
 	) {
-		const completedIds = questsState?.completedIds || [];
+		const completedQuests = questsState?.completedQuests || {};
 		const missing = quest.requirements.requiredQuestIds.filter(
-			(id) => !completedIds.includes(id),
+			(id) => !completedQuests[id],
 		);
 
 		if (missing.length > 0) {

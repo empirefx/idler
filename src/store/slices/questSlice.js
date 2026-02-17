@@ -2,7 +2,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
 	activeById: {},
-	completedIds: [],
+	completedQuests: {},
 };
 
 const questSlice = createSlice({
@@ -15,7 +15,7 @@ const questSlice = createSlice({
 
 			// Do not re-add if already active or completed
 			if (state.activeById[questId]) return;
-			if (state.completedIds.includes(questId)) return;
+			if (state.completedQuests[questId]) return;
 
 			state.activeById[questId] = {
 				questId,
@@ -36,16 +36,17 @@ const questSlice = createSlice({
 		},
 
 		questCompleted: (state, action) => {
-			const questId = action.payload;
+			const { questId, rewards } = action.payload;
 			if (!questId) return;
-
-			if (!state.completedIds.includes(questId)) {
-				state.completedIds.push(questId);
-			}
 
 			if (state.activeById[questId]) {
 				delete state.activeById[questId];
 			}
+
+			state.completedQuests[questId] = {
+				completedAt: Date.now(),
+				rewardsClaimed: rewards || null,
+			};
 		},
 
 		questAbandoned: (state, action) => {
@@ -69,6 +70,11 @@ export const selectActiveQuestIds = createSelector(
 	(questState) => Object.keys(questState.activeById || {})
 );
 
+export const selectCompletedQuestIds = createSelector(
+	[selectQuestState],
+	(questState) => Object.keys(questState.completedQuests || {})
+);
+
 export const selectIsQuestActive =
 	(questId) =>
 	(state) =>
@@ -77,7 +83,7 @@ export const selectIsQuestActive =
 export const selectIsQuestCompleted =
 	(questId) =>
 	(state) =>
-		Boolean(state.quests.completedIds?.includes(questId));
+		Boolean(state.quests.completedQuests?.[questId]);
 
 export const selectQuestProgress =
 	(questId, progressKey) =>

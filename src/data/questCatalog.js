@@ -19,6 +19,10 @@ export const questCatalog = {
 				progressKey: "monstersKilled",
 			},
 		},
+		rewards: {
+			gold: 50,
+			exp: 100,
+		},
 		acceptMessage: "You agree to help clear the monsters threatening the village.",
 		conversation: [
 			{
@@ -59,6 +63,11 @@ export const questCatalog = {
 				progressKey: "ironOreCollected",
 			},
 		},
+		rewards: {
+			gold: 30,
+			exp: 50,
+			items: [{ itemKey: "light-gloves", quantity: 1 }],
+		},
 		acceptMessage: "You agree to bring iron ore to Grum.",
 		conversation: [
 			{
@@ -82,7 +91,7 @@ export const questCatalog = {
 };
 
 export const metadata = {
-	version: "1.0.1",
-	lastUpdated: "2026-02-11",
+	version: "1.1.0",
+	lastUpdated: "2026-02-16",
 };
 

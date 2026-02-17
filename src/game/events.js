@@ -7,6 +7,7 @@ export const LOCATION_CHANGED = "game/LOCATION_CHANGED";
 export const PLAYER_DAMAGED = "game/PLAYER_DAMAGED";
 export const ENEMY_DEAD = "game/ENEMY_DEAD";
 export const PLAYER_INTENT_ACCEPT_QUEST = "game/PLAYER_INTENT_ACCEPT_QUEST";
+export const PLAYER_INTENT_COMPLETE_QUEST = "game/PLAYER_INTENT_COMPLETE_QUEST";
 export const QUEST_PROGRESS_UPDATED = "game/QUEST_PROGRESS_UPDATED";
 export const QUEST_OBJECTIVE_COMPLETED = "game/QUEST_OBJECTIVE_COMPLETED";
 
@@ -54,6 +55,11 @@ export const locationChanged = (fromPlace, toPlace) => ({
 
 export const playerIntentAcceptQuest = (questId, npcId) => ({
 	type: PLAYER_INTENT_ACCEPT_QUEST,
+	payload: { questId, npcId },
+});
+
+export const playerIntentCompleteQuest = (questId, npcId) => ({
+	type: PLAYER_INTENT_COMPLETE_QUEST,
 	payload: { questId, npcId },
 });
 
