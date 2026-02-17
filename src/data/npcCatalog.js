@@ -53,9 +53,9 @@ export const npcCatalog = {
 						"Bring me better materials and enough gold, and I'll improve whatever you have.",
 				},
 				{
-					text: "I can bring you some iron ore.",
+					text: "I can bring you some iron or.",
 					response:
-						"Aye, I'm running low on iron ore. Bring me 5 pieces and I'll reward you well.",
+						"Aye, I'm running low on iron or. Bring me 5 pieces and I'll reward you well.",
 					startsQuestId: "blacksmith_iron_ore",
 				},
 			],

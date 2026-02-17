@@ -1,8 +1,15 @@
 import Logger from "../utils/Logger";
 import { checkQuestEligibility } from "../utils/questValidators";
-import { questAccepted, questProgressUpdated, questCompleted } from "../../store/slices/questSlice";
+import {
+	questAccepted,
+	questProgressUpdated,
+	questCompleted,
+} from "../../store/slices/questSlice";
 import { addGold, gainExp } from "../../store/slices/playerSlice";
-import { addItem as addPlayerItem, removeItem as removePlayerItem } from "../../store/slices/playerInventorySlice";
+import {
+	addItem as addPlayerItem,
+	removeItem as removePlayerItem,
+} from "../../store/slices/playerInventorySlice";
 import {
 	addNotification,
 	NOTIFICATION_TYPES,
@@ -31,10 +38,7 @@ class Gameplay {
 		if (!eligibility.canAccept) {
 			if (eligibility.message) {
 				this.dispatch(
-					addNotification(
-						eligibility.message,
-						NOTIFICATION_TYPES.WARNING,
-					),
+					addNotification(eligibility.message, NOTIFICATION_TYPES.WARNING),
 				);
 			}
 
@@ -52,10 +56,7 @@ class Gameplay {
 
 		if (eligibility.message) {
 			this.dispatch(
-				addNotification(
-					eligibility.message,
-					NOTIFICATION_TYPES.SUCCESS,
-				),
+				addNotification(eligibility.message, NOTIFICATION_TYPES.SUCCESS),
 			);
 		}
 
@@ -72,7 +73,7 @@ class Gameplay {
 	getItemCount(itemKey) {
 		const inventory = this.store.getState().playerInventory?.player;
 		if (!inventory?.items) return 0;
-		
+
 		return inventory.items.reduce((total, item) => {
 			if (item.itemKey === itemKey) {
 				return total + (item.quantity || 1);
@@ -86,9 +87,10 @@ class Gameplay {
 	}
 
 	updateQuestProgress(questId, progressKey, increment, required) {
-		const currentProgress = this.getActiveQuests()[questId]?.progress?.[progressKey] || 0;
+		const currentProgress =
+			this.getActiveQuests()[questId]?.progress?.[progressKey] || 0;
 		const newProgress = currentProgress + increment;
-		
+
 		this.dispatch(
 			questProgressUpdated({
 				questId,
@@ -96,38 +98,36 @@ class Gameplay {
 				value: newProgress,
 			}),
 		);
-		
+
 		Logger.log(
 			`Quest progress updated: ${questId} - ${progressKey}: ${newProgress}/${required}`,
 			0,
-			"gameplay"
+			"gameplay",
 		);
-		
+
 		return newProgress;
 	}
 
 	isQuestReadyToComplete(questId) {
 		const quest = questCatalog[questId];
 		if (!quest?.objectives) return false;
-		
+
 		const questProgress = this.getActiveQuests()[questId]?.progress || {};
-		
-		return Object.values(quest.objectives).every(
-			(objective) => {
-				if (objective.type === "collect") {
-					const inventoryCount = this.getItemCount(objective.target);
-					return inventoryCount >= objective.required;
-				}
-				const currentProgress = questProgress[objective.progressKey] || 0;
-				return currentProgress >= objective.required;
-			},
-		);
+
+		return Object.values(quest.objectives).every((objective) => {
+			if (objective.type === "collect") {
+				const inventoryCount = this.getItemCount(objective.target);
+				return inventoryCount >= objective.required;
+			}
+			const currentProgress = questProgress[objective.progressKey] || 0;
+			return currentProgress >= objective.required;
+		});
 	}
 
 	checkQuestCompletion(questId) {
 		const quest = questCatalog[questId];
 		if (!quest?.objectives) return false;
-		
+
 		const questProgress = this.getActiveQuests()[questId]?.progress || {};
 		const allObjectivesComplete = Object.values(quest.objectives).every(
 			(objective) => {
@@ -135,7 +135,7 @@ class Gameplay {
 				return currentProgress >= objective.required;
 			},
 		);
-		
+
 		// Don't auto-complete - just notify it's ready
 		if (allObjectivesComplete) {
 			this.dispatch(
@@ -151,19 +151,20 @@ class Gameplay {
 
 	// Quest handlers
 	handleKillObjective({ questId, objective, enemyId, enemy }) {
-		const isMatch = objective.target === "any" || 
-						objective.target === enemyId || 
-						objective.target === enemy.type;
-		
+		const isMatch =
+			objective.target === "any" ||
+			objective.target === enemyId ||
+			objective.target === enemy.type;
+
 		if (!isMatch) return;
-		
+
 		const newProgress = this.updateQuestProgress(
 			questId,
 			objective.progressKey,
 			1,
-			objective.required
+			objective.required,
 		);
-		
+
 		if (newProgress >= objective.required) {
 			this.checkQuestCompletion(questId);
 		}
@@ -171,11 +172,11 @@ class Gameplay {
 
 	processQuestsByType(type, eventData) {
 		const activeQuests = this.getActiveQuests();
-		
+
 		Object.entries(activeQuests).forEach(([questId, questState]) => {
 			const quest = questCatalog[questId];
 			if (!quest?.objectives) return;
-			
+
 			Object.entries(quest.objectives).forEach(([objectiveKey, objective]) => {
 				if (objective.type === type) {
 					this.questHandlers[type]?.({
@@ -215,7 +216,9 @@ class Gameplay {
 						itemKey: itemReward.itemKey,
 						quantity: itemReward.quantity || 1,
 					};
-					this.dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
+					this.dispatch(
+						addPlayerItem({ inventoryId: "player", item: newItem }),
+					);
 					rewardMessages.push(`${itemReward.quantity || 1}x ${itemData.name}`);
 				}
 			});
@@ -251,18 +254,22 @@ class Gameplay {
 							if (item.itemKey === objective.target) {
 								const stackQty = item.quantity || 1;
 								if (stackQty > itemsToRemove) {
-									this.dispatch(removePlayerItem({
-										inventoryId: "player",
-										itemId: item.id,
-										quantity: itemsToRemove,
-									}));
+									this.dispatch(
+										removePlayerItem({
+											inventoryId: "player",
+											itemId: item.id,
+											quantity: itemsToRemove,
+										}),
+									);
 									itemsToRemove = 0;
 								} else {
-									this.dispatch(removePlayerItem({
-										inventoryId: "player",
-										itemId: item.id,
-										quantity: stackQty,
-									}));
+									this.dispatch(
+										removePlayerItem({
+											inventoryId: "player",
+											itemId: item.id,
+											quantity: stackQty,
+										}),
+									);
 									itemsToRemove -= stackQty;
 								}
 							}
@@ -277,7 +284,7 @@ class Gameplay {
 
 		// Mark quest as completed with rewards
 		this.dispatch(questCompleted({ questId, rewards: quest.rewards }));
-		
+
 		this.dispatch(
 			addNotification(
 				`Quest completed: ${quest.title}! Rewards: ${rewardMessages.join(", ")}`,
@@ -292,8 +299,12 @@ class Gameplay {
 
 	// Legacy method - kept for compatibility but now just marks ready
 	handleEnemyDeath({ enemyId, placeId, enemy }) {
-		Logger.log(`Enemy died: ${enemy.name || enemyId} at place ${placeId}`, 0, "gameplay");
-		
+		Logger.log(
+			`Enemy died: ${enemy.name || enemyId} at place ${placeId}`,
+			0,
+			"gameplay",
+		);
+
 		this.processQuestsByType("kill", { enemyId, enemy });
 	}
 

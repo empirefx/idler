@@ -200,11 +200,7 @@ export const CombatService = {
 
 				// Dispatch Redux action for enemy death
 				this.store.dispatch(
-					enemyDead(
-						enemySnapshot.id,
-						enemySnapshot.placeId,
-						enemySnapshot
-					)
+					enemyDead(enemySnapshot.id, enemySnapshot.placeId, enemySnapshot),
 				);
 
 				// Check if all enemies in this place are dead and trigger cleanup

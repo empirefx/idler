@@ -31,19 +31,14 @@ const QuestItem = ({ questId }) => {
 		<li className="quest-list-item">
 			<strong>{quest.title}</strong>
 			{quest.requirementSummary ? (
-				<span className="quest-summary">
-					{" "}
-					- {quest.requirementSummary}
-				</span>
+				<span className="quest-summary"> - {quest.requirementSummary}</span>
 			) : null}
 			{progressData && progressData.length > 0 ? (
 				<div className="quest-progress">
 					{progressData.map(({ objective, progress }) => {
 						if (objective.type === "kill") {
 							const targetText =
-								objective.target === "any"
-									? "any monster"
-									: objective.target;
+								objective.target === "any" ? "any monster" : objective.target;
 							return (
 								<span
 									key={objective.progressKey}
@@ -133,4 +128,3 @@ const QuestSection = () => {
 };
 
 export default QuestSection;
-

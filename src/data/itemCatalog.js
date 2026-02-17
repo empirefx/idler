@@ -20,8 +20,8 @@ export const itemCatalog = {
 	"iron-ore": {
 		id: 3,
 		type: "material",
-		name: "iron ore",
-		description: "A piece of iron ore",
+		name: "iron or",
+		description: "A piece of iron or",
 		quantity: 0,
 		weight: 2,
 	},

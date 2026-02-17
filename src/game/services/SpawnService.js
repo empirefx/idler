@@ -50,14 +50,18 @@ class BaseSpawner {
 		this.#abortController?.abort();
 		this.#abortController = new AbortController();
 
-		return this.eventBus.on("enemyDead", (data) => {
-			// Only process deaths for this specific place
-			if (data.placeId === this.placeId) {
-				onAllDead(data);
-			}
-		}, {
-			signal: this.#abortController.signal,
-		});
+		return this.eventBus.on(
+			"enemyDead",
+			(data) => {
+				// Only process deaths for this specific place
+				if (data.placeId === this.placeId) {
+					onAllDead(data);
+				}
+			},
+			{
+				signal: this.#abortController.signal,
+			},
+		);
 	}
 
 	// Destroy the spawner and clean up resources

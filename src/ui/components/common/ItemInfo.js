@@ -42,7 +42,9 @@ const ItemInfo = ({ item, showBuyPrice = false, children }) => {
 					{!showBuyPrice && item.sellable?.gold && (
 						<>
 							<hr></hr>
-							<p style={{ color: "#ffd700" }}>sell: {item.sellable.gold} gold</p>
+							<p style={{ color: "#ffd700" }}>
+								sell: {item.sellable.gold} gold
+							</p>
 						</>
 					)}
 				</div>

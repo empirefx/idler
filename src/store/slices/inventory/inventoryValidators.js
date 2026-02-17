@@ -90,8 +90,17 @@ export const validateItemExists = (inventory, itemId) => {
 
 export const validateEquipmentSlot = (item, slot) => {
 	// Equipment types that can be equipped
-	const equippableTypes = ["equipment", "head", "body", "pants", "boots", "hands", "shield", "accessory"];
-	
+	const equippableTypes = [
+		"equipment",
+		"head",
+		"body",
+		"pants",
+		"boots",
+		"hands",
+		"shield",
+		"accessory",
+	];
+
 	if (!item || !equippableTypes.includes(item.type)) {
 		return {
 			isValid: false,

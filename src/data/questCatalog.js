@@ -5,7 +5,8 @@ export const questCatalog = {
 		description:
 			"Monsters have been threatening the village outskirts. Eliminate any monsters to help protect the settlement.",
 		giverNpcId: "village_elder",
-		requirementSummary: "Be at least level 1 and speak to the Village Elder in the village center.",
+		requirementSummary:
+			"Be at least level 1 and speak to the Village Elder in the village center.",
 		requirements: {
 			minLevel: 1,
 			requiredPlaceId: "village_center",
@@ -23,7 +24,8 @@ export const questCatalog = {
 			gold: 50,
 			exp: 100,
 		},
-		acceptMessage: "You agree to help clear the monsters threatening the village.",
+		acceptMessage:
+			"You agree to help clear the monsters threatening the village.",
 		conversation: [
 			{
 				npcText:
@@ -45,9 +47,9 @@ export const questCatalog = {
 	},
 	blacksmith_iron_ore: {
 		id: "blacksmith_iron_ore",
-		title: "Grum's Request: Iron Ore",
+		title: "Grum's Request: Iron Or",
 		description:
-			"Grum the Blacksmith needs iron ore to forge better equipment. Bring him 5 iron ore.",
+			"Grum the Blacksmith needs iron or to forge better equipment. Bring him 5 iron or.",
 		giverNpcId: "blacksmith",
 		requirementSummary: "Speak to Grum the Blacksmith in the village center.",
 		requirements: {
@@ -68,17 +70,17 @@ export const questCatalog = {
 			exp: 50,
 			items: [{ itemKey: "light-gloves", quantity: 1 }],
 		},
-		acceptMessage: "You agree to bring iron ore to Grum.",
+		acceptMessage: "You agree to bring iron or to Grum.",
 		conversation: [
 			{
 				npcText:
-					"I'm running low on iron ore. Can't forge good equipment without it.",
+					"I'm running low on iron or. Can't forge good equipment without it.",
 				playerText: "What do you need?",
 			},
 			{
 				npcText:
-					"Bring me 5 iron ore from the mines. The harder the ore, the better the gear I can make.",
-				playerText: "I can help with that. Where can I find iron ore?",
+					"Bring me 5 iron or from the mines. The harder the or, the better the gear I can make.",
+				playerText: "I can help with that. Where can I find iron or?",
 			},
 			{
 				npcText:
@@ -94,4 +96,3 @@ export const metadata = {
 	version: "1.1.0",
 	lastUpdated: "2026-02-16",
 };
-

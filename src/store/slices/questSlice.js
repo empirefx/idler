@@ -60,35 +60,33 @@ const questSlice = createSlice({
 	},
 });
 
-export const { questAccepted, questCompleted, questAbandoned, questProgressUpdated } = questSlice.actions;
+export const {
+	questAccepted,
+	questCompleted,
+	questAbandoned,
+	questProgressUpdated,
+} = questSlice.actions;
 
 // Selectors
 export const selectQuestState = (state) => state.quests;
 
 export const selectActiveQuestIds = createSelector(
 	[selectQuestState],
-	(questState) => Object.keys(questState.activeById || {})
+	(questState) => Object.keys(questState.activeById || {}),
 );
 
 export const selectCompletedQuestIds = createSelector(
 	[selectQuestState],
-	(questState) => Object.keys(questState.completedQuests || {})
+	(questState) => Object.keys(questState.completedQuests || {}),
 );
 
-export const selectIsQuestActive =
-	(questId) =>
-	(state) =>
-		Boolean(state.quests.activeById?.[questId]);
+export const selectIsQuestActive = (questId) => (state) =>
+	Boolean(state.quests.activeById?.[questId]);
 
-export const selectIsQuestCompleted =
-	(questId) =>
-	(state) =>
-		Boolean(state.quests.completedQuests?.[questId]);
+export const selectIsQuestCompleted = (questId) => (state) =>
+	Boolean(state.quests.completedQuests?.[questId]);
 
-export const selectQuestProgress =
-	(questId, progressKey) =>
-	(state) =>
-		state.quests.activeById?.[questId]?.progress?.[progressKey] ?? 0;
+export const selectQuestProgress = (questId, progressKey) => (state) =>
+	state.quests.activeById?.[questId]?.progress?.[progressKey] ?? 0;
 
 export default questSlice.reducer;
-

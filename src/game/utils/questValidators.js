@@ -56,7 +56,10 @@ export const checkQuestEligibility = (state, questId, npcId = null) => {
 	const currentPlaceId = state.places?.currentPlaceId ?? null;
 
 	// Level requirement
-	if (quest.requirements?.minLevel && playerLevel < quest.requirements.minLevel) {
+	if (
+		quest.requirements?.minLevel &&
+		playerLevel < quest.requirements.minLevel
+	) {
 		return {
 			canAccept: false,
 			reasonCode: QUEST_ELIGIBILITY_REASONS.LEVEL_TOO_LOW,
@@ -102,4 +105,3 @@ export const checkQuestEligibility = (state, questId, npcId = null) => {
 		message: quest.acceptMessage || `Quest accepted: ${quest.title}`,
 	};
 };
-

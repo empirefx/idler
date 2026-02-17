@@ -6,12 +6,12 @@ import { removeItemFromInventory } from "../../../store/slices/inventoryThunks.j
 import { healPlayer } from "../../../store/slices/playerSlice";
 import ItemInfo from "../common/ItemInfo";
 
-const InventoryGrid = ({ 
-	inventory, 
-	otherInventory, 
-	onContextMenu, 
+const InventoryGrid = ({
+	inventory,
+	otherInventory,
+	onContextMenu,
 	columns = 10,
-	showBuyPrice = false
+	showBuyPrice = false,
 }) => {
 	const dispatch = useDispatch();
 
@@ -28,10 +28,10 @@ const InventoryGrid = ({
 	);
 
 	return (
-		<div 
-			className="inventory-grid" 
-			style={{ 
-				"--grid-columns": columns 
+		<div
+			className="inventory-grid"
+			style={{
+				"--grid-columns": columns,
 			}}
 		>
 			{Array.from({ length: inventory.maxSlots }, (_, i) => {
@@ -44,9 +44,7 @@ const InventoryGrid = ({
 						className={`inventory-slot ${item ? "filled" : "empty"}`}
 						key={item ? `slot-${item.id}-${i}` : `empty-${i}`}
 						onContextMenu={
-							item && otherInventory
-								? (e) => onContextMenu(e, item)
-								: undefined
+							item && otherInventory ? (e) => onContextMenu(e, item) : undefined
 						}
 						onKeyDown={
 							item && otherInventory
@@ -61,11 +59,15 @@ const InventoryGrid = ({
 						// left click for equipment/armor types/consumable, right click for move to vault/inventory
 						onClick={
 							item
-								? item.type === "equipment" || item.type === "armor" || 
-								  item.type === "head" || item.type === "body" || 
-								  item.type === "pants" || item.type === "boots" || 
-								  item.type === "hands" || item.type === "shield" ||
-								  item.type === "accessory"
+								? item.type === "equipment" ||
+									item.type === "armor" ||
+									item.type === "head" ||
+									item.type === "body" ||
+									item.type === "pants" ||
+									item.type === "boots" ||
+									item.type === "hands" ||
+									item.type === "shield" ||
+									item.type === "accessory"
 									? () =>
 											dispatch(
 												equipItem({
@@ -79,15 +81,21 @@ const InventoryGrid = ({
 								: undefined
 						}
 					>
-						{(item?.type === "equipment" || item?.type === "armor" || 
-						  item?.type === "head" || item?.type === "body" || 
-						  item?.type === "pants" || item?.type === "boots" || 
-						  item?.type === "hands" || item?.type === "shield" ||
-						  item?.type === "accessory") && (
+						{(item?.type === "equipment" ||
+							item?.type === "armor" ||
+							item?.type === "head" ||
+							item?.type === "body" ||
+							item?.type === "pants" ||
+							item?.type === "boots" ||
+							item?.type === "hands" ||
+							item?.type === "shield" ||
+							item?.type === "accessory") && (
 							// Display armor/weapon sprite
 							<div
 								className="armor-sprite"
-								id={item?.itemKey ? item.itemKey : item?.id ? item?.id : "empty"}
+								id={
+									item?.itemKey ? item.itemKey : item?.id ? item?.id : "empty"
+								}
 							></div>
 						)}
 						{item && (
@@ -95,11 +103,17 @@ const InventoryGrid = ({
 							<ItemInfo item={item} showBuyPrice={showBuyPrice}>
 								<p>
 									<span>
-										{(item.type === "equipment" || item.type === "armor" || 
-										  item.type === "head" || item.type === "body" || 
-										  item.type === "pants" || item.type === "boots" || 
-										  item.type === "hands" || item.type === "shield" ||
-										  item.type === "accessory") ? "" : item.quantity || ""}
+										{item.type === "equipment" ||
+										item.type === "armor" ||
+										item.type === "head" ||
+										item.type === "body" ||
+										item.type === "pants" ||
+										item.type === "boots" ||
+										item.type === "hands" ||
+										item.type === "shield" ||
+										item.type === "accessory"
+											? ""
+											: item.quantity || ""}
 									</span>
 								</p>
 							</ItemInfo>
