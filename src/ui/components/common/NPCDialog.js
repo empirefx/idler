@@ -367,11 +367,6 @@ const NPCDialog = ({
 					}
 				}}
 			>
-				{/* Bottom section with 2 columns */}
-				<div className="key-bind-container">
-					<span className="key-bind">ESC</span>
-					<span>escape</span>
-				</div>
 				<div className="dialog-bottom-section">
 					{/* Left: Player Profile */}
 					<div
@@ -391,13 +386,14 @@ const NPCDialog = ({
 
 					{/* Right: NPC Profile with Options */}
 					<div className="npc-profile">
-						<div className="npc-avatar-name">
-							<div
-								className={`npc-avatar avatar avatar_${npc.avatar} small`}
-							></div>
-							<h3>{npc.name}</h3>
-						</div>
-						<div className="npc-response">{getResponseText()}</div>
+						<div className="npc-content-overlay">
+							<div className="npc-avatar-name">
+								<div
+									className={`npc-avatar avatar avatar_${npc.avatar} small`}
+								></div>
+								<h3>{npc.name}</h3>
+							</div>
+							<div className="npc-response">{getResponseText()}</div>
 						<fieldset className="dialog-options">
 							{questConversationState && currentQuest ? (
 								// Quest conversation mode: show Continue / Accept / Maybe later
@@ -513,7 +509,13 @@ const NPCDialog = ({
 								</button>
 							)}
 						</fieldset>
+							<div className={`npc-background-image portrait portrait_${npc.avatar}`}></div>
+						</div>
 					</div>
+				</div>
+				<div className="key-bind-container">
+					<span className="key-bind">ESC</span>
+					<span>escape</span>
 				</div>
 			</div>
 			<TradeMessageDialog

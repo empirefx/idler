@@ -6,6 +6,7 @@ import "./styles/components.css";
 import "./styles/global.css";
 import "./styles/armory-set.css";
 import "./styles/npc-avatars.css";
+import "./styles/npc-portraits.css";
 import "./styles/components/npc-dialog.css";
 import "./styles/components/trade-message-dialog.css";
 

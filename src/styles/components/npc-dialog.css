@@ -62,13 +62,10 @@
 	align-items: flex-end;
 }
 
-.dialog-bottom-section > div {
-	width: 600px;
-}
-
 .key-bind-container {
 	position: absolute;
 	right: 20px;
+	bottom: 450px;
 	display: flex;
 	align-items: center;
 	gap: var(--spacing-sm);
@@ -86,6 +83,7 @@
 	height: 400px;
 	position: relative;
 	overflow: hidden;
+	width: 600px;
 }
 
 .player-background-image {
@@ -139,6 +137,29 @@
 	flex-direction: column;
 	gap: var(--spacing-md);
 	padding: var(--spacing-md);
+	overflow: hidden;
+	width: 700px;
+}
+
+.npc-background-image {
+	position: absolute;
+	bottom: -60px;
+	right: -80px;
+	z-index: 11;
+}
+
+/* Use existing portrait classes for positioning */
+.npc-background-image.portrait {
+	margin: 0;
+	box-shadow: none;
+}
+
+.npc-content-overlay {
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+	max-width: 500px;
 }
 
 .npc-trade-section {
