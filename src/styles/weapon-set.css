@@ -1,0 +1,75 @@
+.weapon-sprite {
+	width: 32px;
+	height: 32px;
+	background-image: url("../assets/icons/items/idylwilds-weapons.png");
+	background-repeat: no-repeat;
+	display: inline-block;
+	image-rendering: pixelated;
+	transform: scale(1.5);
+}
+
+#sword1 { background-position: 0 0; }
+#sword2 { background-position: -32px 0; }
+#sword3 { background-position: -64px 0; }
+#sword4 { background-position: -96px 0; }
+#sword5 { background-position: -128px 0; }
+
+#dagger1 { background-position: 0 -32px; }
+#dagger2 { background-position: -32px -32px; }
+#dagger3 { background-position: -64px -32px; }
+#dagger4 { background-position: -96px -32px; }
+#dagger5 { background-position: -128px -32px; }
+
+#knife1 { background-position: -256px -128px; }
+
+#club { background-position: -288px 0; }
+
+#axe1 { background-position: -160px 0; }
+#axe2 { background-position: -192px 0; }
+#axe3 { background-position: -224px 0; }
+#axe4 { background-position: -256px 0; }
+
+#mace1 { background-position: -160px -32px; }
+#mace2 { background-position: -288px -32px; }
+#hammer1 { background-position: -192px -32px; }
+#hammer2 { background-position: -224px -128px; }
+#morningstar { background-position: -224px -32px; }
+#flail { background-position: -256px -32px; }
+
+#bow1 { background-position: 0 -64px; }
+#bow2 { background-position: -32px -64px; }
+#bow3 { background-position: -64px -64px; }
+#bow4 { background-position: -96px -64px; }
+
+#crossbow1 { background-position: -128px -64px; }
+#crossbow2 { background-position: -160px -64px; }
+#crossbow3 { background-position: -192px -64px; }
+
+#spear1 { background-position: 0 -96px; }
+#spear2 { background-position: -32px -96px; }
+
+#polearm1 { background-position: -96px -96px; }
+#polearm2 { background-position: -128px -96px; }
+#polearm3 { background-position: -160px -96px; }
+
+#scythe1 { background-position: 0 -128px; }
+#scythe2 { background-position: -32px -128px; }
+
+#staff1 { background-position: -64px -128px; }
+#staff2 { background-position: -96px -128px; }
+#staff3 { background-position: -128px -128px; }
+
+#wand1 { background-position: -160px -128px; }
+#wand2 { background-position: -192px -128px; }
+#trident { background-position: -64px -96px; }
+
+#throwing-knife1 { background-position: -224px -64px; }
+#throwing-axe1 { background-position: -256px -64px; }
+#throwing-axe2 { background-position: -288px -64px; }
+
+#javelin { background-position: -288px -96px; }
+#chakram { background-position: -288px -128px; }
+
+#arrow1 { background-position: -192px -96px; }
+#arrow2 { background-position: -224px -96px; }
+#arrow3 { background-position: -256px -96px; }
