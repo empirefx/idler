@@ -16,15 +16,6 @@ export const inventoryData = {
 				weight: 0.5,
 				consumable: { heal: 10 },
 			},
-			{
-				id: 2,
-				name: "banana",
-				description: "A ripe banana",
-				type: "consumable",
-				quantity: 3,
-				weight: 0.5,
-				consumable: { heal: 12 },
-			},
 		],
 		equipment: {
 			head: null,
