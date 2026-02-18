@@ -20,7 +20,7 @@
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             gap: 10px;
-            max-width: 400px;
+            max-width: 600px;
         }
         
         .item {
@@ -40,6 +40,7 @@
         }
     </style>
     <link rel="stylesheet" href="../src/styles/item-set.css">
+    <link rel="stylesheet" href="../src/styles/arcanum-set.css">
 </head>
 <body>
     <h1>Items Sprite Test</h1>
@@ -67,6 +68,17 @@
         <div class="item"><div class="item-sprite" id="platinum_ore"></div><span class="item-name">platinum_ore</span></div>
     </div>
 
+    <h2>Staves & Wands</h2>
+    <p>6 distinct staves and wands</p>
+    <div class="item-grid">
+        <div class="item"><div class="arcanum-sprite" id="staff1"></div><span class="item-name">staff1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="staff2"></div><span class="item-name">staff2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="staff3"></div><span class="item-name">staff3</span></div>
+        <div class="item"><div class="arcanum-sprite" id="wand1"></div><span class="item-name">wand1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="wand2"></div><span class="item-name">wand2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="wand3"></div><span class="item-name">wand3</span></div>
+    </div>
+
     <h2>Wood & Crafting Materials:</h2>
     <p>Stick, log, plank</p>
     <p>Raw hide, leather, rope, chain</p>
@@ -85,20 +97,84 @@
         <div class="item"><div class="item-sprite" id="silk"></div><span class="item-name">silk</span></div>
     </div>
 
-    <h2>Writing & Miscellaneous:</h2>
+    <h2>Potions & Alchemy Items</h2>
+    <p>3 potion types (each with two fill levels plus empty bottle)</p>
+    <p>Glass-stoppered bottle (filled and empty versions)</p>
+    <p>Large potion bottle</p>
+    <p>Mortar and pestle</p>
+    <p>Bone, bone meal, toadstool, and mandrake root</p>
+    <div class="item-grid">
+        <div class="item"><div class="arcanum-sprite" id="potion_red1"></div><span class="item-name">potion_red1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_red2"></div><span class="item-name">potion_red2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_red_empty"></div><span class="item-name">potion_red_empty</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_blue1"></div><span class="item-name">potion_blue1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_blue2"></div><span class="item-name">potion_blue2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_blue_empty"></div><span class="item-name">potion_blue_empty</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_green1"></div><span class="item-name">potion_green1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_green2"></div><span class="item-name">potion_green2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_green_empty"></div><span class="item-name">potion_green_empty</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_glass_filled"></div><span class="item-name">potion_glass_filled</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_glass_empty"></div><span class="item-name">potion_glass_empty</span></div>
+        <div class="item"><div class="arcanum-sprite" id="potion_large_empty"></div><span class="item-name">potion_large_empty</span></div>
+        <div class="item"><div class="arcanum-sprite" id="mortar_pestle"></div><span class="item-name">mortar_pestle</span></div>
+        <div class="item"><div class="item-sprite" id="bone"></div><span class="item-name">bone</span></div>
+        <div class="item"><div class="item-sprite" id="bonemeal"></div><span class="item-name">bonemeal</span></div>
+        <div class="item"><div class="arcanum-sprite" id="toadstool"></div><span class="item-name">toadstool</span></div>
+        <div class="item"><div class="arcanum-sprite" id="mandrake_root"></div><span class="item-name">mandrake_root</span></div>
+    </div>
+
+    <h2>Crystals & Gemstones</h2>
+    <p>Raw and cut green gemstone</p>
+    <p>Raw purple gemstone and crystal</p>
+    <p>Cut diamond</p>
+    <p>Orange and blue crystals</p>
+    <div class="item-grid">
+        <div class="item"><div class="arcanum-sprite" id="gem_green_raw"></div><span class="item-name">gem_green_raw</span></div>
+        <div class="item"><div class="arcanum-sprite" id="gem_green_cut"></div><span class="item-name">gem_green_cut</span></div>
+        <div class="item"><div class="arcanum-sprite" id="gem_purple_raw"></div><span class="item-name">gem_purple_raw</span></div>
+        <div class="item"><div class="arcanum-sprite" id="gem_purple_crystal"></div><span class="item-name">gem_purple_crystal</span></div>
+        <div class="item"><div class="arcanum-sprite" id="diamond_cut"></div><span class="item-name">diamond_cut</span></div>
+        <div class="item"><div class="arcanum-sprite" id="crystal_orange"></div><span class="item-name">crystal_orange</span></div>
+        <div class="item"><div class="arcanum-sprite" id="crystal_blue"></div><span class="item-name">crystal_blue</span></div>
+    </div>
+
+    <h2>Runestones</h2>
+    <p>Etched runestones for fire, water, air, and earth</p>
+    <p>Blank runestones</p>
+    <div class="item-grid">
+        <div class="item"><div class="arcanum-sprite" id="rune_fire"></div><span class="item-name">rune_fire</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_water"></div><span class="item-name">rune_water</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_air"></div><span class="item-name">rune_air</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_earth"></div><span class="item-name">rune_earth</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_blank1"></div><span class="item-name">rune_blank1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_blank2"></div><span class="item-name">rune_blank2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_blank3"></div><span class="item-name">rune_blank3</span></div>
+        <div class="item"><div class="arcanum-sprite" id="rune_blank4"></div><span class="item-name">rune_blank4</span></div>
+    </div>
+
+    <h2>Writing & Magical Items:</h2>
     <p>Feather/quill, inkpot</p>
-    <p>Lit and unlit torch, plate, mug</p>
     <p>Book, scroll, parchment</p>
+    <p>Blank and filled spell scroll</p>
+    <p>Rolled and unfurled rotuli (scepter-bound scrolls)</p>
+    <p>Two bound spell scrolls</p>
+    <p>Open and closed grimoire</p>
     <div class="item-grid">
         <div class="item"><div class="item-sprite" id="quill"></div><span class="item-name">quill</span></div>
         <div class="item"><div class="item-sprite" id="inkpot"></div><span class="item-name">inkpot</span></div>
-        <div class="item"><div class="item-sprite" id="torch"></div><span class="item-name">torch</span></div>
-        <div class="item"><div class="item-sprite" id="torch_lit"></div><span class="item-name">torch_lit</span></div>
-        <div class="item"><div class="item-sprite" id="plate"></div><span class="item-name">plate</span></div>
-        <div class="item"><div class="item-sprite" id="mug"></div><span class="item-name">mug</span></div>
+        <div class="item"><div class="arcanum-sprite" id="quill_phoenix"></div><span class="item-name">quill_phoenix</span></div>
+        <div class="item"><div class="arcanum-sprite" id="ink_arcane"></div><span class="item-name">ink_arcane</span></div>
         <div class="item"><div class="item-sprite" id="book"></div><span class="item-name">book</span></div>
         <div class="item"><div class="item-sprite" id="scroll"></div><span class="item-name">scroll</span></div>
         <div class="item"><div class="item-sprite" id="parchment"></div><span class="item-name">parchment</span></div>
+        <div class="item"><div class="arcanum-sprite" id="scroll_blank"></div><span class="item-name">scroll_blank</span></div>
+        <div class="item"><div class="arcanum-sprite" id="scroll_filled"></div><span class="item-name">scroll_filled</span></div>
+        <div class="item"><div class="arcanum-sprite" id="scroll_rotuli"></div><span class="item-name">scroll_rotuli</span></div>
+        <div class="item"><div class="arcanum-sprite" id="scroll_rotuli_open"></div><span class="item-name">scroll_rotuli_open</span></div>
+        <div class="item"><div class="arcanum-sprite" id="spellscroll_bound1"></div><span class="item-name">spellscroll_bound1</span></div>
+        <div class="item"><div class="arcanum-sprite" id="spellscroll_bound2"></div><span class="item-name">spellscroll_bound2</span></div>
+        <div class="item"><div class="arcanum-sprite" id="grimoire_open"></div><span class="item-name">grimoire_open</span></div>
+        <div class="item"><div class="arcanum-sprite" id="grimoire_closed"></div><span class="item-name">grimoire_closed</span></div>
     </div>
 
     <h2>Food:</h2>
@@ -129,11 +205,17 @@
         <div class="item"><div class="item-sprite" id="sack"></div><span class="item-name">sack</span></div>
     </div>
 
-    <h2>Miscellaneous:</h2>
-    <p>Bone, bonemeal, arrow</p>
+    <h2>Lighting & Miscellaneous:</h2>
+    <p>Lit and unlit torch, plate, mug</p>
+    <p>Crystal ball, skull candle</p>
+    <p>Arrow</p>
     <div class="item-grid">
-        <div class="item"><div class="item-sprite" id="bone"></div><span class="item-name">bone</span></div>
-        <div class="item"><div class="item-sprite" id="bonemeal"></div><span class="item-name">bonemeal</span></div>
+        <div class="item"><div class="item-sprite" id="torch"></div><span class="item-name">torch</span></div>
+        <div class="item"><div class="item-sprite" id="torch_lit"></div><span class="item-name">torch_lit</span></div>
+        <div class="item"><div class="item-sprite" id="plate"></div><span class="item-name">plate</span></div>
+        <div class="item"><div class="item-sprite" id="mug"></div><span class="item-name">mug</span></div>
+        <div class="item"><div class="arcanum-sprite" id="crystal_ball"></div><span class="item-name">crystal_ball</span></div>
+        <div class="item"><div class="arcanum-sprite" id="candle_skull"></div><span class="item-name">candle_skull</span></div>
         <div class="item"><div class="item-sprite" id="arrow"></div><span class="item-name">arrow</span></div>
     </div>
 </body>

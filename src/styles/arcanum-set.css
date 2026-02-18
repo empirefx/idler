@@ -9,11 +9,11 @@
 }
 
 /* Row 1: Staves & Wands */
-#staff1 { background-position: 0 0; }
+/* #staff1 { background-position: 0 0; }
 #staff2 { background-position: -32px 0; }
-#staff3 { background-position: -64px 0; }
+#staff3 { background-position: -64px 0; } */
 #wand1 { background-position: -64px -32px; }
-#wand2 { background-position: -32px -32px; }
+/* #wand2 { background-position: -32px -32px; } */
 #wand3 { background-position: 0 -32px; }
 
 /* Row 2: Potions */
@@ -32,8 +32,7 @@
 #potion_glass_empty { background-position: -224px -64px; }
 #potion_large_empty { background-position: -224px 0; }
 #mortar_pestle { background-position: -224px -96px; }
-#bone { background-position: -160px -96px; }
-#bonemeal { background-position: -192px -96px; }
+
 #toadstool { background-position: -96px 0; }
 #mandrake_root { background-position: -96px -32px; }
 #spellscroll_bound1 { background-position: -128px -128px; }
