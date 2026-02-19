@@ -12,7 +12,10 @@ import {
 	calculateTotalPlayerWeight,
 	getInventorySummary,
 } from "../../store/slices/inventory/inventoryUtils.js";
-import { EQUIPMENT_SLOTS, TYPE_TO_SLOT } from "../../store/slices/inventory/inventoryTypes.js";
+import {
+	EQUIPMENT_SLOTS,
+	TYPE_TO_SLOT,
+} from "../../store/slices/inventory/inventoryTypes.js";
 
 export const InventoryService = {
 	getInventory(state, inventoryId) {
@@ -31,14 +34,22 @@ export const InventoryService = {
 		if (needsSlot) {
 			const slotCheck = validateSlotLimit(inventory, 1);
 			if (!slotCheck.isValid) {
-				return { valid: false, error: slotCheck.error, message: slotCheck.message };
+				return {
+					valid: false,
+					error: slotCheck.error,
+					message: slotCheck.message,
+				};
 			}
 		}
 
 		if (inventory.type === "player") {
 			const weightCheck = validateWeightLimit(inventory, itemWeight);
 			if (!weightCheck.isValid) {
-				return { valid: false, error: weightCheck.error, message: weightCheck.message };
+				return {
+					valid: false,
+					error: weightCheck.error,
+					message: weightCheck.message,
+				};
 			}
 		}
 
@@ -52,7 +63,11 @@ export const InventoryService = {
 
 		const itemCheck = validateItemExists(inventory, itemId);
 		if (!itemCheck.isValid) {
-			return { valid: false, error: itemCheck.error, message: itemCheck.message };
+			return {
+				valid: false,
+				error: itemCheck.error,
+				message: itemCheck.message,
+			};
 		}
 
 		const item = inventory.items[itemCheck.itemIndex];
@@ -68,7 +83,11 @@ export const InventoryService = {
 
 		const itemCheck = validateItemExists(fromInventory, itemId);
 		if (!itemCheck.isValid) {
-			return { valid: false, error: itemCheck.error, message: itemCheck.message };
+			return {
+				valid: false,
+				error: itemCheck.error,
+				message: itemCheck.message,
+			};
 		}
 
 		const item = fromInventory.items[itemCheck.itemIndex];
@@ -76,25 +95,45 @@ export const InventoryService = {
 
 		const quantityCheck = validateMoveQuantity(item, moveQty);
 		if (!quantityCheck.isValid) {
-			return { valid: false, error: quantityCheck.error, message: quantityCheck.message };
+			return {
+				valid: false,
+				error: quantityCheck.error,
+				message: quantityCheck.message,
+			};
 		}
 
 		const needsSlot = !toInventory.items?.some((i) => canItemsStack(i, item));
 		if (needsSlot) {
 			const slotCheck = validateSlotLimit(toInventory, 1);
 			if (!slotCheck.isValid) {
-				return { valid: false, error: slotCheck.error, message: slotCheck.message };
+				return {
+					valid: false,
+					error: slotCheck.error,
+					message: slotCheck.message,
+				};
 			}
 		}
 
 		if (toInventory.type === "player") {
-			const weightCheck = validateWeightLimit(toInventory, item.weight * moveQty);
+			const weightCheck = validateWeightLimit(
+				toInventory,
+				item.weight * moveQty,
+			);
 			if (!weightCheck.isValid) {
-				return { valid: false, error: weightCheck.error, message: weightCheck.message };
+				return {
+					valid: false,
+					error: weightCheck.error,
+					message: weightCheck.message,
+				};
 			}
 		}
 
-		return { valid: true, item, itemIndex: itemCheck.itemIndex, moveQuantity: moveQty };
+		return {
+			valid: true,
+			item,
+			itemIndex: itemCheck.itemIndex,
+			moveQuantity: moveQty,
+		};
 	},
 
 	canEquipItem(inventory, itemId, slot) {
@@ -104,14 +143,22 @@ export const InventoryService = {
 
 		const itemCheck = validateItemExists(inventory, itemId);
 		if (!itemCheck.isValid) {
-			return { valid: false, error: itemCheck.error, message: itemCheck.message };
+			return {
+				valid: false,
+				error: itemCheck.error,
+				message: itemCheck.message,
+			};
 		}
 
 		const item = inventory.items[itemCheck.itemIndex];
 		const slotValidation = validateEquipmentSlot(item, slot);
 
 		if (!slotValidation.isValid) {
-			return { valid: false, error: slotValidation.error, message: slotValidation.message };
+			return {
+				valid: false,
+				error: slotValidation.error,
+				message: slotValidation.message,
+			};
 		}
 
 		return { valid: true, item, itemIndex: itemCheck.itemIndex, slot };
@@ -133,12 +180,20 @@ export const InventoryService = {
 
 		const slotCheck = validateSlotLimit(inventory, 1);
 		if (!slotCheck.isValid) {
-			return { valid: false, error: slotCheck.error, message: slotCheck.message };
+			return {
+				valid: false,
+				error: slotCheck.error,
+				message: slotCheck.message,
+			};
 		}
 
 		const weightCheck = validateWeightLimit(inventory, equippedItem.weight);
 		if (!weightCheck.isValid) {
-			return { valid: false, error: weightCheck.error, message: weightCheck.message };
+			return {
+				valid: false,
+				error: weightCheck.error,
+				message: weightCheck.message,
+			};
 		}
 
 		return { valid: true, item: equippedItem };
@@ -224,7 +279,12 @@ export const InventoryService = {
 	dispatchMoveItem(store, fromId, toId, itemId, quantity) {
 		const fromInventory = this.getInventory(store.getState(), fromId);
 		const toInventory = this.getInventory(store.getState(), toId);
-		const check = this.canMoveItem(fromInventory, toInventory, itemId, quantity);
+		const check = this.canMoveItem(
+			fromInventory,
+			toInventory,
+			itemId,
+			quantity,
+		);
 
 		if (!check.valid) {
 			console.warn(check.message || check.error);
@@ -236,7 +296,9 @@ export const InventoryService = {
 
 	dispatchEquipItem(store, inventoryId, itemId) {
 		const inventory = this.getInventory(store.getState(), inventoryId);
-		const slot = this.getSlotForItem(inventory?.items?.find((i) => i.id === itemId));
+		const slot = this.getSlotForItem(
+			inventory?.items?.find((i) => i.id === itemId),
+		);
 
 		if (!slot) {
 			console.warn("Cannot determine equipment slot for item");

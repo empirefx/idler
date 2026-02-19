@@ -123,10 +123,7 @@ export default class ProductionService {
 		const inventory = state.inventory;
 
 		// Check if current place has inventory
-		if (
-			places[currentPlaceId]?.hasInventory &&
-			inventory[currentPlaceId]
-		) {
+		if (places[currentPlaceId]?.hasInventory && inventory[currentPlaceId]) {
 			return currentPlaceId;
 		}
 

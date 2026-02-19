@@ -4,10 +4,7 @@ import {
 	EQUIPMENT_SLOTS,
 	TYPE_TO_SLOT,
 } from "./inventoryTypes.js";
-import {
-	calculateWeight,
-	countSlots,
-} from "./inventoryUtils.js";
+import { calculateWeight, countSlots } from "./inventoryUtils.js";
 
 export const validateSlotLimit = (inventory, additionalItemCount = 0) => {
 	if (!inventory)

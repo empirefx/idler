@@ -17,7 +17,9 @@ const EQUIPMENT_SLOTS_LABELS = [
 
 const EquipmentDisplay = () => {
 	const dispatch = useDispatch();
-	const playerInventory = useSelector((state) => selectInventoryById(state, "player"));
+	const playerInventory = useSelector((state) =>
+		selectInventoryById(state, "player"),
+	);
 	const equipment = playerInventory?.equipment || {};
 
 	const handleUnequip = (slot) => {

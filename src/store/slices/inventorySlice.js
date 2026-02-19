@@ -1,7 +1,16 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { inventoryData } from "../../data/inventory.js";
-import { EQUIPMENT_SLOTS, INVENTORY_TYPES } from "./inventory/inventoryTypes.js";
-import { canItemsStack, cloneItem, calculateWeight, calculateTotalPlayerWeight, countSlots } from "./inventory/inventoryUtils.js";
+import {
+	EQUIPMENT_SLOTS,
+	INVENTORY_TYPES,
+} from "./inventory/inventoryTypes.js";
+import {
+	canItemsStack,
+	cloneItem,
+	calculateWeight,
+	calculateTotalPlayerWeight,
+	countSlots,
+} from "./inventory/inventoryUtils.js";
 
 const getInitialState = () => {
 	const inventories = {};
@@ -75,7 +84,9 @@ const inventorySlice = createSlice({
 			const targetItem = cloneItem(item);
 			targetItem.quantity = moveQty;
 
-			const existingItem = toInventory.items.find((i) => canItemsStack(i, targetItem));
+			const existingItem = toInventory.items.find((i) =>
+				canItemsStack(i, targetItem),
+			);
 			if (existingItem) {
 				existingItem.quantity = (existingItem.quantity || 1) + moveQty;
 			} else {
@@ -125,9 +136,12 @@ const inventorySlice = createSlice({
 			if (!fromInventory || !toInventory) return;
 
 			fromInventory.items.forEach((item) => {
-				const existingItem = toInventory.items.find((i) => canItemsStack(i, item));
+				const existingItem = toInventory.items.find((i) =>
+					canItemsStack(i, item),
+				);
 				if (existingItem && item.quantity) {
-					existingItem.quantity = (existingItem.quantity || 1) + (item.quantity || 1);
+					existingItem.quantity =
+						(existingItem.quantity || 1) + (item.quantity || 1);
 				} else {
 					toInventory.items.push(cloneItem(item));
 				}
@@ -193,12 +207,12 @@ export const {
 
 export const selectInventoryById = createSelector(
 	[(state) => state.inventory, (_state, id) => id],
-	(inventory, id) => inventory?.[id]
+	(inventory, id) => inventory?.[id],
 );
 
 export const selectInventoryItems = createSelector(
 	[selectInventoryById],
-	(inventory) => inventory?.items || []
+	(inventory) => inventory?.items || [],
 );
 
 export const selectInventoryStats = createSelector(
@@ -209,39 +223,49 @@ export const selectInventoryStats = createSelector(
 		return {
 			slotsUsed: countSlots(inventory.items || []),
 			maxSlots: inventory.maxSlots,
-			weightUsed: inventory.type === INVENTORY_TYPES.PLAYER
-				? calculateTotalPlayerWeight(inventory)
-				: calculateWeight(inventory.items || []),
+			weightUsed:
+				inventory.type === INVENTORY_TYPES.PLAYER
+					? calculateTotalPlayerWeight(inventory)
+					: calculateWeight(inventory.items || []),
 			maxWeight: inventory.maxWeight,
 			itemCount: inventory.items?.length || 0,
 			type: inventory.type,
 		};
-	}
+	},
 );
 
 export const selectEquipment = createSelector(
 	[selectInventoryById],
-	(inventory) => inventory?.equipment || {}
+	(inventory) => inventory?.equipment || {},
 );
 
 export const selectEquippedItem = createSelector(
 	[selectEquipment, (_state, slot) => slot],
-	(equipment, slot) => equipment?.[slot] || null
+	(equipment, slot) => equipment?.[slot] || null,
 );
 
 export const selectPlaceInventories = createSelector(
 	[(state) => state.inventory],
-	(inventory) => Object.values(inventory || {}).filter((i) => i.type === INVENTORY_TYPES.PLACE)
+	(inventory) =>
+		Object.values(inventory || {}).filter(
+			(i) => i.type === INVENTORY_TYPES.PLACE,
+		),
 );
 
 export const selectNpcInventories = createSelector(
 	[(state) => state.inventory],
-	(inventory) => Object.values(inventory || {}).filter((i) => i.type === INVENTORY_TYPES.NPC)
+	(inventory) =>
+		Object.values(inventory || {}).filter(
+			(i) => i.type === INVENTORY_TYPES.NPC,
+		),
 );
 
 export const selectPlayerInventories = createSelector(
 	[(state) => state.inventory],
-	(inventory) => Object.values(inventory || {}).filter((i) => i.type === INVENTORY_TYPES.PLAYER)
+	(inventory) =>
+		Object.values(inventory || {}).filter(
+			(i) => i.type === INVENTORY_TYPES.PLAYER,
+		),
 );
 
 export const selectCanAddItem = createSelector(
@@ -249,26 +273,28 @@ export const selectCanAddItem = createSelector(
 	(inventory) => {
 		if (!inventory) return false;
 		return countSlots(inventory.items || []) < inventory.maxSlots;
-	}
+	},
 );
 
 export const selectItemById = createSelector(
 	[selectInventoryItems, (_state, itemId) => itemId],
-	(items, itemId) => items.find((item) => item.id === itemId) || null
+	(items, itemId) => items.find((item) => item.id === itemId) || null,
 );
 
 export const selectInventoryByPlaceId = createSelector(
 	[(state) => state.inventory, (_state, placeId) => placeId],
 	(inventory, placeId) => {
-		return Object.values(inventory || {}).find((inv) => inv.placeId === placeId);
-	}
+		return Object.values(inventory || {}).find(
+			(inv) => inv.placeId === placeId,
+		);
+	},
 );
 
 export const selectInventoryByNpcId = createSelector(
 	[(state) => state.inventory, (_state, npcId) => npcId],
 	(inventory, npcId) => {
 		return Object.values(inventory || {}).find((inv) => inv.npcId === npcId);
-	}
+	},
 );
 
 export default inventorySlice.reducer;

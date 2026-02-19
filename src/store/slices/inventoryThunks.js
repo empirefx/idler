@@ -1,8 +1,4 @@
-import {
-	moveItem,
-	addItem,
-	removeItem,
-} from "./inventorySlice.js";
+import { moveItem, addItem, removeItem } from "./inventorySlice.js";
 import {
 	validateItemExists,
 	validateMoveQuantity,
@@ -16,7 +12,11 @@ import { INVENTORY_TYPES } from "./inventory/inventoryTypes.js";
 
 const validateMove = (fromInventory, toInventory, itemId, quantity) => {
 	if (!fromInventory || !toInventory) {
-		return { isValid: false, error: "INVENTORY_NOT_FOUND", message: "Source or target inventory not found" };
+		return {
+			isValid: false,
+			error: "INVENTORY_NOT_FOUND",
+			message: "Source or target inventory not found",
+		};
 	}
 
 	const itemCheck = validateItemExists(fromInventory, itemId);
@@ -47,7 +47,12 @@ const validateMove = (fromInventory, toInventory, itemId, quantity) => {
 		}
 	}
 
-	return { isValid: true, item, itemIndex: itemCheck.itemIndex, moveQuantity: moveQty };
+	return {
+		isValid: true,
+		item,
+		itemIndex: itemCheck.itemIndex,
+		moveQuantity: moveQty,
+	};
 };
 
 export const moveItemBetweenInventories = (
@@ -121,7 +126,9 @@ export const removeItemFromInventory = (inventoryId, itemId, quantity) => {
 		const inventory = state.inventory[inventoryId];
 
 		if (!inventory) {
-			dispatch(addNotification("Inventory not found", NOTIFICATION_TYPES.ERROR));
+			dispatch(
+				addNotification("Inventory not found", NOTIFICATION_TYPES.ERROR),
+			);
 			return false;
 		}
 

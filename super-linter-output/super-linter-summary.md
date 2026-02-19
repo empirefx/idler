@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22163082810)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22203188775)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,9 +31,9 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 120 files in 1145ms. No fixes applied.
+Checked 119 files in 1096ms. No fixes applied.
 Found 8 errors.
-Found 9 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
+Found 12 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
   ! This parameter is unused.
 
@@ -125,6 +125,81 @@ src/game/engine/GameEngine.js:7:10 lint/correctness/noUnusedImports  FIXABLE  �
     7 │ import·{·EventBusService,·globalEventBus·}·from·"../services/EventBusService";
       │          -----------------
 
+src/game/services/InventoryService.js:10:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
+
+  ! Several of these imports are unused.
+
+     8 │ import {
+     9 │ 	canItemsStack,
+  > 10 │ 	cloneItem,
+       │ 	^^^^^^^^^^
+  > 11 │ 	calculateWeight,
+  > 12 │ 	calculateTotalPlayerWeight,
+       │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^
+    13 │ 	getInventorySummary,
+    14 │ } from "../../store/slices/inventory/inventoryUtils.js";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+      8   8 │   import {
+      9   9 │   	canItemsStack,
+     10     │ - → cloneItem,
+     11     │ - → calculateWeight,
+     12     │ - → calculateTotalPlayerWeight,
+     13  10 │   	getInventorySummary,
+     14  11 │   } from "../../store/slices/inventory/inventoryUtils.js";
+
+
+src/store/slices/inventoryThunks.js:1:20 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
+
+  ! Several of these imports are unused.
+
+  > 1 │ import { moveItem, addItem, removeItem } from "./inventorySlice.js";
+      │                    ^^^^^^^
+    2 │ import {
+    3 │ 	validateItemExists,
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·{·moveItem,·addItem,·removeItem·}·from·"./inventorySlice.js";
+      │                    ---------
+
+src/store/slices/inventoryThunks.js:8:25 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
+
+  ! Several of these imports are unused.
+
+     6 │ 	validateWeightLimit,
+     7 │ } from "./inventory/inventoryValidators.js";
+   > 8 │ import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
+       │                         ^^^^^^^^^
+     9 │ import { addNotification } from "./notificationSlice.js";
+    10 │ import { NOTIFICATION_TYPES } from "./notificationSlice.js";
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    8 │ import·{·canItemsStack,·cloneItem·}·from·"./inventory/inventoryUtils.js";
+      │                         ----------
+
+src/store/slices/inventoryThunks.js:98:11 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! This variable item is unused.
+
+     96 │ 		}
+     97 │
+   > 98 │ 		const { item, moveQuantity } = validation;
+        │ 		        ^^^^
+     99 │
+    100 │ 		try {
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+
 src/ui/components/common/NPCDialog/NPCDialogOptions.js:15:2 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
 
   ! This parameter is unused.
@@ -139,74 +214,49 @@ src/ui/components/common/NPCDialog/NPCDialogOptions.js:15:2 lint/correctness/noU
   i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/ui/components/common/NPCDialog/useNPCDialog.js:16:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
-
-  ! Several of these imports are unused.
-
-    14 │ import {
-    15 │ 	selectNpcInventoryById,
-  > 16 │ 	addItem as addNpcItem,
-       │ 	^^^^^^^^^^^^^^^^^^^^^^
-  > 17 │ 	removeItem as removeNpcItem,
-       │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    18 │ } from "../../../../store/slices/npcInventorySlice";
-    19 │ import { questCatalog } from "../../../../data/questCatalog";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-     14  14 │   import {
-     15  15 │   	selectNpcInventoryById,
-     16     │ - → addItem·as·addNpcItem,
-     17     │ - → removeItem·as·removeNpcItem,
-     18  16 │   } from "../../../../store/slices/npcInventorySlice";
-     19  17 │   import { questCatalog } from "../../../../data/questCatalog";
-
-
-src/ui/components/common/NPCDialog/useNPCDialog.js:276:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog/useNPCDialog.js:272:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
 
   ! Change to an optional chain.
 
-    274 │ 			// Try direct item.buy first
-    275 │ 			let buyPrice = null;
-  > 276 │ 			if (item && item.buy && typeof item.buy.gold === "number") {
+    270 │ 			// Try direct item.buy first
+    271 │ 			let buyPrice = null;
+  > 272 │ 			if (item && item.buy && typeof item.buy.gold === "number") {
         │ 			    ^^^^^^^^^^^^^^^^
-    277 │ 				buyPrice = item.buy.gold;
-    278 │ 			}
+    273 │ 				buyPrice = item.buy.gold;
+    274 │ 			}
 
   i Unsafe fix: Change to an optional chain.
 
-    274 274 │   			// Try direct item.buy first
-    275 275 │   			let buyPrice = null;
-    276     │ - → → → if·(item·&&·item.buy·&&·typeof·item.buy.gold·===·"number")·{
-        276 │ + → → → if·(item?.buy·&&·typeof·item.buy.gold·===·"number")·{
-    277 277 │   				buyPrice = item.buy.gold;
-    278 278 │   			}
+    270 270 │   			// Try direct item.buy first
+    271 271 │   			let buyPrice = null;
+    272     │ - → → → if·(item·&&·item.buy·&&·typeof·item.buy.gold·===·"number")·{
+        272 │ + → → → if·(item?.buy·&&·typeof·item.buy.gold·===·"number")·{
+    273 273 │   				buyPrice = item.buy.gold;
+    274 274 │   			}
 
 
-src/ui/components/common/NPCDialog/useNPCDialog.js:281:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog/useNPCDialog.js:277:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
 
   ! Change to an optional chain.
 
-    279 │ 			// Fallback to itemCatalog
-    280 │ 			else if (
-  > 281 │ 				item &&
+    275 │ 			// Fallback to itemCatalog
+    276 │ 			else if (
+  > 277 │ 				item &&
         │ 				^^^^^^^
-  > 282 │ 				item.itemKey &&
+  > 278 │ 				item.itemKey &&
         │ 				^^^^^^^^^^^^
-    283 │ 				itemCatalog[item.itemKey] &&
-    284 │ 				itemCatalog[item.itemKey].buy &&
+    279 │ 				itemCatalog[item.itemKey] &&
+    280 │ 				itemCatalog[item.itemKey].buy &&
 
   i Unsafe fix: Change to an optional chain.
 
-    279 279 │   			// Fallback to itemCatalog
-    280 280 │   			else if (
-    281     │ - → → → → item·&&
-    282     │ - → → → → item.itemKey·&&
-        281 │ + → → → → item?.itemKey·&&
-    283 282 │   				itemCatalog[item.itemKey] &&
-    284 283 │   				itemCatalog[item.itemKey].buy &&
+    275 275 │   			// Fallback to itemCatalog
+    276 276 │   			else if (
+    277     │ - → → → → item·&&
+    278     │ - → → → → item.itemKey·&&
+        277 │ + → → → → item?.itemKey·&&
+    279 278 │   				itemCatalog[item.itemKey] &&
+    280 279 │   				itemCatalog[item.itemKey].buy &&
 
 
 src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━
@@ -299,24 +349,24 @@ src/ui/components/common/NPCDialog/index.js:69:4 lint/a11y/noStaticElementIntera
   i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-src/ui/components/common/NPCDialog/useNPCDialog.js:50:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog/useNPCDialog.js:46:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
 
   × This hook specifies more dependencies than necessary: npcId.
 
-    49 │ 	// Reset conversation state when switching NPCs
-  > 50 │ 	useEffect(() => {
+    45 │ 	// Reset conversation state when switching NPCs
+  > 46 │ 	useEffect(() => {
        │ 	^^^^^^^^^
-    51 │ 		setQuestConversationState(null);
-    52 │ 		setTradeMessage(null);
+    47 │ 		setQuestConversationState(null);
+    48 │ 		setTradeMessage(null);
 
   i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
 
-    51 │ 		setQuestConversationState(null);
-    52 │ 		setTradeMessage(null);
-  > 53 │ 	}, [npcId]);
+    47 │ 		setQuestConversationState(null);
+    48 │ 		setTradeMessage(null);
+  > 49 │ 	}, [npcId]);
        │ 	    ^^^^^
-    54 │
-    55 │ 	// Get player gold amount
+    50 │
+    51 │ 	// Get player gold amount
 
   i React relies on hook dependencies to determine when to re-compute Effects.
     Specifying more dependencies than required can lead to unnecessary re-rendering
@@ -324,28 +374,28 @@ src/ui/components/common/NPCDialog/useNPCDialog.js:50:2 lint/correctness/useExha
 
   i Unsafe fix: Remove the extra dependencies from the list.
 
-    53 │ → },·[npcId]);
+    49 │ → },·[npcId]);
        │       -----
 
-src/ui/components/common/NPCDialog/useNPCDialog.js:272:27 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+src/ui/components/common/NPCDialog/useNPCDialog.js:268:27 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
 
   × This hook specifies more dependencies than necessary: itemCatalog.
 
-    270 │ 	);
-    271 │
-  > 272 │ 	const handleNpcItemBuy = useCallback(
+    266 │ 	);
+    267 │
+  > 268 │ 	const handleNpcItemBuy = useCallback(
         │ 	                         ^^^^^^^^^^^
-    273 │ 		(_event, item) => {
-    274 │ 			// Try direct item.buy first
+    269 │ 		(_event, item) => {
+    270 │ 			// Try direct item.buy first
 
   i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
 
-    324 │ 			});
-    325 │ 		},
-  > 326 │ 		[dispatch, playerGold, playerInventory, itemCatalog],
+    320 │ 			});
+    321 │ 		},
+  > 322 │ 		[dispatch, playerGold, playerInventory, itemCatalog],
         │ 		                                        ^^^^^^^^^^^
-    327 │ 	);
-    328 │
+    323 │ 	);
+    324 │
 
   i React relies on hook dependencies to determine when to re-compute Effects.
     Specifying more dependencies than required can lead to unnecessary re-rendering
@@ -353,7 +403,7 @@ src/ui/components/common/NPCDialog/useNPCDialog.js:272:27 lint/correctness/useEx
 
   i Unsafe fix: Remove the extra dependencies from the list.
 
-    326 │ → → [dispatch,·playerGold,·playerInventory,·itemCatalog],
+    322 │ → → [dispatch,·playerGold,·playerInventory,·itemCatalog],
         │                                           -------------
 
 src/ui/components/common/TradeMessageDialog.js:36:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
@@ -405,8 +455,8 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ```text
 Clone found (javascript):
- - src/ui/components/common/NPCDialog/useNPCDialog.js [351:2 - 359:11] (8 lines, 85 tokens)
-   src/ui/components/common/NPCDialog/useNPCDialog.js [330:2 - 338:8]
+ - src/ui/components/common/NPCDialog/useNPCDialog.js [347:2 - 355:11] (8 lines, 85 tokens)
+   src/ui/components/common/NPCDialog/useNPCDialog.js [326:2 - 334:8]
 
 Clone found (javascript):
  - src/ui/components/sections/WorkersSection.js [42:9 - 50:10] (8 lines, 75 tokens)
@@ -421,81 +471,49 @@ Clone found (javascript):
    src/ui/components/common/NPCDialog/index.js [71:5 - 78:21]
 
 Clone found (javascript):
- - src/ui/components/common/InventoryGrid.js [110:2 - 120:3] (10 lines, 111 tokens)
-   src/ui/components/common/InventoryGrid.js [62:2 - 72:2]
+ - src/store/slices/inventorySlice.js [177:13 - 188:16] (11 lines, 93 tokens)
+   src/store/slices/inventorySlice.js [166:16 - 177:13]
 
 Clone found (javascript):
- - src/store/slices/placeInventorySlice.js [39:15 - 56:36] (17 lines, 138 tokens)
-   src/store/slices/playerInventorySlice.js [56:17 - 73:37]
+ - src/game/services/InventoryService.js [141:2 - 154:15] (13 lines, 93 tokens)
+   src/game/services/InventoryService.js [61:2 - 74:14]
 
 Clone found (javascript):
- - src/store/slices/placeInventorySlice.js [57:3 - 65:31] (8 lines, 96 tokens)
-   src/store/slices/playerInventorySlice.js [74:3 - 82:32]
+ - src/game/services/InventoryService.js [330:19 - 336:6] (6 lines, 94 tokens)
+   src/game/services/InventoryService.js [255:16 - 261:5]
 
-Clone found (javascript):
- - src/store/slices/placeInventorySlice.js [65:31 - 81:55] (16 lines, 127 tokens)
-   src/store/slices/playerInventorySlice.js [82:32 - 98:56]
+Clone found (css):
+ - src/styles/icons-set.css [15:1 - 51:14] (36 lines, 180 tokens)
+   src/styles/item-set.css [11:1 - 48:14]
 
-Clone found (javascript):
- - src/store/slices/placeInventorySlice.js [82:3 - 106:39] (24 lines, 209 tokens)
-   src/store/slices/playerInventorySlice.js [99:3 - 123:40]
+Clone found (css):
+ - src/styles/icons-set.css [87:2 - 108:16] (21 lines, 103 tokens)
+   src/styles/item-set.css [85:2 - 107:16]
 
-Clone found (javascript):
- - src/store/slices/placeInventorySlice.js [230:2 - 236:7] (6 lines, 79 tokens)
-   src/store/slices/placeInventorySlice.js [222:2 - 226:7]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [37:4 - 56:34] (19 lines, 171 tokens)
-   src/store/slices/placeInventorySlice.js [37:4 - 73:37]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [57:3 - 65:29] (8 lines, 96 tokens)
-   src/store/slices/playerInventorySlice.js [74:3 - 82:32]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [65:29 - 81:53] (16 lines, 127 tokens)
-   src/store/slices/playerInventorySlice.js [82:32 - 98:56]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [85:4 - 103:37] (18 lines, 166 tokens)
-   src/store/slices/playerInventorySlice.js [105:4 - 123:40]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [129:6 - 146:16] (17 lines, 115 tokens)
-   src/store/slices/playerInventorySlice.js [226:9 - 243:10]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [190:24 - 198:24] (8 lines, 91 tokens)
-   src/store/slices/placeInventorySlice.js [223:26 - 231:26]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [197:2 - 203:7] (6 lines, 79 tokens)
-   src/store/slices/npcInventorySlice.js [189:2 - 193:7]
-
-Clone found (javascript):
- - src/store/slices/npcInventorySlice.js [198:24 - 207:18] (9 lines, 113 tokens)
-   src/store/slices/placeInventorySlice.js [231:26 - 240:20]
+Clone found (css):
+ - src/styles/icons-set.css [111:2 - 132:14] (21 lines, 103 tokens)
+   src/styles/item-set.css [110:2 - 132:14]
 
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 131            │ 13673       │ 108931       │ 18           │ 212 (1.55%)      │ 2043 (1.88%)      │
+│ javascript │ 129            │ 13229       │ 105738       │ 7            │ 60 (0.45%)       │ 605 (0.57%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 22             │ 4568        │ 25883        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 23             │ 5177        │ 30225        │ 3            │ 78 (1.51%)       │ 386 (1.28%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 162            │ 18391       │ 135768       │ 18           │ 212 (1.15%)      │ 2043 (1.5%)       │
+│ Total:     │ 161            │ 18556       │ 136917       │ 10           │ 138 (0.74%)      │ 991 (0.72%)       │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 18 clones.
-Error: ERROR: jscpd found too many duplicates (1.15%) over threshold (0%)
+Found 10 clones.
+Error: ERROR: jscpd found too many duplicates (0.74%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (1.15%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.74%) over threshold (0%)
 ```
 
 </details>

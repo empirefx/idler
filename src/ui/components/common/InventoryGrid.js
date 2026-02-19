@@ -29,20 +29,19 @@ const InventoryGrid = ({
 
 	const handleEquip = React.useCallback(
 		(item) => {
-			dispatch(equipItem({
-				inventoryId: inventory.id,
-				itemId: item.id,
-				typeToSlot: TYPE_TO_SLOT,
-			}));
+			dispatch(
+				equipItem({
+					inventoryId: inventory.id,
+					itemId: item.id,
+					typeToSlot: TYPE_TO_SLOT,
+				}),
+			);
 		},
 		[dispatch, inventory.id],
 	);
 
 	return (
-		<div
-			className="inventory-grid"
-			style={{ "--grid-columns": columns }}
-		>
+		<div className="inventory-grid" style={{ "--grid-columns": columns }}>
 			{Array.from({ length: inventory.maxSlots }, (_, i) => {
 				const item = inventory.items[i];
 				const isEquipment = item && TYPE_TO_SLOT[item.type];
@@ -53,21 +52,34 @@ const InventoryGrid = ({
 						tabIndex={item ? 0 : -1}
 						className={`inventory-slot ${item ? "filled" : "empty"}`}
 						key={item ? `slot-${item.id}-${i}` : `empty-${i}`}
-						onContextMenu={item && otherInventory ? (e) => onContextMenu(e, item) : undefined}
-						onKeyDown={item && otherInventory ? (e) => {
-							if (e.key === "Enter" || e.key === " ") onContextMenu(e, item);
-						} : undefined}
-						onClick={item ? () => {
-							if (isEquipment) handleEquip(item);
-							else if (item.type === "consumable") handleConsume(item);
-						} : undefined}
+						onContextMenu={
+							item && otherInventory ? (e) => onContextMenu(e, item) : undefined
+						}
+						onKeyDown={
+							item && otherInventory
+								? (e) => {
+										if (e.key === "Enter" || e.key === " ")
+											onContextMenu(e, item);
+									}
+								: undefined
+						}
+						onClick={
+							item
+								? () => {
+										if (isEquipment) handleEquip(item);
+										else if (item.type === "consumable") handleConsume(item);
+									}
+								: undefined
+						}
 					>
 						{item && (
 							<div className="item-sprite" id={item.itemKey || item.id} />
 						)}
 						{item && (
 							<ItemInfo item={item} showBuyPrice={showBuyPrice}>
-								<p><span>{isEquipment ? "" : item.quantity || ""}</span></p>
+								<p>
+									<span>{isEquipment ? "" : item.quantity || ""}</span>
+								</p>
 							</ItemInfo>
 						)}
 					</div>

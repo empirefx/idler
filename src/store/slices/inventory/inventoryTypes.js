@@ -6,7 +6,7 @@ export const TYPE_TO_SLOT = {
 	boots: "boots",
 	hands: "hands",
 	"main-weapon": "main-weapon",
-	"second-weapon": "second-weapon"
+	"second-weapon": "second-weapon",
 };
 
 // Inventory slots (keys of TYPE_TO_SLOT)
