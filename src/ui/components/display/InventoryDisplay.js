@@ -6,11 +6,10 @@ import MoveItemDialog from "../common/MoveItemDialog";
 import KeyBind from "../common/KeyBind";
 import InventoryGrid from "../common/InventoryGrid";
 
-import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
 import {
-	selectVaultByPlaceId,
-	selectPlaceInventoryById,
-} from "../../../store/slices/placeInventorySlice";
+	selectInventoryById,
+	selectInventoryByPlaceId,
+} from "../../../store/slices/inventorySlice";
 import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
@@ -21,22 +20,22 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	// Determine which selector to use based on inventory type
 	const inventory = useSelector((state) => {
 		if (inventoryId === "player") {
-			return selectPlayerInventoryById(state, inventoryId);
+			return selectInventoryById(state, inventoryId);
 		} else {
 			// Try place inventory first, then fallback to player inventory selector
-			const placeInventory = selectVaultByPlaceId(state, inventoryId);
+			const placeInventory = selectInventoryByPlaceId(state, inventoryId);
 			if (placeInventory) return placeInventory;
-			return selectPlaceInventoryById(state, inventoryId);
+			return selectInventoryById(state, inventoryId);
 		}
 	});
 
 	const otherInventory = useSelector((state) => {
 		if (otherInventoryId === "player") {
-			return selectPlayerInventoryById(state, otherInventoryId);
+			return selectInventoryById(state, otherInventoryId);
 		} else {
-			const placeInventory = selectVaultByPlaceId(state, otherInventoryId);
+			const placeInventory = selectInventoryByPlaceId(state, otherInventoryId);
 			if (placeInventory) return placeInventory;
-			return selectPlaceInventoryById(state, otherInventoryId);
+			return selectInventoryById(state, otherInventoryId);
 		}
 	});
 

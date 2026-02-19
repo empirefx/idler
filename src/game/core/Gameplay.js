@@ -9,7 +9,7 @@ import { addGold, gainExp } from "../../store/slices/playerSlice";
 import {
 	addItem as addPlayerItem,
 	removeItem as removePlayerItem,
-} from "../../store/slices/playerInventorySlice";
+} from "../../store/slices/inventorySlice";
 import {
 	addNotification,
 	NOTIFICATION_TYPES,
@@ -71,7 +71,7 @@ class Gameplay {
 	}
 
 	getItemCount(itemKey) {
-		const inventory = this.store.getState().playerInventory?.player;
+		const inventory = this.store.getState().inventory?.player;
 		if (!inventory?.items) return 0;
 
 		return inventory.items.reduce((total, item) => {
@@ -246,7 +246,7 @@ class Gameplay {
 		if (quest.objectives) {
 			Object.values(quest.objectives).forEach((objective) => {
 				if (objective.type === "collect") {
-					const inventory = state.playerInventory?.player;
+					const inventory = state.inventory?.player;
 					if (inventory?.items) {
 						let itemsToRemove = objective.required;
 						[...inventory.items].forEach((item) => {

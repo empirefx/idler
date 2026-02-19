@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Icon Sprite Test</title>
+  <link rel="stylesheet" href="../src/styles/icons-set.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      padding: 24px;
+    }
+    h1 {
+      color: #f0c060;
+      font-size: 1.4rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 12px;
+    }
+    h2 {
+      color: #a0b8d0;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 24px 0 12px;
+      padding: 4px 8px;
+      background: #0d1117;
+      border-left: 3px solid #f0c060;
+      display: inline-block;
+    }
+    .section { margin-bottom: 16px; }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .icon-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80px;
+    }
+    .icon-box {
+      width: 56px;
+      height: 56px;
+      background: #0d1117;
+      border: 1px solid #2a2a3e;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s;
+    }
+    .icon-box:hover { border-color: #f0c060; background: #1f1f3a; }
+    .icon-label {
+      font-size: 18px;
+      color: #666;
+      text-align: center;
+      word-break: break-all;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+
+<h1>⚔ Idylwilds Icon Sprite Test</h1>
+<p>
+  Idylwilds Armory
+  <a href="https://idylwild.itch.io/">Download</a>
+</p>
+<!-- ITEMS -->
+<div class="section">
+  <h2>📦 Items</h2>
+  <div class="grid">
+    <div class="icon-wrap"><div class="icon-box"><i id="acorn" class="item-sprite"></i></div><span class="icon-label">acorn</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="apple" class="item-sprite"></i></div><span class="icon-label">apple</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="arrow" class="item-sprite"></i></div><span class="icon-label">arrow</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="basket" class="item-sprite"></i></div><span class="icon-label">basket</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="board" class="item-sprite"></i></div><span class="icon-label">board</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bone" class="item-sprite"></i></div><span class="icon-label">bone</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bonemeal" class="item-sprite"></i></div><span class="icon-label">bonemeal</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="book" class="item-sprite"></i></div><span class="icon-label">book</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bread" class="item-sprite"></i></div><span class="icon-label">bread</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bucket" class="item-sprite"></i></div><span class="icon-label">bucket</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="chain" class="item-sprite"></i></div><span class="icon-label">chain</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="cloth" class="item-sprite"></i></div><span class="icon-label">cloth</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="copper-ingot" class="item-sprite"></i></div><span class="icon-label">copper ingot</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="copper-ore" class="item-sprite"></i></div><span class="icon-label">copper ore</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="copper-rod" class="item-sprite"></i></div><span class="icon-label">copper rod</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="egg" class="item-sprite"></i></div><span class="icon-label">egg</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gold-ingot" class="item-sprite"></i></div><span class="icon-label">gold ingot</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gold-key" class="item-sprite"></i></div><span class="icon-label">gold key</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gold-ore" class="item-sprite"></i></div><span class="icon-label">gold ore</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="grass" class="item-sprite"></i></div><span class="icon-label">grass</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="herb" class="item-sprite"></i></div><span class="icon-label">herb</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="inkpot" class="item-sprite"></i></div><span class="icon-label">inkpot</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="iron-ingot" class="item-sprite"></i></div><span class="icon-label">iron ingot</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="iron-ore" class="item-sprite"></i></div><span class="icon-label">iron ore</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="iron-pickaxe" class="item-sprite"></i></div><span class="icon-label">iron pickaxe</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather" class="item-sprite"></i></div><span class="icon-label">leather</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="log" class="item-sprite"></i></div><span class="icon-label">log</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="mug" class="item-sprite"></i></div><span class="icon-label">mug</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="mushroom" class="item-sprite"></i></div><span class="icon-label">mushroom</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="parchment" class="item-sprite"></i></div><span class="icon-label">parchment</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate" class="item-sprite"></i></div><span class="icon-label">plate</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="platinum-ingot" class="item-sprite"></i></div><span class="icon-label">plat. ingot</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="platinum-ore" class="item-sprite"></i></div><span class="icon-label">plat. ore</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="quill" class="item-sprite"></i></div><span class="icon-label">quill</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rawhide" class="item-sprite"></i></div><span class="icon-label">rawhide</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rope" class="item-sprite"></i></div><span class="icon-label">rope</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="sack" class="item-sprite"></i></div><span class="icon-label">sack</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scroll" class="item-sprite"></i></div><span class="icon-label">scroll</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="silk" class="item-sprite"></i></div><span class="icon-label">silk</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="silver-ingot" class="item-sprite"></i></div><span class="icon-label">silver ingot</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="silver-ore" class="item-sprite"></i></div><span class="icon-label">silver ore</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="silver-shovel" class="item-sprite"></i></div><span class="icon-label">silver shovel</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="steak" class="item-sprite"></i></div><span class="icon-label">steak</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="stick" class="item-sprite"></i></div><span class="icon-label">stick</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="string" class="item-sprite"></i></div><span class="icon-label">string</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="thread" class="item-sprite"></i></div><span class="icon-label">thread</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="torch" class="item-sprite"></i></div><span class="icon-label">torch</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="torch-lit" class="item-sprite"></i></div><span class="icon-label">torch lit</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="urn" class="item-sprite"></i></div><span class="icon-label">urn</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="wheat" class="item-sprite"></i></div><span class="icon-label">wheat</span></div>
+  </div>
+</div>
+
+<!-- ARMORY -->
+<div class="section">
+  <h2>🛡 Armory</h2>
+  <div class="grid">
+    <div class="icon-wrap"><div class="icon-box"><i id="light-armor" class="item-sprite"></i></div><span class="icon-label">light armor</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="light-hood" class="item-sprite"></i></div><span class="icon-label">light hood</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="light-tunic" class="item-sprite"></i></div><span class="icon-label">light tunic</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="light-pants" class="item-sprite"></i></div><span class="icon-label">light pants</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="light-boots" class="item-sprite"></i></div><span class="icon-label">light boots</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="light-gloves" class="item-sprite"></i></div><span class="icon-label">light gloves</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="buckler-1" class="item-sprite"></i></div><span class="icon-label">buckler</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-helmet" class="item-sprite"></i></div><span class="icon-label">heavy helmet</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="wooden-buckler-shield" class="item-sprite"></i></div><span class="icon-label">wood buckler</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="metal-buckler-shield" class="item-sprite"></i></div><span class="icon-label">metal buckler</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-armor" class="item-sprite"></i></div><span class="icon-label">leather armor</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-hood" class="item-sprite"></i></div><span class="icon-label">leather hood</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-mail" class="item-sprite"></i></div><span class="icon-label">leather mail</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-pants" class="item-sprite"></i></div><span class="icon-label">leather pants</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-boots" class="item-sprite"></i></div><span class="icon-label">leather boots</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-gloves" class="item-sprite"></i></div><span class="icon-label">leather gloves</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="leather-bracer" class="item-sprite"></i></div><span class="icon-label">leather bracer</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="iron-bracer" class="item-sprite"></i></div><span class="icon-label">iron bracer</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="medium-wooden-shield" class="item-sprite"></i></div><span class="icon-label">med. wood shield</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="medium-metal-shield" class="item-sprite"></i></div><span class="icon-label">med. metal shield</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="studded-armor" class="item-sprite"></i></div><span class="icon-label">studded armor</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="studded-hood" class="item-sprite"></i></div><span class="icon-label">studded hood</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="studded-mail" class="item-sprite"></i></div><span class="icon-label">studded mail</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="studded-pants" class="item-sprite"></i></div><span class="icon-label">studded pants</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="studded-boots" class="item-sprite"></i></div><span class="icon-label">studded boots</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="studded-gloves" class="item-sprite"></i></div><span class="icon-label">studded gloves</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="blue-cape" class="item-sprite"></i></div><span class="icon-label">blue cape</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="white-shirt" class="item-sprite"></i></div><span class="icon-label">white shirt</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="large-wooden-shield" class="item-sprite"></i></div><span class="icon-label">large wood shield</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="metal-tower-shield" class="item-sprite"></i></div><span class="icon-label">tower shield</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-armor" class="item-sprite"></i></div><span class="icon-label">plate armor</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-helmet" class="item-sprite"></i></div><span class="icon-label">plate helmet</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-mail" class="item-sprite"></i></div><span class="icon-label">plate mail</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-pants" class="item-sprite"></i></div><span class="icon-label">plate pants</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-boots" class="item-sprite"></i></div><span class="icon-label">plate boots</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-gloves" class="item-sprite"></i></div><span class="icon-label">plate gloves</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bronze-ring" class="item-sprite"></i></div><span class="icon-label">bronze ring</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="plate-ring" class="item-sprite"></i></div><span class="icon-label">plate ring</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-ring" class="item-sprite"></i></div><span class="icon-label">heavy ring</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gold-ring" class="item-sprite"></i></div><span class="icon-label">gold ring</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-mail" class="item-sprite"></i></div><span class="icon-label">heavy mail</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="full-helm" class="item-sprite"></i></div><span class="icon-label">full helm</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-armor" class="item-sprite"></i></div><span class="icon-label">heavy armor</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-pants" class="item-sprite"></i></div><span class="icon-label">heavy pants</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-boots" class="item-sprite"></i></div><span class="icon-label">heavy boots</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="heavy-gloves" class="item-sprite"></i></div><span class="icon-label">heavy gloves</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="necklace-amber" class="item-sprite"></i></div><span class="icon-label">amber necklace</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="necklace-amethyst" class="item-sprite"></i></div><span class="icon-label">amethyst necklace</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="necklace-emerald" class="item-sprite"></i></div><span class="icon-label">emerald necklace</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="necklace-aquamarine" class="item-sprite"></i></div><span class="icon-label">aquamarine necklace</span></div>
+  </div>
+</div>
+
+<!-- ARCANUM -->
+<div class="section">
+  <h2>🔮 Arcanum</h2>
+  <div class="grid">
+    <div class="icon-wrap"><div class="icon-box"><i id="wand1" class="item-sprite"></i></div><span class="icon-label">wand1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="wand3" class="item-sprite"></i></div><span class="icon-label">wand3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-red1" class="item-sprite"></i></div><span class="icon-label">potion red1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-red2" class="item-sprite"></i></div><span class="icon-label">potion red2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-red-empty" class="item-sprite"></i></div><span class="icon-label">red empty</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-blue1" class="item-sprite"></i></div><span class="icon-label">potion blue1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-blue2" class="item-sprite"></i></div><span class="icon-label">potion blue2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-blue-empty" class="item-sprite"></i></div><span class="icon-label">blue empty</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-green1" class="item-sprite"></i></div><span class="icon-label">potion green1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-green2" class="item-sprite"></i></div><span class="icon-label">potion green2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-green-empty" class="item-sprite"></i></div><span class="icon-label">green empty</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-glass-filled" class="item-sprite"></i></div><span class="icon-label">glass filled</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-glass-empty" class="item-sprite"></i></div><span class="icon-label">glass empty</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="potion-large-empty" class="item-sprite"></i></div><span class="icon-label">large empty</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="mortar-pestle" class="item-sprite"></i></div><span class="icon-label">mortar pestle</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="toadstool" class="item-sprite"></i></div><span class="icon-label">toadstool</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="mandrake-root" class="item-sprite"></i></div><span class="icon-label">mandrake root</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="spellscroll-bound1" class="item-sprite"></i></div><span class="icon-label">spellscroll 1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="spellscroll-bound2" class="item-sprite"></i></div><span class="icon-label">spellscroll 2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="grimoire-open" class="item-sprite"></i></div><span class="icon-label">grimoire open</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gem-green-raw" class="item-sprite"></i></div><span class="icon-label">gem green raw</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gem-green-cut" class="item-sprite"></i></div><span class="icon-label">gem green cut</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gem-purple-raw" class="item-sprite"></i></div><span class="icon-label">gem purple raw</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="gem-purple-crystal" class="item-sprite"></i></div><span class="icon-label">gem purple crystal</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="diamond-cut" class="item-sprite"></i></div><span class="icon-label">diamond cut</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="crystal-orange" class="item-sprite"></i></div><span class="icon-label">crystal orange</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="crystal-blue" class="item-sprite"></i></div><span class="icon-label">crystal blue</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="grimoire-closed" class="item-sprite"></i></div><span class="icon-label">grimoire closed</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="candle-skull" class="item-sprite"></i></div><span class="icon-label">candle skull</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-fire" class="item-sprite"></i></div><span class="icon-label">rune fire</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-water" class="item-sprite"></i></div><span class="icon-label">rune water</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-air" class="item-sprite"></i></div><span class="icon-label">rune air</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-earth" class="item-sprite"></i></div><span class="icon-label">rune earth</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-blank1" class="item-sprite"></i></div><span class="icon-label">rune blank1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-blank2" class="item-sprite"></i></div><span class="icon-label">rune blank2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-blank3" class="item-sprite"></i></div><span class="icon-label">rune blank3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="rune-blank4" class="item-sprite"></i></div><span class="icon-label">rune blank4</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scroll-blank" class="item-sprite"></i></div><span class="icon-label">scroll blank</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scroll-filled" class="item-sprite"></i></div><span class="icon-label">scroll filled</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scroll-rotuli" class="item-sprite"></i></div><span class="icon-label">rotuli</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scroll-rotuli-open" class="item-sprite"></i></div><span class="icon-label">rotuli open</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="quill-phoenix" class="item-sprite"></i></div><span class="icon-label">quill phoenix</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="ink-arcane" class="item-sprite"></i></div><span class="icon-label">ink arcane</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="crystal-ball" class="item-sprite"></i></div><span class="icon-label">crystal ball</span></div>
+  </div>
+</div>
+
+<!-- WEAPONS -->
+<div class="section">
+  <h2>⚔ Weapons</h2>
+  <div class="grid">
+    <div class="icon-wrap"><div class="icon-box"><i id="sword1" class="item-sprite"></i></div><span class="icon-label">sword1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="sword2" class="item-sprite"></i></div><span class="icon-label">sword2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="sword3" class="item-sprite"></i></div><span class="icon-label">sword3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="sword4" class="item-sprite"></i></div><span class="icon-label">sword4</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="sword5" class="item-sprite"></i></div><span class="icon-label">sword5</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="dagger1" class="item-sprite"></i></div><span class="icon-label">dagger1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="dagger2" class="item-sprite"></i></div><span class="icon-label">dagger2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="dagger3" class="item-sprite"></i></div><span class="icon-label">dagger3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="dagger4" class="item-sprite"></i></div><span class="icon-label">dagger4</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="dagger5" class="item-sprite"></i></div><span class="icon-label">dagger5</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="knife" class="item-sprite"></i></div><span class="icon-label">knife</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="club" class="item-sprite"></i></div><span class="icon-label">club</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="axe1" class="item-sprite"></i></div><span class="icon-label">axe1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="axe2" class="item-sprite"></i></div><span class="icon-label">axe2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="axe3" class="item-sprite"></i></div><span class="icon-label">axe3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="axe4" class="item-sprite"></i></div><span class="icon-label">axe4</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="mace1" class="item-sprite"></i></div><span class="icon-label">mace1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="mace2" class="item-sprite"></i></div><span class="icon-label">mace2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="hammer1" class="item-sprite"></i></div><span class="icon-label">hammer1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="hammer2" class="item-sprite"></i></div><span class="icon-label">hammer2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="morningstar" class="item-sprite"></i></div><span class="icon-label">morningstar</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="flail" class="item-sprite"></i></div><span class="icon-label">flail</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bow1" class="item-sprite"></i></div><span class="icon-label">bow1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bow2" class="item-sprite"></i></div><span class="icon-label">bow2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bow3" class="item-sprite"></i></div><span class="icon-label">bow3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="bow4" class="item-sprite"></i></div><span class="icon-label">bow4</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="crossbow1" class="item-sprite"></i></div><span class="icon-label">crossbow1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="crossbow2" class="item-sprite"></i></div><span class="icon-label">crossbow2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="crossbow3" class="item-sprite"></i></div><span class="icon-label">crossbow3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="spear1" class="item-sprite"></i></div><span class="icon-label">spear1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="spear2" class="item-sprite"></i></div><span class="icon-label">spear2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="polearm1" class="item-sprite"></i></div><span class="icon-label">polearm1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="polearm2" class="item-sprite"></i></div><span class="icon-label">polearm2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="polearm3" class="item-sprite"></i></div><span class="icon-label">polearm3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scythe1" class="item-sprite"></i></div><span class="icon-label">scythe1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="scythe2" class="item-sprite"></i></div><span class="icon-label">scythe2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="staff1" class="item-sprite"></i></div><span class="icon-label">staff1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="staff2" class="item-sprite"></i></div><span class="icon-label">staff2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="staff3" class="item-sprite"></i></div><span class="icon-label">staff3</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="staff4" class="item-sprite"></i></div><span class="icon-label">staff4</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="wand2" class="item-sprite"></i></div><span class="icon-label">wand2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="trident" class="item-sprite"></i></div><span class="icon-label">trident</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="throwing-knife1" class="item-sprite"></i></div><span class="icon-label">throwing knife</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="throwing-axe1" class="item-sprite"></i></div><span class="icon-label">throwing axe1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="throwing-axe2" class="item-sprite"></i></div><span class="icon-label">throwing axe2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="javelin" class="item-sprite"></i></div><span class="icon-label">javelin</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="chakram" class="item-sprite"></i></div><span class="icon-label">chakram</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="arrow1" class="item-sprite"></i></div><span class="icon-label">arrow1</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="arrow2" class="item-sprite"></i></div><span class="icon-label">arrow2</span></div>
+    <div class="icon-wrap"><div class="icon-box"><i id="arrow3" class="item-sprite"></i></div><span class="icon-label">arrow3</span></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -4,14 +4,14 @@ import {
 	selectQuestProgress,
 	selectCompletedQuestIds,
 } from "../../../store/slices/questSlice";
-import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
+import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import { questCatalog } from "../../../data/questCatalog";
 import { itemCatalog } from "../../../data/itemCatalog";
 
 const QuestItem = ({ questId }) => {
 	const quest = questCatalog[questId];
 	const playerInventory = useSelector((state) =>
-		selectPlayerInventoryById(state, "player"),
+		selectInventoryById(state, "player"),
 	);
 	if (!quest) return null;
 

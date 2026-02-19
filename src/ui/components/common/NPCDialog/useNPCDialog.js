@@ -6,16 +6,12 @@ import {
 	spendGold,
 } from "../../../../store/slices/playerSlice";
 import {
-	selectPlayerInventoryById,
+	selectInventoryById,
+	selectInventoryByNpcId,
 	addItem as addPlayerItem,
 	removeItem as removePlayerItem,
-} from "../../../../store/slices/playerInventorySlice";
+} from "../../../../store/slices/inventorySlice";
 import { selectNPCById } from "../../../../store/slices/npcSlice";
-import {
-	selectNpcInventoryById,
-	addItem as addNpcItem,
-	removeItem as removeNpcItem,
-} from "../../../../store/slices/npcInventorySlice";
 import { questCatalog } from "../../../../data/questCatalog";
 import {
 	playerIntentAcceptQuest,
@@ -35,11 +31,11 @@ const useNPCDialog = ({
 
 	const player = useSelector(selectPlayer);
 	const playerInventory = useSelector((state) =>
-		selectPlayerInventoryById(state, "player"),
+		selectInventoryById(state, "player"),
 	);
 	const npc = useSelector((state) => selectNPCById(state, npcId));
 	const npcInventory = useSelector((state) =>
-		selectNpcInventoryById(state, npcId),
+		selectInventoryByNpcId(state, npcId),
 	);
 	const questsState = useSelector((state) => state.quests);
 

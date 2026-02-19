@@ -2,9 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import playerReducer from "./slices/playerSlice";
 import buildingsReducer from "./slices/buildingsSlice";
 import placesReducer from "./slices/placesSlice";
-import playerInventoryReducer from "./slices/playerInventorySlice";
-import placeInventoryReducer from "./slices/placeInventorySlice";
-import npcInventoryReducer from "./slices/npcInventorySlice";
+import inventoryReducer from "./slices/inventorySlice";
 import npcReducer from "./slices/npcSlice";
 import enemiesReducer from "./slices/enemiesSlice";
 import combatReducer from "./slices/combatSlice";
@@ -20,9 +18,7 @@ export const store = configureStore({
 		player: playerReducer,
 		buildings: buildingsReducer,
 		places: placesReducer,
-		playerInventory: playerInventoryReducer,
-		placeInventory: placeInventoryReducer,
-		npcInventory: npcInventoryReducer,
+		inventory: inventoryReducer,
 		npcs: npcReducer,
 		enemies: enemiesReducer,
 		combat: combatReducer,

@@ -2,7 +2,7 @@
 import Logger from "../utils/Logger";
 import { batch } from "react-redux";
 import { enemyAttacked, playerDamaged, enemyDead } from "../events";
-import { addItem } from "../../store/slices/playerInventorySlice";
+import { addItem } from "../../store/slices/inventorySlice";
 import { gainExp, updateLastAttackTime } from "../../store/slices/playerSlice";
 import { createItem } from "../factory/itemFactory";
 

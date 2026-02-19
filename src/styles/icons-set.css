@@ -1,0 +1,224 @@
+/* --- Base --- */
+.item-sprite {
+	width: 32px;
+	height: 32px;
+	background-image: url("../assets/icons/items/idylwilds-items.png");
+	background-repeat: no-repeat;
+	display: inline-block;
+	image-rendering: pixelated;
+	transform: scale(1.5);
+}
+
+/* =============================================
+   ITEM SET (top-left quadrant, offset: 0, 0)
+   ============================================= */
+#acorn        { background-position: -256px -96px; }
+#apple        { background-position: -64px -96px; }
+#arrow        { background-position: -288px -64px; }
+#basket       { background-position: -32px -128px; }
+#board        { background-position: -160px 0; }
+#bone         { background-position: -288px 0; }
+#bonemeal     { background-position: -288px -32px; }
+#book         { background-position: -192px -128px; }
+#bread        { background-position: -128px -96px; }
+#bucket       { background-position: -64px -128px; }
+#chain        { background-position: -128px 0; }
+#cloth        { background-position: -256px 0; }
+#copper-ingot { background-position: 0 -32px; }
+#copper-ore   { background-position: 0 -64px; }
+#copper-rod   { background-position: 0 0; }
+#egg          { background-position: -96px -96px; }
+#gold-ingot   { background-position: -96px -32px; }
+#gold-key     { background-position: -96px 0; }
+#gold-ore     { background-position: -96px -64px; }
+#grass        { background-position: -192px -96px; }
+#herb         { background-position: -224px -96px; }
+#inkpot       { background-position: -256px -128px; }
+#iron-ingot   { background-position: -32px -32px; }
+#iron-ore     { background-position: -32px -64px; }
+#iron-pickaxe { background-position: -32px 0; }
+#leather      { background-position: -192px 0; }
+#log          { background-position: -160px -32px; }
+#mug          { background-position: -256px -64px; }
+#mushroom     { background-position: -32px -96px; }
+#parchment    { background-position: -128px -128px; }
+#plate        { background-position: -224px -64px; }
+#platinum-ingot { background-position: -128px -32px; }
+#platinum-ore { background-position: -128px -64px; }
+#quill        { background-position: -224px -128px; }
+#rawhide      { background-position: -192px -32px; }
+#rope         { background-position: -192px -64px; }
+#sack         { background-position: -96px -128px; }
+#scroll       { background-position: -160px -128px; }
+#silk         { background-position: -224px 0; }
+#silver-ingot { background-position: -64px -32px; }
+#silver-ore   { background-position: -64px -64px; }
+#silver-shovel{ background-position: -64px 0; }
+#steak        { background-position: 0 -96px; }
+#stick        { background-position: -160px -64px; }
+#string       { background-position: -224px -32px; }
+#thread       { background-position: -256px -32px; }
+#torch        { background-position: -288px -128px; }
+#torch-lit    { background-position: -288px -96px; }
+#urn          { background-position: 0 -128px; }
+#wheat        { background-position: -160px -96px; }
+
+/* =============================================
+   ARMORY SET (top-right quadrant, offset: +320, 0)
+   ============================================= */
+#light-armor           { background-position: calc(0px   - 320px) 0; }
+#light-hood            { background-position: calc(-32px  - 320px) 0; }
+#light-tunic           { background-position: calc(-64px  - 320px) 0; }
+#light-pants           { background-position: calc(-96px  - 320px) 0; }
+#light-boots           { background-position: calc(-128px - 320px) 0; }
+#light-gloves          { background-position: calc(-160px - 320px) 0; }
+#buckler-1             { background-position: calc(-192px - 320px) 0; }
+#heavy-helmet          { background-position: calc(-224px - 320px) 0; }
+#wooden-buckler-shield { background-position: calc(-256px - 320px) 0; }
+#metal-buckler-shield  { background-position: calc(-288px - 320px) 0; }
+
+#leather-armor  { background-position: calc(0px   - 320px) -32px; }
+#leather-hood   { background-position: calc(-32px  - 320px) -32px; }
+#leather-mail   { background-position: calc(-64px  - 320px) -32px; }
+#leather-pants  { background-position: calc(-96px  - 320px) -32px; }
+#leather-boots  { background-position: calc(-128px - 320px) -32px; }
+#leather-gloves { background-position: calc(-160px - 320px) -32px; }
+#leather-bracer { background-position: calc(-192px - 320px) -32px; }
+#iron-bracer    { background-position: calc(-224px - 320px) -32px; }
+#medium-wooden-shield { background-position: calc(-256px - 320px) -32px; }
+#medium-metal-shield  { background-position: calc(-288px - 320px) -32px; }
+
+#studded-armor  { background-position: calc(0px   - 320px) -64px; }
+#studded-hood   { background-position: calc(-32px  - 320px) -64px; }
+#studded-mail   { background-position: calc(-64px  - 320px) -64px; }
+#studded-pants  { background-position: calc(-96px  - 320px) -64px; }
+#studded-boots  { background-position: calc(-128px - 320px) -64px; }
+#studded-gloves { background-position: calc(-160px - 320px) -64px; }
+#blue-cape      { background-position: calc(-192px - 320px) -64px; }
+#white-shirt    { background-position: calc(-224px - 320px) -64px; }
+#large-wooden-shield { background-position: calc(-256px - 320px) -64px; }
+#metal-tower-shield  { background-position: calc(-288px - 320px) -64px; }
+
+#plate-armor    { background-position: calc(0px   - 320px) -96px; }
+#plate-helmet   { background-position: calc(-32px  - 320px) -96px; }
+#plate-mail     { background-position: calc(-64px  - 320px) -96px; }
+#plate-pants    { background-position: calc(-96px  - 320px) -96px; }
+#plate-boots    { background-position: calc(-128px - 320px) -96px; }
+#plate-gloves   { background-position: calc(-160px - 320px) -96px; }
+#bronze-ring    { background-position: calc(-192px - 320px) -96px; }
+#plate-ring     { background-position: calc(-224px - 320px) -96px; }
+#heavy-ring     { background-position: calc(-256px - 320px) -96px; }
+#gold-ring      { background-position: calc(-288px - 320px) -96px; }
+
+#heavy-mail        { background-position: calc(0px   - 320px) -128px; }
+#full-helm         { background-position: calc(-32px  - 320px) -128px; }
+#heavy-armor       { background-position: calc(-64px  - 320px) -128px; }
+#heavy-pants       { background-position: calc(-96px  - 320px) -128px; }
+#heavy-boots       { background-position: calc(-128px - 320px) -128px; }
+#heavy-gloves      { background-position: calc(-160px - 320px) -128px; }
+#necklace-amber    { background-position: calc(-192px - 320px) -128px; }
+#necklace-amethyst { background-position: calc(-224px - 320px) -128px; }
+#necklace-emerald  { background-position: calc(-256px - 320px) -128px; }
+#necklace-aquamarine { background-position: calc(-288px - 320px) -128px; }
+
+/* =============================================
+   ARCANUM SET (bottom-left quadrant, offset: 0, +160)
+   ============================================= */
+#wand1               { background-position: -64px  calc(-32px  - 160px); }
+#wand3               { background-position: 0      calc(-32px  - 160px); }
+#potion-red1         { background-position: -128px calc(0px    - 160px); }
+#potion-red2         { background-position: -128px calc(-32px  - 160px); }
+#potion-red-empty    { background-position: -128px calc(-64px  - 160px); }
+#potion-blue1        { background-position: -192px calc(0px    - 160px); }
+#potion-blue2        { background-position: -192px calc(-32px  - 160px); }
+#potion-blue-empty   { background-position: -192px calc(-64px  - 160px); }
+#potion-green1       { background-position: -160px calc(0px    - 160px); }
+#potion-green2       { background-position: -160px calc(-32px  - 160px); }
+#potion-green-empty  { background-position: -160px calc(-64px  - 160px); }
+#potion-glass-filled { background-position: -224px calc(-32px  - 160px); }
+#potion-glass-empty  { background-position: -224px calc(-64px  - 160px); }
+#potion-large-empty  { background-position: -224px calc(0px    - 160px); }
+#mortar-pestle       { background-position: -224px calc(-96px  - 160px); }
+#toadstool           { background-position: -96px  calc(0px    - 160px); }
+#mandrake-root       { background-position: -96px  calc(-32px  - 160px); }
+#spellscroll-bound1  { background-position: -128px calc(-128px - 160px); }
+#spellscroll-bound2  { background-position: -160px calc(-128px - 160px); }
+#grimoire-open       { background-position: -224px calc(-128px - 160px); }
+#gem-green-raw       { background-position: -256px calc(-64px  - 160px); }
+#gem-green-cut       { background-position: -256px calc(-32px  - 160px); }
+#gem-purple-raw      { background-position: -288px calc(-64px  - 160px); }
+#gem-purple-crystal  { background-position: -288px calc(-32px  - 160px); }
+#diamond-cut         { background-position: -256px calc(0px    - 160px); }
+#crystal-orange      { background-position: -256px calc(-96px  - 160px); }
+#crystal-blue        { background-position: -288px calc(-96px  - 160px); }
+#grimoire-closed     { background-position: -192px calc(-128px - 160px); }
+#candle-skull        { background-position: -128px calc(-96px  - 160px); }
+#rune-fire           { background-position: -64px  calc(-96px  - 160px); }
+#rune-water          { background-position: -96px  calc(-96px  - 160px); }
+#rune-air            { background-position: 0      calc(-96px  - 160px); }
+#rune-earth          { background-position: -32px  calc(-96px  - 160px); }
+#rune-blank1         { background-position: 0      calc(-64px  - 160px); }
+#rune-blank2         { background-position: -32px  calc(-64px  - 160px); }
+#rune-blank3         { background-position: -64px  calc(-64px  - 160px); }
+#rune-blank4         { background-position: -96px  calc(-64px  - 160px); }
+#scroll-blank        { background-position: 0      calc(-128px - 160px); }
+#scroll-filled       { background-position: -32px  calc(-128px - 160px); }
+#scroll-rotuli       { background-position: -64px  calc(-128px - 160px); }
+#scroll-rotuli-open  { background-position: -96px  calc(-128px - 160px); }
+#quill-phoenix       { background-position: -256px calc(-128px - 160px); }
+#ink-arcane          { background-position: -288px calc(-128px - 160px); }
+#crystal-ball        { background-position: -288px calc(0px    - 160px); }
+
+/* =============================================
+   WEAPON SET (bottom-right quadrant, offset: +320, +160)
+   ============================================= */
+#sword1          { background-position: calc(0px    - 320px) calc(0px    - 160px); }
+#sword2          { background-position: calc(-32px  - 320px) calc(0px    - 160px); }
+#sword3          { background-position: calc(-64px  - 320px) calc(0px    - 160px); }
+#sword4          { background-position: calc(-96px  - 320px) calc(0px    - 160px); }
+#sword5          { background-position: calc(-128px - 320px) calc(0px    - 160px); }
+#dagger1         { background-position: calc(0px    - 320px) calc(-32px  - 160px); }
+#dagger2         { background-position: calc(-32px  - 320px) calc(-32px  - 160px); }
+#dagger3         { background-position: calc(-64px  - 320px) calc(-32px  - 160px); }
+#dagger4         { background-position: calc(-96px  - 320px) calc(-32px  - 160px); }
+#dagger5         { background-position: calc(-128px - 320px) calc(-32px  - 160px); }
+#knife           { background-position: calc(-256px - 320px) calc(-128px - 160px); }
+#club            { background-position: calc(-288px - 320px) calc(0px    - 160px); }
+#axe1            { background-position: calc(-192px - 320px) calc(0px    - 160px); }
+#axe2            { background-position: calc(-160px - 320px) calc(0px    - 160px); }
+#axe3            { background-position: calc(-224px - 320px) calc(0px    - 160px); }
+#axe4            { background-position: calc(-256px - 320px) calc(0px    - 160px); }
+#mace1           { background-position: calc(-160px - 320px) calc(-32px  - 160px); }
+#mace2           { background-position: calc(-288px - 320px) calc(-32px  - 160px); }
+#hammer1         { background-position: calc(-192px - 320px) calc(-32px  - 160px); }
+#hammer2         { background-position: calc(-224px - 320px) calc(-128px - 160px); }
+#morningstar     { background-position: calc(-224px - 320px) calc(-32px  - 160px); }
+#flail           { background-position: calc(-256px - 320px) calc(-32px  - 160px); }
+#bow1            { background-position: calc(0px    - 320px) calc(-64px  - 160px); }
+#bow2            { background-position: calc(-32px  - 320px) calc(-64px  - 160px); }
+#bow3            { background-position: calc(-64px  - 320px) calc(-64px  - 160px); }
+#bow4            { background-position: calc(-96px  - 320px) calc(-64px  - 160px); }
+#crossbow1       { background-position: calc(-128px - 320px) calc(-64px  - 160px); }
+#crossbow2       { background-position: calc(-160px - 320px) calc(-64px  - 160px); }
+#crossbow3       { background-position: calc(-192px - 320px) calc(-64px  - 160px); }
+#spear1          { background-position: calc(0px    - 320px) calc(-96px  - 160px); }
+#spear2          { background-position: calc(-32px  - 320px) calc(-96px  - 160px); }
+#polearm1        { background-position: calc(-128px - 320px) calc(-96px  - 160px); }
+#polearm2        { background-position: calc(-160px - 320px) calc(-96px  - 160px); }
+#polearm3        { background-position: calc(-96px  - 320px) calc(-96px  - 160px); }
+#scythe1         { background-position: calc(-32px  - 320px) calc(-128px - 160px); }
+#scythe2         { background-position: calc(0px    - 320px) calc(-128px - 160px); }
+#staff1          { background-position: calc(-64px  - 320px) calc(-128px - 160px); }
+#staff2          { background-position: calc(-96px  - 320px) calc(-128px - 160px); }
+#staff3          { background-position: calc(-160px - 320px) calc(-128px - 160px); }
+#staff4          { background-position: calc(-128px - 320px) calc(-128px - 160px); }
+#wand2           { background-position: calc(-192px - 320px) calc(-128px - 160px); }
+#trident         { background-position: calc(-64px  - 320px) calc(-96px  - 160px); }
+#throwing-knife1 { background-position: calc(-224px - 320px) calc(-64px  - 160px); }
+#throwing-axe1   { background-position: calc(-256px - 320px) calc(-64px  - 160px); }
+#throwing-axe2   { background-position: calc(-288px - 320px) calc(-64px  - 160px); }
+#javelin         { background-position: calc(-288px - 320px) calc(-96px  - 160px); }
+#chakram         { background-position: calc(-288px - 320px) calc(-128px - 160px); }
+#arrow1          { background-position: calc(-192px - 320px) calc(-96px  - 160px); }
+#arrow2          { background-position: calc(-224px - 320px) calc(-96px  - 160px); }
+#arrow3          { background-position: calc(-256px - 320px) calc(-96px  - 160px); }

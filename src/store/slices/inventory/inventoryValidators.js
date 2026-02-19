@@ -2,14 +2,12 @@ import {
 	INVENTORY_ERRORS,
 	INVENTORY_TYPES,
 	EQUIPMENT_SLOTS,
+	TYPE_TO_SLOT,
 } from "./inventoryTypes.js";
 import {
 	calculateWeight,
 	countSlots,
-	canItemsStack,
 } from "./inventoryUtils.js";
-
-// Validation functions for inventory operations
 
 export const validateSlotLimit = (inventory, additionalItemCount = 0) => {
 	if (!inventory)
@@ -32,7 +30,7 @@ export const validateSlotLimit = (inventory, additionalItemCount = 0) => {
 export const validateWeightLimit = (inventory, additionalWeight = 0) => {
 	if (!inventory)
 		return { isValid: false, error: INVENTORY_ERRORS.ITEM_NOT_FOUND };
-	if (inventory.type !== INVENTORY_TYPES.PLAYER) return { isValid: true }; // Only player inventories have weight limits
+	if (inventory.type !== INVENTORY_TYPES.PLAYER) return { isValid: true };
 
 	const currentWeight = calculateWeight(inventory.items || []);
 
@@ -89,20 +87,8 @@ export const validateItemExists = (inventory, itemId) => {
 };
 
 export const validateEquipmentSlot = (item, slot) => {
-	// Equipment types that can be equipped
-	const equippableTypes = [
-		"equipment",
-		"head",
-		"body",
-		"pants",
-		"boots",
-		"hands",
-		"shield",
-		"weapon",
-		"accessory",
-	];
-
-	if (!item || !equippableTypes.includes(item.type)) {
+	const equipableTypes = Object.keys(TYPE_TO_SLOT);
+	if (!item || !equipableTypes.includes(item.type)) {
 		return {
 			isValid: false,
 			error: INVENTORY_ERRORS.INVALID_ITEM_TYPE,
@@ -110,20 +96,7 @@ export const validateEquipmentSlot = (item, slot) => {
 		};
 	}
 
-	// Map item type to equipment slot
-	const typeToSlot = {
-		head: "head",
-		body: "body",
-		pants: "pants",
-		boots: "boots",
-		hands: "hands",
-		weapon: "main-weapon",
-		shield: "second-weapon",
-		secondary: "second-weapon",
-		equipment: item.piece,
-	};
-
-	const expectedSlot = typeToSlot[item.type];
+	const expectedSlot = TYPE_TO_SLOT[item.type] || item.piece;
 
 	if (!EQUIPMENT_SLOTS.includes(slot)) {
 		return {
@@ -142,77 +115,4 @@ export const validateEquipmentSlot = (item, slot) => {
 	}
 
 	return { isValid: true };
-};
-
-export const validateInventoryExists = (state, inventoryId) => {
-	const inventory = state[inventoryId];
-	if (!inventory) {
-		return {
-			isValid: false,
-			error: INVENTORY_ERRORS.ITEM_NOT_FOUND,
-			message: `Inventory ${inventoryId} not found`,
-		};
-	}
-	return { isValid: true, inventory };
-};
-
-export const validateItemMove = (
-	fromInventory,
-	toInventory,
-	itemId,
-	quantity,
-) => {
-	// Validate inventories exist
-	if (!fromInventory || !toInventory) {
-		return {
-			isValid: false,
-			error: INVENTORY_ERRORS.ITEM_NOT_FOUND,
-			message: "Source or target inventory not found",
-		};
-	}
-
-	// Find item in source inventory
-	const itemIndex = fromInventory.items.findIndex((item) => item.id === itemId);
-	if (itemIndex === -1) {
-		return {
-			isValid: false,
-			error: INVENTORY_ERRORS.ITEM_NOT_FOUND,
-			message: `Item ${itemId} not found in source inventory`,
-		};
-	}
-
-	const item = fromInventory.items[itemIndex];
-	const moveQuantity = quantity || item.quantity || 1;
-
-	// Validate move quantity
-	const quantityValidation = validateMoveQuantity(item, moveQuantity);
-	if (!quantityValidation.isValid) {
-		return quantityValidation;
-	}
-
-	// Check if target inventory can accept the item
-	const itemWeight = item.weight * moveQuantity;
-	const willNeedNewSlot = !toInventory.items.some((existingItem) =>
-		canItemsStack(existingItem, item),
-	);
-
-	// Validate slot limit
-	if (willNeedNewSlot) {
-		const slotValidation = validateSlotLimit(toInventory, 1);
-		if (!slotValidation.isValid) {
-			return {
-				isValid: false,
-				error: INVENTORY_ERRORS.INVENTORY_FULL,
-				message: `Target inventory ${toInventory.id} is full (${toInventory.maxSlots} slots)`,
-			};
-		}
-	}
-
-	// Validate weight limit for player inventories
-	const weightValidation = validateWeightLimit(toInventory, itemWeight);
-	if (!weightValidation.isValid) {
-		return weightValidation;
-	}
-
-	return { isValid: true, item, itemIndex, moveQuantity };
 };

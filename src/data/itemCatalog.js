@@ -3,6 +3,7 @@ export const itemCatalog = {
 		id: 1,
 		type: "consumable",
 		name: "apple",
+		itemKey: "apple",
 		description: "A fresh apple",
 		quantity: 0,
 		weight: 0.5,
@@ -11,8 +12,9 @@ export const itemCatalog = {
 	"iron-ore": {
 		id: 3,
 		type: "material",
-		name: "iron or",
-		description: "A piece of iron or",
+		name: "iron-ore",
+		itemKey: "iron-ore",
+		description: "A piece of iron ore",
 		quantity: 0,
 		weight: 2,
 	},
@@ -79,7 +81,7 @@ export const itemCatalog = {
 	},
 	"wooden-buckler-shield": {
 		id: 10,
-		type: "shield",
+		type: "second-weapon",
 		name: "Wooden Buckler Shield",
 		description: "A small wooden shield",
 		weight: 3,
@@ -89,7 +91,7 @@ export const itemCatalog = {
 	},
 	"metal-buckler-shield": {
 		id: 11,
-		type: "shield",
+		type: "second-weapon",
 		name: "Metal Buckler Shield",
 		description: "A small metal shield",
 		weight: 4,
@@ -170,7 +172,7 @@ export const itemCatalog = {
 	},
 	"medium-wooden-shield": {
 		id: 19,
-		type: "shield",
+		type: "second",
 		name: "Medium Wooden Shield",
 		description: "A medium-sized wooden shield",
 		weight: 5,
@@ -241,7 +243,7 @@ export const itemCatalog = {
 	},
 	"large-wooden-shield": {
 		id: 26,
-		type: "shield",
+		type: "second",
 		name: "Large Wooden Shield",
 		description: "A large wooden shield",
 		weight: 7,
@@ -312,7 +314,7 @@ export const itemCatalog = {
 	},
 	"medium-metal-shield": {
 		id: 33,
-		type: "shield",
+		type: "second",
 		name: "Medium Metal Shield",
 		description: "A medium-sized metal shield",
 		weight: 8,
@@ -383,7 +385,7 @@ export const itemCatalog = {
 	},
 	"metal-tower-shield": {
 		id: 40,
-		type: "shield",
+		type: "second",
 		name: "Metal Tower Shield",
 		description: "A large metal tower shield",
 		weight: 12,
@@ -475,7 +477,7 @@ export const itemCatalog = {
 	// Others
 	"buckler-1": {
 		id: 49,
-		type: "shield",
+		type: "second",
 		name: "Buckler",
 		description: "A basic buckler shield",
 		weight: 3,
@@ -526,7 +528,7 @@ export const itemCatalog = {
 	// Weapons - Swords
 	sword1: {
 		id: 54,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Rusty Shortblade",
 		description: "A basic short sword for beginners",
 		weight: 3,
@@ -536,7 +538,7 @@ export const itemCatalog = {
 	},
 	sword2: {
 		id: 55,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Iron Longsword",
 		description: "A well-balanced longsword",
 		weight: 4,
@@ -546,7 +548,7 @@ export const itemCatalog = {
 	},
 	sword3: {
 		id: 56,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Steel Broadsword",
 		description: "A finely crafted broadsword",
 		weight: 5,
@@ -556,7 +558,7 @@ export const itemCatalog = {
 	},
 	sword4: {
 		id: 57,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Tempered Greatsword",
 		description: "A superior quality greatsword",
 		weight: 6,
@@ -566,7 +568,7 @@ export const itemCatalog = {
 	},
 	sword5: {
 		id: 58,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Moonlight Blade",
 		description: "A masterwork blade of exceptional quality",
 		weight: 7,
@@ -577,7 +579,7 @@ export const itemCatalog = {
 	// Weapons - Daggers
 	dagger1: {
 		id: 59,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Throwing Spike",
 		description: "A simple throwing dagger",
 		weight: 1,
@@ -587,7 +589,7 @@ export const itemCatalog = {
 	},
 	dagger2: {
 		id: 60,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Shadow Stiletto",
 		description: "A balanced combat dagger",
 		weight: 1.5,
@@ -597,7 +599,7 @@ export const itemCatalog = {
 	},
 	dagger3: {
 		id: 61,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Assassin's Kiss",
 		description: "A sharp assassin's dagger",
 		weight: 2,
@@ -607,7 +609,7 @@ export const itemCatalog = {
 	},
 	dagger4: {
 		id: 62,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Venom Blade",
 		description: "A deadly poisoned dagger",
 		weight: 2,
@@ -617,7 +619,7 @@ export const itemCatalog = {
 	},
 	dagger5: {
 		id: 63,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Phantom Edge",
 		description: "A masterwork dagger of legendary quality",
 		weight: 2.5,
@@ -627,7 +629,7 @@ export const itemCatalog = {
 	},
 	club: {
 		id: 64,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Wooden Maul",
 		description: "A heavy wooden club",
 		weight: 4,
@@ -637,7 +639,7 @@ export const itemCatalog = {
 	},
 	knife: {
 		id: 65,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Survival Knife",
 		description: "A versatile utility knife",
 		weight: 1,
@@ -648,7 +650,7 @@ export const itemCatalog = {
 	// Weapons - Axes
 	axe1: {
 		id: 66,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Hunter's Hatchet",
 		description: "A basic hatchet",
 		weight: 3,
@@ -658,7 +660,7 @@ export const itemCatalog = {
 	},
 	axe2: {
 		id: 67,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Battle Axe",
 		description: "A sturdy battle axe",
 		weight: 5,
@@ -668,7 +670,7 @@ export const itemCatalog = {
 	},
 	axe3: {
 		id: 68,
-		type: "weapon",
+		type: "main-weapon",
 		name: "War Cleaver",
 		description: "A heavy war axe",
 		weight: 6,
@@ -678,7 +680,7 @@ export const itemCatalog = {
 	},
 	axe4: {
 		id: 69,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Giant's Greataxe",
 		description: "A massive great axe",
 		weight: 8,
@@ -689,7 +691,7 @@ export const itemCatalog = {
 	// Weapons - Maces, Morningstar, Flail, Hammers
 	mace1: {
 		id: 70,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Iron Flanged Mace",
 		description: "A simple mace",
 		weight: 4,
@@ -699,7 +701,7 @@ export const itemCatalog = {
 	},
 	mace2: {
 		id: 71,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Spiked Crusher",
 		description: "A spiked mace",
 		weight: 5,
@@ -709,7 +711,7 @@ export const itemCatalog = {
 	},
 	morningstar: {
 		id: 72,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Devil's Morningstar",
 		description: "A fearsome morningstar with spikes",
 		weight: 6,
@@ -719,7 +721,7 @@ export const itemCatalog = {
 	},
 	flail: {
 		id: 73,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Chain Flail",
 		description: "A deadly flail with chained ball",
 		weight: 7,
@@ -729,7 +731,7 @@ export const itemCatalog = {
 	},
 	hammer1: {
 		id: 74,
-		type: "weapon",
+		type: "main-weapon",
 		name: "War Hammer",
 		description: "A light war hammer",
 		weight: 5,
@@ -739,7 +741,7 @@ export const itemCatalog = {
 	},
 	hammer2: {
 		id: 75,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Sledge Breaker",
 		description: "A heavy sledge hammer",
 		weight: 8,
@@ -750,7 +752,7 @@ export const itemCatalog = {
 	// Weapons - Bows, Crossbows, Spears
 	bow1: {
 		id: 76,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Shortbow",
 		description: "A basic shortbow",
 		weight: 2,
@@ -760,7 +762,7 @@ export const itemCatalog = {
 	},
 	bow2: {
 		id: 77,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Composite Longbow",
 		description: "A composite longbow",
 		weight: 3,
@@ -770,7 +772,7 @@ export const itemCatalog = {
 	},
 	bow3: {
 		id: 78,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Recurve Bow",
 		description: "A masterwork recurve bow",
 		weight: 3,
@@ -780,7 +782,7 @@ export const itemCatalog = {
 	},
 	bow4: {
 		id: 79,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Elven Warbow",
 		description: "An elven war bow of exceptional quality",
 		weight: 4,
@@ -790,7 +792,7 @@ export const itemCatalog = {
 	},
 	crossbow1: {
 		id: 80,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Light Crossbow",
 		description: "A light crossbow",
 		weight: 4,
@@ -800,7 +802,7 @@ export const itemCatalog = {
 	},
 	crossbow2: {
 		id: 81,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Heavy Crossbow",
 		description: "A heavy crossbow",
 		weight: 6,
@@ -810,7 +812,7 @@ export const itemCatalog = {
 	},
 	crossbow3: {
 		id: 82,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Repeating Crossbow",
 		description: "A repeating crossbow",
 		weight: 7,
@@ -820,7 +822,7 @@ export const itemCatalog = {
 	},
 	spear1: {
 		id: 83,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Javelin",
 		description: "A basic throwing spear",
 		weight: 3,
@@ -830,7 +832,7 @@ export const itemCatalog = {
 	},
 	spear2: {
 		id: 84,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Cavalry Lance",
 		description: "A long cavalry spear",
 		weight: 4,
@@ -841,7 +843,7 @@ export const itemCatalog = {
 	// Weapons - Polearms, Scythes, Staves, Wands, Trident
 	polearm1: {
 		id: 85,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Poleaxe",
 		description: "A basic poleaxe",
 		weight: 5,
@@ -851,7 +853,7 @@ export const itemCatalog = {
 	},
 	polearm2: {
 		id: 86,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Halberd",
 		description: "A halberd with axe blade",
 		weight: 6,
@@ -861,7 +863,7 @@ export const itemCatalog = {
 	},
 	polearm3: {
 		id: 87,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Glaive",
 		description: "A glaive with curved blade",
 		weight: 7,
@@ -871,7 +873,7 @@ export const itemCatalog = {
 	},
 	scythe1: {
 		id: 88,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Reaper's Scythe",
 		description: "A farmer's scythe adapted for combat",
 		weight: 6,
@@ -881,7 +883,7 @@ export const itemCatalog = {
 	},
 	scythe2: {
 		id: 89,
-		type: "weapon",
+		type: "main-weapon",
 		name: "War Scythe",
 		description: "A deadly war scythe",
 		weight: 7,
@@ -891,7 +893,7 @@ export const itemCatalog = {
 	},
 	staff1: {
 		id: 90,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Wooden Staff",
 		description: "A simple wooden staff",
 		weight: 2,
@@ -901,7 +903,7 @@ export const itemCatalog = {
 	},
 	staff2: {
 		id: 91,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Enchanted Oak Staff",
 		description: "An enchanted oak staff",
 		weight: 3,
@@ -911,7 +913,7 @@ export const itemCatalog = {
 	},
 	staff3: {
 		id: 92,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Ebony Staff",
 		description: "A polished ebony staff",
 		weight: 3,
@@ -921,7 +923,7 @@ export const itemCatalog = {
 	},
 	staff4: {
 		id: 93,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Crystal Staff",
 		description: "A masterwork crystal staff",
 		weight: 4,
@@ -931,7 +933,7 @@ export const itemCatalog = {
 	},
 	wand1: {
 		id: 94,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Apprentice Wand",
 		description: "A simple wand for novice spellcasters",
 		weight: 0.5,
@@ -941,7 +943,7 @@ export const itemCatalog = {
 	},
 	wand2: {
 		id: 95,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Mystic Wand",
 		description: "A magical wand for spellcasting",
 		weight: 1,
@@ -951,7 +953,7 @@ export const itemCatalog = {
 	},
 	wand3: {
 		id: 96,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Archmage Wand",
 		description: "A powerful wand for master spellcasters",
 		weight: 1.5,
@@ -961,7 +963,7 @@ export const itemCatalog = {
 	},
 	trident: {
 		id: 97,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Poseidon's Trident",
 		description: "A three-pronged spear of the sea",
 		weight: 5,
@@ -972,7 +974,7 @@ export const itemCatalog = {
 	// Weapons - Throwing, Projectiles
 	"throwing-knife1": {
 		id: 98,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Throwing Dagger",
 		description: "A balanced throwing knife",
 		weight: 1,
@@ -982,7 +984,7 @@ export const itemCatalog = {
 	},
 	"throwing-axe1": {
 		id: 99,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Hurling Hatchet",
 		description: "A light throwing axe",
 		weight: 2,
@@ -992,7 +994,7 @@ export const itemCatalog = {
 	},
 	"throwing-axe2": {
 		id: 100,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Francisca",
 		description: "A heavy throwing axe",
 		weight: 3,
@@ -1002,7 +1004,7 @@ export const itemCatalog = {
 	},
 	javelin: {
 		id: 101,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Pilum",
 		description: "A throwing spear for distance attacks",
 		weight: 2,
@@ -1012,7 +1014,7 @@ export const itemCatalog = {
 	},
 	chakram: {
 		id: 102,
-		type: "weapon",
+		type: "main-weapon",
 		name: "Wind Chakram",
 		description: "A circular throwing blade",
 		weight: 1.5,
@@ -1053,6 +1055,6 @@ export const itemCatalog = {
 };
 
 export const metadata = {
-	version: "1.0.8",
-	lastUpdated: "2026-02-16",
+	version: "1.0.10",
+	lastUpdated: "2026-02-19",
 };

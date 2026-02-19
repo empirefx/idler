@@ -7,12 +7,12 @@ import {
 	selectCurrentPlace,
 	selectAvailableConnections,
 } from "../../../store/slices/placesSlice";
-import { selectVaultByPlaceId } from "../../../store/slices/placeInventorySlice";
+import { selectInventoryByPlaceId } from "../../../store/slices/inventorySlice";
 
 const PlacesSection = () => {
 	const currentPlace = useSelector(selectCurrentPlace);
 	const vault = useSelector((state) =>
-		selectVaultByPlaceId(state, currentPlace.id),
+		selectInventoryByPlaceId(state, currentPlace.id),
 	);
 	const availableConnections = useSelector(selectAvailableConnections);
 

@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 
-import { selectPlayerInventoryById } from "../../../store/slices/playerInventorySlice";
+import { selectInventoryById } from "../../../store/slices/inventorySlice";
 
 // Displays base stats and equipment bonuses
 const StatList = ({ baseStats }) => {
 	// Get equipped items from player inventory
 	const playerInventory = useSelector((state) =>
-		selectPlayerInventoryById(state, "player"),
+		selectInventoryById(state, "player"),
 	);
 	const equipment = playerInventory?.equipment || {};
 

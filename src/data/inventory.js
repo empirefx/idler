@@ -10,6 +10,7 @@ export const inventoryData = {
 			{
 				id: 1,
 				name: "apple",
+				itemKey: "apple",
 				description: "A fresh apple",
 				type: "consumable",
 				quantity: 5,
@@ -36,6 +37,7 @@ export const inventoryData = {
 			{
 				id: 1,
 				name: "apple",
+				itemKey: "apple",
 				description: "A fresh apple",
 				type: "consumable",
 				quantity: 10,
@@ -119,7 +121,7 @@ export const inventoryData = {
 			{
 				itemKey: "wooden-buckler-shield",
 				id: 10,
-				type: "shield",
+				type: "second-weapon",
 				name: "Wooden Buckler Shield",
 				description: "A small wooden shield",
 				weight: 3,
@@ -130,7 +132,7 @@ export const inventoryData = {
 			{
 				itemKey: "metal-buckler-shield",
 				id: 11,
-				type: "shield",
+				type: "second-weapon",
 				name: "Metal Buckler Shield",
 				description: "A small metal shield",
 				weight: 4,
@@ -157,7 +159,7 @@ export const inventoryData = {
 			{
 				itemKey: "sword1",
 				id: 54,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Rusty Shortblade",
 				description: "A basic short sword for beginners",
 				weight: 3,
@@ -168,7 +170,7 @@ export const inventoryData = {
 			{
 				itemKey: "dagger1",
 				id: 59,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Throwing Spike",
 				description: "A simple throwing dagger",
 				weight: 1,
@@ -179,7 +181,7 @@ export const inventoryData = {
 			{
 				itemKey: "axe1",
 				id: 66,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Hunter's Hatchet",
 				description: "A basic hatchet",
 				weight: 3,
@@ -190,7 +192,7 @@ export const inventoryData = {
 			{
 				itemKey: "bow1",
 				id: 76,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Shortbow",
 				description: "A basic shortbow",
 				weight: 2,
@@ -201,7 +203,7 @@ export const inventoryData = {
 			{
 				itemKey: "crossbow1",
 				id: 80,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Light Crossbow",
 				description: "A light crossbow",
 				weight: 4,
@@ -212,7 +214,7 @@ export const inventoryData = {
 			{
 				itemKey: "polearm1",
 				id: 85,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Poleaxe",
 				description: "A basic poleaxe",
 				weight: 5,
@@ -223,7 +225,7 @@ export const inventoryData = {
 			{
 				itemKey: "staff1",
 				id: 90,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Wooden Staff",
 				description: "A simple wooden staff",
 				weight: 2,
@@ -234,7 +236,7 @@ export const inventoryData = {
 			{
 				itemKey: "wand1",
 				id: 94,
-				type: "weapon",
+				type: "main-weapon",
 				name: "Apprentice Wand",
 				description: "A simple wand for novice spellcasters",
 				weight: 0.5,
@@ -247,6 +249,6 @@ export const inventoryData = {
 };
 
 export const metadata = {
-	version: "1.1.5",
-	lastUpdated: "2026-02-16",
+	version: "1.1.6",
+	lastUpdated: "2026-02-19",
 };

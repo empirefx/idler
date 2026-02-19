@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
 	unequipItem,
-	selectPlayerInventoryById,
-} from "../../../store/slices/playerInventorySlice";
+	selectInventoryById,
+} from "../../../store/slices/inventorySlice";
 import ItemInfo from "../common/ItemInfo";
 
-const EQUIPMENT_SLOTS = [
+const EQUIPMENT_SLOTS_LABELS = [
 	{ key: "head", label: "Head" },
 	{ key: "body", label: "Body" },
 	{ key: "pants", label: "Pants" },
@@ -17,9 +17,7 @@ const EQUIPMENT_SLOTS = [
 
 const EquipmentDisplay = () => {
 	const dispatch = useDispatch();
-	const playerInventory = useSelector((state) =>
-		selectPlayerInventoryById(state, "player"),
-	);
+	const playerInventory = useSelector((state) => selectInventoryById(state, "player"));
 	const equipment = playerInventory?.equipment || {};
 
 	const handleUnequip = (slot) => {
@@ -30,7 +28,7 @@ const EquipmentDisplay = () => {
 
 	return (
 		<div className="equipment-flex">
-			{EQUIPMENT_SLOTS.map(({ key, label }) => (
+			{EQUIPMENT_SLOTS_LABELS.map(({ key, label }) => (
 				<div
 					role="button"
 					tabIndex={equipment[key] ? 0 : -1}
@@ -47,24 +45,10 @@ const EquipmentDisplay = () => {
 					{equipment[key] ? (
 						<ItemInfo item={equipment[key]}>
 							<div>
-								{(equipment[key].type === "head" ||
-									equipment[key].type === "body" ||
-									equipment[key].type === "pants" ||
-									equipment[key].type === "boots" ||
-									equipment[key].type === "hands" ||
-									equipment[key].type === "shield" ||
-									equipment[key].type === "weapon" ||
-									equipment[key].type === "main-weapon" ||
-									equipment[key].type === "second-weapon") && (
-									<div
-										className={
-											equipment[key].type === "weapon"
-												? "weapon-sprite"
-												: "armor-sprite"
-										}
-										id={equipment[key].itemKey || equipment[key].id || "empty"}
-									></div>
-								)}
+								<div
+									className="item-sprite"
+									id={equipment[key].itemKey || equipment[key].id}
+								/>
 								<span>{equipment[key].name}</span>
 							</div>
 						</ItemInfo>

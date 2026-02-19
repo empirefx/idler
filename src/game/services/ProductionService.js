@@ -120,12 +120,12 @@ export default class ProductionService {
 	// Find the closest place with available inventory
 	findClosestPlaceWithInventory(currentPlaceId, state) {
 		const places = state.places;
-		const placeInventory = state.placeInventory;
+		const inventory = state.inventory;
 
 		// Check if current place has inventory
 		if (
 			places[currentPlaceId]?.hasInventory &&
-			placeInventory[currentPlaceId]
+			inventory[currentPlaceId]
 		) {
 			return currentPlaceId;
 		}
@@ -141,7 +141,7 @@ export default class ProductionService {
 			if (!place) continue;
 
 			// Check if this place has inventory
-			if (place.hasInventory && placeInventory[placeId]) {
+			if (place.hasInventory && inventory[placeId]) {
 				return placeId;
 			}
 
@@ -157,7 +157,7 @@ export default class ProductionService {
 		}
 
 		// Fallback to village_center if no other place found
-		return placeInventory.village_center ? "village_center" : currentPlaceId;
+		return inventory.village_center ? "village_center" : currentPlaceId;
 	}
 
 	// Calculate production rate for a building

@@ -1,18 +1,22 @@
-// Inventory constants and types
-export const EQUIPMENT_SLOTS = [
-	"head",
-	"body",
-	"pants",
-	"boots",
-	"hands",
-	"main-weapon",
-	"second-weapon",
-];
+// Map item type to equipment slot
+export const TYPE_TO_SLOT = {
+	head: "head",
+	body: "body",
+	pants: "pants",
+	boots: "boots",
+	hands: "hands",
+	"main-weapon": "main-weapon",
+	"second-weapon": "second-weapon"
+};
+
+// Inventory slots (keys of TYPE_TO_SLOT)
+export const EQUIPMENT_SLOTS = Object.keys(TYPE_TO_SLOT);
 
 // Inventory types
 export const INVENTORY_TYPES = {
 	PLAYER: "player",
 	PLACE: "place",
+	NPC: "npc",
 };
 
 // Item types
@@ -21,17 +25,6 @@ export const ITEM_TYPES = {
 	EQUIPMENT: "equipment",
 	MATERIAL: "material",
 	WEAPON: "weapon",
-};
-
-// Equipment piece types
-export const EQUIPMENT_PIECES = {
-	HEAD: "head",
-	BODY: "body",
-	PANTS: "pants",
-	BOOTS: "boots",
-	HANDS: "hands",
-	MAIN_WEAPON: "main-weapon",
-	SECOND_WEAPON: "second-weapon",
 };
 
 // Error types

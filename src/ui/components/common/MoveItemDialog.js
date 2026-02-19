@@ -1,10 +1,25 @@
-// src/ui/components/MoveItemDialog.js
 import { useState, useEffect, useMemo } from "react";
 import QuantitySlider from "./QuantitySlider.js";
 import {
 	calculateTotalPlayerWeight,
-	calculateMaxMovableItems,
 } from "../../../store/slices/inventory/inventoryUtils.js";
+
+function calculateMaxMovableItems(item, targetInventory, currentQuantity) {
+	if (!item || !targetInventory) return currentQuantity;
+
+	if (targetInventory.type !== "player") return currentQuantity;
+
+	const itemWeight = item.weight || 0;
+	if (itemWeight <= 0) return currentQuantity;
+
+	const currentTotalWeight = calculateTotalPlayerWeight(targetInventory);
+	const maxWeight = targetInventory.maxWeight || 0;
+	const remainingWeight = maxWeight - currentTotalWeight;
+
+	const maxByWeight = Math.floor(remainingWeight / itemWeight);
+
+	return Math.max(0, Math.min(currentQuantity, maxByWeight));
+}
 
 function MoveItemDialog({ item, onConfirm, onCancel, targetInventory }) {
 	const [quantity, setQuantity] = useState(1);
