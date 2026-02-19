@@ -12,59 +12,147 @@
 /* #staff1 { background-position: 0 0; }
 #staff2 { background-position: -32px 0; }
 #staff3 { background-position: -64px 0; } */
-#wand1 { background-position: -64px -32px; }
+#wand1 {
+	background-position: -64px -32px;
+}
 /* #wand2 { background-position: -32px -32px; } */
-#wand3 { background-position: 0 -32px; }
+#wand3 {
+	background-position: 0 -32px;
+}
 
 /* Row 2: Potions */
-#potion_red1 { background-position: -128px 0; }
-#potion_red2 { background-position: -128px -32px; }
-#potion_red_empty { background-position: -128px -64px; }
-#potion_blue1 { background-position: -192px 0px; }
-#potion_blue2 { background-position: -192px -32px; }
-#potion_blue_empty { background-position: -192px -64px; }
-#potion_green1 { background-position: -160px 0; }
-#potion_green2 { background-position: -160px -32px; }
-#potion_green_empty { background-position: -160px -64px; }
-#potion_glass_filled { background-position: -224px -32px; }
+#potion_red1 {
+	background-position: -128px 0;
+}
+#potion_red2 {
+	background-position: -128px -32px;
+}
+#potion_red_empty {
+	background-position: -128px -64px;
+}
+#potion_blue1 {
+	background-position: -192px 0px;
+}
+#potion_blue2 {
+	background-position: -192px -32px;
+}
+#potion_blue_empty {
+	background-position: -192px -64px;
+}
+#potion_green1 {
+	background-position: -160px 0;
+}
+#potion_green2 {
+	background-position: -160px -32px;
+}
+#potion_green_empty {
+	background-position: -160px -64px;
+}
+#potion_glass_filled {
+	background-position: -224px -32px;
+}
 
 /* Row 3: More Potions & Alchemy */
-#potion_glass_empty { background-position: -224px -64px; }
-#potion_large_empty { background-position: -224px 0; }
-#mortar_pestle { background-position: -224px -96px; }
+#potion_glass_empty {
+	background-position: -224px -64px;
+}
+#potion_large_empty {
+	background-position: -224px 0;
+}
+#mortar_pestle {
+	background-position: -224px -96px;
+}
 
-#toadstool { background-position: -96px 0; }
-#mandrake_root { background-position: -96px -32px; }
-#spellscroll_bound1 { background-position: -128px -128px; }
-#spellscroll_bound2 { background-position: -160px -128px; }
-#grimoire_open { background-position: -224px -128px; }
+#toadstool {
+	background-position: -96px 0;
+}
+#mandrake_root {
+	background-position: -96px -32px;
+}
+#spellscroll_bound1 {
+	background-position: -128px -128px;
+}
+#spellscroll_bound2 {
+	background-position: -160px -128px;
+}
+#grimoire_open {
+	background-position: -224px -128px;
+}
 
 /* Row 4: Crystals & Gemstones */
-#gem_green_raw { background-position: -256px -64px; }
-#gem_green_cut { background-position: -256px -32px; }
-#gem_purple_raw { background-position: -288px -64px; }
-#gem_purple_crystal { background-position: -288px -32px; }
-#diamond_cut { background-position: -256px 0; }
-#crystal_orange { background-position: -256px -96px; }
-#crystal_blue { background-position: -288px -96px; }
-#grimoire_closed { background-position: -192px -128px; }
-#candle_skull { background-position: -128px -96px; }
+#gem_green_raw {
+	background-position: -256px -64px;
+}
+#gem_green_cut {
+	background-position: -256px -32px;
+}
+#gem_purple_raw {
+	background-position: -288px -64px;
+}
+#gem_purple_crystal {
+	background-position: -288px -32px;
+}
+#diamond_cut {
+	background-position: -256px 0;
+}
+#crystal_orange {
+	background-position: -256px -96px;
+}
+#crystal_blue {
+	background-position: -288px -96px;
+}
+#grimoire_closed {
+	background-position: -192px -128px;
+}
+#candle_skull {
+	background-position: -128px -96px;
+}
 
 /* Row 5: Runestones, Scrolls & Misc */
-#rune_fire { background-position: -64px -96px; }
-#rune_water { background-position: -96px -96px; }
-#rune_air { background-position: 0 -96px; }
-#rune_earth { background-position: -32px -96px; }
-#rune_blank1 { background-position: 0 -64px; }
-#rune_blank2 { background-position: -32px -64px; }
-#rune_blank3 { background-position: -64px -64px; }
-#rune_blank4 { background-position: -96px -64px; }
-#scroll_blank { background-position: 0 -128px; }
-#scroll_filled { background-position: -32px -128px; }
-#scroll_rotuli { background-position: -64px -128px; }
-#scroll_rotuli_open { background-position: -96px -128px; }
+#rune_fire {
+	background-position: -64px -96px;
+}
+#rune_water {
+	background-position: -96px -96px;
+}
+#rune_air {
+	background-position: 0 -96px;
+}
+#rune_earth {
+	background-position: -32px -96px;
+}
+#rune_blank1 {
+	background-position: 0 -64px;
+}
+#rune_blank2 {
+	background-position: -32px -64px;
+}
+#rune_blank3 {
+	background-position: -64px -64px;
+}
+#rune_blank4 {
+	background-position: -96px -64px;
+}
+#scroll_blank {
+	background-position: 0 -128px;
+}
+#scroll_filled {
+	background-position: -32px -128px;
+}
+#scroll_rotuli {
+	background-position: -64px -128px;
+}
+#scroll_rotuli_open {
+	background-position: -96px -128px;
+}
 
 /* Misc (appears to be in row 1) */
-#quill_phoenix { background-position: -256px -128px; }
-#ink_arcane { background-position: -288px -128px; }
-#crystal_ball { background-position: -288px 0; }
+#quill_phoenix {
+	background-position: -256px -128px;
+}
+#ink_arcane {
+	background-position: -288px -128px;
+}
+#crystal_ball {
+	background-position: -288px 0;
+}

@@ -94,10 +94,8 @@ const InventoryGrid = ({
 							item?.type === "accessory") && (
 							// Display armor/weapon sprite
 							<div
-								className= {
-									item?.type === "weapon" 
-										? "weapon-sprite" 
-										: "armor-sprite"
+								className={
+									item?.type === "weapon" ? "weapon-sprite" : "armor-sprite"
 								}
 								id={
 									item?.itemKey ? item.itemKey : item?.id ? item?.id : "empty"

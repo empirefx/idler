@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22116738533)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22163029559)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,7 +31,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 117 files in 1167ms. No fixes applied.
+Checked 120 files in 1217ms. No fixes applied.
 Found 8 errors.
 Found 9 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
@@ -421,8 +421,8 @@ Clone found (javascript):
    src/ui/components/common/NPCDialog/index.js [71:5 - 78:21]
 
 Clone found (javascript):
- - src/ui/components/common/InventoryGrid.js [106:2 - 115:3] (9 lines, 99 tokens)
-   src/ui/components/common/InventoryGrid.js [62:2 - 71:2]
+ - src/ui/components/common/InventoryGrid.js [110:2 - 120:3] (10 lines, 111 tokens)
+   src/ui/components/common/InventoryGrid.js [62:2 - 72:2]
 
 Clone found (javascript):
  - src/store/slices/placeInventorySlice.js [39:15 - 56:36] (17 lines, 138 tokens)
@@ -479,15 +479,15 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 132            │ 14089       │ 112910       │ 18           │ 211 (1.5%)       │ 2031 (1.8%)       │
+│ javascript │ 131            │ 13673       │ 108931       │ 18           │ 212 (1.55%)      │ 2043 (1.88%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 19             │ 4072        │ 23510        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 22             │ 4568        │ 25883        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 160            │ 18311       │ 137374       │ 18           │ 211 (1.15%)      │ 2031 (1.48%)      │
+│ Total:     │ 162            │ 18391       │ 135768       │ 18           │ 212 (1.15%)      │ 2043 (1.5%)       │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 18 clones.
 Error: ERROR: jscpd found too many duplicates (1.15%) over threshold (0%)

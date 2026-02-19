@@ -524,7 +524,7 @@ export const itemCatalog = {
 		stats: { defense: 6, attack: 1, strength: 1, agility: 1 },
 	},
 	// Weapons - Swords
-	"sword1": {
+	sword1: {
 		id: 54,
 		type: "weapon",
 		name: "Rusty Shortblade",
@@ -534,7 +534,7 @@ export const itemCatalog = {
 		sellable: { gold: 8 },
 		stats: { attack: 3 },
 	},
-	"sword2": {
+	sword2: {
 		id: 55,
 		type: "weapon",
 		name: "Iron Longsword",
@@ -544,7 +544,7 @@ export const itemCatalog = {
 		sellable: { gold: 15 },
 		stats: { attack: 5, agility: 1 },
 	},
-	"sword3": {
+	sword3: {
 		id: 56,
 		type: "weapon",
 		name: "Steel Broadsword",
@@ -554,7 +554,7 @@ export const itemCatalog = {
 		sellable: { gold: 25 },
 		stats: { attack: 7, strength: 1, agility: 1 },
 	},
-	"sword4": {
+	sword4: {
 		id: 57,
 		type: "weapon",
 		name: "Tempered Greatsword",
@@ -564,7 +564,7 @@ export const itemCatalog = {
 		sellable: { gold: 40 },
 		stats: { attack: 9, strength: 2, agility: 1 },
 	},
-	"sword5": {
+	sword5: {
 		id: 58,
 		type: "weapon",
 		name: "Moonlight Blade",
@@ -575,7 +575,7 @@ export const itemCatalog = {
 		stats: { attack: 12, strength: 3, agility: 2 },
 	},
 	// Weapons - Daggers
-	"dagger1": {
+	dagger1: {
 		id: 59,
 		type: "weapon",
 		name: "Throwing Spike",
@@ -585,7 +585,7 @@ export const itemCatalog = {
 		sellable: { gold: 5 },
 		stats: { attack: 2, agility: 1 },
 	},
-	"dagger2": {
+	dagger2: {
 		id: 60,
 		type: "weapon",
 		name: "Shadow Stiletto",
@@ -595,7 +595,7 @@ export const itemCatalog = {
 		sellable: { gold: 8 },
 		stats: { attack: 3, agility: 2 },
 	},
-	"dagger3": {
+	dagger3: {
 		id: 61,
 		type: "weapon",
 		name: "Assassin's Kiss",
@@ -605,7 +605,7 @@ export const itemCatalog = {
 		sellable: { gold: 13 },
 		stats: { attack: 4, agility: 3 },
 	},
-	"dagger4": {
+	dagger4: {
 		id: 62,
 		type: "weapon",
 		name: "Venom Blade",
@@ -615,7 +615,7 @@ export const itemCatalog = {
 		sellable: { gold: 20 },
 		stats: { attack: 5, agility: 4 },
 	},
-	"dagger5": {
+	dagger5: {
 		id: 63,
 		type: "weapon",
 		name: "Phantom Edge",
@@ -625,7 +625,7 @@ export const itemCatalog = {
 		sellable: { gold: 30 },
 		stats: { attack: 6, agility: 5 },
 	},
-	"club": {
+	club: {
 		id: 64,
 		type: "weapon",
 		name: "Wooden Maul",
@@ -635,7 +635,7 @@ export const itemCatalog = {
 		sellable: { gold: 7 },
 		stats: { attack: 3, strength: 1 },
 	},
-	"knife": {
+	knife: {
 		id: 65,
 		type: "weapon",
 		name: "Survival Knife",
@@ -646,7 +646,7 @@ export const itemCatalog = {
 		stats: { attack: 2, agility: 1 },
 	},
 	// Weapons - Axes
-	"axe1": {
+	axe1: {
 		id: 66,
 		type: "weapon",
 		name: "Hunter's Hatchet",
@@ -656,7 +656,7 @@ export const itemCatalog = {
 		sellable: { gold: 10 },
 		stats: { attack: 4 },
 	},
-	"axe2": {
+	axe2: {
 		id: 67,
 		type: "weapon",
 		name: "Battle Axe",
@@ -666,7 +666,7 @@ export const itemCatalog = {
 		sellable: { gold: 18 },
 		stats: { attack: 6, strength: 1 },
 	},
-	"axe3": {
+	axe3: {
 		id: 68,
 		type: "weapon",
 		name: "War Cleaver",
@@ -676,7 +676,7 @@ export const itemCatalog = {
 		sellable: { gold: 28 },
 		stats: { attack: 8, strength: 2 },
 	},
-	"axe4": {
+	axe4: {
 		id: 69,
 		type: "weapon",
 		name: "Giant's Greataxe",
@@ -687,7 +687,7 @@ export const itemCatalog = {
 		stats: { attack: 10, strength: 3 },
 	},
 	// Weapons - Maces, Morningstar, Flail, Hammers
-	"mace1": {
+	mace1: {
 		id: 70,
 		type: "weapon",
 		name: "Iron Flanged Mace",
@@ -697,7 +697,7 @@ export const itemCatalog = {
 		sellable: { gold: 12 },
 		stats: { attack: 4 },
 	},
-	"mace2": {
+	mace2: {
 		id: 71,
 		type: "weapon",
 		name: "Spiked Crusher",
@@ -707,7 +707,7 @@ export const itemCatalog = {
 		sellable: { gold: 20 },
 		stats: { attack: 6, strength: 1 },
 	},
-	"morningstar": {
+	morningstar: {
 		id: 72,
 		type: "weapon",
 		name: "Devil's Morningstar",
@@ -717,7 +717,7 @@ export const itemCatalog = {
 		sellable: { gold: 32 },
 		stats: { attack: 8, strength: 2 },
 	},
-	"flail": {
+	flail: {
 		id: 73,
 		type: "weapon",
 		name: "Chain Flail",
@@ -727,7 +727,7 @@ export const itemCatalog = {
 		sellable: { gold: 37 },
 		stats: { attack: 9, strength: 2, agility: 1 },
 	},
-	"hammer1": {
+	hammer1: {
 		id: 74,
 		type: "weapon",
 		name: "War Hammer",
@@ -737,7 +737,7 @@ export const itemCatalog = {
 		sellable: { gold: 17 },
 		stats: { attack: 5, strength: 2 },
 	},
-	"hammer2": {
+	hammer2: {
 		id: 75,
 		type: "weapon",
 		name: "Sledge Breaker",
@@ -748,7 +748,7 @@ export const itemCatalog = {
 		stats: { attack: 7, strength: 3 },
 	},
 	// Weapons - Bows, Crossbows, Spears
-	"bow1": {
+	bow1: {
 		id: 76,
 		type: "weapon",
 		name: "Shortbow",
@@ -758,7 +758,7 @@ export const itemCatalog = {
 		sellable: { gold: 8 },
 		stats: { attack: 3, agility: 1 },
 	},
-	"bow2": {
+	bow2: {
 		id: 77,
 		type: "weapon",
 		name: "Composite Longbow",
@@ -768,7 +768,7 @@ export const itemCatalog = {
 		sellable: { gold: 15 },
 		stats: { attack: 5, agility: 2 },
 	},
-	"bow3": {
+	bow3: {
 		id: 78,
 		type: "weapon",
 		name: "Recurve Bow",
@@ -778,7 +778,7 @@ export const itemCatalog = {
 		sellable: { gold: 25 },
 		stats: { attack: 7, agility: 3 },
 	},
-	"bow4": {
+	bow4: {
 		id: 79,
 		type: "weapon",
 		name: "Elven Warbow",
@@ -788,7 +788,7 @@ export const itemCatalog = {
 		sellable: { gold: 40 },
 		stats: { attack: 9, agility: 4 },
 	},
-	"crossbow1": {
+	crossbow1: {
 		id: 80,
 		type: "weapon",
 		name: "Light Crossbow",
@@ -798,7 +798,7 @@ export const itemCatalog = {
 		sellable: { gold: 13 },
 		stats: { attack: 4, strength: 1 },
 	},
-	"crossbow2": {
+	crossbow2: {
 		id: 81,
 		type: "weapon",
 		name: "Heavy Crossbow",
@@ -808,7 +808,7 @@ export const itemCatalog = {
 		sellable: { gold: 23 },
 		stats: { attack: 6, strength: 2 },
 	},
-	"crossbow3": {
+	crossbow3: {
 		id: 82,
 		type: "weapon",
 		name: "Repeating Crossbow",
@@ -818,7 +818,7 @@ export const itemCatalog = {
 		sellable: { gold: 37 },
 		stats: { attack: 8, strength: 3 },
 	},
-	"spear1": {
+	spear1: {
 		id: 83,
 		type: "weapon",
 		name: "Javelin",
@@ -828,7 +828,7 @@ export const itemCatalog = {
 		sellable: { gold: 7 },
 		stats: { attack: 3, agility: 1 },
 	},
-	"spear2": {
+	spear2: {
 		id: 84,
 		type: "weapon",
 		name: "Cavalry Lance",
@@ -839,7 +839,7 @@ export const itemCatalog = {
 		stats: { attack: 5, strength: 1 },
 	},
 	// Weapons - Polearms, Scythes, Staves, Wands, Trident
-	"polearm1": {
+	polearm1: {
 		id: 85,
 		type: "weapon",
 		name: "Poleaxe",
@@ -849,7 +849,7 @@ export const itemCatalog = {
 		sellable: { gold: 13 },
 		stats: { attack: 5, strength: 1 },
 	},
-	"polearm2": {
+	polearm2: {
 		id: 86,
 		type: "weapon",
 		name: "Halberd",
@@ -859,7 +859,7 @@ export const itemCatalog = {
 		sellable: { gold: 22 },
 		stats: { attack: 7, strength: 2 },
 	},
-	"polearm3": {
+	polearm3: {
 		id: 87,
 		type: "weapon",
 		name: "Glaive",
@@ -869,7 +869,7 @@ export const itemCatalog = {
 		sellable: { gold: 32 },
 		stats: { attack: 9, strength: 3 },
 	},
-	"scythe1": {
+	scythe1: {
 		id: 88,
 		type: "weapon",
 		name: "Reaper's Scythe",
@@ -879,7 +879,7 @@ export const itemCatalog = {
 		sellable: { gold: 17 },
 		stats: { attack: 6, agility: 1 },
 	},
-	"scythe2": {
+	scythe2: {
 		id: 89,
 		type: "weapon",
 		name: "War Scythe",
@@ -889,7 +889,7 @@ export const itemCatalog = {
 		sellable: { gold: 28 },
 		stats: { attack: 8, agility: 2 },
 	},
-	"staff1": {
+	staff1: {
 		id: 90,
 		type: "weapon",
 		name: "Wooden Staff",
@@ -899,7 +899,7 @@ export const itemCatalog = {
 		sellable: { gold: 5 },
 		stats: { attack: 2, strength: 1 },
 	},
-	"staff2": {
+	staff2: {
 		id: 91,
 		type: "weapon",
 		name: "Enchanted Oak Staff",
@@ -909,7 +909,7 @@ export const itemCatalog = {
 		sellable: { gold: 10 },
 		stats: { attack: 3, strength: 1, agility: 1 },
 	},
-	"staff3": {
+	staff3: {
 		id: 92,
 		type: "weapon",
 		name: "Ebony Staff",
@@ -919,7 +919,7 @@ export const itemCatalog = {
 		sellable: { gold: 17 },
 		stats: { attack: 4, strength: 2, agility: 1 },
 	},
-	"staff4": {
+	staff4: {
 		id: 93,
 		type: "weapon",
 		name: "Crystal Staff",
@@ -929,7 +929,7 @@ export const itemCatalog = {
 		sellable: { gold: 27 },
 		stats: { attack: 5, strength: 2, agility: 2 },
 	},
-	"wand1": {
+	wand1: {
 		id: 94,
 		type: "weapon",
 		name: "Apprentice Wand",
@@ -939,7 +939,7 @@ export const itemCatalog = {
 		sellable: { gold: 5 },
 		stats: { attack: 1, agility: 1 },
 	},
-	"wand2": {
+	wand2: {
 		id: 95,
 		type: "weapon",
 		name: "Mystic Wand",
@@ -949,7 +949,7 @@ export const itemCatalog = {
 		sellable: { gold: 12 },
 		stats: { attack: 3, agility: 2 },
 	},
-	"wand3": {
+	wand3: {
 		id: 96,
 		type: "weapon",
 		name: "Archmage Wand",
@@ -959,7 +959,7 @@ export const itemCatalog = {
 		sellable: { gold: 20 },
 		stats: { attack: 5, agility: 3 },
 	},
-	"trident": {
+	trident: {
 		id: 97,
 		type: "weapon",
 		name: "Poseidon's Trident",
@@ -1000,7 +1000,7 @@ export const itemCatalog = {
 		sellable: { gold: 13 },
 		stats: { attack: 4, strength: 2 },
 	},
-	"javelin": {
+	javelin: {
 		id: 101,
 		type: "weapon",
 		name: "Pilum",
@@ -1010,7 +1010,7 @@ export const itemCatalog = {
 		sellable: { gold: 7 },
 		stats: { attack: 3, agility: 1 },
 	},
-	"chakram": {
+	chakram: {
 		id: 102,
 		type: "weapon",
 		name: "Wind Chakram",
@@ -1020,7 +1020,7 @@ export const itemCatalog = {
 		sellable: { gold: 10 },
 		stats: { attack: 3, agility: 2 },
 	},
-	"arrow1": {
+	arrow1: {
 		id: 103,
 		type: "ammunition",
 		name: "Wooden Arrows",
@@ -1030,7 +1030,7 @@ export const itemCatalog = {
 		sellable: { gold: 1 },
 		stats: { attack: 1 },
 	},
-	"arrow2": {
+	arrow2: {
 		id: 104,
 		type: "ammunition",
 		name: "Steel Arrows",
@@ -1040,7 +1040,7 @@ export const itemCatalog = {
 		sellable: { gold: 1 },
 		stats: { attack: 2 },
 	},
-	"arrow3": {
+	arrow3: {
 		id: 105,
 		type: "ammunition",
 		name: "Masterwork Arrows",

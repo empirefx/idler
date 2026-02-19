@@ -134,7 +134,8 @@ export const npcCatalog = {
 	weapon_merchant: {
 		id: "weapon_merchant",
 		name: "Kael the Wanderer",
-		description: "A traveling weapons merchant with a collection of basic arms for aspiring adventurers.",
+		description:
+			"A traveling weapons merchant with a collection of basic arms for aspiring adventurers.",
 		avatar: 10,
 		location: "village_center",
 		hasInventory: true,
