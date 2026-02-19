@@ -146,9 +146,9 @@ const playerInventorySlice = createSlice({
 				pants: "pants",
 				boots: "boots",
 				hands: "hands",
+				weapon: "main-weapon",
 				shield: "second-weapon",
-				accessory: "second-weapon",
-				equipment: item.piece,
+				secondary: "second-weapon",
 			};
 
 			const slot = typeToSlot[item.type];

@@ -131,6 +131,25 @@ export const npcCatalog = {
 			],
 		},
 	},
+	weapon_merchant: {
+		id: "weapon_merchant",
+		name: "Kael the Wanderer",
+		description: "A traveling weapons merchant with a collection of basic arms for aspiring adventurers.",
+		avatar: 10,
+		location: "village_center",
+		hasInventory: true,
+		dialogue: {
+			initial:
+				"Welcome, adventurer! I travel these lands collecting and trading weapons. Whether you're just starting out or need a reliable backup, I've got something for you.",
+			options: [
+				{
+					text: "What weapons do you have?",
+					response:
+						"I specialize in basic but reliable weapons - swords, daggers, axes, bows, and staves. Nothing fancy, just solid gear that won't fail you when it matters most.",
+				},
+			],
+		},
+	},
 };
 
 export const metadata = {

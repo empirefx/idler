@@ -98,6 +98,7 @@ export const validateEquipmentSlot = (item, slot) => {
 		"boots",
 		"hands",
 		"shield",
+		"weapon",
 		"accessory",
 	];
 
@@ -116,8 +117,9 @@ export const validateEquipmentSlot = (item, slot) => {
 		pants: "pants",
 		boots: "boots",
 		hands: "hands",
+		weapon: "main-weapon",
 		shield: "second-weapon",
-		accessory: "second-weapon",
+		secondary: "second-weapon",
 		equipment: item.piece,
 	};
 

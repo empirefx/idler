@@ -67,6 +67,7 @@ const InventoryGrid = ({
 									item.type === "boots" ||
 									item.type === "hands" ||
 									item.type === "shield" ||
+									item?.type === "weapon" ||
 									item.type === "accessory"
 									? () =>
 											dispatch(
@@ -89,10 +90,15 @@ const InventoryGrid = ({
 							item?.type === "boots" ||
 							item?.type === "hands" ||
 							item?.type === "shield" ||
+							item?.type === "weapon" ||
 							item?.type === "accessory") && (
 							// Display armor/weapon sprite
 							<div
-								className="armor-sprite"
+								className= {
+									item?.type === "weapon" 
+										? "weapon-sprite" 
+										: "armor-sprite"
+								}
 								id={
 									item?.itemKey ? item.itemKey : item?.id ? item?.id : "empty"
 								}
@@ -111,6 +117,7 @@ const InventoryGrid = ({
 										item.type === "boots" ||
 										item.type === "hands" ||
 										item.type === "shield" ||
+										item?.type === "weapon" ||
 										item.type === "accessory"
 											? ""
 											: item.quantity || ""}

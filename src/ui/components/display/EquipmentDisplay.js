@@ -12,7 +12,7 @@ const EQUIPMENT_SLOTS = [
 	{ key: "boots", label: "Boots" },
 	{ key: "hands", label: "Hands" },
 	{ key: "main-weapon", label: "Main Weapon" },
-	{ key: "second-weapon", label: "Second Weapon" },
+	{ key: "second-weapon", label: "Secondary Weapon" },
 ];
 
 const EquipmentDisplay = () => {
@@ -47,16 +47,21 @@ const EquipmentDisplay = () => {
 					{equipment[key] ? (
 						<ItemInfo item={equipment[key]}>
 							<div>
-								{(equipment[key].type === "equipment" ||
-									equipment[key].type === "head" ||
+								{(equipment[key].type === "head" ||
 									equipment[key].type === "body" ||
 									equipment[key].type === "pants" ||
 									equipment[key].type === "boots" ||
 									equipment[key].type === "hands" ||
 									equipment[key].type === "shield" ||
-									equipment[key].type === "accessory") && (
+									equipment[key].type === "weapon" ||
+									equipment[key].type === "main-weapon" ||
+									equipment[key].type === "second-weapon") && (
 									<div
-										className="armor-sprite"
+										className={
+											equipment[key].type === "weapon"
+												? "weapon-sprite"
+												: "armor-sprite"
+										}
 										id={equipment[key].itemKey || equipment[key].id || "empty"}
 									></div>
 								)}

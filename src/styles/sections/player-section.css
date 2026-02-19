@@ -273,7 +273,8 @@
 	cursor: default;
 }
 
-.equipment-flex .armor-sprite {
+.equipment-flex .armor-sprite,
+.equipment-flex .weapon-sprite {
 	position: absolute;
 	top: 50%;
 	left: 50%;
