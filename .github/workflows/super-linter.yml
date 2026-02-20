@@ -27,7 +27,7 @@ jobs:
         uses: super-linter/super-linter@61abc07d755095a68f4987d1c2c3d1d64408f1f9
         env:
           LINTER_RULES_PATH: .
-          FILTER_REGEX_EXCLUDE: 'static/.*'
+          FILTER_REGEX_EXCLUDE: "static/.*"
           SPELL_CODESPELL_ARGUMENTS: "--ignore-words .codespellignore"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           FIX_BIOME_FORMAT: true

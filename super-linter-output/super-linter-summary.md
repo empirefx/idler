@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22230964421)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22231482360)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,7 +31,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 119 files in 930ms. No fixes applied.
+Checked 115 files in 926ms. No fixes applied.
 Found 8 errors.
 Found 12 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
@@ -482,38 +482,26 @@ Clone found (javascript):
  - src/game/services/InventoryService.js [330:19 - 336:6] (6 lines, 94 tokens)
    src/game/services/InventoryService.js [255:16 - 261:5]
 
-Clone found (css):
- - src/styles/icons-set.css [15:1 - 51:14] (36 lines, 180 tokens)
-   src/styles/item-set.css [11:1 - 48:14]
-
-Clone found (css):
- - src/styles/icons-set.css [87:2 - 108:16] (21 lines, 103 tokens)
-   src/styles/item-set.css [85:2 - 107:16]
-
-Clone found (css):
- - src/styles/icons-set.css [111:2 - 132:14] (21 lines, 103 tokens)
-   src/styles/item-set.css [110:2 - 132:14]
-
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ javascript │ 129            │ 13229       │ 105738       │ 7            │ 60 (0.45%)       │ 605 (0.57%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 23             │ 5177        │ 30225        │ 3            │ 78 (1.51%)       │ 386 (1.28%)       │
+│ css        │ 19             │ 4468        │ 26984        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 161            │ 18556       │ 136917       │ 10           │ 138 (0.74%)      │ 991 (0.72%)       │
+│ Total:     │ 157            │ 17847       │ 133676       │ 7            │ 60 (0.34%)       │ 605 (0.45%)       │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 10 clones.
-Error: ERROR: jscpd found too many duplicates (0.74%) over threshold (0%)
+Found 7 clones.
+Error: ERROR: jscpd found too many duplicates (0.34%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.74%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.34%) over threshold (0%)
 ```
 
 </details>
