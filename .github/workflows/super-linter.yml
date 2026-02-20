@@ -27,6 +27,8 @@ jobs:
         uses: super-linter/super-linter@61abc07d755095a68f4987d1c2c3d1d64408f1f9
         env:
           LINTER_RULES_PATH: .
+          FILTER_REGEX_EXCLUDE: 'static/.*'
+          SPELL_CODESPELL_ARGUMENTS: "--ignore-words .codespellignore"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
@@ -58,7 +60,6 @@ jobs:
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_GIT_COMMITLINT: false
           SAVE_SUPER_LINTER_SUMMARY: true
-          SPELL_CODESPELL_ARGUMENTS: "--ignore-words .codespellignore"
       - name: Apply Biome fixes
         run: npx @biomejs/biome check --apply src/
       - name: Commit and push linting fixes
