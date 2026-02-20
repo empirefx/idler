@@ -4,6 +4,7 @@ name: Lint
     branches: [main]
     paths-ignore:
       - super-linter-output/**
+      - static/**
 permissions:
   contents: read
 jobs:
@@ -29,6 +30,8 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
+          FIX_SPELL_CODESPELL: true
+          SPELL_CODESPELL_ARGUMENTS: "--ignore-words .codespellignore"
           BIOME_MAX_DIAGNOSTICS: 100
           VALIDATE_CSS_PRETTIER: false
           VALIDATE_HTML_PRETTIER: false

@@ -14,7 +14,7 @@ export const itemCatalog = {
 		type: "material",
 		name: "iron-ore",
 		itemKey: "iron-ore",
-		description: "A piece of iron or",
+		description: "A piece of iron ore",
 		quantity: 0,
 		weight: 2,
 	},
