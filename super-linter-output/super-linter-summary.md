@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22230877918)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22230964421)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,7 +31,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 119 files in 951ms. No fixes applied.
+Checked 119 files in 930ms. No fixes applied.
 Found 8 errors.
 Found 12 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
