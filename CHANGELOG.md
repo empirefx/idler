@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.1.0](https://github.com/empirefx/idler/compare/v3.0.0...v3.1.0) (2026-02-20)
+
+
+### Features
+
+* add quest functionality and NPC dialogue enhancements ([d577261](https://github.com/empirefx/idler/commit/d577261569c770fb5bb0fd103e04aef9b0106b83))
+* implement NPC trading interface with dual inventory display ([e55b553](https://github.com/empirefx/idler/commit/e55b5537fd08e7214128e5b45b00f915fe165ac1))
+* **quest:** enhance NPC dialog quest UI and functionality ([761713a](https://github.com/empirefx/idler/commit/761713af080d75e8fa56eedd6f6d982fe35ff6a9))
+* **quests:** add quest rewards and NPC turn-in system ([12f871b](https://github.com/empirefx/idler/commit/12f871bc3111a332a249e7b05e059364632d4d71))
+* **trading:** add NPC trading system with buy/sell functionality ([943dd48](https://github.com/empirefx/idler/commit/943dd48014135bdc322eb2c998e3dd07a6ee09b3))
+
+
+### Bug Fixes
+
+* add items icons ([11057bb](https://github.com/empirefx/idler/commit/11057bb58eb2d394c139eba36e59e168af2b3170))
+* add more arcanum items ([175bf2e](https://github.com/empirefx/idler/commit/175bf2effe6a0758c5764adaa6a7033c88eed2d6))
+* add npc portraits ([3636f81](https://github.com/empirefx/idler/commit/3636f812b98e67549447faa145f73dc94889e681))
+* add npc weapon seller and add weapons as main weapon ([f2640ce](https://github.com/empirefx/idler/commit/f2640ce755618bdebc31a2009ba3bda2390fa6d0))
+* add quest kill x amount of monsters ([4468ae5](https://github.com/empirefx/idler/commit/4468ae55471d99ba9d7a2e3941d4df493f4089d5))
+* add weapon icons ([069503d](https://github.com/empirefx/idler/commit/069503d3ce8b9ed6a3eb41c5da5e97df3c6b9594))
+* display item gold worth ([71b9598](https://github.com/empirefx/idler/commit/71b9598b1e18595db4a0338398d5f2e299e0b7bc))
+* display item gold worth & stats ([8d93a37](https://github.com/empirefx/idler/commit/8d93a374d9de6916f6ae34498e345f47b0167602))
+* item iron ore name ([6e13659](https://github.com/empirefx/idler/commit/6e13659421d3e620e1ee65ea94c18a9319a54e0a))
+* log scroll bottom in new entries ([1557777](https://github.com/empirefx/idler/commit/155777759afd6df9c4fac28fadfaedcc1d6f58f9))
+* log scroll bottom, ignore biome ([8cc85ed](https://github.com/empirefx/idler/commit/8cc85ed2b03891c587dd416f2fee5d7549ff970a))
+* npc dialog animation ([1300f89](https://github.com/empirefx/idler/commit/1300f8912c702370ae1cd8a59e15624b3c5d6a75))
+* prevent player self targeted ([2a7fa1a](https://github.com/empirefx/idler/commit/2a7fa1ad36556be20eb3ef697cfafb01bfff3cbc))
+* quest log in player section ([4cdd360](https://github.com/empirefx/idler/commit/4cdd3604389056f0972ee6cd508ee07c31a6053d))
+
 ## [3.0.0](https://github.com/empirefx/idler/compare/v2.0.0...v3.0.0) (2026-02-07)
 
 ### ⚠ BREAKING CHANGES
