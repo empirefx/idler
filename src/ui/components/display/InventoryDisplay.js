@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
+import { learnRecipe, selectKnownRecipes } from "../../../store/slices/playerSlice.js";
 import MoveItemDialog from "../common/MoveItemDialog";
 import KeyBind from "../common/KeyBind";
 import InventoryGrid from "../common/InventoryGrid";
@@ -16,6 +17,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const dispatch = useDispatch();
+	const knownRecipes = useSelector(selectKnownRecipes);
 
 	// Determine which selector to use based on inventory type
 	const inventory = useSelector((state) => {
@@ -42,8 +44,49 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	// Handle right-click context menu for moving items between inventories
 	const handleContextMenu = useCallback(
 		(e, item) => {
-			if (!otherInventory) return; // Do nothing if no target inventory
 			e.preventDefault();
+
+			// Handle recipe items in player inventory - learn the recipe
+			if (item.type === "recipe" && inventoryId === "player" && item.recipeId) {
+				// Check if already known
+				if (knownRecipes.includes(item.recipeId)) {
+					dispatch({
+						type: "notifications/addNotification",
+						payload: {
+							id: Date.now().toString(),
+							message: `You already know the "${item.name}" recipe!`,
+							type: "info",
+						},
+					});
+					return;
+				}
+
+				// Learn the recipe
+				dispatch(learnRecipe(item.recipeId));
+
+				// Remove the recipe item from inventory
+				dispatch({
+					type: "inventory/removeItem",
+					payload: {
+						inventoryId: "player",
+						itemId: item.id,
+						quantity: 1,
+					},
+				});
+
+				dispatch({
+					type: "notifications/addNotification",
+					payload: {
+						id: Date.now().toString(),
+						message: `You learned the "${item.name}" recipe!`,
+						type: "success",
+					},
+				});
+				return;
+			}
+
+			// Original move item logic
+			if (!otherInventoryId) return; // Do nothing if no target inventory
 
 			const quantity = item.quantity || 1;
 
@@ -97,7 +140,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 				setDialogOpen(true);
 			}
 		},
-		[otherInventory, otherInventoryId, inventory.id, dispatch],
+		[otherInventory, otherInventoryId, inventory.id, dispatch, knownRecipes, inventoryId],
 	);
 
 	// Handle confirm button for moving items between inventories

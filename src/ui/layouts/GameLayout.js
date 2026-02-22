@@ -13,6 +13,7 @@ import PlacesSection from "../components/sections/PlacesSection";
 import LogSection from "../components/sections/LogSection";
 import NotificationContainer from "../components/common/NotificationContainer";
 import NPCDialog from "../components/common/NPCDialog";
+import CraftingSection from "../components/sections/CraftingSection";
 
 import { selectBackgroundImage } from "../../store/slices/placesSlice";
 
@@ -55,6 +56,7 @@ const GameLayout = ({ clearCache }) => {
 				onClose={closeNPCDialog}
 				onOptionSelect={selectNPCOption}
 			/>
+			<CraftingSection />
 		</div>
 	);
 };

@@ -127,6 +127,16 @@ export const playerSlice = createSlice({
 				resource.amount = Math.max(0, resource.amount - action.payload);
 			}
 		},
+		// Learn a crafting recipe
+		learnRecipe: (state, action) => {
+			const recipeId = action.payload;
+			if (!state.knownRecipes) {
+				state.knownRecipes = [];
+			}
+			if (!state.knownRecipes.includes(recipeId)) {
+				state.knownRecipes.push(recipeId);
+			}
+		},
 	},
 });
 
@@ -142,6 +152,7 @@ export const {
 	updateLastAttackTime,
 	addGold,
 	spendGold,
+	learnRecipe,
 } = playerSlice.actions;
 
 // Selectors
@@ -207,5 +218,8 @@ export const selectIsPlayerReadyToAttack = createSelector(
 		return timeSinceLastAttack >= (player.attackCooldown || 1000);
 	},
 );
+
+// Selector for known crafting recipes
+export const selectKnownRecipes = (state) => state.player.knownRecipes || [];
 
 export default playerSlice.reducer;
