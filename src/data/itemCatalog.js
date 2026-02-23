@@ -3,6 +3,7 @@ export const itemCatalog = {
 		id: 1,
 		type: "consumable",
 		name: "apple",
+		icon: "apple",
 		description: "A fresh apple",
 		quantity: 0,
 		weight: 0.5,
@@ -12,7 +13,7 @@ export const itemCatalog = {
 		id: 3,
 		type: "material",
 		name: "iron-ore",
-
+		icon: "iron-ore",
 		description: "A piece of iron or",
 		quantity: 0,
 		weight: 2,
