@@ -10,7 +10,7 @@ export const inventoryData = {
 			{
 				id: 1,
 				name: "apple",
-				itemKey: "apple",
+				icon: "apple",
 				description: "A fresh apple",
 				type: "consumable",
 				quantity: 5,
@@ -19,90 +19,90 @@ export const inventoryData = {
 			},
 			// Recipe Items - Starting Recipes
 			{
-				itemKey: "recipe-bread",
 				id: 1002,
 				type: "recipe",
+				icon: "parchment",
 				name: "Bread Recipe",
 				description: "Right-click to learn how to bake Bread",
 				weight: 0.1,
 				recipeId: "bread",
 			},
 			{
-				itemKey: "recipe-apple-pie",
 				id: 1001,
 				type: "recipe",
+				icon: "parchment",
 				name: "Apple Pie Recipe",
 				description: "Right-click to learn how to bake Apple Pie",
 				weight: 0.1,
 				recipeId: "apple-pie",
 			},
 			{
-				itemKey: "recipe-iron-ingot",
 				id: 1004,
 				type: "recipe",
+				icon: "parchment",
 				name: "Iron Ingot Smelting",
 				description: "Right-click to learn how to smelt Iron Ingots",
 				weight: 0.1,
 				recipeId: "iron-ingot",
 			},
 			{
-				itemKey: "recipe-leather",
 				id: 1005,
 				type: "recipe",
+				icon: "parchment",
 				name: "Leather Tanning",
 				description: "Right-click to learn how to tan Leather",
 				weight: 0.1,
 				recipeId: "leather",
 			},
 			{
-				itemKey: "recipe-wood-plank",
 				id: 1006,
 				type: "recipe",
+				icon: "parchment",
 				name: "Wood Plank Crafting",
 				description: "Right-click to learn how to craft Wood Planks",
 				weight: 0.1,
 				recipeId: "wood-plank",
 			},
 			{
-				itemKey: "recipe-dagger",
 				id: 1007,
 				type: "recipe",
+				icon: "parchment",
 				name: "Dagger Blueprint",
 				description: "Right-click to learn how to craft Daggers (I-V)",
 				weight: 0.1,
 				recipeId: "dagger",
 			},
 			{
-				itemKey: "recipe-sword",
 				id: 1008,
 				type: "recipe",
+				icon: "parchment",
 				name: "Sword Blueprint",
 				description: "Right-click to learn how to craft Swords (I-V)",
 				weight: 0.1,
 				recipeId: "sword",
 			},
 			{
-				itemKey: "recipe-leather-armor-set",
 				id: 1010,
 				type: "recipe",
+				icon: "parchment",
 				name: "Leather Armor Set Diagram",
 				description: "Right-click to learn how to craft Leather Armor Set",
 				weight: 0.1,
 				recipeId: "leather-armor-set",
 			},
 			{
-				itemKey: "recipe-studded-armor-set",
 				id: 1011,
 				type: "recipe",
+				icon: "parchment",
 				name: "Studded Armor Set Diagram",
 				description: "Right-click to learn how to craft Studded Armor Set",
 				weight: 0.1,
 				recipeId: "studded-armor-set",
 			},
 			{
-				itemKey: "recipe-buckler",
 				id: 1014,
 				type: "recipe",
+				icon: "parchment",
 				name: "Buckler Blueprint",
 				description: "Right-click to learn how to craft Bucklers",
 				weight: 0.1,
@@ -124,11 +124,11 @@ export const inventoryData = {
 		placeId: "village_center",
 		type: "place",
 		maxSlots: 30,
-		items: [
+	items: [
 			{
 				id: 1,
 				name: "apple",
-				itemKey: "apple",
+				icon: "apple",
 				description: "A fresh apple",
 				type: "consumable",
 				quantity: 10,
@@ -142,9 +142,9 @@ export const inventoryData = {
 		npcId: "blacksmith",
 		type: "npc",
 		maxSlots: 20,
-		items: [
+	items: [
 			{
-				itemKey: "light-armor",
+				icon: "light-armor",
 				id: 4,
 				type: "body",
 				name: "Light Armor",
@@ -155,7 +155,7 @@ export const inventoryData = {
 				stats: { defense: 2 },
 			},
 			{
-				itemKey: "light-hood",
+				icon: "light-hood",
 				id: 5,
 				type: "head",
 				name: "Light Hood",
@@ -166,7 +166,7 @@ export const inventoryData = {
 				stats: { defense: 1 },
 			},
 			{
-				itemKey: "light-tunic",
+				icon: "light-tunic",
 				id: 6,
 				type: "body",
 				name: "Light Tunic",
@@ -177,7 +177,7 @@ export const inventoryData = {
 				stats: { defense: 1 },
 			},
 			{
-				itemKey: "light-pants",
+				icon: "light-pants",
 				id: 7,
 				type: "pants",
 				name: "Light Pants",
@@ -188,7 +188,7 @@ export const inventoryData = {
 				stats: { defense: 1 },
 			},
 			{
-				itemKey: "light-boots",
+				icon: "light-boots",
 				id: 8,
 				type: "boots",
 				name: "Light Boots",
@@ -199,7 +199,7 @@ export const inventoryData = {
 				stats: { defense: 1 },
 			},
 			{
-				itemKey: "light-gloves",
+				icon: "light-gloves",
 				id: 9,
 				type: "hands",
 				name: "Light Gloves",
@@ -210,7 +210,7 @@ export const inventoryData = {
 				stats: { defense: 1 },
 			},
 			{
-				itemKey: "wooden-buckler-shield",
+				icon: "wooden-buckler-shield",
 				id: 10,
 				type: "second-weapon",
 				name: "Wooden Buckler Shield",
@@ -221,7 +221,7 @@ export const inventoryData = {
 				stats: { defense: 2 },
 			},
 			{
-				itemKey: "metal-buckler-shield",
+				icon: "metal-buckler-shield",
 				id: 11,
 				type: "second-weapon",
 				name: "Metal Buckler Shield",
@@ -245,10 +245,10 @@ export const inventoryData = {
 		npcId: "weapon_merchant",
 		type: "npc",
 		maxSlots: 20,
-		items: [
+	items: [
 			// First variant of weapons with 3+ types
 			{
-				itemKey: "sword1",
+				icon: "sword1",
 				id: 54,
 				type: "main-weapon",
 				name: "Rusty Shortblade",
@@ -259,7 +259,7 @@ export const inventoryData = {
 				stats: { attack: 3 },
 			},
 			{
-				itemKey: "dagger1",
+				icon: "dagger1",
 				id: 59,
 				type: "main-weapon",
 				name: "Throwing Spike",
@@ -270,7 +270,7 @@ export const inventoryData = {
 				stats: { attack: 2, agility: 1 },
 			},
 			{
-				itemKey: "axe1",
+				icon: "axe1",
 				id: 66,
 				type: "main-weapon",
 				name: "Hunter's Hatchet",
@@ -281,7 +281,7 @@ export const inventoryData = {
 				stats: { attack: 4 },
 			},
 			{
-				itemKey: "bow1",
+				icon: "bow1",
 				id: 76,
 				type: "main-weapon",
 				name: "Shortbow",
@@ -292,7 +292,7 @@ export const inventoryData = {
 				stats: { attack: 3, agility: 1 },
 			},
 			{
-				itemKey: "crossbow1",
+				icon: "crossbow1",
 				id: 80,
 				type: "main-weapon",
 				name: "Light Crossbow",
@@ -303,7 +303,7 @@ export const inventoryData = {
 				stats: { attack: 4, strength: 1 },
 			},
 			{
-				itemKey: "polearm1",
+				icon: "polearm1",
 				id: 85,
 				type: "main-weapon",
 				name: "Poleaxe",
@@ -314,7 +314,7 @@ export const inventoryData = {
 				stats: { attack: 5, strength: 1 },
 			},
 			{
-				itemKey: "staff1",
+				icon: "staff1",
 				id: 90,
 				type: "main-weapon",
 				name: "Wooden Staff",
@@ -325,7 +325,7 @@ export const inventoryData = {
 				stats: { attack: 2, strength: 1 },
 			},
 			{
-				itemKey: "wand1",
+				icon: "wand1",
 				id: 94,
 				type: "main-weapon",
 				name: "Apprentice Wand",

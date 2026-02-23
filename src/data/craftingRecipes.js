@@ -12,31 +12,31 @@ export const craftingRecipes = {
 		id: "apple-pie",
 		name: "Apple Pie",
 		group: craftingGroups.FOOD,
-		output: { itemKey: "apple-pie", name: "Apple Pie" },
+		output: { 	icon: "apple-pie", name: "Apple Pie" },
 		materials: [
-			{ itemKey: "apple", quantity: 3 },
-			{ itemKey: "flour", quantity: 2 },
+			{ 	icon: "apple", quantity: 3 },
+			{ 	icon: "flour", quantity: 2 },
 		],
 	},
 	"bread": {
 		id: "bread",
 		name: "Bread",
 		group: craftingGroups.FOOD,
-		output: { itemKey: "bread", name: "Bread" },
+		output: { 	icon: "bread", name: "Bread" },
 		materials: [
-			{ itemKey: "flour", quantity: 2 },
-			{ itemKey: "water", quantity: 1 },
+			{ 	icon: "flour", quantity: 2 },
+			{ 	icon: "water", quantity: 1 },
 		],
 	},
 	"meat-stew": {
 		id: "meat-stew",
 		name: "Meat Stew",
 		group: craftingGroups.FOOD,
-		output: { itemKey: "meat-stew", name: "Meat Stew" },
+		output: { 	icon: "meat-stew", name: "Meat Stew" },
 		materials: [
-			{ itemKey: "meat", quantity: 2 },
-			{ itemKey: "water", quantity: 1 },
-			{ itemKey: "flour", quantity: 1 },
+			{ 	icon: "meat", quantity: 2 },
+			{ 	icon: "water", quantity: 1 },
+			{ 	icon: "flour", quantity: 1 },
 		],
 	},
 
@@ -45,27 +45,27 @@ export const craftingRecipes = {
 		id: "iron-ingot",
 		name: "Iron Ingot",
 		group: craftingGroups.MATERIAL,
-		output: { itemKey: "iron-ingot", name: "Iron Ingot" },
+		output: { 	icon: "iron-ingot", name: "Iron Ingot" },
 		materials: [
-			{ itemKey: "iron-ore", quantity: 2 },
+			{ 	icon: "iron-ore", quantity: 2 },
 		],
 	},
 	"leather": {
 		id: "leather",
 		name: "Leather",
 		group: craftingGroups.MATERIAL,
-		output: { itemKey: "leather", name: "Leather" },
+		output: { 	icon: "leather", name: "Leather" },
 		materials: [
-			{ itemKey: "animal-hide", quantity: 2 },
+			{ 	icon: "animal-hide", quantity: 2 },
 		],
 	},
 	"wood-plank": {
 		id: "wood-plank",
 		name: "Wood Plank",
 		group: craftingGroups.MATERIAL,
-		output: { itemKey: "wood-plank", name: "Wood Plank" },
+		output: { 	icon: "wood-plank", name: "Wood Plank" },
 		materials: [
-			{ itemKey: "wood", quantity: 2 },
+			{ 	icon: "wood", quantity: 2 },
 		],
 	},
 
@@ -74,31 +74,31 @@ export const craftingRecipes = {
 		id: "dagger",
 		name: "Dagger",
 		group: craftingGroups.WEAPON,
-		output: { itemKey: "dagger", name: "Dagger", variants: ["dagger1", "dagger2", "dagger3", "dagger4", "dagger5"] },
+		output: { 	icon: "dagger", name: "Dagger", variants: ["dagger1", "dagger2", "dagger3", "dagger4", "dagger5"] },
 		materials: [
-			{ itemKey: "iron-ingot", quantity: 1 },
-			{ itemKey: "leather", quantity: 1 },
+			{ 	icon: "iron-ingot", quantity: 1 },
+			{ 	icon: "leather", quantity: 1 },
 		],
 	},
 	sword: {
 		id: "sword",
 		name: "Sword",
 		group: craftingGroups.WEAPON,
-		output: { itemKey: "sword", name: "Sword", variants: ["sword1", "sword2", "sword3", "sword4", "sword5"] },
+		output: { 	icon: "sword", name: "Sword", variants: ["sword1", "sword2", "sword3", "sword4", "sword5"] },
 		materials: [
-			{ itemKey: "iron-ingot", quantity: 3 },
-			{ itemKey: "leather", quantity: 1 },
-			{ itemKey: "wood-plank", quantity: 1 },
+			{ 	icon: "iron-ingot", quantity: 3 },
+			{ 	icon: "leather", quantity: 1 },
+			{ 	icon: "wood-plank", quantity: 1 },
 		],
 	},
 	axe: {
 		id: "axe",
 		name: "Axe",
 		group: craftingGroups.WEAPON,
-		output: { itemKey: "axe", name: "Axe", variants: ["axe1", "axe2", "axe3", "axe4"] },
+		output: { 	icon: "axe", name: "Axe", variants: ["axe1", "axe2", "axe3", "axe4"] },
 		materials: [
-			{ itemKey: "iron-ingot", quantity: 2 },
-			{ itemKey: "wood-plank", quantity: 2 },
+			{ 	icon: "iron-ingot", quantity: 2 },
+			{ 	icon: "wood-plank", quantity: 2 },
 		],
 	},
 
@@ -108,14 +108,14 @@ export const craftingRecipes = {
 		name: "Leather Armor Set",
 		group: craftingGroups.ARMOR,
 		output: { 
-			itemKey: "leather-armor-set", 
+			icon: "leather-armor-set", 
 			name: "Leather Armor Set", 
 			set: "leather",
 			items: ["leather-armor", "leather-hood", "leather-mail", "leather-pants", "leather-boots", "leather-gloves", "leather-bracer"]
 		},
 		materials: [
-			{ itemKey: "leather", quantity: 5 },
-			{ itemKey: "iron-ingot", quantity: 1 },
+			{ 	icon: "leather", quantity: 5 },
+			{ 	icon: "iron-ingot", quantity: 1 },
 		],
 	},
 	"studded-armor-set": {
@@ -123,14 +123,14 @@ export const craftingRecipes = {
 		name: "Studded Armor Set",
 		group: craftingGroups.ARMOR,
 		output: { 
-			itemKey: "studded-armor-set", 
+			icon: "studded-armor-set", 
 			name: "Studded Armor Set",
 			set: "studded",
 			items: ["studded-armor", "studded-hood", "studded-mail", "studded-pants", "studded-boots", "studded-gloves"]
 		},
 		materials: [
-			{ itemKey: "leather", quantity: 4 },
-			{ itemKey: "iron-ingot", quantity: 3 },
+			{ 	icon: "leather", quantity: 4 },
+			{ 	icon: "iron-ingot", quantity: 3 },
 		],
 	},
 	"plate-armor-set": {
@@ -138,14 +138,14 @@ export const craftingRecipes = {
 		name: "Plate Armor Set",
 		group: craftingGroups.ARMOR,
 		output: { 
-			itemKey: "plate-armor-set", 
+			icon: "plate-armor-set", 
 			name: "Plate Armor Set",
 			set: "plate",
 			items: ["plate-armor", "plate-helmet", "plate-mail", "plate-pants", "plate-boots", "plate-gloves"]
 		},
 		materials: [
-			{ itemKey: "iron-ingot", quantity: 6 },
-			{ itemKey: "leather", quantity: 2 },
+			{ 	icon: "iron-ingot", quantity: 6 },
+			{ 	icon: "leather", quantity: 2 },
 		],
 	},
 	"heavy-armor-set": {
@@ -153,15 +153,15 @@ export const craftingRecipes = {
 		name: "Heavy Armor Set",
 		group: craftingGroups.ARMOR,
 		output: { 
-			itemKey: "heavy-armor-set", 
+			icon: "heavy-armor-set", 
 			name: "Heavy Armor Set",
 			set: "heavy",
 			items: ["heavy-armor", "heavy-helmet", "heavy-mail", "heavy-pants", "heavy-boots", "heavy-gloves"]
 		},
 		materials: [
-			{ itemKey: "iron-ingot", quantity: 8 },
-			{ itemKey: "leather", quantity: 3 },
-			{ itemKey: "gold", quantity: 1 },
+			{ 	icon: "iron-ingot", quantity: 8 },
+			{ 	icon: "leather", quantity: 3 },
+			{ 	icon: "gold", quantity: 1 },
 		],
 	},
 
@@ -170,20 +170,20 @@ export const craftingRecipes = {
 		id: "buckler",
 		name: "Buckler",
 		group: craftingGroups.SHIELD,
-		output: { itemKey: "buckler", name: "Buckler", variants: ["buckler-1", "wooden-buckler-shield", "metal-buckler-shield"] },
+		output: { 	icon: "buckler", name: "Buckler", variants: ["buckler-1", "wooden-buckler-shield", "metal-buckler-shield"] },
 		materials: [
-			{ itemKey: "wood-plank", quantity: 2 },
-			{ itemKey: "iron-ingot", quantity: 1 },
+			{ 	icon: "wood-plank", quantity: 2 },
+			{ 	icon: "iron-ingot", quantity: 1 },
 		],
 	},
 	"tower-shield": {
 		id: "tower-shield",
 		name: "Tower Shield",
 		group: craftingGroups.SHIELD,
-		output: { itemKey: "tower-shield", name: "Tower Shield", variants: ["medium-wooden-shield", "medium-metal-shield", "metal-tower-shield"] },
+		output: { 	icon: "tower-shield", name: "Tower Shield", variants: ["medium-wooden-shield", "medium-metal-shield", "metal-tower-shield"] },
 		materials: [
-			{ itemKey: "wood-plank", quantity: 4 },
-			{ itemKey: "iron-ingot", quantity: 2 },
+			{ 	icon: "wood-plank", quantity: 4 },
+			{ 	icon: "iron-ingot", quantity: 2 },
 		],
 	},
 };

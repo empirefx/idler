@@ -43,7 +43,7 @@ const CraftingSection = () => {
 		if (!playerInventory?.items) return {};
 		const materials = {};
 		playerInventory.items.forEach((item) => {
-			const key = item.itemKey || item.name.toLowerCase().replace(/ /g, "-");
+			const key = item.icon;
 			materials[key] = (materials[key] || 0) + (item.quantity || 1);
 		});
 		return materials;
@@ -53,8 +53,8 @@ const CraftingSection = () => {
 		if (!materials) return {};
 		const available = {};
 		materials.forEach((mat) => {
-			const playerQty = playerMaterials[mat.itemKey] || 0;
-			available[mat.itemKey] = playerQty >= mat.quantity;
+			const playerQty = playerMaterials[mat.icon] || 0;
+			available[mat.icon] = playerQty >= mat.quantity;
 		});
 		return available;
 	};
@@ -62,7 +62,7 @@ const CraftingSection = () => {
 	const canCraft = (recipe) => {
 		if (!recipe.materials) return false;
 		const available = checkMaterialsAvailable(recipe.materials);
-		return recipe.materials.every((mat) => available[mat.itemKey]);
+		return recipe.materials.every((mat) => available[mat.icon]);
 	};
 
 	const handleCraft = (recipe) => {
@@ -70,7 +70,7 @@ const CraftingSection = () => {
 
 		// Remove materials from inventory
 		recipe.materials.forEach((mat) => {
-			const itemDef = itemCatalog[mat.itemKey];
+			const itemDef = itemCatalog[mat.icon];
 			if (itemDef) {
 				dispatch({
 					type: "inventory/removeItem",
@@ -94,14 +94,14 @@ const CraftingSection = () => {
 				}
 			});
 		} else if (output.items) {
-			output.items.forEach((itemKey) => {
-				const item = itemCatalog[itemKey];
+			output.items.forEach((icon) => {
+				const item = itemCatalog[icon];
 				if (item) {
 					dispatch(addItem({ inventoryId: "player", item: { ...item } }));
 				}
 			});
 		} else {
-			const outputItem = itemCatalog[output.itemKey];
+			const outputItem = itemCatalog[output.icon];
 			if (outputItem) {
 				dispatch(addItem({ inventoryId: "player", item: { ...outputItem } }));
 			}
@@ -222,17 +222,17 @@ const CraftingSection = () => {
 									<div className="materials-section">
 										<h5>Required Materials</h5>
 										<div className="materials-list">
-											{selectedRecipe.materials.map((mat, idx) => {
-												const available = playerMaterials[mat.itemKey] || 0;
+										{selectedRecipe.materials.map((mat, idx) => {
+												const available = playerMaterials[mat.icon] || 0;
 												const hasEnough = available >= mat.quantity;
-												const matItem = itemCatalog[mat.itemKey];
+												const matItem = itemCatalog[mat.icon];
 												return (
 													<div
 														key={idx}
 														className={`material-item ${hasEnough ? "available" : "unavailable"}`}
 													>
 														<span className="mat-name">
-															{matItem?.name || mat.itemKey}
+															{matItem?.name || mat.icon}
 														</span>
 														<span className="mat-qty">
 															{available} / {mat.quantity}

@@ -70,12 +70,12 @@ class Gameplay {
 		return this.store.getState().quests?.activeById || {};
 	}
 
-	getItemCount(itemKey) {
+	getItemCount(icon) {
 		const inventory = this.store.getState().inventory?.player;
 		if (!inventory?.items) return 0;
 
 		return inventory.items.reduce((total, item) => {
-			if (item.itemKey === itemKey) {
+			if (item.icon === icon) {
 				return total + (item.quantity || 1);
 			}
 			return total;
@@ -209,11 +209,11 @@ class Gameplay {
 		// Distribute items
 		if (quest.rewards.items && Array.isArray(quest.rewards.items)) {
 			quest.rewards.items.forEach((itemReward) => {
-				const itemData = itemCatalog[itemReward.itemKey];
+				const itemData = itemCatalog[itemReward.icon];
 				if (itemData) {
 					const newItem = {
 						...itemData,
-						itemKey: itemReward.itemKey,
+						icon: itemReward.icon,
 						quantity: itemReward.quantity || 1,
 					};
 					this.dispatch(
@@ -251,7 +251,7 @@ class Gameplay {
 						let itemsToRemove = objective.required;
 						[...inventory.items].forEach((item) => {
 							if (itemsToRemove <= 0) return;
-							if (item.itemKey === objective.target) {
+							if (item.icon === objective.target) {
 								const stackQty = item.quantity || 1;
 								if (stackQty > itemsToRemove) {
 									this.dispatch(

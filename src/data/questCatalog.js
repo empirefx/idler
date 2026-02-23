@@ -68,7 +68,7 @@ export const questCatalog = {
 		rewards: {
 			gold: 30,
 			exp: 50,
-			items: [{ itemKey: "light-gloves", quantity: 1 }],
+			items: [{ icon: "light-gloves", quantity: 1 }],
 		},
 		acceptMessage: "You agree to bring iron or to Grum.",
 		conversation: [
