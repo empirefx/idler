@@ -44,10 +44,6 @@ h6 {
 	border: var(--border-radius-xs) solid var(--color-danger);
 }
 
-.item-info-wrapper {
-
-}
-
 .item-info-box {
 	position: absolute;
 	left: 100%;

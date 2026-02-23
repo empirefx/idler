@@ -1,10 +1,8 @@
 .crafting-section {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 700px;
-	min-height: 560px;
+	inset: 0;
+	margin: auto;	width: 700px;
+	height: 560px;
 	background: var(--color-dark);
 	color: white;
 	z-index: 15;
@@ -80,7 +78,6 @@
 .crafting-content {
 	display: flex;
 	flex: 1;
-	overflow: hidden;
 }
 
 .recipe-list {
@@ -141,7 +138,6 @@
 .recipe-details {
 	flex: 1;
 	padding: var(--spacing-md);
-	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
 	border-top: 1px solid var(--color-gray-dark);
@@ -181,7 +177,6 @@
 .recipe-details .craftable-items-list {
 	display: flex;
 	gap: var(--spacing-sm);
-	overflow-x: auto;
 	justify-content: center;
 	padding: var(--spacing-xs) 0;
 }
@@ -201,6 +196,10 @@
 .recipe-details .craftable-item.selected {
 	border-color: var(--color-secondary);
 	background: rgba(255, 255, 255, 0.05);
+}
+
+.recipe-details .item-info-wrapper {
+	position: relative;
 }
 
 .recipe-details .output-info {
