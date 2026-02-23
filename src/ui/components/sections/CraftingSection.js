@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import "../../../styles/sections/crafting-section.css";
@@ -8,6 +8,7 @@ import { craftingGroups, craftingRecipes } from "../../../data/craftingRecipes";
 import { itemCatalog } from "../../../data/itemCatalog";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import { addItem } from "../../../store/slices/inventorySlice";
+import Item from "../common/Item";
 
 const groupLabels = {
 	[craftingGroups.FOOD]: "Food",
@@ -25,6 +26,11 @@ const CraftingSection = () => {
 
 	const [selectedGroup, setSelectedGroup] = useState(craftingGroups.FOOD);
 	const [selectedRecipe, setSelectedRecipe] = useState(null);
+	const [selectedOutputItem, setSelectedOutputItem] = useState(null);
+
+	useEffect(() => {
+		setSelectedOutputItem(null);
+	}, [selectedRecipe]);
 
 	const recipesByGroup = useMemo(() => {
 		const grouped = {};
@@ -85,25 +91,12 @@ const CraftingSection = () => {
 
 		// Add crafted item(s) to inventory
 		const output = recipe.output;
+		const itemToCraft = selectedOutputItem || output.variants?.[0] || output.items?.[0] || output.icon;
 
-		if (output.variants) {
-			output.variants.forEach((variantKey) => {
-				const variantItem = itemCatalog[variantKey];
-				if (variantItem) {
-					dispatch(addItem({ inventoryId: "player", item: { ...variantItem } }));
-				}
-			});
-		} else if (output.items) {
-			output.items.forEach((icon) => {
-				const item = itemCatalog[icon];
-				if (item) {
-					dispatch(addItem({ inventoryId: "player", item: { ...item } }));
-				}
-			});
-		} else {
-			const outputItem = itemCatalog[output.icon];
-			if (outputItem) {
-				dispatch(addItem({ inventoryId: "player", item: { ...outputItem } }));
+		if (itemToCraft) {
+			const item = itemCatalog[itemToCraft];
+			if (item) {
+				dispatch(addItem({ inventoryId: "player", item: { ...item } }));
 			}
 		}
 
@@ -175,10 +168,44 @@ const CraftingSection = () => {
 						<>
 							{knownRecipes.includes(selectedRecipe.id) ? (
 								<>
-									<div className="detail-header">
-										<h4>{selectedRecipe.name}</h4>
-										<span className="detail-group">{groupLabels[selectedRecipe.group]}</span>
+								<div className="detail-header">
+									<div className="craftable-items-list">
+										{selectedRecipe.output.variants && selectedRecipe.output.variants.map((v) => {
+											const item = itemCatalog[v];
+											return item ? (
+												<div
+													key={v}
+													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+													onClick={() => setSelectedOutputItem(v)}
+												>
+													<Item item={item} />
+												</div>
+											) : null;
+										})}
+										{selectedRecipe.output.items && selectedRecipe.output.items.map((v) => {
+											const item = itemCatalog[v];
+											return item ? (
+												<div
+													key={v}
+													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+													onClick={() => setSelectedOutputItem(v)}
+												>
+													<Item item={item} />
+												</div>
+											) : null;
+										})}
+										{!selectedRecipe.output.variants && !selectedRecipe.output.items && selectedRecipe.output.icon && (
+											<div
+												className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
+												onClick={() => setSelectedOutputItem(selectedRecipe.output.icon)}
+											>
+												<Item item={itemCatalog[selectedRecipe.output.icon]} />
+											</div>
+										)}
 									</div>
+									<h4>{selectedRecipe.name}</h4>
+									<span className="detail-group">{groupLabels[selectedRecipe.group]}</span>
+								</div>
 
 									{selectedRecipe.output.variants && (
 										<div className="output-info">

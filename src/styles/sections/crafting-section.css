@@ -4,12 +4,11 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 700px;
-	height: 500px;
+	min-height: 560px;
 	background: var(--color-dark);
 	color: white;
 	z-index: 15;
 	border-radius: var(--border-radius-lg);
-	border: 2px solid var(--color-gray);
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 	display: flex;
 	flex-direction: column;
@@ -143,6 +142,9 @@
 	flex: 1;
 	padding: var(--spacing-md);
 	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid var(--color-gray-dark);
 }
 
 .recipe-details .no-selection {
@@ -154,6 +156,9 @@
 }
 
 .recipe-details .detail-header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
 	margin-bottom: var(--spacing-md);
 	padding-bottom: var(--spacing-sm);
 	border-bottom: 1px solid var(--color-gray-dark);
@@ -163,12 +168,39 @@
 	margin: 0 0 var(--spacing-xs);
 	font-size: 1.1rem;
 	text-transform: initial;
+	text-align: center;
 }
 
 .recipe-details .detail-group {
 	font-size: 0.8rem;
 	color: var(--color-gray);
 	text-transform: uppercase;
+	text-align: center;
+}
+
+.recipe-details .craftable-items-list {
+	display: flex;
+	gap: var(--spacing-sm);
+	overflow-x: auto;
+	justify-content: center;
+	padding: var(--spacing-xs) 0;
+}
+
+.recipe-details .craftable-item {
+	cursor: pointer;
+	border: 2px solid transparent;
+	border-radius: var(--border-radius-sm);
+	padding: var(--spacing-xs);
+	transition: all 0.15s ease;
+}
+
+.recipe-details .craftable-item:hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.recipe-details .craftable-item.selected {
+	border-color: var(--color-secondary);
+	background: rgba(255, 255, 255, 0.05);
 }
 
 .recipe-details .output-info {
@@ -242,7 +274,7 @@
 .craft-btn {
 	width: 100%;
 	padding: var(--spacing-sm) var(--spacing-md);
-	margin-top: var(--spacing-md);
+	margin-top: auto;
 	border: none;
 	border-radius: var(--border-radius-sm);
 	background: var(--color-green);
