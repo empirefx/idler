@@ -14,6 +14,7 @@ export const UIVisibilityProvider = ({ children }) => {
 			npcId: null,
 			selectedOption: null,
 		},
+		craftingWindow: false,
 	});
 
 	// Toggle functions
@@ -66,6 +67,10 @@ export const UIVisibilityProvider = ({ children }) => {
 		}));
 	}, []);
 
+	const toggleCraftingWindow = useCallback(() => {
+		setVisible((v) => ({ ...v, craftingWindow: !v.craftingWindow }));
+	}, []);
+
 	return (
 		<UIVisibilityContext.Provider
 			value={{
@@ -76,6 +81,7 @@ export const UIVisibilityProvider = ({ children }) => {
 				openNPCDialog,
 				selectNPCOption,
 				closeNPCDialog,
+				toggleCraftingWindow,
 			}}
 		>
 			{children}

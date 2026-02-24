@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice, createSelector, nanoid } from "@reduxjs/toolkit";
 
 // Notification types
 export const NOTIFICATION_TYPES = {
@@ -78,10 +78,10 @@ const notificationSlice = createSlice({
 export const { addNotification, removeNotification, clearNotifications } =
 	notificationSlice.actions;
 
-// Selector to get visible notifications only
-export const selectVisibleNotifications = (state) =>
-	state.notifications.notifications
-		.filter((n) => n.visible)
-		.slice(-state.notifications.maxVisible);
+// Selector to get visible notifications only (memoized)
+export const selectVisibleNotifications = createSelector(
+	[(state) => state.notifications.notifications, (state) => state.notifications.maxVisible],
+	(notifications, maxVisible) => notifications.filter((n) => n.visible).slice(-maxVisible),
+);
 
 export default notificationSlice.reducer;

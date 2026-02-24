@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
+import { selectKnownRecipes } from "../../../store/slices/playerSlice.js";
 import MoveItemDialog from "../common/MoveItemDialog";
 import KeyBind from "../common/KeyBind";
 import InventoryGrid from "../common/InventoryGrid";
@@ -11,11 +12,16 @@ import {
 	selectInventoryByPlaceId,
 } from "../../../store/slices/inventorySlice";
 import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { playerIntentLearnRecipe } from "../../../game/events";
+
+const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const dispatch = useDispatch();
+	const knownRecipes = useSelector(selectKnownRecipes);
 
 	// Determine which selector to use based on inventory type
 	const inventory = useSelector((state) => {
@@ -42,8 +48,33 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	// Handle right-click context menu for moving items between inventories
 	const handleContextMenu = useCallback(
 		(e, item) => {
-			if (!otherInventory) return; // Do nothing if no target inventory
 			e.preventDefault();
+
+			// Handle recipe items in player inventory - learn the recipe
+			if (item.type === "recipe" && inventoryId === "player" && item.recipeId) {
+				// Check if already known
+				if (knownRecipes.includes(item.recipeId)) {
+					dispatch({
+						type: "notifications/addNotification",
+						payload: {
+							id: generateId(),
+							message: `You already know the "${item.name}" recipe!`,
+							type: "info",
+						},
+					});
+					return;
+				}
+
+				// Emit event to learn the recipe (service handles removal and state update)
+				globalEventBus.emit(playerIntentLearnRecipe.type, {
+					recipeId: item.recipeId,
+					itemId: item.id,
+				});
+				return;
+			}
+
+			// Original move item logic
+			if (!otherInventoryId) return; // Do nothing if no target inventory
 
 			const quantity = item.quantity || 1;
 
@@ -61,7 +92,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 						dispatch({
 							type: "notifications/addNotification",
 							payload: {
-								id: Date.now().toString(),
+								id: generateId(),
 								message: `Cannot move "${item.name}" - not enough carry capacity! (Need ${currentWeight + itemWeight - maxWeight} more capacity)`,
 								type: "warning",
 							},
@@ -85,7 +116,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					dispatch({
 						type: "notifications/addNotification",
 						payload: {
-							id: Date.now().toString(),
+							id: generateId(),
 							message: `Failed to move "${item.name}"`,
 							type: "error",
 						},
@@ -97,7 +128,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 				setDialogOpen(true);
 			}
 		},
-		[otherInventory, otherInventoryId, inventory.id, dispatch],
+		[otherInventory, otherInventoryId, inventory.id, dispatch, knownRecipes, inventoryId],
 	);
 
 	// Handle confirm button for moving items between inventories
@@ -166,7 +197,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 						className={currentWeight >= maxWeight * 0.9 ? "weight-warning" : ""}
 						style={{ marginLeft: "16px" }}
 					>
-						{currentWeight} / <b>{maxWeight} lt</b>
+						{currentWeight.toFixed(1)} / <b>{maxWeight} lt</b>
 					</span>
 				)}
 			</div>

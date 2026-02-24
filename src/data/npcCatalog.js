@@ -45,7 +45,7 @@ export const npcCatalog = {
 				{
 					text: "What materials do you need?",
 					response:
-						"I can work with or from the mines. The harder the or, the better the equipment I can forge.",
+						"I can work with ore from the mines. The harder the ore, the better the equipment I can forge.",
 				},
 				{
 					text: "Can you upgrade my gear?",
@@ -53,9 +53,9 @@ export const npcCatalog = {
 						"Bring me better materials and enough gold, and I'll improve whatever you have.",
 				},
 				{
-					text: "I can bring you some iron or.",
+					text: "I can bring you some iron ore.",
 					response:
-						"Aye, I'm running low on iron or. Bring me 5 pieces and I'll reward you well.",
+						"Aye, I'm running low on iron ore. Bring me 5 pieces and I'll reward you well.",
 					startsQuestId: "blacksmith_iron_ore",
 				},
 			],
@@ -147,6 +147,25 @@ export const npcCatalog = {
 					text: "What weapons do you have?",
 					response:
 						"I specialize in basic but reliable weapons - swords, daggers, axes, bows, and staves. Nothing fancy, just solid gear that won't fail you when it matters most.",
+				},
+			],
+		},
+	},
+	grocer: {
+		id: "grocer",
+		name: "Martha the Grocer",
+		description: "A friendly woman selling basic food supplies and ingredients.",
+		avatar: 15,
+		location: "village_center",
+		hasInventory: true,
+		dialogue: {
+			initial:
+				"Welcome! I've got fresh supplies for any aspiring baker or cook. Flour, water, and more!",
+			options: [
+				{
+					text: "What do you have for sale?",
+					response:
+						"I sell flour, water, and other basic ingredients. Perfect for baking bread or making pies!",
 				},
 			],
 		},

@@ -3,7 +3,7 @@ import {
 	unequipItem,
 	selectInventoryById,
 } from "../../../store/slices/inventorySlice";
-import ItemInfo from "../common/ItemInfo";
+import Item from "../common/Item";
 
 const EQUIPMENT_SLOTS_LABELS = [
 	{ key: "head", label: "Head" },
@@ -45,15 +45,10 @@ const EquipmentDisplay = () => {
 					style={{ cursor: equipment[key] ? "pointer" : "default" }}
 				>
 					{equipment[key] ? (
-						<ItemInfo item={equipment[key]}>
-							<div>
-								<div
-									className="item-sprite"
-									id={equipment[key].itemKey || equipment[key].id}
-								/>
-								<span>{equipment[key].name}</span>
-							</div>
-						</ItemInfo>
+						<div>
+							<Item item={equipment[key]} />
+							<span>{equipment[key].name}</span>
+						</div>
 					) : (
 						<span>{label}</span>
 					)}

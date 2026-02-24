@@ -86,7 +86,7 @@ const useNPCDialog = ({
 			if (objective.type === "collect") {
 				const inventory = playerInventory?.items || [];
 				const count = inventory.reduce((total, item) => {
-					if (item.itemKey === objective.target) {
+					if (item.icon === objective.target) {
 						return total + (item.quantity || 1);
 					}
 					return total;
@@ -119,7 +119,7 @@ const useNPCDialog = ({
 				if (itemData) targetName = itemData.name;
 				const inventory = playerInventory?.items || [];
 				current = inventory.reduce((total, item) => {
-					if (item.itemKey === objective.target) {
+					if (item.icon === objective.target) {
 						return total + (item.quantity || 1);
 					}
 					return total;
@@ -275,12 +275,12 @@ const useNPCDialog = ({
 			// Fallback to itemCatalog
 			else if (
 				item &&
-				item.itemKey &&
-				itemCatalog[item.itemKey] &&
-				itemCatalog[item.itemKey].buy &&
-				typeof itemCatalog[item.itemKey].buy.gold === "number"
+				item.icon &&
+				itemCatalog[item.icon] &&
+				itemCatalog[item.icon].buy &&
+				typeof itemCatalog[item.icon].buy.gold === "number"
 			) {
-				buyPrice = itemCatalog[item.itemKey].buy.gold;
+				buyPrice = itemCatalog[item.icon].buy.gold;
 			}
 
 			if (buyPrice === null || buyPrice === undefined) {
@@ -304,12 +304,12 @@ const useNPCDialog = ({
 			dispatch(spendGold(buyPrice));
 
 			// Create new item from catalog for proper structure
-			const catalogItem = itemCatalog[item.itemKey] || item;
+			const catalogItem = itemCatalog[item.icon] || item;
 			const isStackable =
 				catalogItem.type === "consumable" || catalogItem.type === "material";
 			const newItem = {
 				...catalogItem,
-				itemKey: item.itemKey || catalogItem.id,
+				icon: item.icon,
 				quantity: isStackable ? 1 : undefined,
 			};
 			dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));

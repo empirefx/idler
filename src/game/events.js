@@ -10,6 +10,11 @@ export const PLAYER_INTENT_ACCEPT_QUEST = "game/PLAYER_INTENT_ACCEPT_QUEST";
 export const PLAYER_INTENT_COMPLETE_QUEST = "game/PLAYER_INTENT_COMPLETE_QUEST";
 export const QUEST_PROGRESS_UPDATED = "game/QUEST_PROGRESS_UPDATED";
 export const QUEST_OBJECTIVE_COMPLETED = "game/QUEST_OBJECTIVE_COMPLETED";
+export const PLAYER_INTENT_CRAFT = "game/PLAYER_INTENT_CRAFT";
+export const PLAYER_INTENT_LEARN_RECIPE = "game/PLAYER_INTENT_LEARN_RECIPE";
+export const CRAFT_SUCCESS = "game/CRAFT_SUCCESS";
+export const CRAFT_FAILED = "game/CRAFT_FAILED";
+export const RECIPE_LEARNED = "game/RECIPE_LEARNED";
 
 // Action creators
 export const workerCreatedItem = (workerId, itemType) => ({
@@ -100,4 +105,29 @@ export const playerDamaged = (
 export const enemyDead = (enemyId, placeId, enemy) => ({
 	type: ENEMY_DEAD,
 	payload: { enemyId, placeId, enemy },
+});
+
+export const playerIntentCraft = (recipeId, outputItemId) => ({
+	type: PLAYER_INTENT_CRAFT,
+	payload: { recipeId, outputItemId },
+});
+
+export const playerIntentLearnRecipe = (recipeId, itemId) => ({
+	type: PLAYER_INTENT_LEARN_RECIPE,
+	payload: { recipeId, itemId },
+});
+
+export const craftSuccess = (recipeId, outputItemId, outputItemName) => ({
+	type: CRAFT_SUCCESS,
+	payload: { recipeId, outputItemId, outputItemName },
+});
+
+export const craftFailed = (recipeId, error) => ({
+	type: CRAFT_FAILED,
+	payload: { recipeId, error },
+});
+
+export const recipeLearned = (recipeId) => ({
+	type: RECIPE_LEARNED,
+	payload: { recipeId },
 });

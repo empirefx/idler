@@ -4,7 +4,7 @@
 	height: 32px;
 	background-image: url("../assets/icons/items/idylwilds-items.png");
 	background-repeat: no-repeat;
-	display: inline-block;
+	/*display: inline-block;*/
 	image-rendering: pixelated;
 	transform: scale(1.5);
 }

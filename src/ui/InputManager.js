@@ -3,7 +3,7 @@ import { useUIVisibility } from "./UIVisibilityContext";
 
 // Listens for keypresses and toggles UI cards
 const InputManager = () => {
-	const { togglePlayerCard, toggleWorkerCard, closeNPCDialog, npcDialog } =
+	const { togglePlayerCard, toggleWorkerCard, closeNPCDialog, npcDialog, toggleCraftingWindow } =
 		useUIVisibility();
 
 	useEffect(() => {
@@ -16,6 +16,8 @@ const InputManager = () => {
 				togglePlayerCard();
 			} else if (e.key === "w") {
 				toggleWorkerCard();
+			} else if (e.key === "l" || e.key === "L") {
+				toggleCraftingWindow();
 			} else if (e.key === "Escape") {
 				// Close NPC dialog if open
 				if (npcDialog?.isOpen) {
@@ -25,7 +27,7 @@ const InputManager = () => {
 		};
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [togglePlayerCard, toggleWorkerCard, closeNPCDialog, npcDialog?.isOpen]);
+	}, [togglePlayerCard, toggleWorkerCard, closeNPCDialog, npcDialog?.isOpen, toggleCraftingWindow]);
 
 	return null; // No UI
 };

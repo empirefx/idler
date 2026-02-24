@@ -56,7 +56,7 @@ const QuestItem = ({ questId }) => {
 							const itemName = itemData?.name || objective.target;
 							const inventory = playerInventory?.items || [];
 							const current = inventory.reduce((total, item) => {
-								if (item.itemKey === objective.target) {
+								if (item.icon === objective.target) {
 									return total + (item.quantity || 1);
 								}
 								return total;
@@ -116,7 +116,7 @@ const QuestSection = () => {
 											{quest.rewards.exp || 0} exp
 											{quest.rewards.items &&
 												quest.rewards.items.length > 0 &&
-												`, ${quest.rewards.items.map((i) => i.itemKey).join(", ")}`}
+												`, ${quest.rewards.items.map((i) => i.icon).join(", ")}`}
 										</span>
 									)}
 								</li>
