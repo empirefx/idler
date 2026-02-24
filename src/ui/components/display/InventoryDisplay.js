@@ -197,7 +197,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 						className={currentWeight >= maxWeight * 0.9 ? "weight-warning" : ""}
 						style={{ marginLeft: "16px" }}
 					>
-						{currentWeight} / <b>{maxWeight} lt</b>
+						{currentWeight.toFixed(1)} / <b>{maxWeight} lt</b>
 					</span>
 				)}
 			</div>
