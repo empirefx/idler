@@ -124,7 +124,7 @@ export const inventoryData = {
 		placeId: "village_center",
 		type: "place",
 		maxSlots: 30,
-	items: [
+		items: [
 			{
 				id: 1,
 				name: "apple",
@@ -142,7 +142,7 @@ export const inventoryData = {
 		npcId: "blacksmith",
 		type: "npc",
 		maxSlots: 20,
-	items: [
+		items: [
 			{
 				icon: "light-armor",
 				id: 4,
@@ -245,7 +245,7 @@ export const inventoryData = {
 		npcId: "weapon_merchant",
 		type: "npc",
 		maxSlots: 20,
-	items: [
+		items: [
 			// First variant of weapons with 3+ types
 			{
 				icon: "sword1",

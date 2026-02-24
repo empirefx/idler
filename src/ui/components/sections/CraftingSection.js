@@ -8,7 +8,11 @@ import { craftingGroups, craftingRecipes } from "../../../data/craftingRecipes";
 import { itemCatalog } from "../../../data/itemCatalog";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import { globalEventBus } from "../../../game/services/EventBusService";
-import { playerIntentCraft, CRAFT_SUCCESS, CRAFT_FAILED } from "../../../game/events";
+import {
+	playerIntentCraft,
+	CRAFT_SUCCESS,
+	CRAFT_FAILED,
+} from "../../../game/events";
 import Item from "../common/Item";
 
 const groupLabels = {
@@ -22,7 +26,9 @@ const groupLabels = {
 const CraftingSection = () => {
 	const { craftingWindow, toggleCraftingWindow } = useUIVisibility();
 	const knownRecipes = useSelector(selectKnownRecipes);
-	const playerInventory = useSelector((state) => selectInventoryById(state, "player"));
+	const playerInventory = useSelector((state) =>
+		selectInventoryById(state, "player"),
+	);
 
 	const [selectedGroup, setSelectedGroup] = useState(craftingGroups.FOOD);
 	const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -102,10 +108,14 @@ const CraftingSection = () => {
 				console.log("Cannot craft: recipe not known");
 				return;
 			}
-			
+
 			if (!canCraft(recipe)) return;
 
-			const outputItemId = selectedOutputItem || recipe.output.variants?.[0] || recipe.output.items?.[0] || recipe.output.icon;
+			const outputItemId =
+				selectedOutputItem ||
+				recipe.output.variants?.[0] ||
+				recipe.output.items?.[0] ||
+				recipe.output.icon;
 
 			globalEventBus.emit(playerIntentCraft.type, {
 				recipeId: recipe.id,
@@ -158,7 +168,9 @@ const CraftingSection = () => {
 										{isKnown ? recipe.name : "???"}
 									</span>
 									{isKnown && (
-										<span className={`craft-status ${canCraft(recipe) ? "can-craft" : "cannot-craft"}`}>
+										<span
+											className={`craft-status ${canCraft(recipe) ? "can-craft" : "cannot-craft"}`}
+										>
 											{canCraft(recipe) ? "✓" : "✗"}
 										</span>
 									)}
@@ -173,44 +185,54 @@ const CraftingSection = () => {
 						<>
 							{knownRecipes.includes(selectedRecipe.id) ? (
 								<>
-								<div className="detail-header">
-									<div className="craftable-items-list">
-										{selectedRecipe.output.variants && selectedRecipe.output.variants.map((v) => {
-											const item = itemCatalog[v];
-											return item ? (
-												<div
-													key={v}
-													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-													onClick={() => setSelectedOutputItem(v)}
-												>
-													<Item item={item} />
-												</div>
-											) : null;
-										})}
-										{selectedRecipe.output.items && selectedRecipe.output.items.map((v) => {
-											const item = itemCatalog[v];
-											return item ? (
-												<div
-													key={v}
-													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-													onClick={() => setSelectedOutputItem(v)}
-												>
-													<Item item={item} />
-												</div>
-											) : null;
-										})}
-										{!selectedRecipe.output.variants && !selectedRecipe.output.items && selectedRecipe.output.icon && (
-											<div
-												className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
-												onClick={() => setSelectedOutputItem(selectedRecipe.output.icon)}
-											>
-												<Item item={itemCatalog[selectedRecipe.output.icon]} />
-											</div>
-										)}
+									<div className="detail-header">
+										<div className="craftable-items-list">
+											{selectedRecipe.output.variants &&
+												selectedRecipe.output.variants.map((v) => {
+													const item = itemCatalog[v];
+													return item ? (
+														<div
+															key={v}
+															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+															onClick={() => setSelectedOutputItem(v)}
+														>
+															<Item item={item} />
+														</div>
+													) : null;
+												})}
+											{selectedRecipe.output.items &&
+												selectedRecipe.output.items.map((v) => {
+													const item = itemCatalog[v];
+													return item ? (
+														<div
+															key={v}
+															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+															onClick={() => setSelectedOutputItem(v)}
+														>
+															<Item item={item} />
+														</div>
+													) : null;
+												})}
+											{!selectedRecipe.output.variants &&
+												!selectedRecipe.output.items &&
+												selectedRecipe.output.icon && (
+													<div
+														className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
+														onClick={() =>
+															setSelectedOutputItem(selectedRecipe.output.icon)
+														}
+													>
+														<Item
+															item={itemCatalog[selectedRecipe.output.icon]}
+														/>
+													</div>
+												)}
+										</div>
+										<h4>{selectedRecipe.name}</h4>
+										<span className="detail-group">
+											{groupLabels[selectedRecipe.group]}
+										</span>
 									</div>
-									<h4>{selectedRecipe.name}</h4>
-									<span className="detail-group">{groupLabels[selectedRecipe.group]}</span>
-								</div>
 
 									{selectedRecipe.output.variants && (
 										<div className="output-info">
@@ -244,17 +266,18 @@ const CraftingSection = () => {
 										</div>
 									)}
 
-									{!selectedRecipe.output.variants && !selectedRecipe.output.items && (
-										<div className="output-info">
-											<strong>Output:</strong>
-											<span>{selectedRecipe.output.name}</span>
-										</div>
-									)}
+									{!selectedRecipe.output.variants &&
+										!selectedRecipe.output.items && (
+											<div className="output-info">
+												<strong>Output:</strong>
+												<span>{selectedRecipe.output.name}</span>
+											</div>
+										)}
 
 									<div className="materials-section">
 										<h5>Required Materials</h5>
 										<div className="materials-list">
-										{selectedRecipe.materials.map((mat, idx) => {
+											{selectedRecipe.materials.map((mat, idx) => {
 												const available = playerMaterials[mat.icon] || 0;
 												const hasEnough = available >= mat.quantity;
 												const matItem = itemCatalog[mat.icon];
@@ -286,7 +309,10 @@ const CraftingSection = () => {
 							) : (
 								<div className="unknown-recipe">
 									<h4>???</h4>
-									<p>Right-click a recipe item in your inventory to learn this craft.</p>
+									<p>
+										Right-click a recipe item in your inventory to learn this
+										craft.
+									</p>
 									<div className="materials-section">
 										<h5>Required Materials</h5>
 										<div className="materials-list">

@@ -1,7 +1,8 @@
 .crafting-section {
 	position: absolute;
 	inset: 0;
-	margin: auto;	width: 700px;
+	margin: auto;
+	width: 700px;
 	height: 560px;
 	background: var(--color-dark);
 	color: white;

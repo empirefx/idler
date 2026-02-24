@@ -7,7 +7,11 @@ import { createItem } from "../factory/itemFactory";
 import SpawnService from "../services/SpawnService";
 import { EventBusService, globalEventBus } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
-import { workerCreatedItem, playerIntentCraft, playerIntentLearnRecipe } from "../events";
+import {
+	workerCreatedItem,
+	playerIntentCraft,
+	playerIntentLearnRecipe,
+} from "../events";
 import GameLoop from "../core/GameLoop";
 import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
@@ -79,13 +83,19 @@ class GameEngine {
 			this.dispatch({ type: "enemies/addEnemy", payload: { placeId, enemy } });
 		});
 
-		this.eventBusService.on(playerIntentCraft.type, ({ recipeId, outputItemId }) => {
-			this.craftingService.craft(recipeId, outputItemId);
-		});
+		this.eventBusService.on(
+			playerIntentCraft.type,
+			({ recipeId, outputItemId }) => {
+				this.craftingService.craft(recipeId, outputItemId);
+			},
+		);
 
-		this.eventBusService.on(playerIntentLearnRecipe.type, ({ recipeId, itemId }) => {
-			this.craftingService.learnRecipe(recipeId, itemId);
-		});
+		this.eventBusService.on(
+			playerIntentLearnRecipe.type,
+			({ recipeId, itemId }) => {
+				this.craftingService.learnRecipe(recipeId, itemId);
+			},
+		);
 	}
 
 	// Process production for a single building

@@ -3,8 +3,13 @@ import { useUIVisibility } from "./UIVisibilityContext";
 
 // Listens for keypresses and toggles UI cards
 const InputManager = () => {
-	const { togglePlayerCard, toggleWorkerCard, closeNPCDialog, npcDialog, toggleCraftingWindow } =
-		useUIVisibility();
+	const {
+		togglePlayerCard,
+		toggleWorkerCard,
+		closeNPCDialog,
+		npcDialog,
+		toggleCraftingWindow,
+	} = useUIVisibility();
 
 	useEffect(() => {
 		const handleKeyDown = (e) => {
@@ -27,7 +32,13 @@ const InputManager = () => {
 		};
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [togglePlayerCard, toggleWorkerCard, closeNPCDialog, npcDialog?.isOpen, toggleCraftingWindow]);
+	}, [
+		togglePlayerCard,
+		toggleWorkerCard,
+		closeNPCDialog,
+		npcDialog?.isOpen,
+		toggleCraftingWindow,
+	]);
 
 	return null; // No UI
 };

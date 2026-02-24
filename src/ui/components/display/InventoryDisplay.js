@@ -15,7 +15,8 @@ import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inve
 import { globalEventBus } from "../../../game/services/EventBusService";
 import { playerIntentLearnRecipe } from "../../../game/events";
 
-const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () =>
+	`${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -128,7 +129,14 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 				setDialogOpen(true);
 			}
 		},
-		[otherInventory, otherInventoryId, inventory.id, dispatch, knownRecipes, inventoryId],
+		[
+			otherInventory,
+			otherInventoryId,
+			inventory.id,
+			dispatch,
+			knownRecipes,
+			inventoryId,
+		],
 	);
 
 	// Handle confirm button for moving items between inventories

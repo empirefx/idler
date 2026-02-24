@@ -27,8 +27,7 @@ const NPCDialogQuestPanel = ({ objectives, rewards }) => (
 					{rewards.exp && <li>✨ {rewards.exp} exp</li>}
 					{rewards.items?.map((item, i) => (
 						<li key={i}>
-							📦 {itemCatalog[item.icon]?.name} x
-							{item.quantity}
+							📦 {itemCatalog[item.icon]?.name} x{item.quantity}
 						</li>
 					))}
 				</ul>

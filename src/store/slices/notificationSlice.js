@@ -80,8 +80,12 @@ export const { addNotification, removeNotification, clearNotifications } =
 
 // Selector to get visible notifications only (memoized)
 export const selectVisibleNotifications = createSelector(
-	[(state) => state.notifications.notifications, (state) => state.notifications.maxVisible],
-	(notifications, maxVisible) => notifications.filter((n) => n.visible).slice(-maxVisible),
+	[
+		(state) => state.notifications.notifications,
+		(state) => state.notifications.maxVisible,
+	],
+	(notifications, maxVisible) =>
+		notifications.filter((n) => n.visible).slice(-maxVisible),
 );
 
 export default notificationSlice.reducer;

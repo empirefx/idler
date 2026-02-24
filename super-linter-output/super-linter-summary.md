@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22231570546)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22353877879)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,9 +31,12 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_LINT</summary>
 
 ```text
-Checked 115 files in 905ms. No fixes applied.
-Found 8 errors.
-Found 12 warnings.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
+The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
+Diagnostics not shown: 22.
+Checked 120 files in 1046ms. No fixes applied.
+Found 24 errors.
+Found 17 warnings.
+Found 1 info.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
   ! This parameter is unused.
 
@@ -107,23 +110,46 @@ src/game/core/Gameplay.js:335:43 lint/correctness/noUnusedFunctionParameters ━
   i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/game/engine/GameEngine.js:7:10 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:8:10 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
 
   ! Several of these imports are unused.
 
-    5 │ import { createItem } from "../factory/itemFactory";
-    6 │ import SpawnService from "../services/SpawnService";
-  > 7 │ import { EventBusService, globalEventBus } from "../services/EventBusService";
-      │          ^^^^^^^^^^^^^^^
-    8 │ import { CombatService } from "../services/CombatService";
-    9 │ import { workerCreatedItem } from "../events";
+     6 │ import { createItem } from "../factory/itemFactory";
+     7 │ import SpawnService from "../services/SpawnService";
+   > 8 │ import { EventBusService, globalEventBus } from "../services/EventBusService";
+       │          ^^^^^^^^^^^^^^^
+     9 │ import { CombatService } from "../services/CombatService";
+    10 │ import {
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-    7 │ import·{·EventBusService,·globalEventBus·}·from·"../services/EventBusService";
+    8 │ import·{·EventBusService,·globalEventBus·}·from·"../services/EventBusService";
       │          -----------------
+
+src/game/services/CraftingService.js:121:9 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━
+
+  ! This variable knownRecipes is unused.
+
+    119 │ 	craft(recipeId, outputItemId = null) {
+    120 │ 		const state = this.store.getState();
+  > 121 │ 		const knownRecipes = state.player?.knownRecipes || [];
+        │ 		      ^^^^^^^^^^^^
+    122 │
+    123 │ 		const validation = this.canCraft(state, recipeId, outputItemId);
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+  i Unsafe fix: If this is intentional, prepend knownRecipes with an underscore.
+
+    119 119 │   	craft(recipeId, outputItemId = null) {
+    120 120 │   		const state = this.store.getState();
+    121     │ - → → const·knownRecipes·=·state.player?.knownRecipes·||·[];
+        121 │ + → → const·_knownRecipes·=·state.player?.knownRecipes·||·[];
+    122 122 │
+    123 123 │   		const validation = this.canCraft(state, recipeId, outputItemId);
+
 
 src/game/services/InventoryService.js:10:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
 
@@ -152,111 +178,31 @@ src/game/services/InventoryService.js:10:2 lint/correctness/noUnusedImports  FIX
      14  11 │   } from "../../store/slices/inventory/inventoryUtils.js";
 
 
-src/store/slices/inventoryThunks.js:1:20 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
-
-  ! Several of these imports are unused.
-
-  > 1 │ import { moveItem, addItem, removeItem } from "./inventorySlice.js";
-      │                    ^^^^^^^
-    2 │ import {
-    3 │ 	validateItemExists,
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    1 │ import·{·moveItem,·addItem,·removeItem·}·from·"./inventorySlice.js";
-      │                    ---------
-
-src/store/slices/inventoryThunks.js:8:25 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━
-
-  ! Several of these imports are unused.
-
-     6 │ 	validateWeightLimit,
-     7 │ } from "./inventory/inventoryValidators.js";
-   > 8 │ import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
-       │                         ^^^^^^^^^
-     9 │ import { addNotification } from "./notificationSlice.js";
-    10 │ import { NOTIFICATION_TYPES } from "./notificationSlice.js";
-
-  i Unused imports might be the result of an incomplete refactoring.
-
-  i Unsafe fix: Remove the unused imports.
-
-    8 │ import·{·canItemsStack,·cloneItem·}·from·"./inventory/inventoryUtils.js";
-      │                         ----------
-
-src/store/slices/inventoryThunks.js:98:11 lint/correctness/noUnusedVariables ━━━━━━━━━━━━━━━━━━━━━━━
-
-  ! This variable item is unused.
-
-     96 │ 		}
-     97 │
-   > 98 │ 		const { item, moveQuantity } = validation;
-        │ 		        ^^^^
-     99 │
-    100 │ 		try {
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-
-src/ui/components/common/NPCDialog/NPCDialogOptions.js:15:2 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
+src/ui/components/sections/CraftingSection.js:42:33 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
 
   ! This parameter is unused.
 
-    13 │ 	onOptionClick,
-    14 │ 	onAdvance,
-  > 15 │ 	onClose,
-       │ 	^^^^^^^
-    16 │ 	npcDialogOptions,
-    17 │ }) => {
+    41 │ 	useEffect(() => {
+  > 42 │ 		const handleCraftSuccess = ({ outputItemName }) => {
+       │ 		                              ^^^^^^^^^^^^^^
+    43 │ 			// Handled by CraftingService notification
+    44 │ 		};
 
   i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/ui/components/common/NPCDialog/useNPCDialog.js:272:8 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
+src/ui/components/sections/CraftingSection.js:46:32 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
 
-  ! Change to an optional chain.
+  ! This parameter is unused.
 
-    270 │ 			// Try direct item.buy first
-    271 │ 			let buyPrice = null;
-  > 272 │ 			if (item && item.buy && typeof item.buy.gold === "number") {
-        │ 			    ^^^^^^^^^^^^^^^^
-    273 │ 				buyPrice = item.buy.gold;
-    274 │ 			}
+    44 │ 		};
+    45 │
+  > 46 │ 		const handleCraftFailed = ({ error }) => {
+       │ 		                             ^^^^^
+    47 │ 			// Handled by CraftingService notification
+    48 │ 		};
 
-  i Unsafe fix: Change to an optional chain.
-
-    270 270 │   			// Try direct item.buy first
-    271 271 │   			let buyPrice = null;
-    272     │ - → → → if·(item·&&·item.buy·&&·typeof·item.buy.gold·===·"number")·{
-        272 │ + → → → if·(item?.buy·&&·typeof·item.buy.gold·===·"number")·{
-    273 273 │   				buyPrice = item.buy.gold;
-    274 274 │   			}
-
-
-src/ui/components/common/NPCDialog/useNPCDialog.js:277:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    275 │ 			// Fallback to itemCatalog
-    276 │ 			else if (
-  > 277 │ 				item &&
-        │ 				^^^^^^^
-  > 278 │ 				item.itemKey &&
-        │ 				^^^^^^^^^^^^
-    279 │ 				itemCatalog[item.itemKey] &&
-    280 │ 				itemCatalog[item.itemKey].buy &&
-
-  i Unsafe fix: Change to an optional chain.
-
-    275 275 │   			// Fallback to itemCatalog
-    276 276 │   			else if (
-    277     │ - → → → → item·&&
-    278     │ - → → → → item.itemKey·&&
-        277 │ + → → → → item?.itemKey·&&
-    279 278 │   				itemCatalog[item.itemKey] &&
-    280 279 │   				itemCatalog[item.itemKey].buy &&
+  i Unused parameters might be the result of an incomplete refactoring.
 
 
 src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━
@@ -280,122 +226,179 @@ src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackRe
     29 │ }
 
 
-src/ui/components/common/NPCDialog/NPCDialogQuestPanel.js:10:12 lint/suspicious/noArrayIndexKey ━━━━━━━━━━
-
-  × Avoid using the index of an array as key property in an element.
-
-     8 │ 				{objectives.map((obj, i) => (
-     9 │ 					<li
-  > 10 │ 						key={i}
-       │ 						     ^
-    11 │ 						className={obj.current >= obj.required ? "completed" : ""}
-    12 │ 					>
-
-  i This is the source of the key value.
-
-     6 │ 			<h4>Objectives:</h4>
-     7 │ 			<ul>
-   > 8 │ 				{objectives.map((obj, i) => (
-       │ 				                      ^
-     9 │ 					<li
-    10 │ 						key={i}
-
-  i The order of the items may change, and this also affects performances and component state.
-
-  i Check the React documentation.
-
-
-src/ui/components/common/NPCDialog/NPCDialogQuestPanel.js:29:16 lint/suspicious/noArrayIndexKey ━━━━━━━━━━
-
-  × Avoid using the index of an array as key property in an element.
-
-    27 │ 					{rewards.exp && <li>✨ {rewards.exp} exp</li>}
-    28 │ 					{rewards.items?.map((item, i) => (
-  > 29 │ 						<li key={i}>
-       │ 						         ^
-    30 │ 							📦 {itemCatalog[item.itemKey]?.name || item.itemKey} x
-    31 │ 							{item.quantity}
-
-  i This is the source of the key value.
-
-    26 │ 					{rewards.gold && <li>🪙 {rewards.gold} gold</li>}
-    27 │ 					{rewards.exp && <li>✨ {rewards.exp} exp</li>}
-  > 28 │ 					{rewards.items?.map((item, i) => (
-       │ 					                           ^
-    29 │ 						<li key={i}>
-    30 │ 							📦 {itemCatalog[item.itemKey]?.name || item.itemKey} x
-
-  i The order of the items may change, and this also affects performances and component state.
-
-  i Check the React documentation.
-
-
-src/ui/components/common/NPCDialog/index.js:69:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━
+src/ui/components/sections/CraftingSection.js:162:9 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
 
   × Static Elements should not be interactive.
 
-    67 │ 				/>
-    68 │ 			)}
-  > 69 │ 			<div
-       │ 			^^^^
-  > 70 │ 				className="npc-dialog-content"
-        ...
-  > 76 │ 				}}
-  > 77 │ 			>
-       │ 			^
-    78 │ 				<div className="key-bind-container">
-    79 │ 					<span className="key-bind">ESC</span>
+    160 │ 							const isKnown = knownRecipes.includes(recipe.id);
+    161 │ 							return (
+  > 162 │ 								<div
+        │ 								^^^^
+  > 163 │ 									key={recipe.id}
+  > 164 │ 									className={`recipe-item ${selectedRecipe?.id === recipe.id ? "selected" : ""} ${!isKnown ? "unknown" : ""}`}
+  > 165 │ 									onClick={() => setSelectedRecipe(recipe)}
+  > 166 │ 								>
+        │ 								^
+    167 │ 									<span className="recipe-name">
+    168 │ 										{isKnown ? recipe.name : "???"}
 
   i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
-src/ui/components/common/NPCDialog/useNPCDialog.js:46:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+src/ui/components/sections/CraftingSection.js:162:9 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━
 
-  × This hook specifies more dependencies than necessary: npcId.
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
 
-    45 │ 	// Reset conversation state when switching NPCs
-  > 46 │ 	useEffect(() => {
+    160 │ 							const isKnown = knownRecipes.includes(recipe.id);
+    161 │ 							return (
+  > 162 │ 								<div
+        │ 								^^^^
+  > 163 │ 									key={recipe.id}
+  > 164 │ 									className={`recipe-item ${selectedRecipe?.id === recipe.id ? "selected" : ""} ${!isKnown ? "unknown" : ""}`}
+  > 165 │ 									onClick={() => setSelectedRecipe(recipe)}
+  > 166 │ 								>
+        │ 								^
+    167 │ 									<span className="recipe-name">
+    168 │ 										{isKnown ? recipe.name : "???"}
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/sections/CraftingSection.js:194:15 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    192 │ 													const item = itemCatalog[v];
+    193 │ 													return item ? (
+  > 194 │ 														<div
+        │ 														^^^^
+  > 195 │ 															key={v}
+  > 196 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+  > 197 │ 															onClick={() => setSelectedOutputItem(v)}
+  > 198 │ 														>
+        │ 														^
+    199 │ 															<Item item={item} />
+    200 │ 														</div>
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/sections/CraftingSection.js:194:15 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    192 │ 													const item = itemCatalog[v];
+    193 │ 													return item ? (
+  > 194 │ 														<div
+        │ 														^^^^
+  > 195 │ 															key={v}
+  > 196 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+  > 197 │ 															onClick={() => setSelectedOutputItem(v)}
+  > 198 │ 														>
+        │ 														^
+    199 │ 															<Item item={item} />
+    200 │ 														</div>
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/sections/CraftingSection.js:207:15 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    205 │ 													const item = itemCatalog[v];
+    206 │ 													return item ? (
+  > 207 │ 														<div
+        │ 														^^^^
+  > 208 │ 															key={v}
+  > 209 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+  > 210 │ 															onClick={() => setSelectedOutputItem(v)}
+  > 211 │ 														>
+        │ 														^
+    212 │ 															<Item item={item} />
+    213 │ 														</div>
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/sections/CraftingSection.js:207:15 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    205 │ 													const item = itemCatalog[v];
+    206 │ 													return item ? (
+  > 207 │ 														<div
+        │ 														^^^^
+  > 208 │ 															key={v}
+  > 209 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
+  > 210 │ 															onClick={() => setSelectedOutputItem(v)}
+  > 211 │ 														>
+        │ 														^
+    212 │ 															<Item item={item} />
+    213 │ 														</div>
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/sections/CraftingSection.js:219:14 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━
+
+  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+
+    217 │ 												!selectedRecipe.output.items &&
+    218 │ 												selectedRecipe.output.icon && (
+  > 219 │ 													<div
+        │ 													^^^^
+  > 220 │ 														className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
+  > 221 │ 														onClick={() =>
+  > 222 │ 															setSelectedOutputItem(selectedRecipe.output.icon)
+  > 223 │ 														}
+  > 224 │ 													>
+        │ 													^
+    225 │ 														<Item
+    226 │ 															item={itemCatalog[selectedRecipe.output.icon]}
+
+  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+
+
+src/ui/components/sections/CraftingSection.js:219:14 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    217 │ 												!selectedRecipe.output.items &&
+    218 │ 												selectedRecipe.output.icon && (
+  > 219 │ 													<div
+        │ 													^^^^
+  > 220 │ 														className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
+  > 221 │ 														onClick={() =>
+  > 222 │ 															setSelectedOutputItem(selectedRecipe.output.icon)
+  > 223 │ 														}
+  > 224 │ 													>
+        │ 													^
+    225 │ 														<Item
+    226 │ 															item={itemCatalog[selectedRecipe.output.icon]}
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
+src/ui/components/sections/CraftingSection.js:37:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
+
+  × This hook specifies more dependencies than necessary: selectedRecipe.
+
+    35 │ 	const [selectedOutputItem, setSelectedOutputItem] = useState(null);
+    36 │
+  > 37 │ 	useEffect(() => {
        │ 	^^^^^^^^^
-    47 │ 		setQuestConversationState(null);
-    48 │ 		setTradeMessage(null);
+    38 │ 		setSelectedOutputItem(null);
+    39 │ 	}, [selectedRecipe]);
 
-  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
+  i This dependency can be removed from the list.
 
-    47 │ 		setQuestConversationState(null);
-    48 │ 		setTradeMessage(null);
-  > 49 │ 	}, [npcId]);
-       │ 	    ^^^^^
-    50 │
-    51 │ 	// Get player gold amount
-
-  i React relies on hook dependencies to determine when to re-compute Effects.
-    Specifying more dependencies than required can lead to unnecessary re-rendering
-    and degraded performance.
-
-  i Unsafe fix: Remove the extra dependencies from the list.
-
-    49 │ → },·[npcId]);
-       │       -----
-
-src/ui/components/common/NPCDialog/useNPCDialog.js:268:27 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
-
-  × This hook specifies more dependencies than necessary: itemCatalog.
-
-    266 │ 	);
-    267 │
-  > 268 │ 	const handleNpcItemBuy = useCallback(
-        │ 	                         ^^^^^^^^^^^
-    269 │ 		(_event, item) => {
-    270 │ 			// Try direct item.buy first
-
-  i Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
-
-    320 │ 			});
-    321 │ 		},
-  > 322 │ 		[dispatch, playerGold, playerInventory, itemCatalog],
-        │ 		                                        ^^^^^^^^^^^
-    323 │ 	);
-    324 │
+    37 │ 	useEffect(() => {
+    38 │ 		setSelectedOutputItem(null);
+  > 39 │ 	}, [selectedRecipe]);
+       │ 	    ^^^^^^^^^^^^^^
+    40 │
+    41 │ 	useEffect(() => {
 
   i React relies on hook dependencies to determine when to re-compute Effects.
     Specifying more dependencies than required can lead to unnecessary re-rendering
@@ -403,27 +406,8 @@ src/ui/components/common/NPCDialog/useNPCDialog.js:268:27 lint/correctness/useEx
 
   i Unsafe fix: Remove the extra dependencies from the list.
 
-    322 │ → → [dispatch,·playerGold,·playerInventory,·itemCatalog],
-        │                                           -------------
-
-src/ui/components/common/TradeMessageDialog.js:36:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    34 │ 			}}
-    35 │ 		>
-  > 36 │ 			<div
-       │ 			^^^^
-  > 37 │ 				className="trade-message-content"
-        ...
-  > 43 │ 				}}
-  > 44 │ 			>
-       │ 			^
-    45 │ 				<div className={`trade-message-icon ${type}`}>
-    46 │ 					{type === "success" ? "✓" : "✗"}
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
+    39 │ → },·[selectedRecipe]);
+       │       --------------
 
 src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━
 
@@ -463,6 +447,14 @@ Clone found (javascript):
    src/ui/components/sections/WorkersSection.js [28:11 - 36:3]
 
 Clone found (javascript):
+ - src/ui/components/sections/CraftingSection.js [204:6 - 216:2] (12 lines, 116 tokens)
+   src/ui/components/sections/CraftingSection.js [191:9 - 203:15]
+
+Clone found (javascript):
+ - src/ui/components/sections/CraftingSection.js [257:6 - 269:2] (12 lines, 93 tokens)
+   src/ui/components/sections/CraftingSection.js [241:9 - 253:15]
+
+Clone found (javascript):
  - src/ui/components/display/LogDisplay.js [3:2 - 10:7] (7 lines, 88 tokens)
    src/ui/components/sections/LogSection.js [7:2 - 14:6]
 
@@ -485,23 +477,23 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 129            │ 13229       │ 105738       │ 7            │ 60 (0.45%)       │ 605 (0.57%)       │
+│ javascript │ 133            │ 14398       │ 114995       │ 9            │ 84 (0.58%)       │ 814 (0.71%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 19             │ 4468        │ 26984        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 20             │ 4778        │ 28904        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 157            │ 17847       │ 133676       │ 7            │ 60 (0.34%)       │ 605 (0.45%)       │
+│ Total:     │ 162            │ 19326       │ 144853       │ 9            │ 84 (0.43%)       │ 814 (0.56%)       │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 7 clones.
-Error: ERROR: jscpd found too many duplicates (0.34%) over threshold (0%)
+Found 9 clones.
+Error: ERROR: jscpd found too many duplicates (0.43%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.34%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.43%) over threshold (0%)
 ```
 
 </details>
