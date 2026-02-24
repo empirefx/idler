@@ -337,6 +337,34 @@ export const inventoryData = {
 			},
 		],
 	},
+	grocer: {
+		id: "grocer",
+		npcId: "grocer",
+		type: "npc",
+		maxSlots: 20,
+		items: [
+			{
+				icon: "flour",
+				id: 1143,
+				type: "material",
+				name: "Flour",
+				description: "Ground wheat flour",
+				weight: 1,
+				buy: { gold: 5 },
+				sellable: { gold: 2 },
+			},
+			{
+				icon: "water",
+				id: 1144,
+				type: "material",
+				name: "Water",
+				description: "Fresh water",
+				weight: 1,
+				buy: { gold: 2 },
+				sellable: { gold: 1 },
+			},
+		],
+	},
 };
 
 export const metadata = {

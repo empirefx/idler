@@ -151,6 +151,25 @@ export const npcCatalog = {
 			],
 		},
 	},
+	grocer: {
+		id: "grocer",
+		name: "Martha the Grocer",
+		description: "A friendly woman selling basic food supplies and ingredients.",
+		avatar: 15,
+		location: "village_center",
+		hasInventory: true,
+		dialogue: {
+			initial:
+				"Welcome! I've got fresh supplies for any aspiring baker or cook. Flour, water, and more!",
+			options: [
+				{
+					text: "What do you have for sale?",
+					response:
+						"I sell flour, water, and other basic ingredients. Perfect for baking bread or making pies!",
+				},
+			],
+		},
+	},
 };
 
 export const metadata = {
