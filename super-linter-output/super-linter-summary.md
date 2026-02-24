@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22353877879)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22354028217)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 22.
-Checked 120 files in 1046ms. No fixes applied.
+Checked 120 files in 1052ms. No fixes applied.
 Found 24 errors.
 Found 17 warnings.
 Found 1 info.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
