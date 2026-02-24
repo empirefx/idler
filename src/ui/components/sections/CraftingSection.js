@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 
 import "../../../styles/sections/crafting-section.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
@@ -7,7 +7,8 @@ import { selectKnownRecipes } from "../../../store/slices/playerSlice";
 import { craftingGroups, craftingRecipes } from "../../../data/craftingRecipes";
 import { itemCatalog } from "../../../data/itemCatalog";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
-import { addItem } from "../../../store/slices/inventorySlice";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { playerIntentCraft, CRAFT_SUCCESS, CRAFT_FAILED } from "../../../game/events";
 import Item from "../common/Item";
 
 const groupLabels = {
@@ -22,7 +23,6 @@ const CraftingSection = () => {
 	const { craftingWindow, toggleCraftingWindow } = useUIVisibility();
 	const knownRecipes = useSelector(selectKnownRecipes);
 	const playerInventory = useSelector((state) => selectInventoryById(state, "player"));
-	const dispatch = useDispatch();
 
 	const [selectedGroup, setSelectedGroup] = useState(craftingGroups.FOOD);
 	const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -31,6 +31,24 @@ const CraftingSection = () => {
 	useEffect(() => {
 		setSelectedOutputItem(null);
 	}, [selectedRecipe]);
+
+	useEffect(() => {
+		const handleCraftSuccess = ({ outputItemName }) => {
+			// Handled by CraftingService notification
+		};
+
+		const handleCraftFailed = ({ error }) => {
+			// Handled by CraftingService notification
+		};
+
+		globalEventBus.on(CRAFT_SUCCESS.type, handleCraftSuccess);
+		globalEventBus.on(CRAFT_FAILED.type, handleCraftFailed);
+
+		return () => {
+			globalEventBus.off(CRAFT_SUCCESS.type, handleCraftSuccess);
+			globalEventBus.off(CRAFT_FAILED.type, handleCraftFailed);
+		};
+	}, []);
 
 	const recipesByGroup = useMemo(() => {
 		const grouped = {};
@@ -65,50 +83,37 @@ const CraftingSection = () => {
 		return available;
 	};
 
-	const canCraft = (recipe) => {
-		if (!recipe.materials) return false;
-		const available = checkMaterialsAvailable(recipe.materials);
-		return recipe.materials.every((mat) => available[mat.icon]);
-	};
+	const canCraft = useCallback(
+		(recipe) => {
+			if (!recipe.materials) return false;
+			const isKnown = knownRecipes.includes(recipe.id);
+			if (!isKnown) return false;
+			const available = checkMaterialsAvailable(recipe.materials);
+			return recipe.materials.every((mat) => available[mat.icon]);
+		},
+		[playerMaterials, knownRecipes],
+	);
 
-	const handleCraft = (recipe) => {
-		if (!canCraft(recipe)) return;
-
-		// Remove materials from inventory
-		recipe.materials.forEach((mat) => {
-			const itemDef = itemCatalog[mat.icon];
-			if (itemDef) {
-				dispatch({
-					type: "inventory/removeItem",
-					payload: {
-						inventoryId: "player",
-						itemId: itemDef.id,
-						quantity: mat.quantity,
-					},
-				});
+	const handleCraft = useCallback(
+		(recipe) => {
+			// Double-check recipe is known before emitting craft event
+			const isKnown = knownRecipes.includes(recipe.id);
+			if (!isKnown) {
+				console.log("Cannot craft: recipe not known");
+				return;
 			}
-		});
+			
+			if (!canCraft(recipe)) return;
 
-		// Add crafted item(s) to inventory
-		const output = recipe.output;
-		const itemToCraft = selectedOutputItem || output.variants?.[0] || output.items?.[0] || output.icon;
+			const outputItemId = selectedOutputItem || recipe.output.variants?.[0] || recipe.output.items?.[0] || recipe.output.icon;
 
-		if (itemToCraft) {
-			const item = itemCatalog[itemToCraft];
-			if (item) {
-				dispatch(addItem({ inventoryId: "player", item: { ...item } }));
-			}
-		}
-
-		dispatch({
-			type: "notifications/addNotification",
-			payload: {
-				id: Date.now().toString(),
-				message: `Crafted ${recipe.name}!`,
-				type: "success",
-			},
-		});
-	};
+			globalEventBus.emit(playerIntentCraft.type, {
+				recipeId: recipe.id,
+				outputItemId,
+			});
+		},
+		[canCraft, selectedOutputItem, knownRecipes],
+	);
 
 	if (!craftingWindow) return null;
 

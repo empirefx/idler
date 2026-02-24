@@ -2,11 +2,12 @@ import Logger from "../utils/Logger";
 
 import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice";
 import { InventoryService } from "../services/InventoryService";
+import { CraftingService } from "../services/CraftingService";
 import { createItem } from "../factory/itemFactory";
 import SpawnService from "../services/SpawnService";
 import { EventBusService, globalEventBus } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
-import { workerCreatedItem } from "../events";
+import { workerCreatedItem, playerIntentCraft, playerIntentLearnRecipe } from "../events";
 import GameLoop from "../core/GameLoop";
 import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
@@ -56,6 +57,13 @@ class GameEngine {
 		this.spawnService = SpawnService
 			? new SpawnService(this.eventBusService)
 			: { spawners: {}, currentPlaceId: null };
+		this.craftingService = new CraftingService(
+			this.inventoryService,
+			this.store,
+			this.dispatch,
+			this.eventBusService,
+			this.itemFactory,
+		);
 		this.gameLoop = new GameLoop();
 
 		// Initialize services
@@ -69,6 +77,14 @@ class GameEngine {
 				"spawn",
 			);
 			this.dispatch({ type: "enemies/addEnemy", payload: { placeId, enemy } });
+		});
+
+		this.eventBusService.on(playerIntentCraft.type, ({ recipeId, outputItemId }) => {
+			this.craftingService.craft(recipeId, outputItemId);
+		});
+
+		this.eventBusService.on(playerIntentLearnRecipe.type, ({ recipeId, itemId }) => {
+			this.craftingService.learnRecipe(recipeId, itemId);
 		});
 	}
 
@@ -110,6 +126,10 @@ class GameEngine {
 	// Get inventory for a specific place (vault functionality)
 	getVaultInventory(state, targetPlace) {
 		return this.inventoryService.getInventoryForPlace(state, targetPlace);
+	}
+
+	getCraftingService() {
+		return this.craftingService;
 	}
 
 	// Update game state

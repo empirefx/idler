@@ -219,7 +219,10 @@ export const selectIsPlayerReadyToAttack = createSelector(
 	},
 );
 
-// Selector for known crafting recipes
-export const selectKnownRecipes = (state) => state.player.knownRecipes || [];
+// Selector for known crafting recipes (memoized to avoid unnecessary re-renders)
+export const selectKnownRecipes = createSelector(
+	[(state) => state.player.knownRecipes],
+	(knownRecipes) => knownRecipes || [],
+);
 
 export default playerSlice.reducer;

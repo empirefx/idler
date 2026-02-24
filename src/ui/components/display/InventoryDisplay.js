@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
-import { learnRecipe, selectKnownRecipes } from "../../../store/slices/playerSlice.js";
+import { selectKnownRecipes } from "../../../store/slices/playerSlice.js";
 import MoveItemDialog from "../common/MoveItemDialog";
 import KeyBind from "../common/KeyBind";
 import InventoryGrid from "../common/InventoryGrid";
@@ -12,6 +12,10 @@ import {
 	selectInventoryByPlaceId,
 } from "../../../store/slices/inventorySlice";
 import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { playerIntentLearnRecipe } from "../../../game/events";
+
+const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -53,7 +57,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					dispatch({
 						type: "notifications/addNotification",
 						payload: {
-							id: Date.now().toString(),
+							id: generateId(),
 							message: `You already know the "${item.name}" recipe!`,
 							type: "info",
 						},
@@ -61,26 +65,10 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					return;
 				}
 
-				// Learn the recipe
-				dispatch(learnRecipe(item.recipeId));
-
-				// Remove the recipe item from inventory
-				dispatch({
-					type: "inventory/removeItem",
-					payload: {
-						inventoryId: "player",
-						itemId: item.id,
-						quantity: 1,
-					},
-				});
-
-				dispatch({
-					type: "notifications/addNotification",
-					payload: {
-						id: Date.now().toString(),
-						message: `You learned the "${item.name}" recipe!`,
-						type: "success",
-					},
+				// Emit event to learn the recipe (service handles removal and state update)
+				globalEventBus.emit(playerIntentLearnRecipe.type, {
+					recipeId: item.recipeId,
+					itemId: item.id,
 				});
 				return;
 			}
@@ -104,7 +92,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 						dispatch({
 							type: "notifications/addNotification",
 							payload: {
-								id: Date.now().toString(),
+								id: generateId(),
 								message: `Cannot move "${item.name}" - not enough carry capacity! (Need ${currentWeight + itemWeight - maxWeight} more capacity)`,
 								type: "warning",
 							},
@@ -128,7 +116,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					dispatch({
 						type: "notifications/addNotification",
 						payload: {
-							id: Date.now().toString(),
+							id: generateId(),
 							message: `Failed to move "${item.name}"`,
 							type: "error",
 						},
