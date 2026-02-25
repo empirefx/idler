@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { placesData } from "../../data/places";
 
 const initialState = {
@@ -8,7 +8,6 @@ const initialState = {
 	availableConnections: [],
 };
 
-// Initialize available connections for the initial state
 const currentPlace = placesData[initialState.currentPlaceId];
 if (currentPlace?.connections) {
 	initialState.availableConnections = currentPlace.connections.map(
@@ -19,13 +18,12 @@ if (currentPlace?.connections) {
 	);
 }
 
-// Helper function to update available connections
 const updateAvailableConnections = (state) => {
 	const currentPlace = state[state.currentPlaceId];
 	if (currentPlace?.connections) {
 		state.availableConnections = currentPlace.connections.map((placeId) => ({
 			id: placeId,
-			...state[placeId], // Include all properties from the connected place
+			...state[placeId],
 		}));
 	} else {
 		state.availableConnections = [];
@@ -38,44 +36,70 @@ export const placesSlice = createSlice({
 	reducers: {
 		navigateToPlace: (state, action) => {
 			const placeId = action.payload;
-			// Make sure the place exists and is connected to current place
 			if (
 				state[placeId] &&
 				(state[state.currentPlaceId].connections.includes(placeId) ||
 					placeId === state.currentPlaceId)
 			) {
-				// Save previous place
 				state.previousPlaceId = state.currentPlaceId;
-				// Update current place
 				state.currentPlaceId = placeId;
-				// Mark as visited
 				state[placeId].visited = true;
-				// Update available connections
 				updateAvailableConnections(state);
 			}
 		},
-		// Set entire places state (used for loading saved state)
 		setPlaces: (_state, action) => action.payload,
+		buySocket: (state, action) => {
+			const { placeId, socketIndex } = action.payload;
+			const place = state[placeId];
+			if (place && place.sockets && place.sockets[socketIndex]) {
+				place.sockets[socketIndex].status = "empty";
+			}
+		},
+		buildBuilding: (state, action) => {
+			const { placeId, socketIndex, buildingId } = action.payload;
+			const place = state[placeId];
+			if (place && place.sockets && place.sockets[socketIndex]) {
+				place.sockets[socketIndex] = {
+					status: "occupied",
+					buildingId,
+					level: 1,
+				};
+			}
+		},
+		upgradeBuilding: (state, action) => {
+			const { placeId, socketIndex } = action.payload;
+			const place = state[placeId];
+			if (place && place.sockets && place.sockets[socketIndex]) {
+				const socket = place.sockets[socketIndex];
+				if (socket.status === "occupied") {
+					socket.level = (socket.level || 1) + 1;
+				}
+			}
+		},
+		demolishBuilding: (state, action) => {
+			const { placeId, socketIndex } = action.payload;
+			const place = state[placeId];
+			if (place && place.sockets && place.sockets[socketIndex]) {
+				place.sockets[socketIndex] = { status: "empty" };
+			}
+		},
 	},
 
 	extraReducers: (builder) => {
-		// This will run when the reducer is first created
 		builder.addCase("@@INIT", (state) => {
 			updateAvailableConnections(state);
 		});
 		builder.addMatcher(
 			(action) => action.type === "places/navigateToPlace",
 			(state) => {
-				// Ensure available connections are updated after navigation
 				updateAvailableConnections(state);
 			},
 		);
 	},
 });
 
-export const { navigateToPlace, setPlaces } = placesSlice.actions;
+export const { navigateToPlace, setPlaces, buySocket, buildBuilding, upgradeBuilding, demolishBuilding } = placesSlice.actions;
 
-// Essential selectors
 export const selectCurrentPlace = (state) =>
 	state.places[state.places.currentPlaceId];
 export const selectAvailableConnections = (state) =>
@@ -84,9 +108,21 @@ export const selectBackgroundImage = (state) => {
 	const currentPlace = state.places[state.places.currentPlaceId];
 	return currentPlace ? currentPlace["background-image"] : null;
 };
-export const selectCurrentPlaceBuildings = (state) => {
-	const currentPlace = state.places[state.places.currentPlaceId];
-	return currentPlace ? currentPlace.buildings : [];
-};
+
+export const selectCurrentPlaceSockets = createSelector(
+	[(state) => state.places[state.places.currentPlaceId]],
+	(place) => ({
+		sockets: place?.sockets || [],
+		cost: place?.socketCost || 100,
+	})
+);
+
+export const selectPlaceSocketInfo = (placeId) => createSelector(
+	[(state) => state.places[placeId]],
+	(place) => ({
+		sockets: place?.sockets || [],
+		cost: place?.socketCost || 100,
+	})
+);
 
 export default placesSlice.reducer;

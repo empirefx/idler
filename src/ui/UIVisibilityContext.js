@@ -8,6 +8,7 @@ export const UIVisibilityProvider = ({ children }) => {
 	const [visible, setVisible] = useState({
 		playerCard: false,
 		workerCard: false,
+		buildingPanel: false,
 		npcSection: true,
 		npcDialog: {
 			isOpen: false,
@@ -71,6 +72,18 @@ export const UIVisibilityProvider = ({ children }) => {
 		setVisible((v) => ({ ...v, craftingWindow: !v.craftingWindow }));
 	}, []);
 
+	const toggleBuildingPanel = useCallback(() => {
+		setVisible((v) => ({ ...v, buildingPanel: !v.buildingPanel }));
+	}, []);
+
+	const showBuildingPanel = useCallback(() => {
+		setVisible((v) => ({ ...v, buildingPanel: true }));
+	}, []);
+
+	const hideBuildingPanel = useCallback(() => {
+		setVisible((v) => ({ ...v, buildingPanel: false }));
+	}, []);
+
 	return (
 		<UIVisibilityContext.Provider
 			value={{
@@ -82,6 +95,9 @@ export const UIVisibilityProvider = ({ children }) => {
 				selectNPCOption,
 				closeNPCDialog,
 				toggleCraftingWindow,
+				toggleBuildingPanel,
+				showBuildingPanel,
+				hideBuildingPanel,
 			}}
 		>
 			{children}

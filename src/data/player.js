@@ -17,7 +17,7 @@ export const playerData = {
 		agility: 7,
 		vitality: 12,
 	},
-	resources: [{ name: "gold", amount: 100 }],
+	resources: [{ name: "gold", amount: 1500 }],
 	workers: [
 		{
 			id: 1,

@@ -8,16 +8,21 @@ import {
 	selectAssignedWorkers,
 } from "../../../store/slices/playerSlice";
 import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
-import { selectCurrentPlaceBuildings } from "../../../store/slices/placesSlice";
+import { selectCurrentPlaceSockets } from "../../../store/slices/placesSlice";
 
 const WorkersSection = () => {
 	const { workerCard } = useUIVisibility();
 	const unassigned = useSelector(selectUnassignedWorkers);
 	const assigned = useSelector(selectAssignedWorkers);
 	const buildings = useSelector(selectAllBuildings);
-	const currentBuildings = useSelector(selectCurrentPlaceBuildings);
+	const socketData = useSelector(selectCurrentPlaceSockets);
 
 	if (!workerCard) return null;
+
+	const occupiedSockets = socketData.sockets?.filter(s => s.status === "occupied") || [];
+	const buildingList = occupiedSockets
+		?.map((s) => buildings[s.buildingId])
+		.filter(Boolean) || [];
 
 	return (
 		<section className="workers-section">
@@ -29,7 +34,7 @@ const WorkersSection = () => {
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								buildings={currentBuildings.map((id) => buildings[id])}
+								buildings={buildingList}
 							/>
 						))
 					) : (
@@ -43,7 +48,7 @@ const WorkersSection = () => {
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								buildings={currentBuildings.map((id) => buildings[id])}
+								buildings={buildingList}
 							/>
 						))
 					) : (
