@@ -17,6 +17,8 @@ import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
 import { NavigationService } from "../services/NavigationService";
 import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
+import BuildingService from "../services/BuildingService";
+import { buildingsData } from "../../data/buildings";
 
 /**
  * GameEngine: wires systems + runs game loop
@@ -67,6 +69,12 @@ class GameEngine {
 			this.dispatch,
 			this.eventBusService,
 			this.itemFactory,
+		);
+		this.buildingService = new BuildingService(
+			this.store,
+			this.dispatch,
+			this.eventBusService,
+			buildingsData,
 		);
 		this.gameLoop = new GameLoop();
 

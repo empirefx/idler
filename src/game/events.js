@@ -16,6 +16,14 @@ export const CRAFT_SUCCESS = "game/CRAFT_SUCCESS";
 export const CRAFT_FAILED = "game/CRAFT_FAILED";
 export const RECIPE_LEARNED = "game/RECIPE_LEARNED";
 
+// Building events
+export const PLAYER_INTENT_BUY_SOCKET = "game/PLAYER_INTENT_BUY_SOCKET";
+export const PLAYER_INTENT_BUILD = "game/PLAYER_INTENT_BUILD";
+export const PLAYER_INTENT_UPGRADE = "game/PLAYER_INTENT_UPGRADE";
+export const PLAYER_INTENT_DEMOLISH = "game/PLAYER_INTENT_DEMOLISH";
+export const BUILD_SUCCESS = "game/BUILD_SUCCESS";
+export const BUILD_FAILED = "game/BUILD_FAILED";
+
 // Action creators
 export const workerCreatedItem = (workerId, itemType) => ({
 	type: WORKER_CREATED_ITEM,
@@ -130,4 +138,35 @@ export const craftFailed = (recipeId, error) => ({
 export const recipeLearned = (recipeId) => ({
 	type: RECIPE_LEARNED,
 	payload: { recipeId },
+});
+
+// Building action creators
+export const playerIntentBuySocket = (placeId, socketIndex) => ({
+	type: PLAYER_INTENT_BUY_SOCKET,
+	payload: { placeId, socketIndex },
+});
+
+export const playerIntentBuild = (placeId, socketIndex, buildingId) => ({
+	type: PLAYER_INTENT_BUILD,
+	payload: { placeId, socketIndex, buildingId },
+});
+
+export const playerIntentUpgrade = (placeId, socketIndex) => ({
+	type: PLAYER_INTENT_UPGRADE,
+	payload: { placeId, socketIndex },
+});
+
+export const playerIntentDemolish = (placeId, socketIndex) => ({
+	type: PLAYER_INTENT_DEMOLISH,
+	payload: { placeId, socketIndex },
+});
+
+export const buildSuccess = (action, placeId, socketIndex, details) => ({
+	type: BUILD_SUCCESS,
+	payload: { action, placeId, socketIndex, ...details },
+});
+
+export const buildFailed = (action, placeId, socketIndex, error) => ({
+	type: BUILD_FAILED,
+	payload: { action, placeId, socketIndex, error },
 });

@@ -1,20 +1,24 @@
 import React, { useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import "../../../styles/sections/building-panel.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import BuildingCard from "../card/BuildingCard";
 import BuildingSelector from "../card/BuildingSelector";
+import { globalEventBus } from "../../../game/services/EventBusService";
 import {
 	selectCurrentPlace,
 	selectCurrentPlaceSockets,
 } from "../../../store/slices/placesSlice";
 import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
-import { selectGold, spendGold } from "../../../store/slices/playerSlice";
-import { buySocket, buildBuilding, upgradeBuilding } from "../../../store/slices/placesSlice";
+import { selectGold } from "../../../store/slices/playerSlice";
+import {
+	PLAYER_INTENT_BUY_SOCKET,
+	PLAYER_INTENT_BUILD,
+	PLAYER_INTENT_UPGRADE,
+} from "../../../game/events";
 
 const BuildingPanel = ({ onClose }) => {
-	const dispatch = useDispatch();
 	const { buildingPanel } = useUIVisibility();
 	const currentPlace = useSelector(selectCurrentPlace);
 	const socketData = useSelector(selectCurrentPlaceSockets);
@@ -28,11 +32,8 @@ const BuildingPanel = ({ onClose }) => {
 	const sockets = socketData.sockets || [];
 
 	const handleBuySocket = useCallback((socketIndex) => {
-		if (gold >= socketData.cost) {
-			dispatch(spendGold(socketData.cost));
-			dispatch(buySocket({ placeId, socketIndex }));
-		}
-	}, [dispatch, placeId, gold, socketData]);
+		globalEventBus.emit(PLAYER_INTENT_BUY_SOCKET, { placeId, socketIndex });
+	}, [placeId]);
 
 	const handleBuildClick = useCallback((socketIndex) => {
 		setSelectedSocketIndex(socketIndex);
@@ -41,33 +42,22 @@ const BuildingPanel = ({ onClose }) => {
 
 	const handleSelectBuilding = useCallback(
 		(buildingId) => {
-			const building = allBuildings[buildingId];
-			if (gold >= building.buildCost) {
-				dispatch(spendGold(building.buildCost));
-				dispatch(buildBuilding({ placeId, socketIndex: selectedSocketIndex, buildingId }));
-			}
+			globalEventBus.emit(PLAYER_INTENT_BUILD, { 
+				placeId, 
+				socketIndex: selectedSocketIndex, 
+				buildingId 
+			});
 			setShowBuildingSelector(false);
 			setSelectedSocketIndex(null);
 		},
-		[dispatch, placeId, allBuildings, gold, selectedSocketIndex]
+		[placeId, selectedSocketIndex]
 	);
 
 	const handleUpgrade = useCallback(
 		(socketIndex) => {
-			const socket = sockets[socketIndex];
-			if (!socket || socket.status !== "occupied") return;
-
-			const building = allBuildings[socket.buildingId];
-			const nextLevel = (socket.level || 1) + 1;
-			const upgradeKey = `level${nextLevel}`;
-			const upgrade = building?.upgrades?.[upgradeKey];
-
-			if (upgrade && gold >= upgrade.cost) {
-				dispatch(spendGold(upgrade.cost));
-				dispatch(upgradeBuilding({ placeId, socketIndex }));
-			}
+			globalEventBus.emit(PLAYER_INTENT_UPGRADE, { placeId, socketIndex });
 		},
-		[dispatch, placeId, sockets, allBuildings, gold]
+		[placeId]
 	);
 
 	const lockedCount = sockets.filter(s => s.status === "locked").length;
