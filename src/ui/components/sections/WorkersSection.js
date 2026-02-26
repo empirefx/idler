@@ -7,22 +7,50 @@ import {
 	selectUnassignedWorkers,
 	selectAssignedWorkers,
 } from "../../../store/slices/playerSlice";
-import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
 import { selectCurrentPlaceSockets } from "../../../store/slices/placesSlice";
+import { buildingsData } from "../../../data/buildings";
+import { itemCatalog } from "../../../data/itemCatalog";
 
 const WorkersSection = () => {
 	const { workerCard } = useUIVisibility();
 	const unassigned = useSelector(selectUnassignedWorkers);
 	const assigned = useSelector(selectAssignedWorkers);
-	const buildings = useSelector(selectAllBuildings);
 	const socketData = useSelector(selectCurrentPlaceSockets);
 
 	if (!workerCard) return null;
 
 	const occupiedSockets = socketData.sockets?.filter(s => s.status === "occupied") || [];
-	const buildingList = occupiedSockets
-		?.map((s) => buildings[s.buildingId])
-		.filter(Boolean) || [];
+	const occupiedSocketIndexes = occupiedSockets.map((_, idx) => idx);
+
+	const assignedSocketIndexes = assigned
+		.map(w => w.assignedSocketIndex)
+		.filter(idx => idx !== null && idx !== undefined);
+
+	const availableSocketIndexes = occupiedSocketIndexes.filter(
+		idx => !assignedSocketIndexes.includes(idx)
+	);
+
+	const getSocketMaterials = (socketIndex) => {
+		const socket = occupiedSockets[socketIndex];
+		if (!socket || !socket.buildingId) return [];
+
+		const building = buildingsData[socket.buildingId];
+		if (!building?.upgrades) return [];
+
+		const materials = [];
+		for (let level = 1; level <= socket.level; level++) {
+			const upgrade = building.upgrades[`level${level}`];
+			if (upgrade?.material) {
+				const item = itemCatalog[upgrade.material];
+				materials.push({
+					material: upgrade.material,
+					icon: item?.icon || upgrade.material,
+					level,
+				});
+			}
+		}
+		return materials;
+	};
 
 	return (
 		<section className="workers-section">
@@ -34,25 +62,29 @@ const WorkersSection = () => {
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								buildings={buildingList}
+								availableSocketIndexes={availableSocketIndexes}
+								occupiedSockets={occupiedSockets}
+								getSocketMaterials={getSocketMaterials}
 							/>
 						))
 					) : (
 						<div className="no-workers-message">No workers available</div>
 					)}
 				</div>
-				<h3>Assigned</h3>
+				{assigned.length > 0 && (<h3>Assigned</h3>)}
 				<div className="workers-list">
 					{assigned.length > 0 ? (
 						assigned.map((w) => (
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								buildings={buildingList}
+								occupiedSockets={occupiedSockets}
+								getSocketMaterials={getSocketMaterials}
+								isAssigned={true}
 							/>
 						))
 					) : (
-						<div className="no-workers-message">Currently no workers</div>
+						<div className="no-workers-message">No assigned workers</div>
 					)}
 				</div>
 			</div>
