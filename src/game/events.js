@@ -170,3 +170,78 @@ export const buildFailed = (action, placeId, socketIndex, error) => ({
 	type: BUILD_FAILED,
 	payload: { action, placeId, socketIndex, error },
 });
+
+// Worker management events
+export const PLAYER_INTENT_HIRE_WORKER = "game/PLAYER_INTENT_HIRE_WORKER";
+export const PLAYER_INTENT_REROLL_WORKERS = "game/PLAYER_INTENT_REROLL_WORKERS";
+export const PLAYER_INTENT_BUY_WORKER_SLOT = "game/PLAYER_INTENT_BUY_WORKER_SLOT";
+export const PLAYER_INTENT_FIRE_WORKER = "game/PLAYER_INTENT_FIRE_WORKER";
+export const WORKER_HIRED = "game/WORKER_HIRED";
+export const WORKER_REROLLED = "game/WORKER_REROLLED";
+export const WORKER_SLOT_PURCHASED = "game/WORKER_SLOT_PURCHASED";
+export const WORKER_FIRED = "game/WORKER_FIRED";
+export const WORKER_HIRE_FAILED = "game/WORKER_HIRE_FAILED";
+export const WORKER_REROLL_FAILED = "game/WORKER_REROLL_FAILED";
+export const WORKER_SLOT_FAILED = "game/WORKER_SLOT_FAILED";
+export const WORKER_FIRE_FAILED = "game/WORKER_FIRE_FAILED";
+
+// Action creators for worker management
+export const playerIntentHireWorker = (workerId) => ({
+	type: PLAYER_INTENT_HIRE_WORKER,
+	payload: { workerId },
+});
+
+export const playerIntentRerollWorkers = () => ({
+	type: PLAYER_INTENT_REROLL_WORKERS,
+	payload: {},
+});
+
+export const playerIntentBuyWorkerSlot = () => ({
+	type: PLAYER_INTENT_BUY_WORKER_SLOT,
+	payload: {},
+});
+
+export const playerIntentFireWorker = (workerId) => ({
+	type: PLAYER_INTENT_FIRE_WORKER,
+	payload: { workerId },
+});
+
+export const workerHired = (worker) => ({
+	type: WORKER_HIRED,
+	payload: { worker },
+});
+
+export const workerRerolled = (availableWorkers) => ({
+	type: WORKER_REROLLED,
+	payload: { availableWorkers },
+});
+
+export const workerSlotPurchased = (newSlotCount) => ({
+	type: WORKER_SLOT_PURCHASED,
+	payload: { newSlotCount },
+});
+
+export const workerFired = (workerId, workerName) => ({
+	type: WORKER_FIRED,
+	payload: { workerId, workerName },
+});
+
+export const workerHireFailed = (error) => ({
+	type: WORKER_HIRE_FAILED,
+	payload: { error },
+});
+
+export const workerRerollFailed = (error) => ({
+	type: WORKER_REROLL_FAILED,
+	payload: { error },
+});
+
+export const workerSlotFailed = (error) => ({
+	type: WORKER_SLOT_FAILED,
+	payload: { error },
+});
+
+export const workerFireFailed = (error) => ({
+	type: WORKER_FIRE_FAILED,
+	payload: { error },
+});

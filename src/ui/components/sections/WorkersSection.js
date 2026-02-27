@@ -4,34 +4,35 @@ import "../../../styles/sections/workers-section.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import WorkerCard from "../card/WorkerCard";
 import {
-	selectUnassignedWorkers,
-	selectAssignedWorkers,
+	selectWorkers,
 } from "../../../store/slices/playerSlice";
-import { selectCurrentPlaceSockets } from "../../../store/slices/placesSlice";
+import { selectCurrentPlaceSockets, selectCurrentPlaceId } from "../../../store/slices/placesSlice";
 import { buildingsData } from "../../../data/buildings";
 import { itemCatalog } from "../../../data/itemCatalog";
 
 const WorkersSection = () => {
 	const { workerCard } = useUIVisibility();
-	const unassigned = useSelector(selectUnassignedWorkers);
-	const assigned = useSelector(selectAssignedWorkers);
+	const workers = useSelector(selectWorkers);
 	const socketData = useSelector(selectCurrentPlaceSockets);
+	const currentPlaceId = useSelector(selectCurrentPlaceId);
 
 	if (!workerCard) return null;
 
-	const occupiedSockets = socketData.sockets?.filter(s => s.status === "occupied") || [];
-	const occupiedSocketIndexes = occupiedSockets.map((_, idx) => idx);
+	const occupiedSocketIndexes = socketData.sockets
+		?.map((socket, idx) => socket.status === "occupied" ? idx : -1)
+		.filter(idx => idx !== -1) || [];
 
-	const assignedSocketIndexes = assigned
-		.map(w => w.assignedSocketIndex)
+	const assignedSocketIndexesForPlace = workers
+		.filter(w => w.assignments && w.assignments[currentPlaceId])
+		.map(w => w.assignments[currentPlaceId].socketIndex)
 		.filter(idx => idx !== null && idx !== undefined);
 
 	const availableSocketIndexes = occupiedSocketIndexes.filter(
-		idx => !assignedSocketIndexes.includes(idx)
+		idx => !assignedSocketIndexesForPlace.includes(idx)
 	);
 
 	const getSocketMaterials = (socketIndex) => {
-		const socket = occupiedSockets[socketIndex];
+		const socket = socketData.sockets?.[socketIndex];
 		if (!socket || !socket.buildingId) return [];
 
 		const building = buildingsData[socket.buildingId];
@@ -52,6 +53,13 @@ const WorkersSection = () => {
 		return materials;
 	};
 
+	const hasAnyAssignment = (worker) => {
+		return worker.assignments && Object.keys(worker.assignments).length > 0;
+	};
+
+	const assigned = workers.filter(w => hasAnyAssignment(w));
+	const unassigned = workers.filter(w => !hasAnyAssignment(w));
+
 	return (
 		<section className="workers-section">
 			<h2>Workers</h2>
@@ -62,8 +70,10 @@ const WorkersSection = () => {
 							<WorkerCard
 								key={w.id}
 								worker={w}
+								placeId={currentPlaceId}
 								availableSocketIndexes={availableSocketIndexes}
-								occupiedSockets={occupiedSockets}
+								occupiedSocketIndexes={occupiedSocketIndexes}
+								socketData={socketData}
 								getSocketMaterials={getSocketMaterials}
 							/>
 						))
@@ -78,7 +88,9 @@ const WorkersSection = () => {
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								occupiedSockets={occupiedSockets}
+								placeId={currentPlaceId}
+								occupiedSocketIndexes={occupiedSocketIndexes}
+								socketData={socketData}
 								getSocketMaterials={getSocketMaterials}
 								isAssigned={true}
 							/>

@@ -71,6 +71,10 @@
 	color: black;
 }
 
+.worker-avatar {
+	display: flex;
+}
+
 .worker-avatar img {
 	border-radius: 50%;
 }
@@ -102,8 +106,11 @@
 	border-radius: 5px;
 }
 
-.worker-card.assigned {
+.worker-card.assigned .worker-materials{
 	background: var(--color-light);
+	align-self: center;
+	width: auto;
+	gap:0px;
 }
 
 .worker-card.assigned .worker-materials > div {

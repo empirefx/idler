@@ -19,65 +19,83 @@ const WorkerAvatar = ({ avatar, name, bgClass }) => (
   </div>
 );
 
-const WorkerInfo = ({ name }) => (
-  <div className="worker-info">
-    <p>{name}</p>
-  </div>
-);
+const WorkerInfo = ({ name }) => {
+  const firstName = name ? name.split(" ")[0] : name;
+  return (
+    <div className="worker-info">
+      <p>{firstName}</p>
+    </div>
+  );
+};
 
 const WorkerCard = ({
   worker,
+  placeId,
   availableSocketIndexes,
-  occupiedSockets,
+  occupiedSocketIndexes,
+  socketData,
   getSocketMaterials,
   isAssigned = false,
 }) => {
   const dispatch = useDispatch();
 
   const handleMaterialClick = useCallback(
-    (socketIndex, material) => {
-      if (isAssigned && worker.assignedSocketIndex === socketIndex && worker.assignedMaterial === material) {
-        dispatch(unassignWorkerFromSocketWithEvent(worker.id));
-      } else if (!isAssigned) {
-        dispatch(assignWorkerToSocketWithEvent(worker.id, socketIndex, material));
+    (socketIndex, material, assignmentPlaceId) => {
+      if (isAssigned) {
+        dispatch(unassignWorkerFromSocketWithEvent(worker.id, assignmentPlaceId));
+      } else {
+        dispatch(assignWorkerToSocketWithEvent(worker.id, placeId, socketIndex, material));
       }
     },
-    [dispatch, worker, isAssigned]
+    [dispatch, worker, isAssigned, placeId]
   );
 
   const materials = useMemo(() => {
-    if (isAssigned && worker.assignedMaterial) {
-      const item = itemCatalog[worker.assignedMaterial];
-      return [{
-        socketIndex: worker.assignedSocketIndex,
-        mat: {
-          material: worker.assignedMaterial,
-          icon: item?.icon || worker.assignedMaterial,
-        },
-      }];
+    if (isAssigned && worker.assignments) {
+      const assignments = Object.entries(worker.assignments);
+      if (assignments.length > 0) {
+        const [assignmentPlaceId, assignment] = assignments[0];
+        const item = itemCatalog[assignment.material];
+        return [{
+          socketIndex: assignment.socketIndex,
+          mat: {
+            material: assignment.material,
+            icon: item?.icon || assignment.material,
+          },
+          assignmentPlaceId,
+        }];
+      }
+    }
+    
+    if (!availableSocketIndexes || availableSocketIndexes.length === 0) {
+      return [];
     }
     return availableSocketIndexes.flatMap((socketIndex) =>
       getSocketMaterials(socketIndex).map((mat) => ({ socketIndex, mat }))
     );
-  }, [isAssigned, worker, availableSocketIndexes, getSocketMaterials]);
+  }, [isAssigned, worker, placeId, availableSocketIndexes, getSocketMaterials, socketData]);
 
   return (
     <div className={`worker-card${isAssigned ? " assigned" : ""}`}>
       <WorkerAvatar avatar={worker.avatar} name={worker.name} bgClass={isAssigned ? "bg-red" : "bg-green"} />
       <WorkerInfo name={worker.name} />
-      <span>{isAssigned ? "Working on ⏷" : "Select material ⏷"}</span>
+      {(isAssigned || materials.length > 0) && (
+      <span>{isAssigned ? "Working on ⏵ " : "Select material ⏷"}</span>
+      )}
+      {materials.length > 0 && (
       <div className="worker-materials">
-        {materials.map(({ socketIndex, mat }) => (
+        {materials.map(({ socketIndex, mat, assignmentPlaceId }) => (
           <Item
             key={`${socketIndex}-${mat.material}`}
             item={{ icon: mat.icon, name: mat.material }}
             showItemInfo={false}
-            onClick={() => handleMaterialClick(socketIndex, mat.material)}
+            onClick={() => handleMaterialClick(socketIndex, mat.material, assignmentPlaceId)}
           />
         ))}
       </div>
+      )}
     </div>
   );
 };
 
-export default React.memo(WorkerCard);
+export default WorkerCard;

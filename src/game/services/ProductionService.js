@@ -11,7 +11,7 @@ export default class ProductionService {
 
 	processBuildingProduction(placeId, socketIndex, buildingData, state, _deltaTime) {
 		try {
-			const worker = this.getWorkerBySocketIndex(state, socketIndex);
+			const worker = this.getWorkerByPlaceAndSocket(state, placeId, socketIndex);
 
 			if (!worker) {
 				Logger.log(
@@ -22,9 +22,10 @@ export default class ProductionService {
 				return;
 			}
 
-			if (!worker.assignedMaterial) {
+			const assignment = worker.assignments[placeId];
+			if (!assignment || !assignment.material) {
 				Logger.log(
-					`Worker ${worker.name} has no material assigned at socket ${socketIndex}`,
+					`Worker ${worker.name} has no material assigned at socket ${socketIndex} in ${placeId}`,
 					1,
 					"production",
 				);
@@ -32,7 +33,7 @@ export default class ProductionService {
 			}
 
 			const productionRate = buildingData.baseProductionRate || 1;
-			const productionType = worker.assignedMaterial;
+			const productionType = assignment.material;
 			const item = this.itemFactory(productionType, productionRate);
 
 			if (!item) {
@@ -63,14 +64,22 @@ export default class ProductionService {
 		}
 	}
 
-	getWorkerBySocketIndex(state, socketIndex) {
+	getWorkerByPlaceAndSocket(state, placeId, socketIndex) {
 		const workers = state.player?.workers || [];
-		return workers.find((worker) => Number(worker.assignedSocketIndex) === socketIndex);
+		return workers.find((worker) => 
+			worker.assignments && 
+			worker.assignments[placeId] && 
+			worker.assignments[placeId].socketIndex === socketIndex
+		);
 	}
 
-	getWorkersBySocketIndex(state, socketIndex) {
+	getWorkersByPlaceAndSocket(state, placeId, socketIndex) {
 		const workers = state.player?.workers || [];
-		return workers.filter((worker) => Number(worker.assignedSocketIndex) === socketIndex);
+		return workers.filter((worker) => 
+			worker.assignments && 
+			worker.assignments[placeId] && 
+			worker.assignments[placeId].socketIndex === socketIndex
+		);
 	}
 
 	findClosestPlaceWithInventory(currentPlaceId, state) {
@@ -107,8 +116,9 @@ export default class ProductionService {
 		return inventory.village_center ? "village_center" : currentPlaceId;
 	}
 
-	canBuildingProduce(state, socketIndex, buildingData) {
-		const worker = this.getWorkerBySocketIndex(state, socketIndex);
-		return worker && worker.assignedMaterial && (buildingData.baseProductionRate || 0) > 0;
+	canBuildingProduce(state, placeId, socketIndex, buildingData) {
+		const worker = this.getWorkerByPlaceAndSocket(state, placeId, socketIndex);
+		const assignment = worker?.assignments?.[placeId];
+		return assignment && assignment.material && (buildingData.baseProductionRate || 0) > 0;
 	}
 }

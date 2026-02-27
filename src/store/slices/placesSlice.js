@@ -100,6 +100,7 @@ export const placesSlice = createSlice({
 
 export const { navigateToPlace, setPlaces, buySocket, buildBuilding, upgradeBuilding, demolishBuilding } = placesSlice.actions;
 
+export const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 export const selectCurrentPlace = (state) =>
 	state.places[state.places.currentPlaceId];
 export const selectAvailableConnections = (state) =>

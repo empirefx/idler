@@ -1,6 +1,5 @@
 import Logger from "../utils/Logger";
 
-import { selectAssignedWorkers } from "../../store/slices/playerSlice";
 import { InventoryService } from "../services/InventoryService";
 import { CraftingService } from "../services/CraftingService";
 import { createItem } from "../factory/itemFactory";
@@ -18,6 +17,7 @@ import { SaveService } from "../services/SaveService";
 import { NavigationService } from "../services/NavigationService";
 import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
 import BuildingService from "../services/BuildingService";
+import WorkerService from "../services/WorkerService";
 import { buildingsData } from "../../data/buildings";
 
 /**
@@ -75,6 +75,11 @@ class GameEngine {
 			this.dispatch,
 			this.eventBusService,
 			buildingsData,
+		);
+		this.workerService = new WorkerService(
+			this.store,
+			this.dispatch,
+			this.eventBusService,
 		);
 		this.gameLoop = new GameLoop();
 
@@ -148,35 +153,31 @@ class GameEngine {
 
 	// Update game state
 	update(state, deltaTime) {
-		const currentState = state;
-		const currentPlaceId = currentState.places.currentPlaceId;
-		const currentPlace = currentState.places[currentPlaceId];
+		const places = state.places;
+		const placeIds = Object.keys(places).filter(id => id !== 'currentPlaceId' && id !== 'previousPlaceId' && id !== 'availableConnections' && places[id]?.sockets);
 
-		if (!currentPlace || !currentPlace.sockets) return;
+		placeIds.forEach((placeId) => {
+			const place = places[placeId];
+			if (!place || !place.sockets) return;
 
-		const assignedWorkers = selectAssignedWorkers(currentState);
-		const assignedSocketIndexes = assignedWorkers
-			.map(w => Number(w.assignedSocketIndex))
-			.filter(idx => !isNaN(idx));
+			place.sockets.forEach((socket, socketIndex) => {
+				if (socket.status !== "occupied") return;
 
-		currentPlace.sockets.forEach((socket, socketIndex) => {
-			if (socket.status !== "occupied") return;
-			if (!assignedSocketIndexes.includes(socketIndex)) return;
+				const buildingData = buildingsData[socket.buildingId];
+				if (!buildingData) return;
 
-			const buildingData = buildingsData[socket.buildingId];
-			if (!buildingData) return;
+				const hasProduction = (buildingData.baseProductionRate || 0) > 0;
 
-			const hasProduction = (buildingData.baseProductionRate || 0) > 0;
-
-			if (hasProduction) {
-				this.productionService.processBuildingProduction(
-					currentPlaceId,
-					socketIndex,
-					buildingData,
-					currentState,
-					deltaTime,
-				);
-			}
+				if (hasProduction) {
+					this.productionService.processBuildingProduction(
+						placeId,
+						socketIndex,
+						buildingData,
+						state,
+						deltaTime,
+					);
+				}
+			});
 		});
 	}
 

@@ -7,8 +7,8 @@ export const playerData = {
 	baseAttack: 16,
 	health: 120,
 	attack: 16,
-	attackCooldown: 2000, // Time in milliseconds between player attacks
-	lastAttackTime: 0, // Timestamp of last player attack
+	attackCooldown: 2000,
+	lastAttackTime: 0,
 	level: 1,
 	exp: 0,
 	stats: {
@@ -18,29 +18,12 @@ export const playerData = {
 		vitality: 12,
 	},
 	resources: [{ name: "gold", amount: 1500 }],
-	workers: [
-		{
-			id: 1,
-			name: "Milo Bladovan",
-			avatar: "worker_m.jpg",
-			assignedBuildingId: null,
-		},
-		{
-			id: 2,
-			name: "Silik Ludorin",
-			avatar: "worker_f.jpg",
-			assignedBuildingId: null,
-		},
-		{
-			id: 3,
-			name: "Kresibrin Dobronimir",
-			avatar: "worker_m.jpg",
-			assignedBuildingId: null,
-		},
-	],
+	workers: [],
+	workerSlots: 1,
+	availableWorkers: [],
 };
 
 export const metadata = {
-	version: "1.0.13",
-	lastUpdated: "2026-02-16",
+	version: "1.0.14",
+	lastUpdated: "2026-02-27",
 };

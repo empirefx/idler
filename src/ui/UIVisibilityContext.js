@@ -16,6 +16,7 @@ export const UIVisibilityProvider = ({ children }) => {
 			selectedOption: null,
 		},
 		craftingWindow: false,
+		workerManagerWindow: false,
 	});
 
 	// Toggle functions
@@ -84,6 +85,18 @@ export const UIVisibilityProvider = ({ children }) => {
 		setVisible((v) => ({ ...v, buildingPanel: false }));
 	}, []);
 
+	const toggleWorkerManagerWindow = useCallback(() => {
+		setVisible((v) => ({ ...v, workerManagerWindow: !v.workerManagerWindow }));
+	}, []);
+
+	const openWorkerManagerWindow = useCallback(() => {
+		setVisible((v) => ({ ...v, workerManagerWindow: true }));
+	}, []);
+
+	const closeWorkerManagerWindow = useCallback(() => {
+		setVisible((v) => ({ ...v, workerManagerWindow: false }));
+	}, []);
+
 	return (
 		<UIVisibilityContext.Provider
 			value={{
@@ -98,6 +111,9 @@ export const UIVisibilityProvider = ({ children }) => {
 				toggleBuildingPanel,
 				showBuildingPanel,
 				hideBuildingPanel,
+				toggleWorkerManagerWindow,
+				openWorkerManagerWindow,
+				closeWorkerManagerWindow,
 			}}
 		>
 			{children}
