@@ -3,42 +3,30 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { playerData } from "../../data/player";
 import { workerAssigned, workerUnassigned } from "../../game/events";
 
-// Thunks for worker operations that also emit events
-export const assignWorkerToBuildingWithEvent = (
-	workerId,
-	buildingId,
-	buildingName,
-) => {
+export const assignWorkerToSocketWithEvent = (workerId, socketIndex, material) => {
 	return (dispatch, getState) => {
-		// First dispatch the original action to update state
-		dispatch(assignWorkerToBuilding({ workerId, buildingId, buildingName }));
+		dispatch(assignWorkerToSocket({ workerId, socketIndex, material }));
 
-		// Then dispatch the event for logging
 		const state = getState();
 		const worker = state.player.workers.find((w) => w.id === workerId);
 		if (worker) {
-			dispatch(workerAssigned(workerId, worker.name, buildingId, buildingName));
+			dispatch(workerAssigned(workerId, worker.name, `socket_${socketIndex}`, material));
 		}
 	};
 };
 
-export const unassignWorkerWithEvent = (workerId, buildingName) => {
+export const unassignWorkerFromSocketWithEvent = (workerId) => {
 	return (dispatch, getState) => {
-		// First dispatch the original action to update state
-		dispatch(unassignWorker({ workerId, buildingName }));
-
-		// Then dispatch the event for logging
 		const state = getState();
 		const worker = state.player.workers.find((w) => w.id === workerId);
-		if (worker) {
-			dispatch(
-				workerUnassigned(
-					workerId,
-					worker.name,
-					worker.assignedBuildingId,
-					buildingName,
-				),
-			);
+		const socketIndex = worker?.assignedSocketIndex;
+		const material = worker?.assignedMaterial;
+		const workerName = worker?.name;
+
+		dispatch(unassignWorkerFromSocket({ workerId }));
+
+		if (workerName !== undefined) {
+			dispatch(workerUnassigned(workerId, workerName, `socket_${socketIndex}`, material));
 		}
 	};
 };
@@ -49,30 +37,22 @@ export const playerSlice = createSlice({
 	name: "player",
 	initialState,
 	reducers: {
-		unassignWorker: (state, action) => {
-			const { workerId, buildingName } = action.payload;
+		assignWorkerToSocket: (state, action) => {
+			const { workerId, socketIndex, material } = action.payload;
 			const worker = state.workers.find((worker) => worker.id === workerId);
 			if (worker) {
-				const previousBuildingId = worker.assignedBuildingId;
-				worker.assignedBuildingId = null; // Set to null rather than removing the worker
-
-				// Add building info to action for logging
-				action.payload.buildingId = previousBuildingId;
-				action.payload.buildingName = buildingName || previousBuildingId;
+				worker.assignedSocketIndex = socketIndex;
+				worker.assignedMaterial = material;
 				action.payload.workerName = worker.name;
 			}
 		},
-		assignWorkerToBuilding: (state, action) => {
-			const { workerId, buildingId, buildingName } = action.payload;
+		unassignWorkerFromSocket: (state, action) => {
+			const { workerId } = action.payload;
 			const worker = state.workers.find((worker) => worker.id === workerId);
 			if (worker) {
-				const previousBuildingId = worker.assignedBuildingId;
-				worker.assignedBuildingId = buildingId;
-
-				// Add worker info to action for logging
+				worker.assignedSocketIndex = null;
+				worker.assignedMaterial = null;
 				action.payload.workerName = worker.name;
-				action.payload.buildingName = buildingName || buildingId;
-				action.payload.previousBuildingId = previousBuildingId;
 			}
 		},
 		// Apply damage to player health
@@ -142,8 +122,8 @@ export const playerSlice = createSlice({
 
 // Action creators
 export const {
-	unassignWorker,
-	assignWorkerToBuilding,
+	assignWorkerToSocket,
+	unassignWorkerFromSocket,
 	damagePlayer,
 	healPlayer,
 	setPlayerState,
@@ -176,20 +156,13 @@ export const selectPlayer = createSelector(
 		resources: player.resources,
 	}),
 );
-export const listBuildingsWithAssignedWorkers = createSelector(
-	[selectWorkers],
-	(workers) =>
-		workers
-			.filter((worker) => worker.assignedBuildingId)
-			.map((worker) => worker.assignedBuildingId),
-);
 export const selectAssignedWorkers = createSelector(
 	[selectWorkers],
-	(workers) => workers.filter((worker) => worker.assignedBuildingId),
+	(workers) => workers.filter((worker) => worker.assignedSocketIndex !== null && worker.assignedSocketIndex !== undefined),
 );
 export const selectUnassignedWorkers = createSelector(
 	[selectWorkers],
-	(workers) => workers.filter((worker) => !worker.assignedBuildingId),
+	(workers) => workers.filter((worker) => worker.assignedSocketIndex === null || worker.assignedSocketIndex === undefined),
 );
 
 // Centralized selectors for player resources and workers

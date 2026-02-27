@@ -1,6 +1,6 @@
 import Logger from "../utils/Logger";
 
-import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice";
+import { selectAssignedWorkers } from "../../store/slices/playerSlice";
 import { InventoryService } from "../services/InventoryService";
 import { CraftingService } from "../services/CraftingService";
 import { createItem } from "../factory/itemFactory";
@@ -107,33 +107,29 @@ class GameEngine {
 	}
 
 	// Process production for a single building
-	processBuildingProduction(buildingId, building, state, deltaTime) {
+	processBuildingProduction(placeId, socketIndex, buildingData, state, deltaTime) {
 		this.productionService.processBuildingProduction(
-			buildingId,
-			building,
+			placeId,
+			socketIndex,
+			buildingData,
 			state,
 			deltaTime,
 		);
 	}
 
 	// Get workers assigned to a specific building
-	getAssignedWorkers(state, buildingId) {
-		return this.productionService.getAssignedWorkers(state, buildingId);
+	getAssignedWorkersBySocketIndex(state, socketIndex) {
+		return this.productionService.getWorkersBySocketIndex(state, socketIndex);
 	}
 
 	// Calculate production rate for a building
-	calculateProductionRate(building, state) {
-		return this.productionService.calculateProductionRate(building, state);
+	calculateProductionRate(buildingData, state) {
+		return buildingData.baseProductionRate || 0;
 	}
 
 	// Validate that a building can produce
-	canBuildingProduce(state, buildingId) {
-		return this.productionService.canBuildingProduce(state, buildingId);
-	}
-
-	// Get all production calculations for UI purposes
-	getAllProductionCalculations(state) {
-		return this.productionService.getAllProductionCalculations(state);
+	canBuildingProduce(state, socketIndex, buildingData) {
+		return this.productionService.canBuildingProduce(state, socketIndex, buildingData);
 	}
 
 	// Add an item to a place's inventory handled by InventoryService
@@ -153,21 +149,30 @@ class GameEngine {
 	// Update game state
 	update(state, deltaTime) {
 		const currentState = state;
-		const buildingsWithAssignedWorkers =
-			listBuildingsWithAssignedWorkers(currentState);
+		const currentPlaceId = currentState.places.currentPlaceId;
+		const currentPlace = currentState.places[currentPlaceId];
 
-		// Update resources based on building production (now handled by ProductionService)
-		Object.entries(currentState.buildings).forEach(([buildingId, building]) => {
-			const hasWorkers = buildingsWithAssignedWorkers.includes(buildingId);
-			const hasProduction =
-				(building.calculateProduction
-					? building.calculateProduction()
-					: building.baseProductionRate || 0) > 0;
+		if (!currentPlace || !currentPlace.sockets) return;
 
-			if (hasWorkers && hasProduction) {
+		const assignedWorkers = selectAssignedWorkers(currentState);
+		const assignedSocketIndexes = assignedWorkers
+			.map(w => Number(w.assignedSocketIndex))
+			.filter(idx => !isNaN(idx));
+
+		currentPlace.sockets.forEach((socket, socketIndex) => {
+			if (socket.status !== "occupied") return;
+			if (!assignedSocketIndexes.includes(socketIndex)) return;
+
+			const buildingData = buildingsData[socket.buildingId];
+			if (!buildingData) return;
+
+			const hasProduction = (buildingData.baseProductionRate || 0) > 0;
+
+			if (hasProduction) {
 				this.productionService.processBuildingProduction(
-					buildingId,
-					building,
+					currentPlaceId,
+					socketIndex,
+					buildingData,
 					currentState,
 					deltaTime,
 				);

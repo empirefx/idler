@@ -9,45 +9,30 @@ export default class ProductionService {
 		this.events = events;
 	}
 
-	// Process production for a specific building
-	processBuildingProduction(buildingId, building, state, _deltaTime) {
+	processBuildingProduction(placeId, socketIndex, buildingData, state, _deltaTime) {
 		try {
-			// Check if building has assigned workers
-			const assignedWorkers = this.getAssignedWorkers(state, buildingId);
+			const worker = this.getWorkerBySocketIndex(state, socketIndex);
 
-			if (assignedWorkers.length === 0) {
+			if (!worker) {
 				Logger.log(
-					`No workers assigned to ${buildingId}, skipping production`,
+					`Worker not found for socket ${socketIndex} at ${placeId}, skipping production`,
 					1,
 					"production",
 				);
 				return;
 			}
 
-			// Calculate production rate
-			const productionRate = this.calculateProductionRate(building, state);
-
-			if (productionRate <= 0) {
+			if (!worker.assignedMaterial) {
 				Logger.log(
-					`Building ${buildingId} has zero production rate, skipping production`,
+					`Worker ${worker.name} has no material assigned at socket ${socketIndex}`,
 					1,
 					"production",
 				);
 				return;
 			}
 
-			// Get production type
-			const productionType = building.productionType;
-			if (!productionType) {
-				Logger.log(
-					`Building ${buildingId} has no productionType, skipping production`,
-					1,
-					"production",
-				);
-				return;
-			}
-
-			// Create item using itemFactory
+			const productionRate = buildingData.baseProductionRate || 1;
+			const productionType = worker.assignedMaterial;
 			const item = this.itemFactory(productionType, productionRate);
 
 			if (!item) {
@@ -59,75 +44,43 @@ export default class ProductionService {
 				return;
 			}
 
-			// Get building's location from place data
-			const buildingPlaceId =
-				this.getBuildingPlaceId(buildingId, state) || "village_center";
+			const targetPlaceId = this.findClosestPlaceWithInventory(placeId, state);
 
-			// Find the closest place with available inventory
-			const targetPlaceId = this.findClosestPlaceWithInventory(
-				buildingPlaceId,
-				state,
-			);
-
-			// Add item to inventory at the closest available place
 			this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
 
-			// Emit workerCreatedItem event using Redux dispatch
 			if (this.dispatch) {
-				// Emit event for each worker that produced the item
-				assignedWorkers.forEach((worker) => {
-					const { workerCreatedItem } = require("../events");
-					this.dispatch(workerCreatedItem(worker.id, item.type));
-				});
+				const { workerCreatedItem } = require("../events");
+				this.dispatch(workerCreatedItem(worker.id, item.type));
 			}
 
-			const locationText =
-				targetPlaceId === buildingPlaceId
-					? "at"
-					: `sent to ${targetPlaceId} from`;
-			Logger.log(
-				`Produced ${productionRate}x ${productionType} ${locationText} ${buildingId} with ${assignedWorkers.length} workers`,
-				0,
-				"production",
-			);
 		} catch (error) {
 			console.error("Failed to create item during production", error);
 			Logger.log(
-				`Production failed for ${buildingId}: ${error.message}`,
+				`Production failed for socket ${socketIndex} at ${placeId}: ${error.message}`,
 				2,
 				"production",
 			);
 		}
 	}
 
-	// Get workers assigned to a specific building
-	getAssignedWorkers(state, buildingId) {
+	getWorkerBySocketIndex(state, socketIndex) {
 		const workers = state.player?.workers || [];
-		return workers.filter((worker) => worker.assignedBuildingId === buildingId);
+		return workers.find((worker) => Number(worker.assignedSocketIndex) === socketIndex);
 	}
 
-	// Get the place where building is located
-	getBuildingPlaceId(buildingId, state) {
-		// Find which place contains this building
-		for (const [placeId, place] of Object.entries(state.places)) {
-			if (place.buildings?.includes(buildingId)) {
-				return placeId;
-			}
-		}
-		return null;
+	getWorkersBySocketIndex(state, socketIndex) {
+		const workers = state.player?.workers || [];
+		return workers.filter((worker) => Number(worker.assignedSocketIndex) === socketIndex);
 	}
 
-	// Find the closest place with available inventory
 	findClosestPlaceWithInventory(currentPlaceId, state) {
 		const places = state.places;
 		const inventory = state.inventory;
 
-		// Check if current place has inventory
 		if (places[currentPlaceId]?.hasInventory && inventory[currentPlaceId]) {
 			return currentPlaceId;
 		}
 
-		// BFS to find closest place with inventory
 		const queue = [currentPlaceId];
 		const visited = new Set([currentPlaceId]);
 
@@ -137,12 +90,10 @@ export default class ProductionService {
 
 			if (!place) continue;
 
-			// Check if this place has inventory
 			if (place.hasInventory && inventory[placeId]) {
 				return placeId;
 			}
 
-			// Add connected places to queue
 			if (place.connections) {
 				for (const connectedPlaceId of place.connections) {
 					if (!visited.has(connectedPlaceId)) {
@@ -153,68 +104,11 @@ export default class ProductionService {
 			}
 		}
 
-		// Fallback to village_center if no other place found
 		return inventory.village_center ? "village_center" : currentPlaceId;
 	}
 
-	// Calculate production rate for a building
-	calculateProductionRate(building, state) {
-		// Check if building has workers assigned
-		const assignedWorkers = this.getAssignedWorkers(state, building.id);
-
-		if (assignedWorkers.length === 0) {
-			return 0;
-		}
-
-		// Use custom calculateProduction method if available
-		if (
-			building.calculateProduction &&
-			typeof building.calculateProduction === "function"
-		) {
-			const production = building.calculateProduction();
-			return Math.max(0, production);
-		}
-
-		// Fall back to baseProductionRate
-		const baseRate = building.baseProductionRate || 0;
-		return Math.max(0, baseRate);
-	}
-
-	// Check if a building can produce (has workers and production rate)
-	canBuildingProduce(state, buildingId) {
-		const building = state.buildings?.[buildingId];
-		if (!building) {
-			return false;
-		}
-
-		const hasWorkers = this.getAssignedWorkers(state, buildingId).length > 0;
-		const productionRate = this.calculateProductionRate(building, state);
-
-		return hasWorkers && productionRate > 0 && building.productionType;
-	}
-
-	// Get all production calculations for UI purposes
-	getAllProductionCalculations(state) {
-		const calculations = {};
-
-		Object.entries(state.buildings || {}).forEach(([buildingId, building]) => {
-			const workers = this.getAssignedWorkers(state, buildingId);
-			const productionRate = this.calculateProductionRate(building, state);
-			const canProduce = this.canBuildingProduce(state, buildingId);
-
-			calculations[buildingId] = {
-				buildingName: building.name,
-				productionType: building.productionType,
-				workerCount: workers.length,
-				productionRate,
-				canProduce,
-				workers: workers.map((worker) => ({
-					id: worker.id,
-					name: worker.name,
-				})),
-			};
-		});
-
-		return calculations;
+	canBuildingProduce(state, socketIndex, buildingData) {
+		const worker = this.getWorkerBySocketIndex(state, socketIndex);
+		return worker && worker.assignedMaterial && (buildingData.baseProductionRate || 0) > 0;
 	}
 }

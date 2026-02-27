@@ -5,6 +5,7 @@ export const buildingsData = {
 		description: "Produces food for your population",
 		icon: "farm.jpg",
 		buildCost: 50,
+		baseProductionRate: 1,
 		upgrades: {
 			level1: { material: "wheat" },
 			level2: { cost: 150, material: "apple" },
@@ -17,6 +18,7 @@ export const buildingsData = {
 		description: "Extracts valuable resources from the earth",
 		icon: "mine.jpg",
 		buildCost: 75,
+		baseProductionRate: 1,
 		upgrades: {
 			level1: { material: "stone" },
 			level2: { cost: 200, material: "iron-ore" },
@@ -31,6 +33,7 @@ export const buildingsData = {
 		description: "Processes wood from the forest",
 		icon: "lumber.jpg",
 		buildCost: 60,
+		baseProductionRate: 1,
 		upgrades: {
 			level1: { material: "wood" },
 			level2: { cost: 180, material: "plank" },
