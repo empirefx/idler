@@ -105,48 +105,39 @@ function ConfirmAlert(rawProps) {
 	var p = cfg(rawProps);
 
 	/* ── Esc key handler ── */
-	React.useEffect(
-		() => {
-			if (!p.open || !p.closeOnEsc) return;
-			function onKey(e) {
-				if (e.key === "Escape") p.onClose();
-			}
-			document.addEventListener("keydown", onKey);
-			return () => {
-				document.removeEventListener("keydown", onKey);
-			};
-		},
-		[p.open, p.closeOnEsc, p.onClose],
-	);
+	React.useEffect(() => {
+		if (!p.open || !p.closeOnEsc) return;
+		function onKey(e) {
+			if (e.key === "Escape") p.onClose();
+		}
+		document.addEventListener("keydown", onKey);
+		return () => {
+			document.removeEventListener("keydown", onKey);
+		};
+	}, [p.open, p.closeOnEsc, p.onClose]);
 
 	/* ── Focus trap: move focus into panel when opened ── */
 	var panelRef = React.useRef(null);
-	React.useEffect(
-		() => {
-			if (p.open && panelRef.current) {
-				var first = panelRef.current.querySelector(
-					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-				);
-				if (first) first.focus();
-			}
-		},
-		[p.open],
-	);
+	React.useEffect(() => {
+		if (p.open && panelRef.current) {
+			var first = panelRef.current.querySelector(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+			);
+			if (first) first.focus();
+		}
+	}, [p.open]);
 
 	/* ── Scroll lock (only when overlay covers the page) ── */
-	React.useEffect(
-		() => {
-			if (p.open && p.overlay) {
-				document.body.style.overflow = "hidden";
-			} else {
-				document.body.style.overflow = "";
-			}
-			return () => {
-				document.body.style.overflow = "";
-			};
-		},
-		[p.open, p.overlay],
-	);
+	React.useEffect(() => {
+		if (p.open && p.overlay) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "";
+		}
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [p.open, p.overlay]);
 
 	/* ── Don't render at all when closed ── */
 	if (!p.open) return null;

@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22526002813)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22526043751)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 82.
-Checked 130 files in 1650ms. Fixed 1 file.
+Checked 130 files in 1463ms. No fixes applied.
 Found 60 errors.
 Found 37 warnings.
 Found 5 infos.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
@@ -511,7 +511,7 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 140            │ 16278       │ 130840       │ 11           │ 101 (0.62%)      │ 1060 (0.81%)      │
+│ javascript │ 140            │ 16269       │ 130822       │ 11           │ 101 (0.62%)      │ 1060 (0.81%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ css        │ 23             │ 5935        │ 35791        │ 2            │ 25 (0.42%)       │ 195 (0.54%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
@@ -519,7 +519,7 @@ Clone found (javascript):
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 172            │ 22363       │ 167585       │ 13           │ 126 (0.56%)      │ 1255 (0.75%)      │
+│ Total:     │ 172            │ 22354       │ 167567       │ 13           │ 126 (0.56%)      │ 1255 (0.75%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 13 clones.
 Error: ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
