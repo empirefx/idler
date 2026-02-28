@@ -4,7 +4,8 @@ import { useUIVisibility } from "../UIVisibilityContext";
 import CurrentPlaceDisplay from "../components/display/CurrentPlaceDisplay";
 import PlayerSection from "../components/sections/PlayerSection";
 import WorkersSection from "../components/sections/WorkersSection";
-import BuildingsSection from "../components/sections/BuildingsSection";
+import BuildingSection from "../components/sections/BuildingSection";
+import BuildingPanel from "../components/sections/BuildingPanel";
 import EnemySection from "../components/sections/EnemySection";
 import NPCSection from "../components/sections/NPCSection";
 import ControlSection from "../components/sections/ControlSection";
@@ -14,12 +15,14 @@ import LogSection from "../components/sections/LogSection";
 import NotificationContainer from "../components/common/NotificationContainer";
 import NPCDialog from "../components/common/NPCDialog";
 import CraftingSection from "../components/sections/CraftingSection";
+import WorkerManagerSection from "../components/sections/WorkerManagerSection";
 
 import { selectBackgroundImage } from "../../store/slices/placesSlice";
 
 const GameLayout = ({ clearCache }) => {
 	const currentPlaceBackgroundImage = useSelector(selectBackgroundImage);
-	const { npcDialog, selectNPCOption, closeNPCDialog } = useUIVisibility();
+	const { npcDialog, selectNPCOption, closeNPCDialog, toggleBuildingPanel, showBuildingPanel, hideBuildingPanel } = useUIVisibility();
+
 	const styles = {
 		backgroundImage: currentPlaceBackgroundImage
 			? `
@@ -41,7 +44,7 @@ const GameLayout = ({ clearCache }) => {
 				<CurrentPlaceDisplay />
 				<PlayerSection />
 				<WorkersSection />
-				<BuildingsSection />
+				<BuildingSection />
 				<EnemySection />
 				<NPCSection />
 				<ControlSection clearCache={clearCache} />
@@ -49,6 +52,13 @@ const GameLayout = ({ clearCache }) => {
 				<PlacesSection />
 				<LogSection />
 			</main>
+			<div
+				className="building-panel-container"
+				onMouseEnter={showBuildingPanel}
+				onMouseLeave={hideBuildingPanel}
+			>
+				<BuildingPanel onClose={toggleBuildingPanel} />
+			</div>
 			<NPCDialog
 				isOpen={npcDialog?.isOpen}
 				npcId={npcDialog?.npcId}
@@ -57,6 +67,7 @@ const GameLayout = ({ clearCache }) => {
 				onOptionSelect={selectNPCOption}
 			/>
 			<CraftingSection />
+			<WorkerManagerSection />
 		</div>
 	);
 };

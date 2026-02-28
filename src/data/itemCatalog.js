@@ -1366,6 +1366,63 @@ export const itemCatalog = {
 		weight: 0.1,
 		recipeId: "tower-shield",
 	},
+	// Production materials
+	wheat: {
+		id: 200,
+		type: "material",
+		name: "Wheat",
+		icon: "wheat",
+		description: "Raw wheat grain",
+		weight: 2,
+	},
+	stone: {
+		id: 201,
+		type: "material",
+		name: "Stone",
+		icon: "stone",
+		description: "Raw stone ore",
+		weight: 3,
+	},
+	"gold-ore": {
+		id: 202,
+		type: "material",
+		name: "Gold Ore",
+		icon: "gold-ore",
+		description: "Raw gold ore",
+		weight: 4,
+	},
+	diamond: {
+		id: 203,
+		type: "material",
+		name: "Diamond",
+		icon: "diamond",
+		description: "Polished diamond",
+		weight: 1,
+	},
+	mythril: {
+		id: 204,
+		type: "material",
+		name: "Mythril",
+		icon: "mythril",
+		description: "Rare mythril ore",
+		weight: 1,
+	},
+	hardwood: {
+		id: 205,
+		type: "material",
+		name: "Hardwood",
+		icon: "hardwood",
+		description: "Processed hardwood",
+		weight: 3,
+	},
+	"golden-apple": {
+		id: 206,
+		type: "material",
+		name: "Golden Apple",
+		icon: "golden-apple",
+		description: "Magical golden apple",
+		weight: 1,
+	},
 };
 
 export const metadata = {

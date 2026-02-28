@@ -1,0 +1,348 @@
+/* ── CSS Custom Properties ──────────────────────────────────────── */
+:root {
+  --ca-overlay-bg:        rgba(6, 6, 10, 0.75);
+  --ca-blur:              12px;
+
+  --ca-panel-bg:          #202020;
+  --ca-panel-border:      rgba(255, 255, 255, 0.07);
+  --ca-panel-shadow:      0 40px 100px rgba(0, 0, 0, 0.7),
+                          0 0 0 1px var(--ca-panel-border),
+                          inset 0 1px 0 rgba(255,255,255,0.05);
+  --ca-panel-radius:      22px;
+  --ca-panel-max-width:   440px;
+
+  --ca-font-display:      "Verdana", "Helvetica", "Arial", sans-serif;
+  --ca-font-body:         "Gill Sans", sans-serif;
+
+  --ca-color-text:        #ede9e3;
+  --ca-color-muted:       #6e6b78;
+  --ca-color-divider:     rgba(255, 255, 255, 0.06);
+
+  /* variant accent colours */
+  --ca-color-default:     #c8f04a;
+  --ca-color-default-glow:rgba(200, 240, 74, 0.22);
+  --ca-color-default-text:#0a0c02;
+
+  --ca-color-danger:      #ff5252;
+  --ca-color-danger-glow: rgba(255, 82, 82, 0.22);
+  --ca-color-danger-text: #fff;
+
+  --ca-color-warning:     #ffb347;
+  --ca-color-warning-glow:rgba(255, 179, 71, 0.22);
+  --ca-color-warning-text:#0a0602;
+
+  --ca-color-info:        #52b8ff;
+  --ca-color-info-glow:   rgba(82, 184, 255, 0.22);
+  --ca-color-info-text:   #010810;
+
+  /* button cancel */
+  --ca-btn-cancel-bg:     rgba(255, 255, 255, 0.05);
+  --ca-btn-cancel-border: rgba(255, 255, 255, 0.09);
+  --ca-btn-cancel-hover:  rgba(255, 255, 255, 0.10);
+
+  --ca-transition:        0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --ca-spring:            0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Overlay ───────────────────────────────────────────────────── */
+.ca-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: var(--ca-overlay-bg);
+  backdrop-filter: blur(var(--ca-blur)) saturate(0.8);
+  -webkit-backdrop-filter: blur(var(--ca-blur)) saturate(0.8);
+  animation: ca-overlay-in var(--ca-transition) both;
+}
+
+.ca-overlay[aria-hidden="true"] {
+  animation: ca-overlay-out var(--ca-transition) both;
+  pointer-events: none;
+}
+
+@keyframes ca-overlay-in  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes ca-overlay-out { from { opacity: 1 } to { opacity: 0 } }
+
+/* ── Panel ─────────────────────────────────────────────────────── */
+.ca-panel {
+  position: relative;
+  width: 100%;
+  max-width: var(--ca-panel-max-width);
+  background: var(--ca-panel-bg);
+  border-radius: var(--ca-panel-radius);
+  box-shadow: var(--ca-panel-shadow);
+  overflow: hidden;
+  animation: ca-panel-in var(--ca-spring) both;
+}
+
+.ca-overlay[aria-hidden="true"] .ca-panel {
+  animation: ca-panel-out var(--ca-transition) both;
+}
+
+@keyframes ca-panel-in {
+  from { opacity: 0; transform: scale(0.86) translateY(20px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes ca-panel-out {
+  from { opacity: 1; transform: scale(1)    translateY(0);   }
+  to   { opacity: 0; transform: scale(0.94) translateY(8px); }
+}
+
+/* Accent top stripe — colour driven by variant class */
+.ca-panel::before {
+  content: '';
+  display: block;
+  height: 2.5px;
+  background: var(--ca-accent, var(--ca-color-default));
+  transform-origin: left;
+  animation: ca-stripe-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1) both 0.12s;
+}
+
+@keyframes ca-stripe-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── Variant modifiers ─────────────────────────────────────────── */
+.ca-panel.ca-variant-default { --ca-accent: var(--ca-color-default); --ca-accent-glow: var(--ca-color-default-glow); --ca-accent-text: var(--ca-color-default-text); }
+.ca-panel.ca-variant-danger  { --ca-accent: var(--ca-color-danger);  --ca-accent-glow: var(--ca-color-danger-glow);  --ca-accent-text: var(--ca-color-danger-text);  }
+.ca-panel.ca-variant-warning { --ca-accent: var(--ca-color-warning); --ca-accent-glow: var(--ca-color-warning-glow); --ca-accent-text: var(--ca-color-warning-text); }
+.ca-panel.ca-variant-info    { --ca-accent: var(--ca-color-info);    --ca-accent-glow: var(--ca-color-info-glow);    --ca-accent-text: var(--ca-color-info-text);    }
+
+/* ── Body ──────────────────────────────────────────────────────── */
+.ca-body {
+  padding: 2rem 2rem 1.75rem;
+}
+
+/* ── Icon ──────────────────────────────────────────────────────── */
+.ca-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--ca-accent-glow, var(--ca-color-default-glow));
+  margin-bottom: 1.25rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  border: 1px solid rgba(255,255,255,0.06);
+  animation: ca-icon-pop var(--ca-spring) both 0.18s;
+}
+
+@keyframes ca-icon-pop {
+  from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+  to   { opacity: 1; transform: scale(1)   rotate(0deg);   }
+}
+
+/* ── Title ─────────────────────────────────────────────────────── */
+.ca-title {
+  font-family: var(--ca-font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--ca-color-text);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0 0 0.55rem;
+}
+
+/* ── Message ───────────────────────────────────────────────────── */
+.ca-message {
+  font-family: var(--ca-font-body);
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--ca-color-muted);
+  line-height: 1.65;
+  margin: 0 0 1.75rem;
+}
+
+/* ── Divider ───────────────────────────────────────────────────── */
+.ca-divider {
+  height: 1px;
+  background: var(--ca-color-divider);
+  margin: 0 -2rem 1.5rem;
+}
+
+/* ── Actions ───────────────────────────────────────────────────── */
+.ca-actions {
+  display: flex;
+  gap: 0.65rem;
+}
+
+/* full-width stacked layout */
+.ca-actions.ca-stacked {
+  flex-direction: column;
+}
+
+/* default: cancel left, confirm right */
+.ca-actions:not(.ca-stacked) {
+  flex-direction: row;
+}
+
+/* ── Base Button ───────────────────────────────────────────────── */
+.ca-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.72rem 1.2rem;
+  border: none;
+  border-radius: 11px;
+  font-family: var(--ca-font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background var(--ca-transition),
+    box-shadow  var(--ca-transition),
+    transform   var(--ca-transition);
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  text-decoration: none;
+}
+
+.ca-btn:focus-visible {
+  outline: 2px solid var(--ca-accent, var(--ca-color-default));
+  outline-offset: 3px;
+}
+
+.ca-btn:active {
+  transform: scale(0.96);
+}
+
+/* ripple pseudo */
+.ca-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.07);
+  opacity: 0;
+  transition: opacity var(--ca-transition);
+  border-radius: inherit;
+}
+.ca-btn:hover::after  { opacity: 1; }
+.ca-btn:active::after { opacity: 0; }
+
+/* ── Confirm Button ────────────────────────────────────────────── */
+.ca-btn-confirm {
+  background: var(--ca-accent, var(--ca-color-default));
+  color: var(--ca-accent-text, var(--ca-color-default-text));
+}
+
+.ca-btn-confirm:hover {
+  box-shadow: 0 4px 20px var(--ca-accent-glow, var(--ca-color-default-glow));
+  filter: brightness(1.06);
+}
+
+/* ── Cancel Button ─────────────────────────────────────────────── */
+.ca-btn-cancel {
+  background: var(--ca-btn-cancel-bg);
+  color: var(--ca-color-muted);
+  border: 1px solid var(--ca-btn-cancel-border);
+}
+
+.ca-btn-cancel:hover {
+  background: var(--ca-btn-cancel-hover);
+  color: var(--ca-color-text);
+}
+
+/* ── Loading spinner inside button ─────────────────────────────── */
+.ca-btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: ca-spin 0.6s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes ca-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Close (×) button ──────────────────────────────────────────── */
+.ca-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  color: var(--ca-color-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  transition: background var(--ca-transition), color var(--ca-transition);
+  outline: none;
+}
+
+.ca-close:hover {
+  background: rgba(255,255,255,0.10);
+  color: var(--ca-color-text);
+}
+
+.ca-close:focus-visible {
+  outline: 2px solid var(--ca-accent, var(--ca-color-default));
+  outline-offset: 2px;
+}
+
+/* ── Bare overlay (no background, no blur) ──────────────────────── */
+/* Activated by overlay={false} prop — panel floats freely over content */
+.ca-overlay.ca-overlay--bare {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  /* Still covers the viewport for positioning & focus-trap,
+     but is visually invisible. pointer-events on the wrapper
+     are kept so clicks outside still fire closeOnOverlay. */
+}
+
+/* Lift the panel shadow when bare so it reads without a backdrop */
+.ca-overlay.ca-overlay--bare .ca-panel {
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 4px 16px  rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--ca-panel-border);
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ca-overlay,
+  .ca-panel,
+  .ca-panel::before,
+  .ca-icon {
+    animation: none !important;
+  }
+  .ca-btn {
+    transition: none !important;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ca-body {
+    padding: 1.5rem 1.5rem 1.35rem;
+  }
+  .ca-actions:not(.ca-stacked) {
+    flex-direction: column-reverse;
+  }
+  .ca-title {
+    font-size: 1.25rem;
+  }
+}

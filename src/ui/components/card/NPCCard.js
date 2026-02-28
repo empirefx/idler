@@ -29,7 +29,7 @@ const NPCCard = ({ npc, onClick }) => {
 			<div className="npc-info">
 				<h3>{name}</h3>
 				<p>{description}</p>
-				{(npc.hasInventory || npc.hasQuestToGive) && (
+				{(npc.hasInventory || npc.hasQuestToGive || npc.hasWorkerManager) && (
 					<>
 						<h4>Actions</h4>
 						{npc.hasInventory && (
@@ -46,6 +46,14 @@ const NPCCard = ({ npc, onClick }) => {
 									🗪
 								</span>{" "}
 								Quest
+							</span>
+						)}
+						{npc.hasWorkerManager && (
+							<span className="npc-badge">
+								<span className="icon" role="img">
+									⚒
+								</span>{" "}
+								Workers
 							</span>
 						)}
 					</>

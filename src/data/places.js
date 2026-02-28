@@ -8,7 +8,12 @@ export const placesData = {
 		hasInventory: true,
 		connections: ["forest_edge", "river_crossing", "farmlands"],
 		"background-image": "village_center.jpg",
-		buildings: ["farm"],
+		sockets: [
+			{ status: "occupied", buildingId: "farm", level: 1 },
+			{ status: "locked" },
+			{ status: "locked" },
+		],
+		socketCost: 100,
 	},
 	forest_edge: {
 		id: "forest_edge",
@@ -18,7 +23,6 @@ export const placesData = {
 		type: "wilderness",
 		connections: ["village_center", "deep_woods", "hunter_camp"],
 		"background-image": "forest_edge.jpg",
-		buildings: [],
 		spawn: {
 			type: "wave",
 			pool: ["forest_beast"],
@@ -35,10 +39,9 @@ export const placesData = {
 		type: "wilderness",
 		connections: ["forest_edge", "ancient_ruins"],
 		"background-image": "deep_woods.jpg",
-		buildings: [],
 		spawn: {
 			type: "wave",
-			pool: ["woodland_predator", "forest_beast"], // Multiple enemy types - pool concept
+			pool: ["woodland_predator", "forest_beast"],
 			waveSize: [2, 4],
 			respawnDelay: 8,
 			drops: [{ itemId: "iron-ore", dropRate: 0.3 }],
@@ -51,7 +54,12 @@ export const placesData = {
 		type: "landmark",
 		connections: ["village_center", "farmlands", "fishing_spot"],
 		"background-image": "river_crossing.jpg",
-		buildings: ["mine"],
+		sockets: [
+			{ status: "occupied", buildingId: "mine", level: 1 },
+			{ status: "empty" },
+			{ status: "locked" },
+		],
+		socketCost: 120,
 	},
 	farmlands: {
 		id: "farmlands",
@@ -60,7 +68,14 @@ export const placesData = {
 		type: "settlement",
 		connections: ["village_center", "river_crossing"],
 		"background-image": "farmlands.jpg",
-		buildings: [],
+		sockets: [
+			{ status: "locked" },
+			{ status: "locked" },
+			{ status: "locked" },
+			{ status: "locked" },
+			{ status: "locked" },
+		],
+		socketCost: 80,
 	},
 	hunter_camp: {
 		id: "hunter_camp",
@@ -70,7 +85,6 @@ export const placesData = {
 		type: "outpost",
 		connections: ["forest_edge"],
 		"background-image": "hunter_camp.jpg",
-		buildings: [],
 		spawn: {
 			type: "wave",
 			pool: ["trained_hunters"],
@@ -86,7 +100,6 @@ export const placesData = {
 		type: "gathering",
 		connections: ["river_crossing"],
 		"background-image": "fishing_spot.jpg",
-		buildings: [],
 	},
 	ancient_ruins: {
 		id: "ancient_ruins",
@@ -96,10 +109,9 @@ export const placesData = {
 		type: "ruins",
 		connections: ["deep_woods"],
 		"background-image": "ancient_ruins.jpg",
-		buildings: [],
 		spawn: {
 			type: "wave",
-			pool: ["ruins_undead", "forest_beast"], // Multiple enemy types - pool concept
+			pool: ["ruins_undead", "forest_beast"],
 			waveSize: [3, 6],
 			respawnDelay: 10,
 			drops: [

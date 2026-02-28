@@ -3,92 +3,82 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { playerData } from "../../data/player";
 import { workerAssigned, workerUnassigned } from "../../game/events";
 
-// Thunks for worker operations that also emit events
-export const assignWorkerToBuildingWithEvent = (
-	workerId,
-	buildingId,
-	buildingName,
-) => {
-	return (dispatch, getState) => {
-		// First dispatch the original action to update state
-		dispatch(assignWorkerToBuilding({ workerId, buildingId, buildingName }));
+const getNextWorkerId = (workers) => {
+	if (!workers || workers.length === 0) return 1;
+	const maxId = Math.max(...workers.map((w) => w.id));
+	return maxId + 1;
+};
 
-		// Then dispatch the event for logging
+export const assignWorkerToSocketWithEvent = (workerId, placeId, socketIndex, material) => {
+	return (dispatch, getState) => {
+		dispatch(assignWorkerToSocket({ workerId, placeId, socketIndex, material }));
+
 		const state = getState();
 		const worker = state.player.workers.find((w) => w.id === workerId);
 		if (worker) {
-			dispatch(workerAssigned(workerId, worker.name, buildingId, buildingName));
+			dispatch(workerAssigned(workerId, worker.name, `socket_${socketIndex}`, material));
 		}
 	};
 };
 
-export const unassignWorkerWithEvent = (workerId, buildingName) => {
+export const unassignWorkerFromSocketWithEvent = (workerId, placeId) => {
 	return (dispatch, getState) => {
-		// First dispatch the original action to update state
-		dispatch(unassignWorker({ workerId, buildingName }));
-
-		// Then dispatch the event for logging
 		const state = getState();
 		const worker = state.player.workers.find((w) => w.id === workerId);
-		if (worker) {
-			dispatch(
-				workerUnassigned(
-					workerId,
-					worker.name,
-					worker.assignedBuildingId,
-					buildingName,
-				),
-			);
+		const assignment = worker?.assignments?.[placeId];
+		const socketIndex = assignment?.socketIndex;
+		const material = assignment?.material;
+		const workerName = worker?.name;
+
+		dispatch(unassignWorkerFromSocket({ workerId, placeId }));
+
+		if (workerName !== undefined) {
+			dispatch(workerUnassigned(workerId, workerName, `socket_${socketIndex}`, material));
 		}
 	};
 };
 
-const initialState = { ...playerData };
+const initialState = {
+	...playerData,
+	availableWorkers: [],
+};
 
 export const playerSlice = createSlice({
 	name: "player",
 	initialState,
 	reducers: {
-		unassignWorker: (state, action) => {
-			const { workerId, buildingName } = action.payload;
-			const worker = state.workers.find((worker) => worker.id === workerId);
+		assignWorkerToSocket: (state, action) => {
+			const { workerId, placeId, socketIndex, material } = action.payload;
+			const worker = state.workers.find((w) => w.id === workerId);
 			if (worker) {
-				const previousBuildingId = worker.assignedBuildingId;
-				worker.assignedBuildingId = null; // Set to null rather than removing the worker
-
-				// Add building info to action for logging
-				action.payload.buildingId = previousBuildingId;
-				action.payload.buildingName = buildingName || previousBuildingId;
+				if (!worker.assignments) {
+					worker.assignments = {};
+				}
+				worker.assignments[placeId] = {
+					socketIndex,
+					material,
+				};
 				action.payload.workerName = worker.name;
 			}
 		},
-		assignWorkerToBuilding: (state, action) => {
-			const { workerId, buildingId, buildingName } = action.payload;
-			const worker = state.workers.find((worker) => worker.id === workerId);
-			if (worker) {
-				const previousBuildingId = worker.assignedBuildingId;
-				worker.assignedBuildingId = buildingId;
-
-				// Add worker info to action for logging
+		unassignWorkerFromSocket: (state, action) => {
+			const { workerId, placeId } = action.payload;
+			const worker = state.workers.find((w) => w.id === workerId);
+			if (worker && worker.assignments && worker.assignments[placeId]) {
 				action.payload.workerName = worker.name;
-				action.payload.buildingName = buildingName || buildingId;
-				action.payload.previousBuildingId = previousBuildingId;
+				delete worker.assignments[placeId];
 			}
 		},
-		// Apply damage to player health
 		damagePlayer: (state, action) => {
 			const { amount } = action.payload;
 			state.health = Math.max(0, state.health - amount);
 		},
-		// Heal player health
 		healPlayer: (state, action) => {
 			const { amount } = action.payload;
 			state.health = Math.min(state.baseHealth, state.health + amount);
 		},
 		setPlayerState: (_state, action) => {
-			// This will replace the entire player state with the saved one
-			// Only for loading saved states!
-			return action.payload; // Replace entire state with payload
+			return action.payload;
 		},
 		gainExp: (state, action) => {
 			const { amount } = action.payload;
@@ -110,7 +100,6 @@ export const playerSlice = createSlice({
 			state.stats.agility += agility;
 			state.stats.vitality += vitality;
 		},
-		// Update last attack time for cooldown tracking
 		updateLastAttackTime: (state, action) => {
 			const { timestamp } = action.payload;
 			state.lastAttackTime = timestamp;
@@ -127,7 +116,6 @@ export const playerSlice = createSlice({
 				resource.amount = Math.max(0, resource.amount - action.payload);
 			}
 		},
-		// Learn a crafting recipe
 		learnRecipe: (state, action) => {
 			const recipeId = action.payload;
 			if (!state.knownRecipes) {
@@ -137,13 +125,32 @@ export const playerSlice = createSlice({
 				state.knownRecipes.push(recipeId);
 			}
 		},
+		addWorker: (state, action) => {
+			const worker = action.payload;
+			const newWorker = {
+				...worker,
+				id: worker.id || getNextWorkerId(state.workers),
+				assignments: worker.assignments || {},
+			};
+			state.workers.push(newWorker);
+		},
+		removeWorker: (state, action) => {
+			const workerId = action.payload;
+			state.workers = state.workers.filter((w) => w.id !== workerId);
+		},
+		incrementWorkerSlots: (state, action) => {
+			const amount = action.payload || 1;
+			state.workerSlots += amount;
+		},
+		updateAvailableWorkers: (state, action) => {
+			state.availableWorkers = action.payload;
+		},
 	},
 });
 
-// Action creators
 export const {
-	unassignWorker,
-	assignWorkerToBuilding,
+	assignWorkerToSocket,
+	unassignWorkerFromSocket,
 	damagePlayer,
 	healPlayer,
 	setPlayerState,
@@ -153,13 +160,15 @@ export const {
 	addGold,
 	spendGold,
 	learnRecipe,
+	addWorker,
+	removeWorker,
+	incrementWorkerSlots,
+	updateAvailableWorkers,
 } = playerSlice.actions;
 
-// Selectors
 export const selectWorkers = (state) => state.player.workers;
 export const selectResources = (state) => state.player.resources;
 
-// Memoized selectors
 export const selectPlayer = createSelector(
 	(state) => state.player,
 	(player) => ({
@@ -176,23 +185,17 @@ export const selectPlayer = createSelector(
 		resources: player.resources,
 	}),
 );
-export const listBuildingsWithAssignedWorkers = createSelector(
-	[selectWorkers],
-	(workers) =>
-		workers
-			.filter((worker) => worker.assignedBuildingId)
-			.map((worker) => worker.assignedBuildingId),
-);
+
 export const selectAssignedWorkers = createSelector(
 	[selectWorkers],
-	(workers) => workers.filter((worker) => worker.assignedBuildingId),
-);
-export const selectUnassignedWorkers = createSelector(
-	[selectWorkers],
-	(workers) => workers.filter((worker) => !worker.assignedBuildingId),
+	(workers) => workers.filter((worker) => worker.assignments && Object.keys(worker.assignments).length > 0),
 );
 
-// Centralized selectors for player resources and workers
+export const selectUnassignedWorkers = createSelector(
+	[selectWorkers],
+	(workers) => workers.filter((worker) => !worker.assignments || Object.keys(worker.assignments).length === 0),
+);
+
 export const selectGold = createSelector(
 	[selectResources],
 	(resources) => resources.find((r) => r.name === "gold")?.amount || 0,
@@ -202,14 +205,14 @@ export const selectWorkerCount = createSelector(
 	(workers) => workers.length,
 );
 export const selectMaxWorkers = (state) => state.player.MAX_WORKERS;
+export const selectWorkerSlots = (state) => state.player.workerSlots;
+export const selectAvailableWorkers = (state) => state.player.availableWorkers;
 
-// Selector to check if player is ready to level up
 export const selectIsReadyToLevelUp = createSelector(
 	[(state) => state.player.level, (state) => state.player.exp],
 	(level, exp) => exp >= level * 100,
 );
 
-// Selector to check if player is ready to attack
 export const selectIsPlayerReadyToAttack = createSelector(
 	[(state) => state.player],
 	(player) => {
@@ -219,10 +222,25 @@ export const selectIsPlayerReadyToAttack = createSelector(
 	},
 );
 
-// Selector for known crafting recipes (memoized to avoid unnecessary re-renders)
 export const selectKnownRecipes = createSelector(
 	[(state) => state.player.knownRecipes],
 	(knownRecipes) => knownRecipes || [],
+);
+
+export const selectWorkerByPlaceAndSocket = (placeId, socketIndex) => createSelector(
+	[selectWorkers],
+	(workers) => workers.find((worker) => 
+		worker.assignments && 
+		worker.assignments[placeId] && 
+		worker.assignments[placeId].socketIndex === socketIndex
+	),
+);
+
+export const selectWorkersByPlace = (placeId) => createSelector(
+	[selectWorkers],
+	(workers) => workers.filter((worker) => 
+		worker.assignments && worker.assignments[placeId]
+	),
 );
 
 export default playerSlice.reducer;

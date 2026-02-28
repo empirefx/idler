@@ -1,6 +1,5 @@
 import Logger from "../utils/Logger";
 
-import { listBuildingsWithAssignedWorkers } from "../../store/slices/playerSlice";
 import { InventoryService } from "../services/InventoryService";
 import { CraftingService } from "../services/CraftingService";
 import { createItem } from "../factory/itemFactory";
@@ -17,6 +16,9 @@ import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
 import { NavigationService } from "../services/NavigationService";
 import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
+import BuildingService from "../services/BuildingService";
+import WorkerService from "../services/WorkerService";
+import { buildingsData } from "../../data/buildings";
 
 /**
  * GameEngine: wires systems + runs game loop
@@ -68,6 +70,17 @@ class GameEngine {
 			this.eventBusService,
 			this.itemFactory,
 		);
+		this.buildingService = new BuildingService(
+			this.store,
+			this.dispatch,
+			this.eventBusService,
+			buildingsData,
+		);
+		this.workerService = new WorkerService(
+			this.store,
+			this.dispatch,
+			this.eventBusService,
+		);
 		this.gameLoop = new GameLoop();
 
 		// Initialize services
@@ -99,33 +112,29 @@ class GameEngine {
 	}
 
 	// Process production for a single building
-	processBuildingProduction(buildingId, building, state, deltaTime) {
+	processBuildingProduction(placeId, socketIndex, buildingData, state, deltaTime) {
 		this.productionService.processBuildingProduction(
-			buildingId,
-			building,
+			placeId,
+			socketIndex,
+			buildingData,
 			state,
 			deltaTime,
 		);
 	}
 
 	// Get workers assigned to a specific building
-	getAssignedWorkers(state, buildingId) {
-		return this.productionService.getAssignedWorkers(state, buildingId);
+	getAssignedWorkersBySocketIndex(state, socketIndex) {
+		return this.productionService.getWorkersBySocketIndex(state, socketIndex);
 	}
 
 	// Calculate production rate for a building
-	calculateProductionRate(building, state) {
-		return this.productionService.calculateProductionRate(building, state);
+	calculateProductionRate(buildingData, state) {
+		return buildingData.baseProductionRate || 0;
 	}
 
 	// Validate that a building can produce
-	canBuildingProduce(state, buildingId) {
-		return this.productionService.canBuildingProduce(state, buildingId);
-	}
-
-	// Get all production calculations for UI purposes
-	getAllProductionCalculations(state) {
-		return this.productionService.getAllProductionCalculations(state);
+	canBuildingProduce(state, socketIndex, buildingData) {
+		return this.productionService.canBuildingProduce(state, socketIndex, buildingData);
 	}
 
 	// Add an item to a place's inventory handled by InventoryService
@@ -144,26 +153,31 @@ class GameEngine {
 
 	// Update game state
 	update(state, deltaTime) {
-		const currentState = state;
-		const buildingsWithAssignedWorkers =
-			listBuildingsWithAssignedWorkers(currentState);
+		const places = state.places;
+		const placeIds = Object.keys(places).filter(id => id !== 'currentPlaceId' && id !== 'previousPlaceId' && id !== 'availableConnections' && places[id]?.sockets);
 
-		// Update resources based on building production (now handled by ProductionService)
-		Object.entries(currentState.buildings).forEach(([buildingId, building]) => {
-			const hasWorkers = buildingsWithAssignedWorkers.includes(buildingId);
-			const hasProduction =
-				(building.calculateProduction
-					? building.calculateProduction()
-					: building.baseProductionRate || 0) > 0;
+		placeIds.forEach((placeId) => {
+			const place = places[placeId];
+			if (!place || !place.sockets) return;
 
-			if (hasWorkers && hasProduction) {
-				this.productionService.processBuildingProduction(
-					buildingId,
-					building,
-					currentState,
-					deltaTime,
-				);
-			}
+			place.sockets.forEach((socket, socketIndex) => {
+				if (socket.status !== "occupied") return;
+
+				const buildingData = buildingsData[socket.buildingId];
+				if (!buildingData) return;
+
+				const hasProduction = (buildingData.baseProductionRate || 0) > 0;
+
+				if (hasProduction) {
+					this.productionService.processBuildingProduction(
+						placeId,
+						socketIndex,
+						buildingData,
+						state,
+						deltaTime,
+					);
+				}
+			});
 		});
 	}
 

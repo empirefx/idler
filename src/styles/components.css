@@ -11,14 +11,6 @@
 	margin: 0 auto;
 }
 
-.workers-section,
-.buildings-section,
-.places-section,
-.player-section {
-	border-radius: var(--border-radius-md);
-	padding: var(--spacing-md);
-}
-
 .workers-section h2,
 .buildings-section h2,
 .places-section h2 {

@@ -4,20 +4,67 @@ import "../../../styles/sections/workers-section.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import WorkerCard from "../card/WorkerCard";
 import {
-	selectUnassignedWorkers,
-	selectAssignedWorkers,
+	selectWorkers,
 } from "../../../store/slices/playerSlice";
-import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
-import { selectCurrentPlaceBuildings } from "../../../store/slices/placesSlice";
+import { selectCurrentPlaceSockets, selectCurrentPlaceId } from "../../../store/slices/placesSlice";
+import { buildingsData } from "../../../data/buildings";
+import { itemCatalog } from "../../../data/itemCatalog";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { PLAYER_INTENT_FIRE_WORKER } from "../../../game/events";
 
 const WorkersSection = () => {
 	const { workerCard } = useUIVisibility();
-	const unassigned = useSelector(selectUnassignedWorkers);
-	const assigned = useSelector(selectAssignedWorkers);
-	const buildings = useSelector(selectAllBuildings);
-	const currentBuildings = useSelector(selectCurrentPlaceBuildings);
+	const workers = useSelector(selectWorkers);
+	const socketData = useSelector(selectCurrentPlaceSockets);
+	const currentPlaceId = useSelector(selectCurrentPlaceId);
 
 	if (!workerCard) return null;
+
+	const occupiedSocketIndexes = socketData.sockets
+		?.map((socket, idx) => socket.status === "occupied" ? idx : -1)
+		.filter(idx => idx !== -1) || [];
+
+	const assignedSocketIndexesForPlace = workers
+		.filter(w => w.assignments && w.assignments[currentPlaceId])
+		.map(w => w.assignments[currentPlaceId].socketIndex)
+		.filter(idx => idx !== null && idx !== undefined);
+
+	const availableSocketIndexes = occupiedSocketIndexes.filter(
+		idx => !assignedSocketIndexesForPlace.includes(idx)
+	);
+
+	const getSocketMaterials = (socketIndex) => {
+		const socket = socketData.sockets?.[socketIndex];
+		if (!socket || !socket.buildingId) return [];
+
+		const building = buildingsData[socket.buildingId];
+		if (!building?.upgrades) return [];
+
+		const materials = [];
+		for (let level = 1; level <= socket.level; level++) {
+			const upgrade = building.upgrades[`level${level}`];
+			if (upgrade?.material) {
+				const item = itemCatalog[upgrade.material];
+				materials.push({
+					material: upgrade.material,
+					icon: item?.icon || upgrade.material,
+					level,
+				});
+			}
+		}
+		return materials;
+	};
+
+	const hasAnyAssignment = (worker) => {
+		return worker.assignments && Object.keys(worker.assignments).length > 0;
+	};
+
+	const handleFireWorker = (workerId) => {
+		globalEventBus.emit(PLAYER_INTENT_FIRE_WORKER, { workerId });
+	};
+
+	const assigned = workers.filter(w => hasAnyAssignment(w));
+	const unassigned = workers.filter(w => !hasAnyAssignment(w));
 
 	return (
 		<section className="workers-section">
@@ -29,25 +76,34 @@ const WorkersSection = () => {
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								buildings={currentBuildings.map((id) => buildings[id])}
+								placeId={currentPlaceId}
+								availableSocketIndexes={availableSocketIndexes}
+								occupiedSocketIndexes={occupiedSocketIndexes}
+								socketData={socketData}
+								getSocketMaterials={getSocketMaterials}
+								onFire={handleFireWorker}
 							/>
 						))
 					) : (
 						<div className="no-workers-message">No workers available</div>
 					)}
 				</div>
-				<h3>Assigned</h3>
+				{assigned.length > 0 && (<h3>Assigned</h3>)}
 				<div className="workers-list">
 					{assigned.length > 0 ? (
 						assigned.map((w) => (
 							<WorkerCard
 								key={w.id}
 								worker={w}
-								buildings={currentBuildings.map((id) => buildings[id])}
+								placeId={currentPlaceId}
+								occupiedSocketIndexes={occupiedSocketIndexes}
+								socketData={socketData}
+								getSocketMaterials={getSocketMaterials}
+								isAssigned={true}
 							/>
 						))
 					) : (
-						<div className="no-workers-message">Currently no workers</div>
+						<div className="no-workers-message">No assigned workers</div>
 					)}
 				</div>
 			</div>
