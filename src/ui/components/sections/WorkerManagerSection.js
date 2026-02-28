@@ -1,9 +1,10 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useMemo, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import "../../../styles/sections/worker-manager-section.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import { selectWorkers, selectWorkerSlots, selectGold, selectAvailableWorkers } from "../../../store/slices/playerSlice";
+import { addNotification } from "../../../store/slices/notificationSlice";
 import { globalEventBus } from "../../../game/services/EventBusService";
 import {
 	PLAYER_INTENT_HIRE_WORKER,
@@ -23,13 +24,12 @@ const WORKER_COST_MULTIPLIER = 25;
 const SLOT_COST = 200;
 
 const WorkerManagerSection = () => {
+	const dispatch = useDispatch();
 	const { workerManagerWindow, closeWorkerManagerWindow } = useUIVisibility();
 	const workers = useSelector(selectWorkers);
 	const workerSlots = useSelector(selectWorkerSlots);
 	const gold = useSelector(selectGold);
 	const availableWorkers = useSelector(selectAvailableWorkers);
-
-	const [notification, setNotification] = useState(null);
 
 	const workerCount = workers.length;
 	const canHireMore = workerCount < workerSlots;
@@ -37,33 +37,27 @@ const WorkerManagerSection = () => {
 
 	useEffect(() => {
 		const handleWorkerHired = ({ worker }) => {
-			setNotification({ type: "success", message: `Hired ${worker.name}!` });
-			setTimeout(() => setNotification(null), 3000);
+			dispatch(addNotification(`Hired ${worker.name}!`, "success"));
 		};
 
 		const handleWorkerRerolled = () => {
-			setNotification({ type: "success", message: "Workers refreshed!" });
-			setTimeout(() => setNotification(null), 3000);
+			dispatch(addNotification("Workers refreshed!", "info"));
 		};
 
 		const handleSlotPurchased = ({ newSlotCount }) => {
-			setNotification({ type: "success", message: `Worker slot purchased! Total: ${newSlotCount}` });
-			setTimeout(() => setNotification(null), 3000);
+			dispatch(addNotification(`Worker slot purchased! Total: ${newSlotCount}`, "success"));
 		};
 
 		const handleHireFailed = ({ error }) => {
-			setNotification({ type: "error", message: error });
-			setTimeout(() => setNotification(null), 3000);
+			dispatch(addNotification(error, "error"));
 		};
 
 		const handleRerollFailed = ({ error }) => {
-			setNotification({ type: "error", message: error });
-			setTimeout(() => setNotification(null), 3000);
+			dispatch(addNotification(error, "error"));
 		};
 
 		const handleSlotFailed = ({ error }) => {
-			setNotification({ type: "error", message: error });
-			setTimeout(() => setNotification(null), 3000);
+			dispatch(addNotification(error, "error"));
 		};
 
 		globalEventBus.on(WORKER_HIRED, handleWorkerHired);
@@ -81,7 +75,7 @@ const WorkerManagerSection = () => {
 			globalEventBus.off(WORKER_REROLL_FAILED, handleRerollFailed);
 			globalEventBus.off(WORKER_SLOT_FAILED, handleSlotFailed);
 		};
-	}, []);
+	}, [dispatch]);
 
 	const handleHire = useCallback((workerId) => {
 		globalEventBus.emit(PLAYER_INTENT_HIRE_WORKER, { workerId });
@@ -112,12 +106,6 @@ const WorkerManagerSection = () => {
 				</span>
 				<span className="gold-amount">Gold: {gold}</span>
 			</div>
-
-			{notification && (
-				<div className={`notification ${notification.type}`}>
-					{notification.message}
-				</div>
-			)}
 
 			<div className="worker-manager-content">
 				<div className="available-workers">
