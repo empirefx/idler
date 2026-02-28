@@ -26,6 +26,7 @@ import { selectWorkers, selectWorkerSlots, selectGold } from "../../store/slices
 
 const REROLL_COST = 25;
 const SLOT_COST = 200;
+const FIRE_COST = 25;
 const BASE_WORKER_COST = 50;
 const WORKER_COST_MULTIPLIER = 25;
 
@@ -249,12 +250,17 @@ export default class WorkerService {
 		const state = this.getState();
 		const workers = selectWorkers(state);
 		const worker = workers.find((w) => w.id === workerId);
+		const gold = selectGold(state);
 
 		if (!worker) {
 			return { valid: false, error: "Worker not found" };
 		}
 
-		return { valid: true };
+		if (gold < FIRE_COST) {
+			return { valid: false, error: `Not enough gold. Need ${FIRE_COST}g to fire a worker` };
+		}
+
+		return { valid: true, cost: FIRE_COST };
 	}
 
 	fireWorker(workerId) {
@@ -271,9 +277,10 @@ export default class WorkerService {
 		const workers = selectWorkers(state);
 		const worker = workers.find((w) => w.id === workerId);
 
+		this.dispatch({ type: "player/spendGold", payload: FIRE_COST });
 		this.dispatch({ type: "player/removeWorker", payload: workerId });
 		this.dispatch(workerFired(workerId, worker?.name));
 		this.eventBus.emit(WORKER_FIRED, { workerId, workerName: worker?.name });
-		Logger.log(`Worker fired: ${worker?.name}`, 0, "worker");
+		Logger.log(`Worker fired: ${worker?.name} for ${FIRE_COST}g`, 0, "worker");
 	}
 }

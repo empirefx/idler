@@ -175,25 +175,19 @@ export const npcCatalog = {
 		id: "worker_supervisor",
 		name: "Mira the Overseer",
 		description:
-			"The village's workforce manager. She handles hiring and managing workers.",
+			"The village's workforce manager. She handles hiring workers.",
 		avatar: 42,
 		location: "village_center",
 		hasWorkerManager: true,
 		dialogue: {
 			initial:
-				"Looking to expand your workforce? I can help you hire new workers or... release some if needed.",
+				"Looking to expand your workforce? I can help you hire new workers.",
 			options: [
 				{
 					text: "I want to hire workers.",
 					response:
 						"Excellent! I can show you the available workers looking for employment. Each hire costs gold based on how many workers you already have.",
 					opensWorkerManager: true,
-				},
-				{
-					text: "I need to fire a worker.",
-					response:
-						"I understand. Sometimes things don't work out. Which worker would you like to let go?",
-					opensFireWorker: true,
 				},
 			],
 		},

@@ -54,6 +54,7 @@
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
+	gap: 10px;
 }
 
 .worker-card h3 {
@@ -83,6 +84,11 @@
 	text-transform: uppercase;
 	font-size: var(--font-size-xs);
 	color: gray;
+	flex-grow: 1;
+}
+
+.worker-card .worker-actions {
+	margin-top: 0;
 }
 
 .worker-materials {
@@ -115,4 +121,24 @@
 
 .worker-card.assigned .worker-materials > div {
 	border: 2px solid red;
+}
+
+.worker-actions {
+	margin-top: var(--spacing-xs);
+}
+
+.worker-actions .fire-btn {
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border: none;
+	border-radius: var(--border-radius-sm);
+	background: var(--color-danger);
+	color: white;
+	font-weight: 600;
+	font-size: 0.75rem;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+
+.worker-actions .fire-btn:hover {
+	background: #c0392b;
 }

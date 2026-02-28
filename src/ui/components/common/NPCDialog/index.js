@@ -3,7 +3,6 @@ import useNPCDialog from "./useNPCDialog";
 import NPCDialogTrade from "./NPCDialogTrade";
 import NPCDialogProfile from "./NPCDialogProfile";
 import NPCDialogOptions from "./NPCDialogOptions";
-import NPCDialogFireWorker from "./NPCDialogFireWorker";
 import TradeMessageDialog from "../TradeMessageDialog";
 import WorkerManagerSection from "../../sections/WorkerManagerSection";
 import { useUIVisibility } from "../../../UIVisibilityContext";
@@ -15,7 +14,7 @@ const NPCDialog = ({
 	onClose,
 	onOptionSelect,
 }) => {
-	const { workerManagerWindow, openWorkerManagerWindow, closeWorkerManagerWindow } = useUIVisibility();
+	const { workerManagerWindow, openWorkerManagerWindow } = useUIVisibility();
 	const [specialAction, setSpecialAction] = useState(null);
 
 	const {
@@ -64,21 +63,13 @@ const NPCDialog = ({
 				setSpecialAction("workerManager");
 				openWorkerManagerWindow();
 				if (onClose) onClose();
-			} else if (option.opensFireWorker) {
-				setSpecialAction("fireWorker");
 			}
 		}
 	}, [selectedOption, npc, openWorkerManagerWindow, onClose]);
 
-	const handleCloseWithSpecialAction = () => {
-		setSpecialAction(null);
-		if (onClose) onClose();
-	};
-
 	if (!npc || !isOpen) return null;
 
 	const showWorkerManager = specialAction === "workerManager" && workerManagerWindow;
-	const showFireWorker = specialAction === "fireWorker";
 
 	return (
 		<>
@@ -92,57 +83,51 @@ const NPCDialog = ({
 					}
 				}}
 			>
-				{showFireWorker ? (
-					<NPCDialogFireWorker onClose={handleCloseWithSpecialAction} />
-				) : (
-					<>
-						{npc?.hasInventory && npcInventory && (
-							<NPCDialogTrade
-								playerInventory={playerInventory}
-								npcInventory={npcInventory}
-								playerGold={playerGold}
-								onPlayerItemSell={handlePlayerItemSell}
-								onNpcItemBuy={handleNpcItemBuy}
-							/>
-						)}
-						<div
-							className="npc-dialog-content"
-							onClick={(e) => e.stopPropagation()}
-							onKeyDown={(e) => {
-								if (e.key === "Enter" || e.key === " ") {
-									e.stopPropagation();
-								}
-							}}
-						>
-							<div className="key-bind-container">
-								<span className="key-bind">ESC</span>
-								<span>escape</span>
-							</div>
-							<NPCDialogProfile
-								player={player}
-								npc={npc}
-								getResponseText={getResponseText}
-								getPlayerText={getPlayerText}
-							>
-								<NPCDialogOptions
-									questConversationState={questConversationState}
-									currentQuest={currentQuest}
-									isQuestActive={isQuestActive}
-									isQuestReadyToComplete={isQuestReadyToComplete}
-									questObjectivesWithProgress={questObjectivesWithProgress}
-									visibleDialogueOptions={visibleDialogueOptions}
-									onAccept={handleAcceptQuestClick}
-									onComplete={handleCompleteQuestClick}
-									onDecline={handleDeclineQuestClick}
-									onOptionClick={handleOptionClick}
-									onAdvance={advanceQuestConversation}
-									onClose={onClose}
-									npcDialogOptions={npc?.dialogue?.options || []}
-								/>
-							</NPCDialogProfile>
-						</div>
-					</>
+				{npc?.hasInventory && npcInventory && (
+					<NPCDialogTrade
+						playerInventory={playerInventory}
+						npcInventory={npcInventory}
+						playerGold={playerGold}
+						onPlayerItemSell={handlePlayerItemSell}
+						onNpcItemBuy={handleNpcItemBuy}
+					/>
 				)}
+				<div
+					className="npc-dialog-content"
+					onClick={(e) => e.stopPropagation()}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							e.stopPropagation();
+						}
+					}}
+				>
+					<div className="key-bind-container">
+						<span className="key-bind">ESC</span>
+						<span>escape</span>
+					</div>
+					<NPCDialogProfile
+						player={player}
+						npc={npc}
+						getResponseText={getResponseText}
+						getPlayerText={getPlayerText}
+					>
+						<NPCDialogOptions
+							questConversationState={questConversationState}
+							currentQuest={currentQuest}
+							isQuestActive={isQuestActive}
+							isQuestReadyToComplete={isQuestReadyToComplete}
+							questObjectivesWithProgress={questObjectivesWithProgress}
+							visibleDialogueOptions={visibleDialogueOptions}
+							onAccept={handleAcceptQuestClick}
+							onComplete={handleCompleteQuestClick}
+							onDecline={handleDeclineQuestClick}
+							onOptionClick={handleOptionClick}
+							onAdvance={advanceQuestConversation}
+							onClose={onClose}
+							npcDialogOptions={npc?.dialogue?.options || []}
+						/>
+					</NPCDialogProfile>
+				</div>
 				<TradeMessageDialog
 					isOpen={!!tradeMessage}
 					message={tradeMessage?.message}

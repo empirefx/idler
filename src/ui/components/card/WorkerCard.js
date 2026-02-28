@@ -1,6 +1,7 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import Item from "../common/Item";
+import ConfirmAlert from "../common/ConfirmAlert";
 import { itemCatalog } from "../../../data/itemCatalog";
 import {
   assignWorkerToSocketWithEvent,
@@ -36,8 +37,10 @@ const WorkerCard = ({
   socketData,
   getSocketMaterials,
   isAssigned = false,
+  onFire,
 }) => {
   const dispatch = useDispatch();
+  const [showFireConfirm, setShowFireConfirm] = useState(false);
 
   const handleMaterialClick = useCallback(
     (socketIndex, material, assignmentPlaceId) => {
@@ -49,6 +52,21 @@ const WorkerCard = ({
     },
     [dispatch, worker, isAssigned, placeId]
   );
+
+  const handleFireClick = () => {
+    setShowFireConfirm(true);
+  };
+
+  const handleConfirmFire = () => {
+    if (onFire) {
+      onFire(worker.id);
+    }
+    setShowFireConfirm(false);
+  };
+
+  const handleCancelFire = () => {
+    setShowFireConfirm(false);
+  };
 
   const materials = useMemo(() => {
     if (isAssigned && worker.assignments) {
@@ -75,26 +93,46 @@ const WorkerCard = ({
     );
   }, [isAssigned, worker, placeId, availableSocketIndexes, getSocketMaterials, socketData]);
 
+  const workerName = worker.name ? worker.name.split(" ")[0] : "Worker";
+
   return (
-    <div className={`worker-card${isAssigned ? " assigned" : ""}`}>
-      <WorkerAvatar avatar={worker.avatar} name={worker.name} bgClass={isAssigned ? "bg-red" : "bg-green"} />
-      <WorkerInfo name={worker.name} />
-      {(isAssigned || materials.length > 0) && (
-      <span>{isAssigned ? "Working on ⏵ " : "Select material ⏷"}</span>
-      )}
-      {materials.length > 0 && (
-      <div className="worker-materials">
-        {materials.map(({ socketIndex, mat, assignmentPlaceId }) => (
-          <Item
-            key={`${socketIndex}-${mat.material}`}
-            item={{ icon: mat.icon, name: mat.material }}
-            showItemInfo={false}
-            onClick={() => handleMaterialClick(socketIndex, mat.material, assignmentPlaceId)}
-          />
-        ))}
+    <>
+      <div className={`worker-card${isAssigned ? " assigned" : ""}`}>
+        <WorkerAvatar avatar={worker.avatar} name={worker.name} bgClass={isAssigned ? "bg-red" : "bg-green"} />
+        <WorkerInfo name={worker.name} />
+        {(isAssigned || materials.length > 0) && (
+        <span>{isAssigned ? "Working on ⏵ " : "Select material ⏷"}</span>
+        )}
+        {!isAssigned && onFire && (
+          <div className="worker-actions">
+            <button className="fire-btn" onClick={handleFireClick}>Fire</button>
+          </div>
+        )}
+        {materials.length > 0 && (
+        <div className="worker-materials">
+          {materials.map(({ socketIndex, mat, assignmentPlaceId }) => (
+            <Item
+              key={`${socketIndex}-${mat.material}`}
+              item={{ icon: mat.icon, name: mat.material }}
+              showItemInfo={false}
+              onClick={() => handleMaterialClick(socketIndex, mat.material, assignmentPlaceId)}
+            />
+          ))}
+        </div>
+        )}
       </div>
-      )}
-    </div>
+      <ConfirmAlert
+        open={showFireConfirm}
+        title="Fire Worker?"
+        message={`This will cost 25 gold. ${workerName} will be removed from your workforce.`}
+        variant="danger"
+        confirmLabel="Fire (25g)"
+        cancelLabel="Cancel"
+        overlay={false}
+        onConfirm={handleConfirmFire}
+        onCancel={handleCancelFire}
+      />
+    </>
   );
 };
 

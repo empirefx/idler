@@ -9,6 +9,8 @@ import {
 import { selectCurrentPlaceSockets, selectCurrentPlaceId } from "../../../store/slices/placesSlice";
 import { buildingsData } from "../../../data/buildings";
 import { itemCatalog } from "../../../data/itemCatalog";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { PLAYER_INTENT_FIRE_WORKER } from "../../../game/events";
 
 const WorkersSection = () => {
 	const { workerCard } = useUIVisibility();
@@ -57,6 +59,10 @@ const WorkersSection = () => {
 		return worker.assignments && Object.keys(worker.assignments).length > 0;
 	};
 
+	const handleFireWorker = (workerId) => {
+		globalEventBus.emit(PLAYER_INTENT_FIRE_WORKER, { workerId });
+	};
+
 	const assigned = workers.filter(w => hasAnyAssignment(w));
 	const unassigned = workers.filter(w => !hasAnyAssignment(w));
 
@@ -75,6 +81,7 @@ const WorkersSection = () => {
 								occupiedSocketIndexes={occupiedSocketIndexes}
 								socketData={socketData}
 								getSocketMaterials={getSocketMaterials}
+								onFire={handleFireWorker}
 							/>
 						))
 					) : (
