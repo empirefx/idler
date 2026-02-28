@@ -9,9 +9,19 @@ export default class ProductionService {
 		this.events = events;
 	}
 
-	processBuildingProduction(placeId, socketIndex, buildingData, state, _deltaTime) {
+	processBuildingProduction(
+		placeId,
+		socketIndex,
+		buildingData,
+		state,
+		_deltaTime,
+	) {
 		try {
-			const worker = this.getWorkerByPlaceAndSocket(state, placeId, socketIndex);
+			const worker = this.getWorkerByPlaceAndSocket(
+				state,
+				placeId,
+				socketIndex,
+			);
 
 			if (!worker) {
 				Logger.log(
@@ -53,7 +63,6 @@ export default class ProductionService {
 				const { workerCreatedItem } = require("../events");
 				this.dispatch(workerCreatedItem(worker.id, item.type));
 			}
-
 		} catch (error) {
 			console.error("Failed to create item during production", error);
 			Logger.log(
@@ -66,19 +75,21 @@ export default class ProductionService {
 
 	getWorkerByPlaceAndSocket(state, placeId, socketIndex) {
 		const workers = state.player?.workers || [];
-		return workers.find((worker) => 
-			worker.assignments && 
-			worker.assignments[placeId] && 
-			worker.assignments[placeId].socketIndex === socketIndex
+		return workers.find(
+			(worker) =>
+				worker.assignments &&
+				worker.assignments[placeId] &&
+				worker.assignments[placeId].socketIndex === socketIndex,
 		);
 	}
 
 	getWorkersByPlaceAndSocket(state, placeId, socketIndex) {
 		const workers = state.player?.workers || [];
-		return workers.filter((worker) => 
-			worker.assignments && 
-			worker.assignments[placeId] && 
-			worker.assignments[placeId].socketIndex === socketIndex
+		return workers.filter(
+			(worker) =>
+				worker.assignments &&
+				worker.assignments[placeId] &&
+				worker.assignments[placeId].socketIndex === socketIndex,
 		);
 	}
 
@@ -119,6 +130,10 @@ export default class ProductionService {
 	canBuildingProduce(state, placeId, socketIndex, buildingData) {
 		const worker = this.getWorkerByPlaceAndSocket(state, placeId, socketIndex);
 		const assignment = worker?.assignments?.[placeId];
-		return assignment && assignment.material && (buildingData.baseProductionRate || 0) > 0;
+		return (
+			assignment &&
+			assignment.material &&
+			(buildingData.baseProductionRate || 0) > 0
+		);
 	}
 }

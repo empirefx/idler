@@ -1380,15 +1380,15 @@ export const itemCatalog = {
 		type: "material",
 		name: "Stone",
 		icon: "stone",
-		description: "Raw stone ore",
+		description: "Raw stone or",
 		weight: 3,
 	},
 	"gold-ore": {
 		id: 202,
 		type: "material",
-		name: "Gold Ore",
+		name: "Gold Or",
 		icon: "gold-ore",
-		description: "Raw gold ore",
+		description: "Raw gold or",
 		weight: 4,
 	},
 	diamond: {
@@ -1404,7 +1404,7 @@ export const itemCatalog = {
 		type: "material",
 		name: "Mythril",
 		icon: "mythril",
-		description: "Rare mythril ore",
+		description: "Rare mythril or",
 		weight: 1,
 	},
 	hardwood: {

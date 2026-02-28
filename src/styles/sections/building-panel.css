@@ -4,7 +4,7 @@
 	left: 50%;
 	transform: translateX(-50%);
 	width: auto;
-  overflow-x: auto;
+	overflow-x: auto;
 	background: var(--color-dark);
 	border-radius: var(--border-radius-lg);
 	box-shadow: 0 4px 20px #00000080;
@@ -30,10 +30,10 @@
 
 .building-panel-header h3 {
 	text-transform: uppercase;
-  color: var(--color-secondary);
-  margin: 0;
-  font-size: 1rem;
-  flex-grow:1;
+	color: var(--color-secondary);
+	margin: 0;
+	font-size: 1rem;
+	flex-grow: 1;
 }
 
 .building-panel-info {
@@ -59,9 +59,9 @@
 
 .socket-grid {
 	display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 230px; /* Or minmax(180px, max-content) */
-  gap: var(--spacing-md);
+	grid-auto-flow: column;
+	grid-auto-columns: 230px; /* Or minmax(180px, max-content) */
+	gap: var(--spacing-md);
 }
 
 .building-card {
@@ -97,8 +97,8 @@
 	color: var(--color-primary);
 	display: flex;
 	justify-content: center;
-  align-items: center;
-  min-height: 80px;
+	align-items: center;
+	min-height: 80px;
 }
 
 .building-card.empty:hover {
@@ -117,7 +117,6 @@
 }
 
 .building-card.affordable {
-
 }
 
 .building-header {

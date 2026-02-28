@@ -69,7 +69,8 @@ const NPCDialog = ({
 
 	if (!npc || !isOpen) return null;
 
-	const showWorkerManager = specialAction === "workerManager" && workerManagerWindow;
+	const showWorkerManager =
+		specialAction === "workerManager" && workerManagerWindow;
 
 	return (
 		<>

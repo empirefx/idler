@@ -22,7 +22,11 @@ import {
 	workerSlotFailed,
 	workerFireFailed,
 } from "../events";
-import { selectWorkers, selectWorkerSlots, selectGold } from "../../store/slices/playerSlice";
+import {
+	selectWorkers,
+	selectWorkerSlots,
+	selectGold,
+} from "../../store/slices/playerSlice";
 
 const REROLL_COST = 25;
 const SLOT_COST = 200;
@@ -174,7 +178,10 @@ export default class WorkerService {
 		this.dispatch({ type: "player/addWorker", payload: newWorker });
 
 		const remainingWorkers = availableWorkers.filter((w) => w.id !== workerId);
-		this.dispatch({ type: "player/updateAvailableWorkers", payload: remainingWorkers });
+		this.dispatch({
+			type: "player/updateAvailableWorkers",
+			payload: remainingWorkers,
+		});
 
 		this.dispatch(workerHired(newWorker));
 		this.eventBus.emit(WORKER_HIRED, { worker: newWorker });
@@ -210,7 +217,10 @@ export default class WorkerService {
 		this.dispatch({ type: "player/spendGold", payload: REROLL_COST });
 
 		const newWorkers = this.generateAvailableWorkers();
-		this.dispatch({ type: "player/updateAvailableWorkers", payload: newWorkers });
+		this.dispatch({
+			type: "player/updateAvailableWorkers",
+			payload: newWorkers,
+		});
 
 		this.dispatch(workerRerolled(newWorkers));
 		this.eventBus.emit(WORKER_REROLLED, { availableWorkers: newWorkers });
@@ -231,7 +241,11 @@ export default class WorkerService {
 		const validation = this.canBuyWorkerSlot();
 
 		if (!validation.valid) {
-			Logger.log(`Worker slot purchase failed: ${validation.error}`, 0, "worker");
+			Logger.log(
+				`Worker slot purchase failed: ${validation.error}`,
+				0,
+				"worker",
+			);
 			this.dispatch(workerSlotFailed(validation.error));
 			this.eventBus.emit(WORKER_SLOT_FAILED, { error: validation.error });
 			return;
@@ -257,7 +271,10 @@ export default class WorkerService {
 		}
 
 		if (gold < FIRE_COST) {
-			return { valid: false, error: `Not enough gold. Need ${FIRE_COST}g to fire a worker` };
+			return {
+				valid: false,
+				error: `Not enough gold. Need ${FIRE_COST}g to fire a worker`,
+			};
 		}
 
 		return { valid: true, cost: FIRE_COST };

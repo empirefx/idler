@@ -112,7 +112,13 @@ class GameEngine {
 	}
 
 	// Process production for a single building
-	processBuildingProduction(placeId, socketIndex, buildingData, state, deltaTime) {
+	processBuildingProduction(
+		placeId,
+		socketIndex,
+		buildingData,
+		state,
+		deltaTime,
+	) {
 		this.productionService.processBuildingProduction(
 			placeId,
 			socketIndex,
@@ -134,7 +140,11 @@ class GameEngine {
 
 	// Validate that a building can produce
 	canBuildingProduce(state, socketIndex, buildingData) {
-		return this.productionService.canBuildingProduce(state, socketIndex, buildingData);
+		return this.productionService.canBuildingProduce(
+			state,
+			socketIndex,
+			buildingData,
+		);
 	}
 
 	// Add an item to a place's inventory handled by InventoryService
@@ -154,7 +164,13 @@ class GameEngine {
 	// Update game state
 	update(state, deltaTime) {
 		const places = state.places;
-		const placeIds = Object.keys(places).filter(id => id !== 'currentPlaceId' && id !== 'previousPlaceId' && id !== 'availableConnections' && places[id]?.sockets);
+		const placeIds = Object.keys(places).filter(
+			(id) =>
+				id !== "currentPlaceId" &&
+				id !== "previousPlaceId" &&
+				id !== "availableConnections" &&
+				places[id]?.sockets,
+		);
 
 		placeIds.forEach((placeId) => {
 			const place = places[placeId];

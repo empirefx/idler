@@ -47,7 +47,11 @@ const BuildingCard = ({
 		for (let l = currentLevel + 1; l <= 5; l++) {
 			const upgrade = upgrades[`level${l}`];
 			if (upgrade?.material) {
-				items.push({ level: l, material: upgrade.material, cost: upgrade.cost });
+				items.push({
+					level: l,
+					material: upgrade.material,
+					cost: upgrade.cost,
+				});
 			}
 		}
 		return items;
@@ -75,14 +79,18 @@ const BuildingCard = ({
 	return (
 		<div className={getCardClass()} onClick={handleClick}>
 			<div className="building-header">
-				{currentLevel > 1 && <span className="building-level">Lv.{currentLevel}</span>}
+				{currentLevel > 1 && (
+					<span className="building-level">Lv.{currentLevel}</span>
+				)}
 				<img
 					className="building-icon"
 					src={`assets/icons/buildings/${buildingData?.icon || "farm.jpg"}`}
 					alt={buildingData?.name}
 				/>
 				<span className="building-name">{buildingData?.name}</span>
-				<span className="building-description">{buildingData?.description}</span>
+				<span className="building-description">
+					{buildingData?.description}
+				</span>
 			</div>
 
 			<div className="building-info">

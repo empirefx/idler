@@ -10,12 +10,12 @@ const BuildingSection = () => {
 	const allBuildings = useSelector(selectAllBuildings);
 
 	const sockets = currentPlace?.sockets || [];
-	
+
 	const socketItems = sockets.map((socket, idx) => {
 		if (socket.status === "occupied") {
 			const building = allBuildings[socket.buildingId];
 			return building ? (
-				<img 
+				<img
 					key={idx}
 					className="building-mini-icon"
 					src={`assets/icons/buildings/${building.icon}`}

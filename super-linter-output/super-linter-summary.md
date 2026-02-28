@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22354028217)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22526002813)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,11 +32,11 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 22.
-Checked 120 files in 1052ms. No fixes applied.
-Found 24 errors.
-Found 17 warnings.
-Found 1 info.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
+Diagnostics not shown: 82.
+Checked 130 files in 1650ms. Fixed 1 file.
+Found 60 errors.
+Found 37 warnings.
+Found 5 infos.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
   ! This parameter is unused.
 
@@ -110,23 +110,45 @@ src/game/core/Gameplay.js:335:43 lint/correctness/noUnusedFunctionParameters ━
   i Unused parameters might be the result of an incomplete refactoring.
 
 
-src/game/engine/GameEngine.js:8:10 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
+src/game/engine/GameEngine.js:7:10 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━
 
   ! Several of these imports are unused.
 
-     6 │ import { createItem } from "../factory/itemFactory";
-     7 │ import SpawnService from "../services/SpawnService";
-   > 8 │ import { EventBusService, globalEventBus } from "../services/EventBusService";
-       │          ^^^^^^^^^^^^^^^
-     9 │ import { CombatService } from "../services/CombatService";
-    10 │ import {
+    5 │ import { createItem } from "../factory/itemFactory";
+    6 │ import SpawnService from "../services/SpawnService";
+  > 7 │ import { EventBusService, globalEventBus } from "../services/EventBusService";
+      │          ^^^^^^^^^^^^^^^
+    8 │ import { CombatService } from "../services/CombatService";
+    9 │ import {
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-    8 │ import·{·EventBusService,·globalEventBus·}·from·"../services/EventBusService";
+    7 │ import·{·EventBusService,·globalEventBus·}·from·"../services/EventBusService";
       │          -----------------
+
+src/game/engine/GameEngine.js:137:40 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━
+
+  ! This parameter is unused.
+
+    136 │ 	// Calculate production rate for a building
+  > 137 │ 	calculateProductionRate(buildingData, state) {
+        │ 	                                      ^^^^^
+    138 │ 		return buildingData.baseProductionRate || 0;
+    139 │ 	}
+
+  i Unused parameters might be the result of an incomplete refactoring.
+
+  i Unsafe fix: If this is intentional, prepend state with an underscore.
+
+    135 135 │
+    136 136 │   	// Calculate production rate for a building
+    137     │ - → calculateProductionRate(buildingData,·state)·{
+        137 │ + → calculateProductionRate(buildingData,·_state)·{
+    138 138 │   		return buildingData.baseProductionRate || 0;
+    139 139 │   	}
+
 
 src/game/services/CraftingService.js:121:9 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━
 
@@ -178,31 +200,112 @@ src/game/services/InventoryService.js:10:2 lint/correctness/noUnusedImports  FIX
      14  11 │   } from "../../store/slices/inventory/inventoryUtils.js";
 
 
-src/ui/components/sections/CraftingSection.js:42:33 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
+src/game/services/ProductionService.js:80:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
 
-  ! This parameter is unused.
+  ! Change to an optional chain.
 
-    41 │ 	useEffect(() => {
-  > 42 │ 		const handleCraftSuccess = ({ outputItemName }) => {
-       │ 		                              ^^^^^^^^^^^^^^
-    43 │ 			// Handled by CraftingService notification
-    44 │ 		};
+    78 │ 		return workers.find(
+    79 │ 			(worker) =>
+  > 80 │ 				worker.assignments &&
+       │ 				^^^^^^^^^^^^^^^^^^^^^
+  > 81 │ 				worker.assignments[placeId] &&
+       │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    82 │ 				worker.assignments[placeId].socketIndex === socketIndex,
+    83 │ 		);
 
-  i Unused parameters might be the result of an incomplete refactoring.
+  i Unsafe fix: Change to an optional chain.
+
+     78  78 │   		return workers.find(
+     79  79 │   			(worker) =>
+     80     │ - → → → → worker.assignments·&&
+     81     │ - → → → → worker.assignments[placeId]·&&
+         80 │ + → → → → worker.assignments?.[placeId]·&&
+     82  81 │   				worker.assignments[placeId].socketIndex === socketIndex,
+     83  82 │   		);
 
 
-src/ui/components/sections/CraftingSection.js:46:32 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
+src/game/services/ProductionService.js:90:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
 
-  ! This parameter is unused.
+  ! Change to an optional chain.
 
-    44 │ 		};
-    45 │
-  > 46 │ 		const handleCraftFailed = ({ error }) => {
-       │ 		                             ^^^^^
-    47 │ 			// Handled by CraftingService notification
-    48 │ 		};
+    88 │ 		return workers.filter(
+    89 │ 			(worker) =>
+  > 90 │ 				worker.assignments &&
+       │ 				^^^^^^^^^^^^^^^^^^^^^
+  > 91 │ 				worker.assignments[placeId] &&
+       │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    92 │ 				worker.assignments[placeId].socketIndex === socketIndex,
+    93 │ 		);
 
-  i Unused parameters might be the result of an incomplete refactoring.
+  i Unsafe fix: Change to an optional chain.
+
+     88  88 │   		return workers.filter(
+     89  89 │   			(worker) =>
+     90     │ - → → → → worker.assignments·&&
+     91     │ - → → → → worker.assignments[placeId]·&&
+         90 │ + → → → → worker.assignments?.[placeId]·&&
+     92  91 │   				worker.assignments[placeId].socketIndex === socketIndex,
+     93  92 │   		);
+
+
+src/game/services/ProductionService.js:134:4 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    132 │ 		const assignment = worker?.assignments?.[placeId];
+    133 │ 		return (
+  > 134 │ 			assignment &&
+        │ 			^^^^^^^^^^^^^
+  > 135 │ 			assignment.material &&
+        │ 			^^^^^^^^^^^^^^^^^^^
+    136 │ 			(buildingData.baseProductionRate || 0) > 0
+    137 │ 		);
+
+  i Unsafe fix: Change to an optional chain.
+
+    132 132 │   		const assignment = worker?.assignments?.[placeId];
+    133 133 │   		return (
+    134     │ - → → → assignment·&&
+    135     │ - → → → assignment.material·&&
+        134 │ + → → → assignment?.material·&&
+    136 135 │   			(buildingData.baseProductionRate || 0) > 0
+    137 136 │   		);
+
+
+src/ui/components/sections/WorkerManagerSection.js:1:10 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
+
+  ! Several of these imports are unused.
+
+  > 1 │ import { useMemo, useEffect, useCallback } from "react";
+      │          ^^^^^^^
+    2 │ import { useSelector, useDispatch } from "react-redux";
+    3 │
+
+  i Unused imports might be the result of an incomplete refactoring.
+
+  i Unsafe fix: Remove the unused imports.
+
+    1 │ import·{·useMemo,·useEffect,·useCallback·}·from·"react";
+      │          ---------
+
+src/ui/components/sections/WorkersSection.js:30:18 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━
+
+  ! Change to an optional chain.
+
+    29 │ 	const assignedSocketIndexesForPlace = workers
+  > 30 │ 		.filter((w) => w.assignments && w.assignments[currentPlaceId])
+       │ 		               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    31 │ 		.map((w) => w.assignments[currentPlaceId].socketIndex)
+    32 │ 		.filter((idx) => idx !== null && idx !== undefined);
+
+  i Unsafe fix: Change to an optional chain.
+
+     28  28 │
+     29  29 │   	const assignedSocketIndexesForPlace = workers
+     30     │ - → → .filter((w)·=>·w.assignments·&&·w.assignments[currentPlaceId])
+         30 │ + → → .filter((w)·=>·w.assignments?.[currentPlaceId])
+     31  31 │   		.map((w) => w.assignments[currentPlaceId].socketIndex)
+     32  32 │   		.filter((idx) => idx !== null && idx !== undefined);
 
 
 src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackReturn ━━━━━━━━━━━━━━━
@@ -226,189 +329,6 @@ src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackRe
     29 │ }
 
 
-src/ui/components/sections/CraftingSection.js:162:9 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    160 │ 							const isKnown = knownRecipes.includes(recipe.id);
-    161 │ 							return (
-  > 162 │ 								<div
-        │ 								^^^^
-  > 163 │ 									key={recipe.id}
-  > 164 │ 									className={`recipe-item ${selectedRecipe?.id === recipe.id ? "selected" : ""} ${!isKnown ? "unknown" : ""}`}
-  > 165 │ 									onClick={() => setSelectedRecipe(recipe)}
-  > 166 │ 								>
-        │ 								^
-    167 │ 									<span className="recipe-name">
-    168 │ 										{isKnown ? recipe.name : "???"}
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/sections/CraftingSection.js:162:9 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    160 │ 							const isKnown = knownRecipes.includes(recipe.id);
-    161 │ 							return (
-  > 162 │ 								<div
-        │ 								^^^^
-  > 163 │ 									key={recipe.id}
-  > 164 │ 									className={`recipe-item ${selectedRecipe?.id === recipe.id ? "selected" : ""} ${!isKnown ? "unknown" : ""}`}
-  > 165 │ 									onClick={() => setSelectedRecipe(recipe)}
-  > 166 │ 								>
-        │ 								^
-    167 │ 									<span className="recipe-name">
-    168 │ 										{isKnown ? recipe.name : "???"}
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/sections/CraftingSection.js:194:15 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    192 │ 													const item = itemCatalog[v];
-    193 │ 													return item ? (
-  > 194 │ 														<div
-        │ 														^^^^
-  > 195 │ 															key={v}
-  > 196 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-  > 197 │ 															onClick={() => setSelectedOutputItem(v)}
-  > 198 │ 														>
-        │ 														^
-    199 │ 															<Item item={item} />
-    200 │ 														</div>
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/sections/CraftingSection.js:194:15 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    192 │ 													const item = itemCatalog[v];
-    193 │ 													return item ? (
-  > 194 │ 														<div
-        │ 														^^^^
-  > 195 │ 															key={v}
-  > 196 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-  > 197 │ 															onClick={() => setSelectedOutputItem(v)}
-  > 198 │ 														>
-        │ 														^
-    199 │ 															<Item item={item} />
-    200 │ 														</div>
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/sections/CraftingSection.js:207:15 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    205 │ 													const item = itemCatalog[v];
-    206 │ 													return item ? (
-  > 207 │ 														<div
-        │ 														^^^^
-  > 208 │ 															key={v}
-  > 209 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-  > 210 │ 															onClick={() => setSelectedOutputItem(v)}
-  > 211 │ 														>
-        │ 														^
-    212 │ 															<Item item={item} />
-    213 │ 														</div>
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/sections/CraftingSection.js:207:15 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    205 │ 													const item = itemCatalog[v];
-    206 │ 													return item ? (
-  > 207 │ 														<div
-        │ 														^^^^
-  > 208 │ 															key={v}
-  > 209 │ 															className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-  > 210 │ 															onClick={() => setSelectedOutputItem(v)}
-  > 211 │ 														>
-        │ 														^
-    212 │ 															<Item item={item} />
-    213 │ 														</div>
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/sections/CraftingSection.js:219:14 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━
-
-  × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
-
-    217 │ 												!selectedRecipe.output.items &&
-    218 │ 												selectedRecipe.output.icon && (
-  > 219 │ 													<div
-        │ 													^^^^
-  > 220 │ 														className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
-  > 221 │ 														onClick={() =>
-  > 222 │ 															setSelectedOutputItem(selectedRecipe.output.icon)
-  > 223 │ 														}
-  > 224 │ 													>
-        │ 													^
-    225 │ 														<Item
-    226 │ 															item={itemCatalog[selectedRecipe.output.icon]}
-
-  i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
-
-
-src/ui/components/sections/CraftingSection.js:219:14 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
-
-  × Static Elements should not be interactive.
-
-    217 │ 												!selectedRecipe.output.items &&
-    218 │ 												selectedRecipe.output.icon && (
-  > 219 │ 													<div
-        │ 													^^^^
-  > 220 │ 														className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
-  > 221 │ 														onClick={() =>
-  > 222 │ 															setSelectedOutputItem(selectedRecipe.output.icon)
-  > 223 │ 														}
-  > 224 │ 													>
-        │ 													^
-    225 │ 														<Item
-    226 │ 															item={itemCatalog[selectedRecipe.output.icon]}
-
-  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
-
-
-src/ui/components/sections/CraftingSection.js:37:2 lint/correctness/useExhaustiveDependencies  FIXABLE  ━━━━━━━━━━
-
-  × This hook specifies more dependencies than necessary: selectedRecipe.
-
-    35 │ 	const [selectedOutputItem, setSelectedOutputItem] = useState(null);
-    36 │
-  > 37 │ 	useEffect(() => {
-       │ 	^^^^^^^^^
-    38 │ 		setSelectedOutputItem(null);
-    39 │ 	}, [selectedRecipe]);
-
-  i This dependency can be removed from the list.
-
-    37 │ 	useEffect(() => {
-    38 │ 		setSelectedOutputItem(null);
-  > 39 │ 	}, [selectedRecipe]);
-       │ 	    ^^^^^^^^^^^^^^
-    40 │
-    41 │ 	useEffect(() => {
-
-  i React relies on hook dependencies to determine when to re-compute Effects.
-    Specifying more dependencies than required can lead to unnecessary re-rendering
-    and degraded performance.
-
-  i Unsafe fix: Remove the extra dependencies from the list.
-
-    39 │ → },·[selectedRecipe]);
-       │       --------------
-
 src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━
 
   × This hook is being called from a nested function, but all hooks must be called unconditionally from the top-level component.
@@ -423,6 +343,104 @@ src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLe
   i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
 
   i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
+
+src/ui/components/sections/WorkerManagerSection.js:108:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    106 │ 			<div className="worker-manager-header">
+    107 │ 				<h3>Worker Manager</h3>
+  > 108 │ 				<button className="close-btn" onClick={closeWorkerManagerWindow}>
+        │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    109 │ 					×
+    110 │ 				</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/sections/WorkerManagerSection.js:143:10 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    141 │ 										</span>
+    142 │ 									</div>
+  > 143 │ 									<button
+        │ 									^^^^^^^
+  > 144 │ 										className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
+  > 145 │ 										disabled={!canHireMore || gold < workerCost}
+  > 146 │ 										onClick={() => handleHire(worker.id)}
+  > 147 │ 									>
+        │ 									^
+    148 │ 										Hire ({workerCost}g)
+    149 │ 									</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/sections/WorkerManagerSection.js:157:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    155 │ 			</div>
+    156 │ 			<div className="worker-manager-actions">
+  > 157 │ 				<button
+        │ 				^^^^^^^
+  > 158 │ 					className={`reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
+  > 159 │ 					disabled={gold < REROLL_COST}
+  > 160 │ 					onClick={handleReroll}
+  > 161 │ 				>
+        │ 				^
+    162 │ 					Reroll Workers ({REROLL_COST}g)
+    163 │ 				</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/components/sections/WorkerManagerSection.js:165:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
+
+  × Provide an explicit type prop for the button element.
+
+    163 │ 				</button>
+    164 │
+  > 165 │ 				<button
+        │ 				^^^^^^^
+  > 166 │ 					className={`buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
+  > 167 │ 					disabled={gold < SLOT_COST}
+  > 168 │ 					onClick={handleBuySlot}
+  > 169 │ 				>
+        │ 				^
+    170 │ 					Buy Worker Slot ({SLOT_COST}g)
+    171 │ 				</button>
+
+  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+
+  i Allowed button types are: submit, button or reset
+
+
+src/ui/layouts/GameLayout.js:62:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    60 │ 				<LogSection />
+    61 │ 			</main>
+  > 62 │ 			<div
+       │ 			^^^^
+  > 63 │ 				className="building-panel-container"
+  > 64 │ 				onMouseEnter={showBuildingPanel}
+  > 65 │ 				onMouseLeave={hideBuildingPanel}
+  > 66 │ 			>
+       │ 			^
+    67 │ 				<BuildingPanel onClose={toggleBuildingPanel} />
+    68 │ 			</div>
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
 
 lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -443,10 +461,6 @@ Clone found (javascript):
    src/ui/components/common/NPCDialog/useNPCDialog.js [326:2 - 334:8]
 
 Clone found (javascript):
- - src/ui/components/sections/WorkersSection.js [42:9 - 50:10] (8 lines, 75 tokens)
-   src/ui/components/sections/WorkersSection.js [28:11 - 36:3]
-
-Clone found (javascript):
  - src/ui/components/sections/CraftingSection.js [204:6 - 216:2] (12 lines, 116 tokens)
    src/ui/components/sections/CraftingSection.js [191:9 - 203:15]
 
@@ -460,7 +474,15 @@ Clone found (javascript):
 
 Clone found (javascript):
  - src/ui/components/common/TradeMessageDialog.js [38:5 - 45:2] (7 lines, 77 tokens)
-   src/ui/components/common/NPCDialog/index.js [71:5 - 78:21]
+   src/ui/components/common/NPCDialog/index.js [98:6 - 105:21]
+
+Clone found (css):
+ - src/styles/sections/crafting-section.css [1:2 - 16:17] (15 lines, 110 tokens)
+   src/styles/sections/worker-manager-section.css [1:2 - 16:23]
+
+Clone found (css):
+ - src/styles/sections/crafting-section.css [16:2 - 26:20] (10 lines, 85 tokens)
+   src/styles/sections/worker-manager-section.css [16:2 - 26:26]
 
 Clone found (javascript):
  - src/store/slices/inventorySlice.js [177:13 - 188:16] (11 lines, 93 tokens)
@@ -474,26 +496,38 @@ Clone found (javascript):
  - src/game/services/InventoryService.js [330:19 - 336:6] (6 lines, 94 tokens)
    src/game/services/InventoryService.js [255:16 - 261:5]
 
+Clone found (javascript):
+ - src/game/services/BuildingService.js [116:11 - 123:8] (7 lines, 94 tokens)
+   src/game/services/BuildingService.js [66:12 - 73:9]
+
+Clone found (javascript):
+ - src/game/services/BuildingService.js [175:11 - 182:11] (7 lines, 99 tokens)
+   src/game/services/BuildingService.js [66:13 - 73:9]
+
+Clone found (javascript):
+ - src/game/services/BuildingService.js [242:12 - 253:7] (11 lines, 128 tokens)
+   src/game/services/BuildingService.js [66:13 - 186:6]
+
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 133            │ 14398       │ 114995       │ 9            │ 84 (0.58%)       │ 814 (0.71%)       │
+│ javascript │ 140            │ 16278       │ 130840       │ 11           │ 101 (0.62%)      │ 1060 (0.81%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 20             │ 4778        │ 28904        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 23             │ 5935        │ 35791        │ 2            │ 25 (0.42%)       │ 195 (0.54%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 162            │ 19326       │ 144853       │ 9            │ 84 (0.43%)       │ 814 (0.56%)       │
+│ Total:     │ 172            │ 22363       │ 167585       │ 13           │ 126 (0.56%)      │ 1255 (0.75%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 9 clones.
-Error: ERROR: jscpd found too many duplicates (0.43%) over threshold (0%)
+Found 13 clones.
+Error: ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.43%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
 ```
 
 </details>

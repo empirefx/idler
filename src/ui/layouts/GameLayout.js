@@ -21,7 +21,14 @@ import { selectBackgroundImage } from "../../store/slices/placesSlice";
 
 const GameLayout = ({ clearCache }) => {
 	const currentPlaceBackgroundImage = useSelector(selectBackgroundImage);
-	const { npcDialog, selectNPCOption, closeNPCDialog, toggleBuildingPanel, showBuildingPanel, hideBuildingPanel } = useUIVisibility();
+	const {
+		npcDialog,
+		selectNPCOption,
+		closeNPCDialog,
+		toggleBuildingPanel,
+		showBuildingPanel,
+		hideBuildingPanel,
+	} = useUIVisibility();
 
 	const styles = {
 		backgroundImage: currentPlaceBackgroundImage

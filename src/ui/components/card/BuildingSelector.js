@@ -4,14 +4,14 @@ import "../../../styles/sections/building-selector.css";
 
 // Helper: returns an array of "levelX: material" strings
 function getMaterialStrings(obj) {
-  const upgrades = obj.upgrades ?? {};
-  const sortedLevels = Object.keys(upgrades).sort((a, b) => {
-    const aNum = parseInt(a.replace("level", ""), 10);
-    const bNum = parseInt(b.replace("level", ""), 10);
-    return aNum - bNum;
-  });
+	const upgrades = obj.upgrades ?? {};
+	const sortedLevels = Object.keys(upgrades).sort((a, b) => {
+		const aNum = parseInt(a.replace("level", ""), 10);
+		const bNum = parseInt(b.replace("level", ""), 10);
+		return aNum - bNum;
+	});
 
-  return sortedLevels.map((lvl) => `${upgrades[lvl].material}`);
+	return sortedLevels.map((lvl) => `${upgrades[lvl].material}`);
 }
 
 const BuildingSelector = ({ buildings, onSelect, onClose, gold }) => {

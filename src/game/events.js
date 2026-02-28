@@ -174,7 +174,8 @@ export const buildFailed = (action, placeId, socketIndex, error) => ({
 // Worker management events
 export const PLAYER_INTENT_HIRE_WORKER = "game/PLAYER_INTENT_HIRE_WORKER";
 export const PLAYER_INTENT_REROLL_WORKERS = "game/PLAYER_INTENT_REROLL_WORKERS";
-export const PLAYER_INTENT_BUY_WORKER_SLOT = "game/PLAYER_INTENT_BUY_WORKER_SLOT";
+export const PLAYER_INTENT_BUY_WORKER_SLOT =
+	"game/PLAYER_INTENT_BUY_WORKER_SLOT";
 export const PLAYER_INTENT_FIRE_WORKER = "game/PLAYER_INTENT_FIRE_WORKER";
 export const WORKER_HIRED = "game/WORKER_HIRED";
 export const WORKER_REROLLED = "game/WORKER_REROLLED";

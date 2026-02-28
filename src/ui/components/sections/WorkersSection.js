@@ -3,10 +3,11 @@ import { useSelector } from "react-redux";
 import "../../../styles/sections/workers-section.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import WorkerCard from "../card/WorkerCard";
+import { selectWorkers } from "../../../store/slices/playerSlice";
 import {
-	selectWorkers,
-} from "../../../store/slices/playerSlice";
-import { selectCurrentPlaceSockets, selectCurrentPlaceId } from "../../../store/slices/placesSlice";
+	selectCurrentPlaceSockets,
+	selectCurrentPlaceId,
+} from "../../../store/slices/placesSlice";
 import { buildingsData } from "../../../data/buildings";
 import { itemCatalog } from "../../../data/itemCatalog";
 import { globalEventBus } from "../../../game/services/EventBusService";
@@ -20,17 +21,18 @@ const WorkersSection = () => {
 
 	if (!workerCard) return null;
 
-	const occupiedSocketIndexes = socketData.sockets
-		?.map((socket, idx) => socket.status === "occupied" ? idx : -1)
-		.filter(idx => idx !== -1) || [];
+	const occupiedSocketIndexes =
+		socketData.sockets
+			?.map((socket, idx) => (socket.status === "occupied" ? idx : -1))
+			.filter((idx) => idx !== -1) || [];
 
 	const assignedSocketIndexesForPlace = workers
-		.filter(w => w.assignments && w.assignments[currentPlaceId])
-		.map(w => w.assignments[currentPlaceId].socketIndex)
-		.filter(idx => idx !== null && idx !== undefined);
+		.filter((w) => w.assignments && w.assignments[currentPlaceId])
+		.map((w) => w.assignments[currentPlaceId].socketIndex)
+		.filter((idx) => idx !== null && idx !== undefined);
 
 	const availableSocketIndexes = occupiedSocketIndexes.filter(
-		idx => !assignedSocketIndexesForPlace.includes(idx)
+		(idx) => !assignedSocketIndexesForPlace.includes(idx),
 	);
 
 	const getSocketMaterials = (socketIndex) => {
@@ -63,8 +65,8 @@ const WorkersSection = () => {
 		globalEventBus.emit(PLAYER_INTENT_FIRE_WORKER, { workerId });
 	};
 
-	const assigned = workers.filter(w => hasAnyAssignment(w));
-	const unassigned = workers.filter(w => !hasAnyAssignment(w));
+	const assigned = workers.filter((w) => hasAnyAssignment(w));
+	const unassigned = workers.filter((w) => !hasAnyAssignment(w));
 
 	return (
 		<section className="workers-section">
@@ -88,7 +90,7 @@ const WorkersSection = () => {
 						<div className="no-workers-message">No workers available</div>
 					)}
 				</div>
-				{assigned.length > 0 && (<h3>Assigned</h3>)}
+				{assigned.length > 0 && <h3>Assigned</h3>}
 				<div className="workers-list">
 					{assigned.length > 0 ? (
 						assigned.map((w) => (

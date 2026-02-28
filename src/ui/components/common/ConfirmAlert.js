@@ -50,184 +50,236 @@
  * ---------------------------------------------------------------
  */
 
-var React = require('react');
+var React = require("react");
 import "./../../../styles/components/ConfirmAlert.css";
 
 /* ── Default configuration ──────────────────────────────────────── */
 var DEFAULTS = {
-  open:           false,
-  title:          'Are you sure?',
-  message:        'Do you want to proceed with this action?',
-  variant:        'default',
-  icon:           null,          // null = auto-pick by variant
-  confirmLabel:   'Confirm',
-  cancelLabel:    'Cancel',
-  showCancel:     true,
-  showClose:      false,
-  stacked:        false,
-  overlay:        true,
-  closeOnOverlay: true,
-  closeOnEsc:     true,
-  loading:        false,
-  onConfirm:      function() {},
-  onCancel:       function() {},
-  onClose:        null,
+	open: false,
+	title: "Are you sure?",
+	message: "Do you want to proceed with this action?",
+	variant: "default",
+	icon: null, // null = auto-pick by variant
+	confirmLabel: "Confirm",
+	cancelLabel: "Cancel",
+	showCancel: true,
+	showClose: false,
+	stacked: false,
+	overlay: true,
+	closeOnOverlay: true,
+	closeOnEsc: true,
+	loading: false,
+	onConfirm: () => {},
+	onCancel: () => {},
+	onClose: null,
 };
 
 /* ── Auto icon map ─────────────────────────────────────────────── */
 var VARIANT_ICONS = {
-  default: '✦',
-  danger:  '⚠',
-  warning: '!',
-  info:    'ℹ',
+	default: "✦",
+	danger: "⚠",
+	warning: "!",
+	info: "ℹ",
 };
 
 /* ── Merge props with defaults ─────────────────────────────────── */
 function cfg(props) {
-  var out = {};
-  var keys = Object.keys(DEFAULTS);
-  for (var i = 0; i < keys.length; i++) {
-    var k = keys[i];
-    out[k] = props[k] !== undefined ? props[k] : DEFAULTS[k];
-  }
-  // onClose falls back to onCancel
-  out.onClose = props.onClose || out.onCancel;
-  // icon falls back to variant default when null
-  if (out.icon === null) out.icon = VARIANT_ICONS[out.variant] || VARIANT_ICONS.default;
-  return out;
+	var out = {};
+	var keys = Object.keys(DEFAULTS);
+	for (var i = 0; i < keys.length; i++) {
+		var k = keys[i];
+		out[k] = props[k] !== undefined ? props[k] : DEFAULTS[k];
+	}
+	// onClose falls back to onCancel
+	out.onClose = props.onClose || out.onCancel;
+	// icon falls back to variant default when null
+	if (out.icon === null)
+		out.icon = VARIANT_ICONS[out.variant] || VARIANT_ICONS.default;
+	return out;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    ConfirmAlert component
 ═══════════════════════════════════════════════════════════════ */
 function ConfirmAlert(rawProps) {
-  var p = cfg(rawProps);
+	var p = cfg(rawProps);
 
-  /* ── Esc key handler ── */
-  React.useEffect(function() {
-    if (!p.open || !p.closeOnEsc) return;
-    function onKey(e) {
-      if (e.key === 'Escape') p.onClose();
-    }
-    document.addEventListener('keydown', onKey);
-    return function() { document.removeEventListener('keydown', onKey); };
-  }, [p.open, p.closeOnEsc, p.onClose]);
+	/* ── Esc key handler ── */
+	React.useEffect(
+		() => {
+			if (!p.open || !p.closeOnEsc) return;
+			function onKey(e) {
+				if (e.key === "Escape") p.onClose();
+			}
+			document.addEventListener("keydown", onKey);
+			return () => {
+				document.removeEventListener("keydown", onKey);
+			};
+		},
+		[p.open, p.closeOnEsc, p.onClose],
+	);
 
-  /* ── Focus trap: move focus into panel when opened ── */
-  var panelRef = React.useRef(null);
-  React.useEffect(function() {
-    if (p.open && panelRef.current) {
-      var first = panelRef.current.querySelector(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      if (first) first.focus();
-    }
-  }, [p.open]);
+	/* ── Focus trap: move focus into panel when opened ── */
+	var panelRef = React.useRef(null);
+	React.useEffect(
+		() => {
+			if (p.open && panelRef.current) {
+				var first = panelRef.current.querySelector(
+					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+				);
+				if (first) first.focus();
+			}
+		},
+		[p.open],
+	);
 
-  /* ── Scroll lock (only when overlay covers the page) ── */
-  React.useEffect(function() {
-    if (p.open && p.overlay) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return function() { document.body.style.overflow = ''; };
-  }, [p.open, p.overlay]);
+	/* ── Scroll lock (only when overlay covers the page) ── */
+	React.useEffect(
+		() => {
+			if (p.open && p.overlay) {
+				document.body.style.overflow = "hidden";
+			} else {
+				document.body.style.overflow = "";
+			}
+			return () => {
+				document.body.style.overflow = "";
+			};
+		},
+		[p.open, p.overlay],
+	);
 
-  /* ── Don't render at all when closed ── */
-  if (!p.open) return null;
+	/* ── Don't render at all when closed ── */
+	if (!p.open) return null;
 
-  /* ── Overlay click ── */
-  function handleOverlayClick(e) {
-    if (p.closeOnOverlay && e.target === e.currentTarget) {
-      p.onClose();
-    }
-  }
+	/* ── Overlay click ── */
+	function handleOverlayClick(e) {
+		if (p.closeOnOverlay && e.target === e.currentTarget) {
+			p.onClose();
+		}
+	}
 
-  /* ── Build action buttons ── */
-  var confirmBtn = React.createElement('button', {
-    className: 'ca-btn ca-btn-confirm',
-    type: 'button',
-    disabled: p.loading,
-    onClick: p.onConfirm,
-    'aria-busy': p.loading ? 'true' : 'false',
-  },
-    p.loading
-      ? React.createElement('span', { className: 'ca-btn-spinner', 'aria-hidden': 'true' })
-      : null,
-    p.loading ? 'Working…' : p.confirmLabel
-  );
+	/* ── Build action buttons ── */
+	var confirmBtn = React.createElement(
+		"button",
+		{
+			className: "ca-btn ca-btn-confirm",
+			type: "button",
+			disabled: p.loading,
+			onClick: p.onConfirm,
+			"aria-busy": p.loading ? "true" : "false",
+		},
+		p.loading
+			? React.createElement("span", {
+					className: "ca-btn-spinner",
+					"aria-hidden": "true",
+				})
+			: null,
+		p.loading ? "Working…" : p.confirmLabel,
+	);
 
-  var cancelBtn = p.showCancel
-    ? React.createElement('button', {
-        className: 'ca-btn ca-btn-cancel',
-        type: 'button',
-        onClick: p.onClose,
-      }, p.cancelLabel)
-    : null;
+	var cancelBtn = p.showCancel
+		? React.createElement(
+				"button",
+				{
+					className: "ca-btn ca-btn-cancel",
+					type: "button",
+					onClick: p.onClose,
+				},
+				p.cancelLabel,
+			)
+		: null;
 
-  var actionsClass = 'ca-actions' + (p.stacked ? ' ca-stacked' : '');
+	var actionsClass = "ca-actions" + (p.stacked ? " ca-stacked" : "");
 
-  /* ── Close (×) button ── */
-  var closeBtn = p.showClose
-    ? React.createElement('button', {
-        className: 'ca-close',
-        type: 'button',
-        'aria-label': 'Close dialog',
-        onClick: p.onClose,
-      }, '×')
-    : null;
+	/* ── Close (×) button ── */
+	var closeBtn = p.showClose
+		? React.createElement(
+				"button",
+				{
+					className: "ca-close",
+					type: "button",
+					"aria-label": "Close dialog",
+					onClick: p.onClose,
+				},
+				"×",
+			)
+		: null;
 
-  /* ── Panel ── */
-  var panel = React.createElement('div', {
-    ref: panelRef,
-    className: 'ca-panel ca-variant-' + p.variant,
-    role: 'alertdialog',
-    'aria-modal': 'true',
-    'aria-labelledby': 'ca-title',
-    'aria-describedby': 'ca-message',
-  },
-    closeBtn,
+	/* ── Panel ── */
+	var panel = React.createElement(
+		"div",
+		{
+			ref: panelRef,
+			className: "ca-panel ca-variant-" + p.variant,
+			role: "alertdialog",
+			"aria-modal": "true",
+			"aria-labelledby": "ca-title",
+			"aria-describedby": "ca-message",
+		},
+		closeBtn,
 
-    React.createElement('div', { className: 'ca-body' },
+		React.createElement(
+			"div",
+			{ className: "ca-body" },
 
-      /* icon */
-      p.icon
-        ? React.createElement('div', {
-            className: 'ca-icon',
-            'aria-hidden': 'true',
-          }, p.icon)
-        : null,
+			/* icon */
+			p.icon
+				? React.createElement(
+						"div",
+						{
+							className: "ca-icon",
+							"aria-hidden": "true",
+						},
+						p.icon,
+					)
+				: null,
 
-      /* title */
-      React.createElement('h2', {
-        id: 'ca-title',
-        className: 'ca-title',
-      }, p.title),
+			/* title */
+			React.createElement(
+				"h2",
+				{
+					id: "ca-title",
+					className: "ca-title",
+				},
+				p.title,
+			),
 
-      /* message */
-      React.createElement('p', {
-        id: 'ca-message',
-        className: 'ca-message',
-      }, p.message),
+			/* message */
+			React.createElement(
+				"p",
+				{
+					id: "ca-message",
+					className: "ca-message",
+				},
+				p.message,
+			),
 
-      /* divider */
-      React.createElement('div', { className: 'ca-divider', 'aria-hidden': 'true' }),
+			/* divider */
+			React.createElement("div", {
+				className: "ca-divider",
+				"aria-hidden": "true",
+			}),
 
-      /* actions */
-      React.createElement('div', { className: actionsClass },
-        cancelBtn,
-        confirmBtn
-      )
-    )
-  );
+			/* actions */
+			React.createElement(
+				"div",
+				{ className: actionsClass },
+				cancelBtn,
+				confirmBtn,
+			),
+		),
+	);
 
-  /* ── Overlay ── */
-  return React.createElement('div', {
-    className: 'ca-overlay' + (p.overlay ? '' : ' ca-overlay--bare'),
-    role: 'presentation',
-    onClick: handleOverlayClick,
-  }, panel);
+	/* ── Overlay ── */
+	return React.createElement(
+		"div",
+		{
+			className: "ca-overlay" + (p.overlay ? "" : " ca-overlay--bare"),
+			role: "presentation",
+			onClick: handleOverlayClick,
+		},
+		panel,
+	);
 }
 
 module.exports = ConfirmAlert;

@@ -31,9 +31,12 @@ const BuildingPanel = ({ onClose }) => {
 	const placeId = currentPlace?.id;
 	const sockets = socketData.sockets || [];
 
-	const handleBuySocket = useCallback((socketIndex) => {
-		globalEventBus.emit(PLAYER_INTENT_BUY_SOCKET, { placeId, socketIndex });
-	}, [placeId]);
+	const handleBuySocket = useCallback(
+		(socketIndex) => {
+			globalEventBus.emit(PLAYER_INTENT_BUY_SOCKET, { placeId, socketIndex });
+		},
+		[placeId],
+	);
 
 	const handleBuildClick = useCallback((socketIndex) => {
 		setSelectedSocketIndex(socketIndex);
@@ -42,25 +45,25 @@ const BuildingPanel = ({ onClose }) => {
 
 	const handleSelectBuilding = useCallback(
 		(buildingId) => {
-			globalEventBus.emit(PLAYER_INTENT_BUILD, { 
-				placeId, 
-				socketIndex: selectedSocketIndex, 
-				buildingId 
+			globalEventBus.emit(PLAYER_INTENT_BUILD, {
+				placeId,
+				socketIndex: selectedSocketIndex,
+				buildingId,
 			});
 			setShowBuildingSelector(false);
 			setSelectedSocketIndex(null);
 		},
-		[placeId, selectedSocketIndex]
+		[placeId, selectedSocketIndex],
 	);
 
 	const handleUpgrade = useCallback(
 		(socketIndex) => {
 			globalEventBus.emit(PLAYER_INTENT_UPGRADE, { placeId, socketIndex });
 		},
-		[placeId]
+		[placeId],
 	);
 
-	const lockedCount = sockets.filter(s => s.status === "locked").length;
+	const lockedCount = sockets.filter((s) => s.status === "locked").length;
 	const showPurchaseMsg = lockedCount > 0;
 
 	const renderSockets = () => {
@@ -103,9 +106,9 @@ const BuildingPanel = ({ onClose }) => {
 				<div className="building-panel-header">
 					<h3>Buildings</h3>
 					{showPurchaseMsg && (
-					<div className="building-panel-info">
-						<span>{lockedCount} locked</span>
-					</div>
+						<div className="building-panel-info">
+							<span>{lockedCount} locked</span>
+						</div>
 					)}
 					<button className="building-panel-close" onClick={onClose}>
 						&times;

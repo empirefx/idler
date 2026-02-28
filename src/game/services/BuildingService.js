@@ -23,9 +23,12 @@ export default class BuildingService {
 			this.buySocket(placeId, socketIndex);
 		});
 
-		this.eventBus.on(PLAYER_INTENT_BUILD, ({ placeId, socketIndex, buildingId }) => {
-			this.buildBuilding(placeId, socketIndex, buildingId);
-		});
+		this.eventBus.on(
+			PLAYER_INTENT_BUILD,
+			({ placeId, socketIndex, buildingId }) => {
+				this.buildBuilding(placeId, socketIndex, buildingId);
+			},
+		);
 
 		this.eventBus.on(PLAYER_INTENT_UPGRADE, ({ placeId, socketIndex }) => {
 			this.upgradeBuilding(placeId, socketIndex);
@@ -45,7 +48,10 @@ export default class BuildingService {
 	}
 
 	getGold() {
-		return this.getState().player.resources.find(r => r.name === "gold")?.amount || 0;
+		return (
+			this.getState().player.resources.find((r) => r.name === "gold")?.amount ||
+			0
+		);
 	}
 
 	getBuildingDefinition(buildingId) {
@@ -83,15 +89,28 @@ export default class BuildingService {
 
 		if (!validation.valid) {
 			Logger.log(`BuySocket failed: ${validation.error}`, 1, "building");
-			this.dispatch(buildFailed("buySocket", placeId, socketIndex, validation.error));
+			this.dispatch(
+				buildFailed("buySocket", placeId, socketIndex, validation.error),
+			);
 			return;
 		}
 
-		this.dispatch({ type: "places/buySocket", payload: { placeId, socketIndex } });
+		this.dispatch({
+			type: "places/buySocket",
+			payload: { placeId, socketIndex },
+		});
 		this.dispatch({ type: "player/spendGold", payload: validation.cost });
 
-		Logger.log(`Bought socket ${socketIndex} at ${placeId} for ${validation.cost}g`, 1, "building");
-		this.dispatch(buildSuccess("buySocket", placeId, socketIndex, { cost: validation.cost }));
+		Logger.log(
+			`Bought socket ${socketIndex} at ${placeId} for ${validation.cost}g`,
+			1,
+			"building",
+		);
+		this.dispatch(
+			buildSuccess("buySocket", placeId, socketIndex, {
+				cost: validation.cost,
+			}),
+		);
 	}
 
 	canBuild(placeId, socketIndex, buildingId) {
@@ -112,7 +131,10 @@ export default class BuildingService {
 
 		const gold = this.getGold();
 		if (gold < building.buildCost) {
-			return { valid: false, error: `Not enough gold. Need ${building.buildCost}g` };
+			return {
+				valid: false,
+				error: `Not enough gold. Need ${building.buildCost}g`,
+			};
 		}
 
 		return { valid: true, cost: building.buildCost };
@@ -123,7 +145,9 @@ export default class BuildingService {
 
 		if (!validation.valid) {
 			Logger.log(`Build failed: ${validation.error}`, 1, "building");
-			this.dispatch(buildFailed("build", placeId, socketIndex, validation.error));
+			this.dispatch(
+				buildFailed("build", placeId, socketIndex, validation.error),
+			);
 			return;
 		}
 
@@ -134,12 +158,18 @@ export default class BuildingService {
 		this.dispatch({ type: "player/spendGold", payload: validation.cost });
 
 		const building = this.getBuildingDefinition(buildingId);
-		Logger.log(`Built ${building.name} at ${placeId} socket ${socketIndex} for ${validation.cost}g`, 1, "building");
-		this.dispatch(buildSuccess("build", placeId, socketIndex, { 
-			cost: validation.cost,
-			buildingId,
-			buildingName: building.name,
-		}));
+		Logger.log(
+			`Built ${building.name} at ${placeId} socket ${socketIndex} for ${validation.cost}g`,
+			1,
+			"building",
+		);
+		this.dispatch(
+			buildSuccess("build", placeId, socketIndex, {
+				cost: validation.cost,
+				buildingId,
+				buildingName: building.name,
+			}),
+		);
 	}
 
 	canUpgrade(placeId, socketIndex) {
@@ -179,7 +209,9 @@ export default class BuildingService {
 
 		if (!validation.valid) {
 			Logger.log(`Upgrade failed: ${validation.error}`, 1, "building");
-			this.dispatch(buildFailed("upgrade", placeId, socketIndex, validation.error));
+			this.dispatch(
+				buildFailed("upgrade", placeId, socketIndex, validation.error),
+			);
 			return;
 		}
 
@@ -190,13 +222,21 @@ export default class BuildingService {
 		this.dispatch({ type: "player/spendGold", payload: validation.cost });
 
 		const place = this.getPlace(placeId);
-		const building = this.getBuildingDefinition(place.sockets[socketIndex].buildingId);
-		Logger.log(`Upgraded ${building.name} at ${placeId} socket ${socketIndex} to level ${validation.nextLevel} for ${validation.cost}g`, 1, "building");
-		this.dispatch(buildSuccess("upgrade", placeId, socketIndex, { 
-			cost: validation.cost,
-			newLevel: validation.nextLevel,
-			material: validation.upgrade.material,
-		}));
+		const building = this.getBuildingDefinition(
+			place.sockets[socketIndex].buildingId,
+		);
+		Logger.log(
+			`Upgraded ${building.name} at ${placeId} socket ${socketIndex} to level ${validation.nextLevel} for ${validation.cost}g`,
+			1,
+			"building",
+		);
+		this.dispatch(
+			buildSuccess("upgrade", placeId, socketIndex, {
+				cost: validation.cost,
+				newLevel: validation.nextLevel,
+				material: validation.upgrade.material,
+			}),
+		);
 	}
 
 	canDemolish(placeId, socketIndex) {
@@ -218,22 +258,32 @@ export default class BuildingService {
 
 		if (!validation.valid) {
 			Logger.log(`Demolish failed: ${validation.error}`, 1, "building");
-			this.dispatch(buildFailed("demolish", placeId, socketIndex, validation.error));
+			this.dispatch(
+				buildFailed("demolish", placeId, socketIndex, validation.error),
+			);
 			return;
 		}
 
 		const place = this.getPlace(placeId);
-		const building = this.getBuildingDefinition(place.sockets[socketIndex].buildingId);
+		const building = this.getBuildingDefinition(
+			place.sockets[socketIndex].buildingId,
+		);
 
 		this.dispatch({
 			type: "places/demolishBuilding",
 			payload: { placeId, socketIndex },
 		});
 
-		Logger.log(`Demolished ${building.name} at ${placeId} socket ${socketIndex}`, 1, "building");
-		this.dispatch(buildSuccess("demolish", placeId, socketIndex, { 
-			buildingId: building.id,
-			buildingName: building.name,
-		}));
+		Logger.log(
+			`Demolished ${building.name} at ${placeId} socket ${socketIndex}`,
+			1,
+			"building",
+		);
+		this.dispatch(
+			buildSuccess("demolish", placeId, socketIndex, {
+				buildingId: building.id,
+				buildingName: building.name,
+			}),
+		);
 	}
 }

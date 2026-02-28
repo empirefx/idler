@@ -9,14 +9,28 @@ const getNextWorkerId = (workers) => {
 	return maxId + 1;
 };
 
-export const assignWorkerToSocketWithEvent = (workerId, placeId, socketIndex, material) => {
+export const assignWorkerToSocketWithEvent = (
+	workerId,
+	placeId,
+	socketIndex,
+	material,
+) => {
 	return (dispatch, getState) => {
-		dispatch(assignWorkerToSocket({ workerId, placeId, socketIndex, material }));
+		dispatch(
+			assignWorkerToSocket({ workerId, placeId, socketIndex, material }),
+		);
 
 		const state = getState();
 		const worker = state.player.workers.find((w) => w.id === workerId);
 		if (worker) {
-			dispatch(workerAssigned(workerId, worker.name, `socket_${socketIndex}`, material));
+			dispatch(
+				workerAssigned(
+					workerId,
+					worker.name,
+					`socket_${socketIndex}`,
+					material,
+				),
+			);
 		}
 	};
 };
@@ -33,7 +47,14 @@ export const unassignWorkerFromSocketWithEvent = (workerId, placeId) => {
 		dispatch(unassignWorkerFromSocket({ workerId, placeId }));
 
 		if (workerName !== undefined) {
-			dispatch(workerUnassigned(workerId, workerName, `socket_${socketIndex}`, material));
+			dispatch(
+				workerUnassigned(
+					workerId,
+					workerName,
+					`socket_${socketIndex}`,
+					material,
+				),
+			);
 		}
 	};
 };
@@ -188,12 +209,20 @@ export const selectPlayer = createSelector(
 
 export const selectAssignedWorkers = createSelector(
 	[selectWorkers],
-	(workers) => workers.filter((worker) => worker.assignments && Object.keys(worker.assignments).length > 0),
+	(workers) =>
+		workers.filter(
+			(worker) =>
+				worker.assignments && Object.keys(worker.assignments).length > 0,
+		),
 );
 
 export const selectUnassignedWorkers = createSelector(
 	[selectWorkers],
-	(workers) => workers.filter((worker) => !worker.assignments || Object.keys(worker.assignments).length === 0),
+	(workers) =>
+		workers.filter(
+			(worker) =>
+				!worker.assignments || Object.keys(worker.assignments).length === 0,
+		),
 );
 
 export const selectGold = createSelector(
@@ -227,20 +256,21 @@ export const selectKnownRecipes = createSelector(
 	(knownRecipes) => knownRecipes || [],
 );
 
-export const selectWorkerByPlaceAndSocket = (placeId, socketIndex) => createSelector(
-	[selectWorkers],
-	(workers) => workers.find((worker) => 
-		worker.assignments && 
-		worker.assignments[placeId] && 
-		worker.assignments[placeId].socketIndex === socketIndex
-	),
-);
+export const selectWorkerByPlaceAndSocket = (placeId, socketIndex) =>
+	createSelector([selectWorkers], (workers) =>
+		workers.find(
+			(worker) =>
+				worker.assignments &&
+				worker.assignments[placeId] &&
+				worker.assignments[placeId].socketIndex === socketIndex,
+		),
+	);
 
-export const selectWorkersByPlace = (placeId) => createSelector(
-	[selectWorkers],
-	(workers) => workers.filter((worker) => 
-		worker.assignments && worker.assignments[placeId]
-	),
-);
+export const selectWorkersByPlace = (placeId) =>
+	createSelector([selectWorkers], (workers) =>
+		workers.filter(
+			(worker) => worker.assignments && worker.assignments[placeId],
+		),
+	);
 
 export default playerSlice.reducer;

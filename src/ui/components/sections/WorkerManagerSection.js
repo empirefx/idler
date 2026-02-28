@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import "../../../styles/sections/worker-manager-section.css";
 import { useUIVisibility } from "../../UIVisibilityContext";
-import { selectWorkers, selectWorkerSlots, selectGold, selectAvailableWorkers } from "../../../store/slices/playerSlice";
+import {
+	selectWorkers,
+	selectWorkerSlots,
+	selectGold,
+	selectAvailableWorkers,
+} from "../../../store/slices/playerSlice";
 import { addNotification } from "../../../store/slices/notificationSlice";
 import { globalEventBus } from "../../../game/services/EventBusService";
 import {
@@ -45,7 +50,12 @@ const WorkerManagerSection = () => {
 		};
 
 		const handleSlotPurchased = ({ newSlotCount }) => {
-			dispatch(addNotification(`Worker slot purchased! Total: ${newSlotCount}`, "success"));
+			dispatch(
+				addNotification(
+					`Worker slot purchased! Total: ${newSlotCount}`,
+					"success",
+				),
+			);
 		};
 
 		const handleHireFailed = ({ error }) => {
@@ -111,13 +121,18 @@ const WorkerManagerSection = () => {
 				<div className="available-workers">
 					<h4>Available Workers</h4>
 					{availableWorkers.length === 0 ? (
-						<div className="no-workers">No workers available. Try rerolling!</div>
+						<div className="no-workers">
+							No workers available. Try rerolling!
+						</div>
 					) : (
 						<div className="worker-list">
 							{availableWorkers.map((worker) => (
 								<div key={worker.id} className="worker-item">
 									<div className="worker-avatar">
-										<img src={`/assets/avatars/${worker.avatar}`} alt={worker.firstName} />
+										<img
+											src={`/assets/avatars/${worker.avatar}`}
+											alt={worker.firstName}
+										/>
 									</div>
 									<div className="worker-info">
 										<span className="worker-name">{worker.firstName}</span>

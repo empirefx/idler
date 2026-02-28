@@ -174,8 +174,7 @@ export const npcCatalog = {
 	worker_supervisor: {
 		id: "worker_supervisor",
 		name: "Mira the Overseer",
-		description:
-			"The village's workforce manager. She handles hiring workers.",
+		description: "The village's workforce manager. She handles hiring workers.",
 		avatar: 42,
 		location: "village_center",
 		hasWorkerManager: true,

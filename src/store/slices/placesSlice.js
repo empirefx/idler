@@ -98,7 +98,14 @@ export const placesSlice = createSlice({
 	},
 });
 
-export const { navigateToPlace, setPlaces, buySocket, buildBuilding, upgradeBuilding, demolishBuilding } = placesSlice.actions;
+export const {
+	navigateToPlace,
+	setPlaces,
+	buySocket,
+	buildBuilding,
+	upgradeBuilding,
+	demolishBuilding,
+} = placesSlice.actions;
 
 export const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 export const selectCurrentPlace = (state) =>
@@ -115,15 +122,13 @@ export const selectCurrentPlaceSockets = createSelector(
 	(place) => ({
 		sockets: place?.sockets || [],
 		cost: place?.socketCost || 100,
-	})
+	}),
 );
 
-export const selectPlaceSocketInfo = (placeId) => createSelector(
-	[(state) => state.places[placeId]],
-	(place) => ({
+export const selectPlaceSocketInfo = (placeId) =>
+	createSelector([(state) => state.places[placeId]], (place) => ({
 		sockets: place?.sockets || [],
 		cost: place?.socketCost || 100,
-	})
-);
+	}));
 
 export default placesSlice.reducer;

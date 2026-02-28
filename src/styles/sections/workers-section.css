@@ -95,9 +95,9 @@
 	display: flex;
 	width: 100%;
 	flex-direction: row;
-  align-self: stretch;
-  gap: 5px;
-  margin: 5px;
+	align-self: stretch;
+	gap: 5px;
+	margin: 5px;
 }
 
 .worker-materials > div:hover {
@@ -106,17 +106,17 @@
 }
 
 .worker-materials .item-sprite {
-	transform: scale(1.0);
+	transform: scale(1);
 	background-color: lightgray;
 	border: 2px gray solid;
 	border-radius: 5px;
 }
 
-.worker-card.assigned .worker-materials{
+.worker-card.assigned .worker-materials {
 	background: var(--color-light);
 	align-self: center;
 	width: auto;
-	gap:0px;
+	gap: 0px;
 }
 
 .worker-card.assigned .worker-materials > div {
