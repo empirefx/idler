@@ -1,5 +1,50 @@
 # Changelog
 
+## [3.1.0](https://github.com/empirefx/idler/compare/v3.0.0...v3.1.0) (2026-02-28)
+
+
+### Features
+
+* add quest functionality and NPC dialogue enhancements ([d577261](https://github.com/empirefx/idler/commit/d577261569c770fb5bb0fd103e04aef9b0106b83))
+* add reusable ConfirmAlert dialog with conf, overlay and fallback actions ([302a229](https://github.com/empirefx/idler/commit/302a22919957cde419612dcff228fcf3e3f089d8))
+* **building:** add socket-based building system with upgrades ([e296ce4](https://github.com/empirefx/idler/commit/e296ce4d34100df56dcf49358458e7fe18d3a15b))
+* **crafting:** refactor crafting system to use event-driven architecture ([9a97506](https://github.com/empirefx/idler/commit/9a975062d9591b9507300c7f114d08abb9f81909))
+* **crafting:** ui ([b1c7a61](https://github.com/empirefx/idler/commit/b1c7a6162df0b762c7f93ceaba054f924fec8691))
+* implement building service with event ([48d35b8](https://github.com/empirefx/idler/commit/48d35b835a9398bf08b69cfde2bb9d0f31949057))
+* implement NPC trading interface with dual inventory display ([e55b553](https://github.com/empirefx/idler/commit/e55b5537fd08e7214128e5b45b00f915fe165ac1))
+* **quest:** enhance NPC dialog quest UI and functionality ([761713a](https://github.com/empirefx/idler/commit/761713af080d75e8fa56eedd6f6d982fe35ff6a9))
+* **quests:** add quest rewards and NPC turn-in system ([12f871b](https://github.com/empirefx/idler/commit/12f871bc3111a332a249e7b05e059364632d4d71))
+* **trading:** add NPC trading system with buy/sell functionality ([943dd48](https://github.com/empirefx/idler/commit/943dd48014135bdc322eb2c998e3dd07a6ee09b3))
+* **workers:** add worker hiring/firing system with place-specific assignments ([90c4de4](https://github.com/empirefx/idler/commit/90c4de41a56c605c69b53cce96bfdc0cb5267440))
+* **workers:** refactor worker assignment to socket-based system ([b7ce54b](https://github.com/empirefx/idler/commit/b7ce54b9a0b5d7c0ac619ae5ef6c940ee903b4ea))
+
+
+### Bug Fixes
+
+* (ui) item display refactor ([93f2a67](https://github.com/empirefx/idler/commit/93f2a67b63aabf6dd85c7abcc75d5426080be87b))
+* add grocer npc ([a75f1fc](https://github.com/empirefx/idler/commit/a75f1fc2efa30731cd15de2fb580577ed293a1fc))
+* add items icons ([11057bb](https://github.com/empirefx/idler/commit/11057bb58eb2d394c139eba36e59e168af2b3170))
+* add more arcanum items ([175bf2e](https://github.com/empirefx/idler/commit/175bf2effe6a0758c5764adaa6a7033c88eed2d6))
+* add npc portraits ([3636f81](https://github.com/empirefx/idler/commit/3636f812b98e67549447faa145f73dc94889e681))
+* add npc weapon seller and add weapons as main weapon ([f2640ce](https://github.com/empirefx/idler/commit/f2640ce755618bdebc31a2009ba3bda2390fa6d0))
+* add quest kill x amount of monsters ([4468ae5](https://github.com/empirefx/idler/commit/4468ae55471d99ba9d7a2e3941d4df493f4089d5))
+* add weapon icons ([069503d](https://github.com/empirefx/idler/commit/069503d3ce8b9ed6a3eb41c5da5e97df3c6b9594))
+* **crafting:** view items to craft ([2616ddf](https://github.com/empirefx/idler/commit/2616ddf717abcabc4f3e0af075df26456ad45c7d))
+* display inventory currentWeight with 1 decimal place ([a440b42](https://github.com/empirefx/idler/commit/a440b425957b0d09149067522bdf4b76e4374c2f))
+* display item gold worth ([71b9598](https://github.com/empirefx/idler/commit/71b9598b1e18595db4a0338398d5f2e299e0b7bc))
+* display item gold worth & stats ([8d93a37](https://github.com/empirefx/idler/commit/8d93a374d9de6916f6ae34498e345f47b0167602))
+* item iron ore name ([6e13659](https://github.com/empirefx/idler/commit/6e13659421d3e620e1ee65ea94c18a9319a54e0a))
+* log scroll bottom in new entries ([1557777](https://github.com/empirefx/idler/commit/155777759afd6df9c4fac28fadfaedcc1d6f58f9))
+* log scroll bottom, ignore biome ([8cc85ed](https://github.com/empirefx/idler/commit/8cc85ed2b03891c587dd416f2fee5d7549ff970a))
+* npc dialog animation ([1300f89](https://github.com/empirefx/idler/commit/1300f8912c702370ae1cd8a59e15624b3c5d6a75))
+* prevent player self targeted ([2a7fa1a](https://github.com/empirefx/idler/commit/2a7fa1ad36556be20eb3ef697cfafb01bfff3cbc))
+* quest log in player section ([4cdd360](https://github.com/empirefx/idler/commit/4cdd3604389056f0972ee6cd508ee07c31a6053d))
+* replace itemKey for icon, add item component ([51661c7](https://github.com/empirefx/idler/commit/51661c7e64a2b8eaa7feecf6cad7c559ad8e3bf1))
+* specify npc worker actions ([b7e0794](https://github.com/empirefx/idler/commit/b7e07945dbd071a72d7b6b3df2b6e4104ef74985))
+* **ui:** worker section refactor ([edb699e](https://github.com/empirefx/idler/commit/edb699ed786f926708abdc4119a5973a203fcf9a))
+* **worker:** remove custom notification use the already build one ([0e42471](https://github.com/empirefx/idler/commit/0e42471a6bc08451521694064404a03aa2dfe056))
+* **workers:** add fire button to worker card ([a59a73f](https://github.com/empirefx/idler/commit/a59a73f115afb5803e426743b8db3a1c0a53bfd2))
+
 ## [3.0.0](https://github.com/empirefx/idler/compare/v2.0.0...v3.0.0) (2026-02-07)
 
 ### ⚠ BREAKING CHANGES
