@@ -154,6 +154,27 @@
 	grid-area: stats;
 }
 
+.player-stats > p {
+	margin-bottom: var(--spacing-xs);
+}
+
+.stats-columns {
+	display: flex;
+	gap: var(--spacing-md);
+}
+
+.stats-column {
+	flex: 1;
+}
+
+.stats-column h4 {
+	font-size: 0.75rem;
+	color: var(--color-gray);
+	text-transform: uppercase;
+	margin-bottom: var(--spacing-xs);
+	margin-top: 0;
+}
+
 .player-inventory,
 .place-vault {
 	padding: var(--spacing-md) var(--spacing-sm);
@@ -315,4 +336,189 @@
 
 .player-stats .bonus {
 	color: var(--color-green);
+}
+
+.player-skills-tab {
+	height: 100%;
+}
+
+.player-skills {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+	height: 100%;
+	padding: var(--spacing-sm);
+	background-color: var(--color-gray-dark);
+	border-radius: var(--border-radius-lg);
+	overflow-y: auto;
+}
+
+.skills-no-weapon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	color: var(--color-gray);
+	font-size: 0.9rem;
+	text-align: center;
+}
+
+.skills-no-weapon p {
+	margin: 0;
+	padding: var(--spacing-md);
+}
+
+.skills-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.skills-header h3 {
+	margin: 0;
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	color: var(--color-secondary);
+}
+
+.skill-points {
+	font-size: 0.85rem;
+	color: var(--color-gray);
+}
+
+.skill-points-value {
+	color: var(--color-gold);
+	font-weight: bold;
+	margin-left: var(--spacing-xs);
+}
+
+.skills-column-info {
+	font-size: 0.8rem;
+	color: var(--color-gray);
+	padding-bottom: var(--spacing-sm);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.column-name {
+	text-transform: capitalize;
+	color: var(--color-secondary);
+	font-weight: bold;
+}
+
+.skills-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+	flex: 1;
+}
+
+.skill-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: var(--spacing-sm);
+	background: rgba(0, 0, 0, 0.35);
+	border-radius: var(--border-radius-sm);
+}
+
+.skill-info {
+	display: flex;
+	gap: var(--spacing-sm);
+	flex: 1;
+}
+
+.skill-icon {
+	width: 36px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--color-secondary);
+	border-radius: var(--border-radius-sm);
+	font-weight: bold;
+	font-size: 1rem;
+}
+
+.skill-details {
+	flex: 1;
+}
+
+.skill-name {
+	font-weight: bold;
+	font-size: 0.9rem;
+	margin-bottom: 2px;
+}
+
+.skill-description {
+	font-size: 0.75rem;
+	color: var(--color-gray);
+}
+
+.skill-effect {
+	font-size: 0.7rem;
+	color: var(--color-green);
+	margin-top: 2px;
+}
+
+.skill-rank {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--spacing-xs);
+}
+
+.rank-dots {
+	display: flex;
+	gap: 4px;
+}
+
+.rank-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.15);
+	border: 1px solid var(--color-gray);
+}
+
+.rank-dot--filled {
+	background: goldenrod;
+	border-color: gold;
+}
+
+.rank-dot--next {
+	border-color: var(--color-green);
+	box-shadow: 0 0 4px var(--color-green);
+}
+
+.skill-rank .upgrade-btn {
+	width: 24px;
+	height: 24px;
+	border-radius: var(--border-radius-sm);
+	border: none;
+	background: rgba(255, 255, 255, 0.1);
+	color: white;
+	cursor: not-allowed;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s;
+}
+
+.skill-rank .upgrade-btn--active {
+	background: var(--color-green);
+	color: white;
+	cursor: pointer;
+}
+
+.skill-rank .upgrade-btn--active:hover {
+	background: darkgreen;
+}
+
+.skills-note {
+	font-size: 0.7rem;
+	color: var(--color-gray);
+	text-align: center;
+	padding-top: var(--spacing-sm);
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }

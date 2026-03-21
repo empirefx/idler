@@ -110,6 +110,7 @@ export const playerSlice = createSlice({
 			if (state.exp < required) return;
 			state.exp -= required;
 			state.level += 1;
+			state.skillPoints += 1;
 			const {
 				strength = 0,
 				defense = 0,
@@ -166,6 +167,54 @@ export const playerSlice = createSlice({
 		updateAvailableWorkers: (state, action) => {
 			state.availableWorkers = action.payload;
 		},
+		addBuff: (state, action) => {
+			if (!state.activeBuffs) {
+				state.activeBuffs = [];
+			}
+			state.activeBuffs.push(action.payload);
+		},
+		removeBuff: (state, action) => {
+			const buffId = action.payload;
+			if (state.activeBuffs) {
+				state.activeBuffs = state.activeBuffs.filter((b) => b.id !== buffId);
+			}
+		},
+		tickBuffs: (state) => {
+			if (state.activeBuffs) {
+				state.activeBuffs = state.activeBuffs
+					.map((buff) => ({
+						...buff,
+						duration: buff.duration - 1,
+					}))
+					.filter((buff) => buff.duration > 0);
+			}
+		},
+		setCooldown: (state, action) => {
+			const { skillId, timestamp } = action.payload;
+			if (!state.activeCooldowns) {
+				state.activeCooldowns = {};
+			}
+			state.activeCooldowns[skillId] = timestamp;
+		},
+		clearCooldown: (state, action) => {
+			const skillId = action.payload;
+			if (state.activeCooldowns) {
+				delete state.activeCooldowns[skillId];
+			}
+		},
+		spendSkillPoint: (state, action) => {
+			const { skillId, currentRank } = action.payload;
+			if (state.skillPoints > 0 && currentRank < 3) {
+				state.skillPoints -= 1;
+				if (!state.skills) {
+					state.skills = {};
+				}
+				state.skills[skillId] = currentRank + 1;
+			}
+		},
+		addSkillPoints: (state, action) => {
+			state.skillPoints += action.payload;
+		},
 	},
 });
 
@@ -185,6 +234,13 @@ export const {
 	removeWorker,
 	incrementWorkerSlots,
 	updateAvailableWorkers,
+	addBuff,
+	removeBuff,
+	tickBuffs,
+	setCooldown,
+	clearCooldown,
+	spendSkillPoint,
+	addSkillPoints,
 } = playerSlice.actions;
 
 export const selectWorkers = (state) => state.player.workers;
@@ -199,7 +255,6 @@ export const selectPlayer = createSelector(
 		stats: player.stats,
 		health: player.health,
 		maxHealth: player.baseHealth,
-		attack: player.baseAttack,
 		level: player.level,
 		exp: player.exp,
 		expToNext: player.level * 100,
@@ -272,5 +327,15 @@ export const selectWorkersByPlace = (placeId) =>
 			(worker) => worker.assignments && worker.assignments[placeId],
 		),
 	);
+
+export const selectActiveBuffs = (state) => state.player.activeBuffs || [];
+export const selectActiveCooldowns = (state) => state.player.activeCooldowns || {};
+export const selectPlayerSkills = (state) => state.player.skills || {};
+export const selectSkillPoints = (state) => state.player.skillPoints || 0;
+
+export const selectMaxHealth = createSelector(
+	[(state) => state.player.baseHealth, (state) => state.player.stats],
+	(baseHealth, stats) => baseHealth + (stats?.vitality || 0) * 5,
+);
 
 export default playerSlice.reducer;

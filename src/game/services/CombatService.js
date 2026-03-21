@@ -3,8 +3,9 @@ import Logger from "../utils/Logger";
 import { batch } from "react-redux";
 import { enemyAttacked, playerDamaged, enemyDead } from "../events";
 import { addItem } from "../../store/slices/inventorySlice";
-import { gainExp, updateLastAttackTime } from "../../store/slices/playerSlice";
+import { gainExp, updateLastAttackTime, tickBuffs } from "../../store/slices/playerSlice";
 import { createItem } from "../factory/itemFactory";
+import { resolveAttack, resolveEnemyAttack } from "../core/combatCalculator";
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.
@@ -150,6 +151,11 @@ export const CombatService = {
 
 		const state = this.store.getState();
 		const player = state.player;
+		const inventory = state.inventory?.player;
+		const equippedWeapon = inventory?.equipment?.["main-weapon"] || null;
+		const equippedArmor = Object.values(inventory?.equipment || {}).filter(
+			(item) => item && item.type !== "main-weapon" && item.type !== "second-weapon",
+		);
 		const now = Date.now();
 
 		if (now - (player.lastAttackTime || 0) < (player.attackCooldown || 1000))
@@ -161,7 +167,17 @@ export const CombatService = {
 
 		// Capture enemy snapshot BEFORE attacking (for death event and logging)
 		const enemySnapshot = { ...targetEnemy };
-		const damage = player.baseAttack || 10;
+
+		// Use new combat calculator for damage calculation
+		const attackResult = resolveAttack(
+			player,
+			targetEnemy,
+			equippedWeapon,
+			equippedArmor,
+			player.activeBuffs || [],
+		);
+
+		const damage = attackResult.hit ? attackResult.damage : 0;
 
 		// Update timestamp FIRST to prevent double attacks
 		this.store.dispatch(updateLastAttackTime({ timestamp: now }));
@@ -169,17 +185,30 @@ export const CombatService = {
 			type: "enemies/damageEnemy",
 			payload: { id: targetEnemy.id, amount: damage },
 		});
-		// Dispatch single consolidated player attack log with pre-captured enemy name
+
+		// Dispatch player attack log with pre-captured enemy name
+		const attackDesc = attackResult.hit
+			? `${attackResult.crit ? "critically hit" : "hit"} for ${damage} damage`
+			: "missed";
 		this.store.dispatch(
 			playerDamaged(
 				"player",
 				"player",
 				targetEnemy.id,
 				damage,
-				"dealt",
+				attackResult.hit ? "dealt" : "missed",
 				enemySnapshot.name,
 			),
 		);
+
+		Logger.log(
+			`Player attacks ${enemySnapshot.name}: ${attackDesc} (${attackResult.damageType})`,
+			0,
+			"combat",
+		);
+
+		// Tick buffs after attack
+		this.store.dispatch(tickBuffs());
 
 		// Check if enemy died and emit death event
 		setTimeout(() => {
@@ -218,6 +247,12 @@ export const CombatService = {
 			return;
 		}
 		const isInCombat = currentState.combat.isInCombat;
+		const player = currentState.player;
+		const playerStats = player?.stats || {
+			defense: 0,
+			agility: 0,
+			wisdom: 0,
+		};
 
 		// Filter enemies that have staggered attack pattern and are alive
 		const staggeredEnemies = enemies.filter(
@@ -279,21 +314,27 @@ export const CombatService = {
 		// Allow ALL ready enemies to attack simultaneously at different delay times
 		batch(() => {
 			readyEnemies.forEach((enemy) => {
-				// Get enemy's actual attack damage
-				const enemyDamage = enemy.attack || enemy.baseAttack || 5;
+				// Use new combat calculator for enemy attacks
+				const attackResult = resolveEnemyAttack(enemy, playerStats);
+				const enemyDamage = attackResult.hit ? attackResult.damage : 0;
 
-				// Enemy attacks player with their actual damage
-				this.store.dispatch({
-					type: "player/damagePlayer",
-					payload: { amount: enemyDamage },
-				});
-				this.store.dispatch(enemyAttacked(enemy.id, "player", enemyDamage));
-				this.store.dispatch(
-					playerDamaged(enemy.id, "enemy", "player", enemyDamage, "received"),
-				);
+				// Enemy attacks player with calculated damage
+				if (enemyDamage > 0) {
+					this.store.dispatch({
+						type: "player/damagePlayer",
+						payload: { amount: enemyDamage },
+					});
+					this.store.dispatch(enemyAttacked(enemy.id, "player", enemyDamage));
+					this.store.dispatch(
+						playerDamaged(enemy.id, "enemy", "player", enemyDamage, "received"),
+					);
+				}
 
+				const attackDesc = attackResult.hit
+					? `${attackResult.crit ? "critically hit" : "hit"} for ${enemyDamage} damage`
+					: "missed";
 				Logger.log(
-					`${enemy.name || enemy.id} attacks player for ${enemyDamage} damage (countdown-based)`,
+					`${enemy.name || enemy.id} attacks player: ${attackDesc} (${attackResult.damageType})`,
 					0,
 					"combat",
 				);
