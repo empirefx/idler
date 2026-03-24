@@ -3,9 +3,18 @@ import Logger from "../utils/Logger";
 import { batch } from "react-redux";
 import { enemyAttacked, playerDamaged, enemyDead } from "../events";
 import { addItem } from "../../store/slices/inventorySlice";
-import { gainExp, updateLastAttackTime, tickBuffs } from "../../store/slices/playerSlice";
+import { gainExp, updateLastAttackTime, tickBuffs, activateSkill, addBuff, pauseCooldowns, resumeCooldowns } from "../../store/slices/playerSlice";
 import { createItem } from "../factory/itemFactory";
 import { resolveAttack, resolveEnemyAttack } from "../core/combatCalculator";
+import {
+	getNextSkillToActivate,
+	markSkillActivated,
+	isSkillOnCooldown,
+	getRankData,
+	resetSkillRotation,
+} from "../utils/skillResolver";
+import { getWeaponProfile } from "../utils/combatResolvers";
+import { getSkillById } from "../../data/skillsData";
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.
@@ -17,6 +26,8 @@ export const CombatService = {
 		this.store = store;
 		this.eventBusService = eventBus;
 		this.currentTargetId = null;
+		this.isStartingCombat = false;
+		this.isStoppingCombat = false;
 	},
 
 	getOrSelectTarget(aliveEnemies) {
@@ -34,6 +45,118 @@ export const CombatService = {
 		this.store.dispatch({ type: "combat/setTarget", payload: newTarget.id });
 		Logger.log(`New target has been set: ${newTarget.id}`, 0, "combat");
 		return newTarget;
+	},
+
+	// Try to activate the next skill in sequence
+	tryActivateSkill(player, equippedWeapon, targetEnemy) {
+		const state = this.store.getState();
+		const playerSkills = player.skills || {};
+		const activeCooldowns = state.player.activeCooldowns || {};
+
+		// Find next ready skill to activate (filters out on-cooldown skills)
+		const skill = getNextSkillToActivate(equippedWeapon, playerSkills, activeCooldowns);
+		if (!skill) return;
+
+		// Get rank data
+		const rankData = getRankData(skill, playerSkills);
+		if (!rankData) return;
+
+		// Apply skill effect based on type
+		if (skill.type === "active_buff") {
+			// Add buff to player
+			const buff = {
+				id: `${skill.id}_${Date.now()}`,
+				skillId: skill.id,
+				stat: rankData.statBonus.stat,
+				value: rankData.statBonus.value,
+				duration: rankData.duration,
+				type: "buff",
+			};
+			this.store.dispatch(addBuff(buff));
+
+			// Set cooldown
+			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+
+			Logger.log(`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`, 0, "combat");
+		} else if (skill.type === "active_damage") {
+			// Calculate and apply skill damage
+			const weaponProfile = getWeaponProfile(equippedWeapon);
+			const damageType = weaponProfile.damageType || "physical";
+			const multiplier = rankData.damageMultiplier || 1.0;
+
+			// Calculate base damage based on damage type
+			let baseDamage = 0;
+			if (damageType === "magic") {
+				baseDamage = (player.stats.intelligence || 0) * 2;
+			} else if (damageType === "ranged") {
+				baseDamage = (player.stats.agility || 0) * 2;
+			} else {
+				baseDamage = (player.stats.strength || 0) * 2;
+			}
+
+			const flatDamage = weaponProfile.flatDamage || 0;
+			const skillDamage = Math.round((baseDamage + flatDamage) * multiplier);
+
+			// Apply damage to enemy
+			this.store.dispatch({
+				type: "enemies/damageEnemy",
+				payload: { id: targetEnemy.id, amount: skillDamage },
+			});
+
+			// Set cooldown
+			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+
+			Logger.log(`${skill.name} hits for ${skillDamage} damage!`, 0, "combat");
+		}
+
+		// Mark skill as last activated
+		markSkillActivated(skill);
+	},
+
+	// Execute a skill (refactored from tryActivateSkill)
+	executeSkill(skill, player, equippedWeapon, targetEnemy) {
+		const playerSkills = player.skills || {};
+		const rankData = getRankData(skill, playerSkills);
+		if (!rankData) return;
+
+		if (skill.type === "active_buff") {
+			const buff = {
+				id: `${skill.id}_${Date.now()}`,
+				skillId: skill.id,
+				stat: rankData.statBonus.stat,
+				value: rankData.statBonus.value,
+				duration: rankData.duration,
+				type: "buff",
+			};
+			this.store.dispatch(addBuff(buff));
+			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+			Logger.log(`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`, 0, "combat");
+		} else if (skill.type === "active_damage") {
+			const weaponProfile = getWeaponProfile(equippedWeapon);
+			const damageType = weaponProfile.damageType || "physical";
+			const multiplier = rankData.damageMultiplier || 1.0;
+
+			let baseDamage = 0;
+			if (damageType === "magic") {
+				baseDamage = (player.stats.intelligence || 0) * 2;
+			} else if (damageType === "ranged") {
+				baseDamage = (player.stats.agility || 0) * 2;
+			} else {
+				baseDamage = (player.stats.strength || 0) * 2;
+			}
+
+			const flatDamage = weaponProfile.flatDamage || 0;
+			const skillDamage = Math.round((baseDamage + flatDamage) * multiplier);
+
+			this.store.dispatch({
+				type: "enemies/damageEnemy",
+				payload: { id: targetEnemy.id, amount: skillDamage },
+			});
+			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+			Logger.log(`${skill.name} hits for ${skillDamage} damage!`, 0, "combat");
+		}
+
+		markSkillActivated(skill);
 	},
 
 	// Start combat when combat state changes to true
@@ -55,7 +178,13 @@ export const CombatService = {
 
 	// Start combat system with game loop
 	startCombat(gameLoop) {
+		if (this.isStartingCombat) {
+			Logger.log("Combat start already in progress, skipping", 0, "combat");
+			return;
+		}
+		this.isStartingCombat = true;
 		Logger.log("Starting combat system", 0, "combat");
+		this.store.dispatch(resumeCooldowns());
 		if (!gameLoop || !gameLoop.register) {
 			Logger.log(
 				"GameLoop is not available or missing register method",
@@ -107,11 +236,20 @@ export const CombatService = {
 			},
 		);
 		Logger.log("Combat registration result:", 0, "combat", result);
+		this.isStartingCombat = false;
 	},
 
 	// Stop combat system with game loop
 	stopCombat(gameLoop) {
+		if (this.isStoppingCombat) {
+			Logger.log("Combat stop already in progress, skipping", 0, "combat");
+			return;
+		}
+		this.isStoppingCombat = true;
+		this.store.dispatch(pauseCooldowns());
+		resetSkillRotation();
 		gameLoop.unregister("combat");
+		this.isStoppingCombat = false;
 	},
 
 	// Handle enemy drops on death
@@ -168,44 +306,56 @@ export const CombatService = {
 		// Capture enemy snapshot BEFORE attacking (for death event and logging)
 		const enemySnapshot = { ...targetEnemy };
 
-		// Use new combat calculator for damage calculation
-		const attackResult = resolveAttack(
-			player,
-			targetEnemy,
-			equippedWeapon,
-			equippedArmor,
-			player.activeBuffs || [],
-		);
-
-		const damage = attackResult.hit ? attackResult.damage : 0;
-
 		// Update timestamp FIRST to prevent double attacks
 		this.store.dispatch(updateLastAttackTime({ timestamp: now }));
-		this.store.dispatch({
-			type: "enemies/damageEnemy",
-			payload: { id: targetEnemy.id, amount: damage },
-		});
 
-		// Dispatch player attack log with pre-captured enemy name
-		const attackDesc = attackResult.hit
-			? `${attackResult.crit ? "critically hit" : "hit"} for ${damage} damage`
-			: "missed";
-		this.store.dispatch(
-			playerDamaged(
-				"player",
-				"player",
-				targetEnemy.id,
-				damage,
-				attackResult.hit ? "dealt" : "missed",
-				enemySnapshot.name,
-			),
-		);
+		// Check if any skill is ready FIRST - skill takes priority over normal attack
+		const playerSkills = player.skills || {};
+		const activeCooldowns = state.player.activeCooldowns || {};
+		const readySkill = getNextSkillToActivate(equippedWeapon, playerSkills, activeCooldowns);
 
-		Logger.log(
-			`Player attacks ${enemySnapshot.name}: ${attackDesc} (${attackResult.damageType})`,
-			0,
-			"combat",
-		);
+		if (readySkill) {
+			// SKILL PATH: Execute only skill, skip normal attack
+			this.executeSkill(readySkill, player, equippedWeapon, targetEnemy);
+		} else {
+			// NORMAL ATTACK PATH: Execute only normal attack, no skill
+			const attackResult = resolveAttack(
+				player,
+				targetEnemy,
+				equippedWeapon,
+				equippedArmor,
+				player.activeBuffs || [],
+				playerSkills,
+			);
+
+			const damage = attackResult.hit ? attackResult.damage : 0;
+
+			this.store.dispatch({
+				type: "enemies/damageEnemy",
+				payload: { id: targetEnemy.id, amount: damage },
+			});
+
+			// Dispatch player attack log
+			const attackDesc = attackResult.hit
+				? `${attackResult.crit ? "critically hit" : "hit"} for ${damage} damage`
+				: "missed";
+			this.store.dispatch(
+				playerDamaged(
+					"player",
+					"player",
+					targetEnemy.id,
+					damage,
+					attackResult.hit ? "dealt" : "missed",
+					enemySnapshot.name,
+				),
+			);
+
+			Logger.log(
+				`Player attacks ${enemySnapshot.name}: ${attackDesc} (${attackResult.damageType})`,
+				0,
+				"combat",
+			);
+		}
 
 		// Tick buffs after attack
 		this.store.dispatch(tickBuffs());

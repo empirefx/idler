@@ -11,17 +11,29 @@
 	max-width: 300px;
 }
 
-.entity-card.targeted {
-	outline: 2px solid #5081ff;
-	box-shadow: 0 0 10px #5081ff;
+
+.entity-card.targeted::before {
+    content: "";
+    position: absolute;
+    inset: -2px; /* Pulls it slightly out to act like an outline */
+    border: 2px solid #5081ff;
+    box-shadow: 0 0 10px #5081ff;
+    border-radius: var(--border-radius-lg);
+
+    /* The Fade Mask */
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
+    mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
+
+    pointer-events: none;
 }
 
 .entity-card.targeted::after {
-	content: "◉";
-	position: absolute;
-	top: 8px;
-	left: 8px;
-	color: #ff2323;
+    content: "◉";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: #ff2323;
+    z-index: 1; /* Keeps icon above the shadow effect */
 }
 
 .entity-card {
@@ -45,6 +57,7 @@
 	background-position: 0 0;
 	background-image: linear-gradient(0deg, #5081ff 0%, #5081ff00 60%);
 	border-radius: var(--border-radius-lg);
+	margin-bottom: 35px;
 	z-index: 10;
 	opacity: 1;
 }
@@ -87,9 +100,7 @@
 }
 
 .entity-card .progress-bar {
-	position: absolute;
-	bottom: -40px;
-	width: 100%;
+	width: inherit;
 }
 
 .entity-card h3,

@@ -9,7 +9,7 @@ export const playerData = {
 	lastAttackTime: 0,
 	level: 1,
 	exp: 0,
-	skillPoints: 0,
+	skillPoints: 10,
 	stats: {
 		strength: 10,
 		defense: 5,

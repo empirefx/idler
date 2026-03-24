@@ -2,6 +2,7 @@ import { useSelector, shallowEqual } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
 
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
+import { selectPlayerSkills } from "../../../store/slices/playerSlice";
 import {
 	resolveStats,
 	getMaxHealth,
@@ -26,6 +27,7 @@ const DerivedStatsList = ({ player }) => {
 		selectPlayerData,
 		shallowEqual,
 	);
+	const playerSkills = useSelector(selectPlayerSkills);
 
 	const equipment = playerInventory?.equipment || {};
 	const activeBuffs = playerState?.activeBuffs || [];
@@ -42,6 +44,7 @@ const DerivedStatsList = ({ player }) => {
 		equippedWeapon,
 		equippedArmor,
 		activeBuffs,
+		playerSkills,
 	);
 	const maxHealth = getMaxHealth(
 		playerData.baseHealth || 100,

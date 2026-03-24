@@ -8,6 +8,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.PHYSICAL,
 		type: SKILL_TYPES.ACTIVE_BUFF,
 		cooldown: 15000,
+		activationOrder: 1,
 		ranks: [
 			{ rank: 1, statBonus: { stat: "strength", value: 8 }, duration: 2 },
 			{ rank: 2, statBonus: { stat: "strength", value: 12 }, duration: 3 },
@@ -21,6 +22,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.PHYSICAL,
 		type: SKILL_TYPES.ACTIVE_DAMAGE,
 		cooldown: 8000,
+		activationOrder: 2,
 		ranks: [
 			{ rank: 1, damageMultiplier: 1.0 },
 			{ rank: 2, damageMultiplier: 1.5 },
@@ -34,6 +36,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.PHYSICAL,
 		type: SKILL_TYPES.PASSIVE,
 		cooldown: 0,
+		activationOrder: 0,
 		ranks: [
 			{ rank: 1, statBonus: { stat: "defense", value: 2 } },
 			{ rank: 2, statBonus: { stat: "defense", value: 4 } },
@@ -47,6 +50,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.MAGIC,
 		type: SKILL_TYPES.ACTIVE_DAMAGE,
 		cooldown: 10000,
+		activationOrder: 1,
 		ranks: [
 			{ rank: 1, damageMultiplier: 1.0 },
 			{ rank: 2, damageMultiplier: 1.5 },
@@ -60,6 +64,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.MAGIC,
 		type: SKILL_TYPES.ACTIVE_DAMAGE,
 		cooldown: 15000,
+		activationOrder: 2,
 		ranks: [
 			{ rank: 1, damageMultiplier: 0.8 },
 			{ rank: 2, damageMultiplier: 1.2 },
@@ -73,6 +78,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.MAGIC,
 		type: SKILL_TYPES.ACTIVE_BUFF,
 		cooldown: 20000,
+		activationOrder: 3,
 		ranks: [
 			{ rank: 1, statBonus: { stat: "wisdom", value: 5 }, duration: 3 },
 			{ rank: 2, statBonus: { stat: "wisdom", value: 8 }, duration: 4 },
@@ -86,6 +92,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.RANGED,
 		type: SKILL_TYPES.ACTIVE_DAMAGE,
 		cooldown: 5000,
+		activationOrder: 1,
 		ranks: [
 			{ rank: 1, damageMultiplier: 0.8 },
 			{ rank: 2, damageMultiplier: 1.2 },
@@ -99,6 +106,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.RANGED,
 		type: SKILL_TYPES.ACTIVE_DAMAGE,
 		cooldown: 12000,
+		activationOrder: 2,
 		ranks: [
 			{ rank: 1, damageMultiplier: 0.6 },
 			{ rank: 2, damageMultiplier: 1.0 },
@@ -112,6 +120,7 @@ export const skillsCatalog = {
 		damageType: DAMAGE_TYPES.RANGED,
 		type: SKILL_TYPES.PASSIVE,
 		cooldown: 0,
+		activationOrder: 0,
 		ranks: [
 			{ rank: 1, statBonus: { stat: "agility", value: 2 } },
 			{ rank: 2, statBonus: { stat: "agility", value: 4 } },

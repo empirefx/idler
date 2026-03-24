@@ -196,10 +196,44 @@ export const playerSlice = createSlice({
 			}
 			state.activeCooldowns[skillId] = timestamp;
 		},
+		activateSkill: (state, action) => {
+			const { skillId, cooldown } = action.payload;
+			if (!state.activeCooldowns) {
+				state.activeCooldowns = {};
+			}
+			state.activeCooldowns[skillId] = Date.now() + cooldown;
+		},
 		clearCooldown: (state, action) => {
 			const skillId = action.payload;
 			if (state.activeCooldowns) {
 				delete state.activeCooldowns[skillId];
+			}
+		},
+		pauseCooldowns: (state) => {
+			const now = Date.now();
+			if (!state.pausedCooldowns) {
+				state.pausedCooldowns = {};
+			}
+			if (state.activeCooldowns) {
+				for (const [skillId, endTime] of Object.entries(state.activeCooldowns)) {
+					const remaining = Math.max(0, endTime - now);
+					if (remaining > 0) {
+						state.pausedCooldowns[skillId] = remaining;
+					}
+				}
+			}
+			state.activeCooldowns = {};
+		},
+		resumeCooldowns: (state) => {
+			const now = Date.now();
+			if (state.pausedCooldowns) {
+				for (const [skillId, remaining] of Object.entries(state.pausedCooldowns)) {
+					if (!state.activeCooldowns) {
+						state.activeCooldowns = {};
+					}
+					state.activeCooldowns[skillId] = now + remaining;
+				}
+				state.pausedCooldowns = {};
 			}
 		},
 		spendSkillPoint: (state, action) => {
@@ -238,7 +272,10 @@ export const {
 	removeBuff,
 	tickBuffs,
 	setCooldown,
+	activateSkill,
 	clearCooldown,
+	pauseCooldowns,
+	resumeCooldowns,
 	spendSkillPoint,
 	addSkillPoints,
 } = playerSlice.actions;
@@ -330,6 +367,11 @@ export const selectWorkersByPlace = (placeId) =>
 
 export const selectActiveBuffs = (state) => state.player.activeBuffs || [];
 export const selectActiveCooldowns = (state) => state.player.activeCooldowns || {};
+export const selectPausedCooldowns = (state) => state.player.pausedCooldowns || {};
+export const selectIsCooldownPaused = createSelector(
+	[selectPausedCooldowns],
+	(pausedCooldowns) => Object.keys(pausedCooldowns).length > 0,
+);
 export const selectPlayerSkills = (state) => state.player.skills || {};
 export const selectSkillPoints = (state) => state.player.skillPoints || 0;
 

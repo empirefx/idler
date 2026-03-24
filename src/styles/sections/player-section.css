@@ -1,14 +1,17 @@
 .player-section {
-	margin: auto;
-	position: absolute;
-	inset: 0;
-	max-height: 500px;
-	max-width: 970px;
 	background: var(--color-dark);
 	color: white;
 	z-index: 11;
 	border-radius: var(--border-radius-md);
 	padding: var(--spacing-md);
+
+	display: flex;
+	gap: var(--spacing-lg);
+	margin: auto;
+	position: absolute;
+	inset: 0;
+	max-height: 500px;
+	max-width: 970px;
 }
 
 .player-card {

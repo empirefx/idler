@@ -8,8 +8,11 @@ import {
 	CRIT_MULTIPLIER,
 	DAMAGE_VARIANCE_MIN,
 	DAMAGE_VARIANCE_MAX,
+	DAMAGE_TYPES,
+	SKILL_TYPES,
 } from "../../data/combatTypes";
 import { getEquipmentStatBonus } from "../utils/combatResolvers";
+import { skillsCatalog, SKILL_COLUMNS } from "../../data/skillsData";
 
 function clamp(value, min, max) {
 	return Math.max(min, Math.min(max, value));
@@ -24,7 +27,28 @@ function applyVarianceFn(baseDamage) {
 	return baseDamage * variance;
 }
 
-export function resolveStats(player, equippedWeapon, equippedArmor, activeBuffs) {
+export function getPassiveSkillBonus(equippedWeapon, playerSkills = {}) {
+	const bonus = {};
+	const damageType = equippedWeapon?.damageType || DAMAGE_TYPES.PHYSICAL;
+	const columnSkills = SKILL_COLUMNS[damageType] || [];
+
+	columnSkills.forEach((skillId) => {
+		const skill = skillsCatalog[skillId];
+		if (skill?.type === SKILL_TYPES.PASSIVE) {
+			const rank = playerSkills[skillId] || 0;
+			if (rank > 0 && skill.ranks[rank - 1]) {
+				const statBonus = skill.ranks[rank - 1].statBonus;
+				if (statBonus) {
+					bonus[statBonus.stat] = (bonus[statBonus.stat] || 0) + statBonus.value;
+				}
+			}
+		}
+	});
+
+	return bonus;
+}
+
+export function resolveStats(player, equippedWeapon, equippedArmor, activeBuffs, playerSkills = {}) {
 	const baseStats = { ...player.stats };
 
 	const equipmentBonus = getEquipmentStatBonus(equippedWeapon, equippedArmor);
@@ -39,6 +63,11 @@ export function resolveStats(player, equippedWeapon, equippedArmor, activeBuffs)
 			}
 		});
 	}
+
+	const passiveBonus = getPassiveSkillBonus(equippedWeapon, playerSkills);
+	Object.entries(passiveBonus).forEach(([stat, value]) => {
+		baseStats[stat] = (baseStats[stat] || 0) + value;
+	});
 
 	return baseStats;
 }
@@ -120,8 +149,9 @@ export function resolveAttack(
 	equippedWeapon,
 	equippedArmor,
 	activeBuffs = [],
+	playerSkills = {},
 ) {
-	const finalStats = resolveStats(player, equippedWeapon, equippedArmor, activeBuffs);
+	const finalStats = resolveStats(player, equippedWeapon, equippedArmor, activeBuffs, playerSkills);
 
 	const enemyStats = {
 		defense: enemy.defense || 0,
