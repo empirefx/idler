@@ -7,9 +7,8 @@ import WorkersSection from "../components/sections/WorkersSection";
 import BuildingSection from "../components/sections/BuildingSection";
 import BuildingPanel from "../components/sections/BuildingPanel";
 import EnemySection from "../components/sections/EnemySection";
+import ActionSection from "../components/sections/ActionSection";
 import NPCSection from "../components/sections/NPCSection";
-import ControlSection from "../components/sections/ControlSection";
-import PlayerEntitySection from "../components/sections/PlayerEntitySection";
 import PlacesSection from "../components/sections/PlacesSection";
 import LogSection from "../components/sections/LogSection";
 import NotificationContainer from "../components/common/NotificationContainer";
@@ -50,12 +49,11 @@ const GameLayout = ({ clearCache }) => {
 			<main className="game-main">
 				<CurrentPlaceDisplay />
 				<PlayerSection />
+				<ActionSection clearCache={clearCache} />
 				<WorkersSection />
 				<BuildingSection />
 				<EnemySection />
 				<NPCSection />
-				<ControlSection clearCache={clearCache} />
-				<PlayerEntitySection />
 				<PlacesSection />
 				<LogSection />
 			</main>

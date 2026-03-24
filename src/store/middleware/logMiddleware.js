@@ -99,6 +99,15 @@ const logMiddleware = (store) => (next) => (action) => {
 						category: "combat",
 					}),
 				);
+			} else if (damageType === "missed") {
+				const finalTargetName =
+					playerTargetName || getEnemyDisplayName(currentState, playerTargetId);
+				store.dispatch(
+					addLog({
+						message: `Player missed ${finalTargetName}`,
+						category: "combat",
+					}),
+				);
 			} else if (damageType === "received") {
 				const _attackerName = getEnemyDisplayName(
 					currentState,

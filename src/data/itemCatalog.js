@@ -571,6 +571,7 @@ export const itemCatalog = {
 	sword1: {
 		id: 54,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Rusty Shortblade",
 		icon: "sword1",
 		description: "A basic short sword for beginners",
@@ -582,6 +583,7 @@ export const itemCatalog = {
 	sword2: {
 		id: 55,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Iron Longsword",
 		icon: "sword2",
 		description: "A well-balanced longsword",
@@ -593,6 +595,7 @@ export const itemCatalog = {
 	sword3: {
 		id: 56,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Steel Broadsword",
 		icon: "sword3",
 		description: "A finely crafted broadsword",
@@ -604,6 +607,7 @@ export const itemCatalog = {
 	sword4: {
 		id: 57,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Tempered Greatsword",
 		icon: "sword4",
 		description: "A superior quality greatsword",
@@ -615,6 +619,7 @@ export const itemCatalog = {
 	sword5: {
 		id: 58,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Moonlight Blade",
 		icon: "sword5",
 		description: "A masterwork blade of exceptional quality",
@@ -626,6 +631,7 @@ export const itemCatalog = {
 	dagger1: {
 		id: 59,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Throwing Spike",
 		icon: "dagger1",
 		description: "A simple throwing dagger",
@@ -637,6 +643,7 @@ export const itemCatalog = {
 	dagger2: {
 		id: 60,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Shadow Stiletto",
 		icon: "dagger2",
 		description: "A balanced combat dagger",
@@ -648,6 +655,7 @@ export const itemCatalog = {
 	dagger3: {
 		id: 61,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Assassin's Kiss",
 		icon: "dagger3",
 		description: "A sharp assassin's dagger",
@@ -659,6 +667,7 @@ export const itemCatalog = {
 	dagger4: {
 		id: 62,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Venom Blade",
 		icon: "dagger4",
 		description: "A deadly poisoned dagger",
@@ -670,6 +679,7 @@ export const itemCatalog = {
 	dagger5: {
 		id: 63,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Phantom Edge",
 		icon: "dagger5",
 		description: "A masterwork dagger of legendary quality",
@@ -681,6 +691,7 @@ export const itemCatalog = {
 	club: {
 		id: 64,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Wooden Maul",
 		icon: "club",
 		description: "A heavy wooden club",
@@ -692,6 +703,7 @@ export const itemCatalog = {
 	knife: {
 		id: 65,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Survival Knife",
 		icon: "knife",
 		description: "A versatile utility knife",
@@ -703,6 +715,7 @@ export const itemCatalog = {
 	axe1: {
 		id: 66,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Hunter's Hatchet",
 		icon: "axe1",
 		description: "A basic hatchet",
@@ -714,6 +727,7 @@ export const itemCatalog = {
 	axe2: {
 		id: 67,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Battle Axe",
 		icon: "axe2",
 		description: "A sturdy battle axe",
@@ -725,6 +739,7 @@ export const itemCatalog = {
 	axe3: {
 		id: 68,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "War Cleaver",
 		icon: "axe3",
 		description: "A heavy war axe",
@@ -736,6 +751,7 @@ export const itemCatalog = {
 	axe4: {
 		id: 69,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Giant's Greataxe",
 		icon: "axe4",
 		description: "A massive great axe",
@@ -747,6 +763,7 @@ export const itemCatalog = {
 	mace1: {
 		id: 70,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Iron Flanged Mace",
 		icon: "mace1",
 		description: "A simple mace",
@@ -758,6 +775,7 @@ export const itemCatalog = {
 	mace2: {
 		id: 71,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Spiked Crusher",
 		icon: "mace2",
 		description: "A spiked mace",
@@ -769,6 +787,7 @@ export const itemCatalog = {
 	morningstar: {
 		id: 72,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Devil's Morningstar",
 		icon: "morningstar",
 		description: "A fearsome morningstar with spikes",
@@ -780,6 +799,7 @@ export const itemCatalog = {
 	flail: {
 		id: 73,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Chain Flail",
 		icon: "flail",
 		description: "A deadly flail with chained ball",
@@ -791,6 +811,7 @@ export const itemCatalog = {
 	hammer1: {
 		id: 74,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "War Hammer",
 		icon: "hammer1",
 		description: "A light war hammer",
@@ -802,6 +823,7 @@ export const itemCatalog = {
 	hammer2: {
 		id: 75,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Sledge Breaker",
 		icon: "hammer2",
 		description: "A heavy sledge hammer",
@@ -813,6 +835,7 @@ export const itemCatalog = {
 	bow1: {
 		id: 76,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Shortbow",
 		icon: "bow1",
 		description: "A basic shortbow",
@@ -824,6 +847,7 @@ export const itemCatalog = {
 	bow2: {
 		id: 77,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Composite Longbow",
 		icon: "bow2",
 		description: "A composite longbow",
@@ -835,6 +859,7 @@ export const itemCatalog = {
 	bow3: {
 		id: 78,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Recurve Bow",
 		icon: "bow3",
 		description: "A masterwork recurve bow",
@@ -846,6 +871,7 @@ export const itemCatalog = {
 	bow4: {
 		id: 79,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Elven Warbow",
 		icon: "bow4",
 		description: "An elven war bow of exceptional quality",
@@ -857,6 +883,7 @@ export const itemCatalog = {
 	crossbow1: {
 		id: 80,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Light Crossbow",
 		icon: "crossbow1",
 		description: "A light crossbow",
@@ -868,6 +895,7 @@ export const itemCatalog = {
 	crossbow2: {
 		id: 81,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Heavy Crossbow",
 		icon: "crossbow2",
 		description: "A heavy crossbow",
@@ -879,6 +907,7 @@ export const itemCatalog = {
 	crossbow3: {
 		id: 82,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Repeating Crossbow",
 		icon: "crossbow3",
 		description: "A repeating crossbow",
@@ -890,6 +919,7 @@ export const itemCatalog = {
 	spear1: {
 		id: 83,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Javelin",
 		icon: "spear1",
 		description: "A basic throwing spear",
@@ -901,6 +931,7 @@ export const itemCatalog = {
 	spear2: {
 		id: 84,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Cavalry Lance",
 		icon: "spear2",
 		description: "A long cavalry spear",
@@ -912,6 +943,7 @@ export const itemCatalog = {
 	polearm1: {
 		id: 85,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Poleaxe",
 		icon: "polearm1",
 		description: "A basic poleaxe",
@@ -923,6 +955,7 @@ export const itemCatalog = {
 	polearm2: {
 		id: 86,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Halberd",
 		icon: "polearm2",
 		description: "A halberd with axe blade",
@@ -934,6 +967,7 @@ export const itemCatalog = {
 	polearm3: {
 		id: 87,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Glaive",
 		icon: "polearm3",
 		description: "A glaive with curved blade",
@@ -945,6 +979,7 @@ export const itemCatalog = {
 	scythe1: {
 		id: 88,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Reaper's Scythe",
 		icon: "scythe1",
 		description: "A farmer's scythe adapted for combat",
@@ -956,6 +991,7 @@ export const itemCatalog = {
 	scythe2: {
 		id: 89,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "War Scythe",
 		icon: "scythe2",
 		description: "A deadly war scythe",
@@ -967,6 +1003,7 @@ export const itemCatalog = {
 	staff1: {
 		id: 90,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Wooden Staff",
 		icon: "staff1",
 		description: "A simple wooden staff",
@@ -978,6 +1015,7 @@ export const itemCatalog = {
 	staff2: {
 		id: 91,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Enchanted Oak Staff",
 		icon: "staff2",
 		description: "An enchanted oak staff",
@@ -989,6 +1027,7 @@ export const itemCatalog = {
 	staff3: {
 		id: 92,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Ebony Staff",
 		icon: "staff3",
 		description: "A polished ebony staff",
@@ -1000,6 +1039,7 @@ export const itemCatalog = {
 	staff4: {
 		id: 93,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Crystal Staff",
 		icon: "staff4",
 		description: "A masterwork crystal staff",
@@ -1011,6 +1051,7 @@ export const itemCatalog = {
 	wand1: {
 		id: 94,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Apprentice Wand",
 		icon: "wand1",
 		description: "A simple wand for novice spellcasters",
@@ -1022,6 +1063,7 @@ export const itemCatalog = {
 	wand2: {
 		id: 95,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Mystic Wand",
 		icon: "wand2",
 		description: "A magical wand for spellcasting",
@@ -1033,6 +1075,7 @@ export const itemCatalog = {
 	wand3: {
 		id: 96,
 		type: "main-weapon",
+		damageType: "magic",
 		name: "Archmage Wand",
 		icon: "wand3",
 		description: "A powerful wand for master spellcasters",
@@ -1044,6 +1087,7 @@ export const itemCatalog = {
 	trident: {
 		id: 97,
 		type: "main-weapon",
+		damageType: "physical",
 		name: "Poseidon's Trident",
 		icon: "trident",
 		description: "A three-pronged spear of the sea",
@@ -1055,6 +1099,7 @@ export const itemCatalog = {
 	"throwing-knife1": {
 		id: 98,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Throwing Dagger",
 		icon: "throwing-knife1",
 		description: "A balanced throwing knife",
@@ -1066,6 +1111,7 @@ export const itemCatalog = {
 	"throwing-axe1": {
 		id: 99,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Hurling Hatchet",
 		icon: "throwing-axe1",
 		description: "A light throwing axe",
@@ -1077,6 +1123,7 @@ export const itemCatalog = {
 	"throwing-axe2": {
 		id: 100,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Francisca",
 		icon: "throwing-axe2",
 		description: "A heavy throwing axe",
@@ -1088,6 +1135,7 @@ export const itemCatalog = {
 	javelin: {
 		id: 101,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Pilum",
 		icon: "javelin",
 		description: "A throwing spear for distance attacks",
@@ -1099,6 +1147,7 @@ export const itemCatalog = {
 	chakram: {
 		id: 102,
 		type: "main-weapon",
+		damageType: "ranged",
 		name: "Wind Chakram",
 		icon: "chakram",
 		description: "A circular throwing blade",

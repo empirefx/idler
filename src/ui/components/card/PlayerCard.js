@@ -3,9 +3,11 @@ import { useDispatch } from "react-redux";
 
 import InventoryDisplay from "../display/InventoryDisplay";
 import EquipmentDisplay from "../display/EquipmentDisplay";
-import StatList from "../list/StatList";
+import BaseStatsList from "../list/BaseStatsList";
+import DerivedStatsList from "../list/DerivedStatsList";
 import NewLevelDialog from "../common/NewLevelDialog";
 import QuestSection from "../sections/QuestSection";
+import SkillsSection from "../sections/SkillsSection";
 import { levelUp } from "../../../store/slices/playerSlice";
 
 const PlayerCard = ({ player, vaultId }) => {
@@ -66,6 +68,15 @@ const PlayerCard = ({ player, vaultId }) => {
 						>
 							Quests
 						</button>
+						<button
+							type="button"
+							className={`player-tab-button${
+								activeTab === "skills" ? " player-tab-button--active" : ""
+							}`}
+							onClick={() => setActiveTab("skills")}
+						>
+							Skills
+						</button>
 					</div>
 
 					<div className="player-tab-content">
@@ -76,13 +87,21 @@ const PlayerCard = ({ player, vaultId }) => {
 								</div>
 
 								<div className="player-stats">
-									<p>Base stats</p>
-									{player.stats && <StatList baseStats={player.stats} />}
-									<ul>
-										<li>
-											<span>EXP</span> {player.exp}/{player.expToNext}
-										</li>
-									</ul>
+									<p>Stats</p>
+									<div className="stats-columns">
+										<div className="stats-column">
+											{player.stats && (
+												<BaseStatsList
+													baseStats={player.stats}
+													exp={player.exp}
+													expToNext={player.expToNext}
+												/>
+											)}
+										</div>
+										<div className="stats-column">
+											<DerivedStatsList player={player} />
+										</div>
+									</div>
 								</div>
 
 								<div className="player-inventory">
@@ -99,6 +118,12 @@ const PlayerCard = ({ player, vaultId }) => {
 						{activeTab === "quests" && (
 							<div className="player-quests">
 								<QuestSection />
+							</div>
+						)}
+
+						{activeTab === "skills" && (
+							<div className="player-skills-tab">
+								<SkillsSection />
 							</div>
 						)}
 					</div>

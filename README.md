@@ -9,7 +9,9 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 ### Player
 
 - [ ] `Player` death & punishment(15% lost EXP)
-- [ ] `Player` skills(ex powerful skill, AOE skill)
+- [x] `Player` skills and buffs
+- [ ] `Player` AOE skills
+- [ ] Display `Player` active buffs ui
 
 ### Enemies
 
@@ -19,23 +21,25 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 
 ### Mechanics
 
-- [ ] Calculate DMG/DEF with `stats`, `equipment`, `skills`(?)
+- [x] Calculate DMG/DEF with `stats`, `equipment`, `skills`
 - [x] `Inventory` should display a slider when item quantity is more than 1
-- [ ] `Recipes` ex 10x apple's -> apple-pie, player needs to know recipe first to craft it
-- [ ] Able to sell items/enemies trash for gold(through `NPC`)
+- [x] `Recipes` ex 10x apple's -> apple-pie, player needs to know recipe first to craft it
+- [x] Able to sell items for gold(through `NPC`)
 - [ ] Melt equipment for crafting materials
-- [ ] `Building` can be upgraded by gold, unlocking new mats
-- [ ] `Crafting` equipment(cost gold/crafting materials) or know items recipe(ex apple-pie)
-- [ ] `NPC` able to talk to them, sell stuff, buy recipes, give/complete quest
-- [ ] `Dialog` ui
-- [ ] `Quest` log
+- [x] `Building` can be upgraded by gold, unlocking new mats
+- [x] `Crafting` equipment(cost gold/crafting materials) or know items recipe(ex apple-pie)
+- [x] `NPC` able to talk to them, sell stuff, buy recipes, give/complete quest
+- [x] `Dialog` ui
+- [x] `Quest` log
 
 ### Other
 
 - [x] `Log` better format for better readability
 - [x] Alert `player` he can't carry that much `weight`
 - [x] `Engine` better performance iterations, maybe abstract to a class? for reuse
-- [ ] Icons
+- [x] Icons equipment/weapon/items
+- [ ] List drops ui
+- [ ] Populate `Enemy` drops trash for sell to `NPC`
 
 ## Setup
 
