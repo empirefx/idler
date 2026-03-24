@@ -1,7 +1,6 @@
 name: Deploy to GitHub Pages
-"on":
-  pull_request:
-    types: [closed]
+on:
+  push:
     branches:
       - main
   workflow_dispatch: null
@@ -9,7 +8,6 @@ permissions:
   contents: read
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: read
