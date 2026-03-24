@@ -1,4 +1,8 @@
-import { DAMAGE_TYPES, WEAPON_SLOTS, ARMOR_SLOTS } from "../../data/combatTypes";
+import {
+	DAMAGE_TYPES,
+	WEAPON_SLOTS,
+	ARMOR_SLOTS,
+} from "../../data/combatTypes";
 
 const WEAPON_TYPE_MAP = {
 	sword: { damageType: DAMAGE_TYPES.PHYSICAL, primaryStat: "strength" },
@@ -85,7 +89,7 @@ export function getEquippedArmorSlots(equippedArmor) {
 
 	for (const armor of equippedArmor) {
 		const profile = getArmorProfile(armor);
-		if (profile.slot && slots.hasOwnProperty(profile.slot)) {
+		if (profile.slot && Object.hasOwn(slots, profile.slot)) {
 			slots[profile.slot] = {
 				...armor,
 				...profile,

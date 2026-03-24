@@ -62,11 +62,26 @@ const DerivedStatsList = ({ player }) => {
 
 	let damage;
 	if (damageType === "magic") {
-		damage = calculateMagicDamage(finalStats, dummyEnemyStats, flatDamage, false);
+		damage = calculateMagicDamage(
+			finalStats,
+			dummyEnemyStats,
+			flatDamage,
+			false,
+		);
 	} else if (damageType === "ranged") {
-		damage = calculateRangedDamage(finalStats, dummyEnemyStats, flatDamage, false);
+		damage = calculateRangedDamage(
+			finalStats,
+			dummyEnemyStats,
+			flatDamage,
+			false,
+		);
 	} else {
-		damage = calculatePhysicalDamage(finalStats, dummyEnemyStats, flatDamage, false);
+		damage = calculatePhysicalDamage(
+			finalStats,
+			dummyEnemyStats,
+			flatDamage,
+			false,
+		);
 	}
 
 	return (

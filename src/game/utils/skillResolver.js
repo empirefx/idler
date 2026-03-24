@@ -17,7 +17,11 @@ export function getActiveSkillsForWeapon(weapon) {
 		.filter((skill) => skill?.type !== SKILL_TYPES.PASSIVE);
 }
 
-export function getNextSkillToActivate(weapon, playerSkills, activeCooldowns = {}) {
+export function getNextSkillToActivate(
+	weapon,
+	playerSkills,
+	activeCooldowns = {},
+) {
 	const activeSkills = getActiveSkillsForWeapon(weapon);
 
 	const availableSkills = activeSkills

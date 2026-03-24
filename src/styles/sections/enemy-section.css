@@ -11,29 +11,28 @@
 	max-width: 300px;
 }
 
-
 .entity-card.targeted::before {
-    content: "";
-    position: absolute;
-    inset: -2px; /* Pulls it slightly out to act like an outline */
-    border: 2px solid #5081ff;
-    box-shadow: 0 0 10px #5081ff;
-    border-radius: var(--border-radius-lg);
+	content: "";
+	position: absolute;
+	inset: -2px; /* Pulls it slightly out to act like an outline */
+	border: 2px solid #5081ff;
+	box-shadow: 0 0 10px #5081ff;
+	border-radius: var(--border-radius-lg);
 
-    /* The Fade Mask */
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
-    mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
+	/* The Fade Mask */
+	-webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
+	mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
 
-    pointer-events: none;
+	pointer-events: none;
 }
 
 .entity-card.targeted::after {
-    content: "◉";
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    color: #ff2323;
-    z-index: 1; /* Keeps icon above the shadow effect */
+	content: "◉";
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	color: #ff2323;
+	z-index: 1; /* Keeps icon above the shadow effect */
 }
 
 .entity-card {

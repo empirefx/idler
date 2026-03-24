@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/22526077167)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23514554359)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,11 +32,42 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 82.
-Checked 130 files in 1654ms. No fixes applied.
-Found 60 errors.
-Found 37 warnings.
-Found 5 infos.src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
+Diagnostics not shown: 94.
+Checked 142 files in 1792ms. Fixed 1 file.
+Found 61 errors.
+Found 47 warnings.
+Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
+
+  i Useless case clause.
+
+    165 │ 		case "ranged":
+    166 │ 			return calculateRangedDamage(attackerStats, defenderStats, flatDamage);
+  > 167 │ 		case "physical":
+        │ 		^^^^^^^^^^^^^^^^
+    168 │ 		default:
+    169 │ 			return calculatePhysicalDamage(attackerStats, defenderStats, flatDamage);
+
+  i because the default clause is present:
+
+    166 │ 			return calculateRangedDamage(attackerStats, defenderStats, flatDamage);
+    167 │ 		case "physical":
+  > 168 │ 		default:
+        │ 		^^^^^^^^
+  > 169 │ 			return calculatePhysicalDamage(attackerStats, defenderStats, flatDamage);
+        │ 			^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    170 │ 	}
+    171 │ }
+
+  i Unsafe fix: Remove the useless case.
+
+    165 165 │   		case "ranged":
+    166 166 │   			return calculateRangedDamage(attackerStats, defenderStats, flatDamage);
+    167     │ - → → case·"physical":
+    168 167 │   		default:
+    169 168 │   			return calculatePhysicalDamage(attackerStats, defenderStats, flatDamage);
+
+
+src/game/core/Gameplay.js:176:51 lint/correctness/noUnusedFunctionParameters  FIXABLE  ━━━━━━━━━━━━━
 
   ! This parameter is unused.
 
@@ -150,126 +181,71 @@ src/game/engine/GameEngine.js:137:40 lint/correctness/noUnusedFunctionParameters
     139 139 │   	}
 
 
-src/game/services/CraftingService.js:121:9 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━
-
-  ! This variable knownRecipes is unused.
-
-    119 │ 	craft(recipeId, outputItemId = null) {
-    120 │ 		const state = this.store.getState();
-  > 121 │ 		const knownRecipes = state.player?.knownRecipes || [];
-        │ 		      ^^^^^^^^^^^^
-    122 │
-    123 │ 		const validation = this.canCraft(state, recipeId, outputItemId);
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend knownRecipes with an underscore.
-
-    119 119 │   	craft(recipeId, outputItemId = null) {
-    120 120 │   		const state = this.store.getState();
-    121     │ - → → const·knownRecipes·=·state.player?.knownRecipes·||·[];
-        121 │ + → → const·_knownRecipes·=·state.player?.knownRecipes·||·[];
-    122 122 │
-    123 123 │   		const validation = this.canCraft(state, recipeId, outputItemId);
-
-
-src/game/services/InventoryService.js:10:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
+src/ui/components/sections/SkillBar.js:7:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
 
   ! Several of these imports are unused.
 
-     8 │ import {
-     9 │ 	canItemsStack,
-  > 10 │ 	cloneItem,
-       │ 	^^^^^^^^^^
-  > 11 │ 	calculateWeight,
-  > 12 │ 	calculateTotalPlayerWeight,
-       │ 	^^^^^^^^^^^^^^^^^^^^^^^^^^
-    13 │ 	getInventorySummary,
-    14 │ } from "../../store/slices/inventory/inventoryUtils.js";
+    5 │ import { useSkillCooldownState } from "../../hooks/useSkillCooldownState";
+    6 │ import {
+  > 7 │ 	skillsCatalog,
+      │ 	^^^^^^^^^^^^^
+    8 │ 	SKILL_COLUMNS,
+    9 │ 	getSkillById,
 
   i Unused imports might be the result of an incomplete refactoring.
 
   i Unsafe fix: Remove the unused imports.
 
-      8   8 │   import {
-      9   9 │   	canItemsStack,
-     10     │ - → cloneItem,
-     11     │ - → calculateWeight,
-     12     │ - → calculateTotalPlayerWeight,
-     13  10 │   	getInventorySummary,
-     14  11 │   } from "../../store/slices/inventory/inventoryUtils.js";
+      5   5 │   import { useSkillCooldownState } from "../../hooks/useSkillCooldownState";
+      6   6 │   import {
+      7     │ - → skillsCatalog,
+      8   7 │   	SKILL_COLUMNS,
+      9   8 │   	getSkillById,
 
 
-src/game/services/ProductionService.js:80:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
+src/ui/components/sections/SkillBar.js:18:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━
 
-  ! Change to an optional chain.
+  ! This variable enemies is unused.
 
-    78 │ 		return workers.find(
-    79 │ 			(worker) =>
-  > 80 │ 				worker.assignments &&
-       │ 				^^^^^^^^^^^^^^^^^^^^^
-  > 81 │ 				worker.assignments[placeId] &&
-       │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    82 │ 				worker.assignments[placeId].socketIndex === socketIndex,
-    83 │ 		);
+    16 │ const SkillBar = () => {
+    17 │ 	const currentPlace = useSelector(selectCurrentPlace);
+  > 18 │ 	const enemies = useSelector(selectEnemiesForCurrentPlace);
+       │ 	      ^^^^^^^
+    19 │ 	const playerSkills = useSelector(selectPlayerSkills);
+    20 │ 	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
 
-  i Unsafe fix: Change to an optional chain.
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
-     78  78 │   		return workers.find(
-     79  79 │   			(worker) =>
-     80     │ - → → → → worker.assignments·&&
-     81     │ - → → → → worker.assignments[placeId]·&&
-         80 │ + → → → → worker.assignments?.[placeId]·&&
-     82  81 │   				worker.assignments[placeId].socketIndex === socketIndex,
-     83  82 │   		);
+  i Unsafe fix: If this is intentional, prepend enemies with an underscore.
 
-
-src/game/services/ProductionService.js:90:5 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━
-
-  ! Change to an optional chain.
-
-    88 │ 		return workers.filter(
-    89 │ 			(worker) =>
-  > 90 │ 				worker.assignments &&
-       │ 				^^^^^^^^^^^^^^^^^^^^^
-  > 91 │ 				worker.assignments[placeId] &&
-       │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    92 │ 				worker.assignments[placeId].socketIndex === socketIndex,
-    93 │ 		);
-
-  i Unsafe fix: Change to an optional chain.
-
-     88  88 │   		return workers.filter(
-     89  89 │   			(worker) =>
-     90     │ - → → → → worker.assignments·&&
-     91     │ - → → → → worker.assignments[placeId]·&&
-         90 │ + → → → → worker.assignments?.[placeId]·&&
-     92  91 │   				worker.assignments[placeId].socketIndex === socketIndex,
-     93  92 │   		);
+     16  16 │   const SkillBar = () => {
+     17  17 │   	const currentPlace = useSelector(selectCurrentPlace);
+     18     │ - → const·enemies·=·useSelector(selectEnemiesForCurrentPlace);
+         18 │ + → const·_enemies·=·useSelector(selectEnemiesForCurrentPlace);
+     19  19 │   	const playerSkills = useSelector(selectPlayerSkills);
+     20  20 │   	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
 
 
-src/game/services/ProductionService.js:134:4 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━
+src/ui/components/sections/SkillsSection.js:8:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
 
-  ! Change to an optional chain.
+  ! Several of these imports are unused.
 
-    132 │ 		const assignment = worker?.assignments?.[placeId];
-    133 │ 		return (
-  > 134 │ 			assignment &&
-        │ 			^^^^^^^^^^^^^
-  > 135 │ 			assignment.material &&
-        │ 			^^^^^^^^^^^^^^^^^^^
-    136 │ 			(buildingData.baseProductionRate || 0) > 0
-    137 │ 		);
+     6 │ } from "../../../store/slices/playerSlice";
+     7 │ import {
+   > 8 │ 	skillsCatalog,
+       │ 	^^^^^^^^^^^^^
+     9 │ 	SKILL_COLUMNS,
+    10 │ 	getSkillById,
 
-  i Unsafe fix: Change to an optional chain.
+  i Unused imports might be the result of an incomplete refactoring.
 
-    132 132 │   		const assignment = worker?.assignments?.[placeId];
-    133 133 │   		return (
-    134     │ - → → → assignment·&&
-    135     │ - → → → assignment.material·&&
-        134 │ + → → → assignment?.material·&&
-    136 135 │   			(buildingData.baseProductionRate || 0) > 0
-    137 136 │   		);
+  i Unsafe fix: Remove the unused imports.
+
+      6   6 │   } from "../../../store/slices/playerSlice";
+      7   7 │   import {
+      8     │ - → skillsCatalog,
+      9   8 │   	SKILL_COLUMNS,
+     10   9 │   	getSkillById,
 
 
 src/ui/components/sections/WorkerManagerSection.js:1:10 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
@@ -343,6 +319,31 @@ src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLe
   i For React to preserve state between calls, hooks needs to be called unconditionally and always in the same order.
 
   i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+
+
+src/ui/components/sections/SkillBar.js:158:25 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━
+
+  × Avoid using the index of an array as key property in an element.
+
+    156 │ 				})}
+    157 │ 				{Array.from({ length: emptySlots }).map((_, index) => (
+  > 158 │ 					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
+        │ 					                   ^^^^^
+    159 │ 						<div className="skill-icon-container">
+    160 │ 							<div className="skill-icon skill-icon--empty">?</div>
+
+  i This is the source of the key value.
+
+    155 │ 					);
+    156 │ 				})}
+  > 157 │ 				{Array.from({ length: emptySlots }).map((_, index) => (
+        │ 				                                            ^^^^^
+    158 │ 					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
+    159 │ 						<div className="skill-icon-container">
+
+  i The order of the items may change, and this also affects performances and component state.
+
+  i Check the React documentation.
 
 
 src/ui/components/sections/WorkerManagerSection.js:108:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
@@ -424,21 +425,21 @@ src/ui/components/sections/WorkerManagerSection.js:165:5 lint/a11y/useButtonType
   i Allowed button types are: submit, button or reset
 
 
-src/ui/layouts/GameLayout.js:62:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/ui/layouts/GameLayout.js:60:4 lint/a11y/noStaticElementInteractions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Static Elements should not be interactive.
 
-    60 │ 				<LogSection />
-    61 │ 			</main>
-  > 62 │ 			<div
+    58 │ 				<LogSection />
+    59 │ 			</main>
+  > 60 │ 			<div
        │ 			^^^^
-  > 63 │ 				className="building-panel-container"
-  > 64 │ 				onMouseEnter={showBuildingPanel}
-  > 65 │ 				onMouseLeave={hideBuildingPanel}
-  > 66 │ 			>
+  > 61 │ 				className="building-panel-container"
+  > 62 │ 				onMouseEnter={showBuildingPanel}
+  > 63 │ 				onMouseLeave={hideBuildingPanel}
+  > 64 │ 			>
        │ 			^
-    67 │ 				<BuildingPanel onClose={toggleBuildingPanel} />
-    68 │ 			</div>
+    65 │ 				<BuildingPanel onClose={toggleBuildingPanel} />
+    66 │ 			</div>
 
   i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
 
@@ -497,6 +498,18 @@ Clone found (javascript):
    src/game/services/InventoryService.js [255:16 - 261:5]
 
 Clone found (javascript):
+ - src/game/services/CombatService.js [143:4 - 152:5] (9 lines, 95 tokens)
+   src/game/services/CombatService.js [79:4 - 89:16]
+
+Clone found (javascript):
+ - src/game/services/CombatService.js [152:4 - 161:6] (9 lines, 105 tokens)
+   src/game/services/CombatService.js [90:4 - 100:36]
+
+Clone found (javascript):
+ - src/game/services/CombatService.js [165:4 - 177:5] (12 lines, 159 tokens)
+   src/game/services/CombatService.js [106:4 - 118:25]
+
+Clone found (javascript):
  - src/game/services/BuildingService.js [116:11 - 123:8] (7 lines, 94 tokens)
    src/game/services/BuildingService.js [66:12 - 73:9]
 
@@ -508,26 +521,30 @@ Clone found (javascript):
  - src/game/services/BuildingService.js [242:12 - 253:7] (11 lines, 128 tokens)
    src/game/services/BuildingService.js [66:13 - 186:6]
 
+Clone found (javascript):
+ - src/game/core/combatCalculator.js [148:4 - 156:16] (8 lines, 82 tokens)
+   src/game/core/combatCalculator.js [116:2 - 124:21]
+
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 140            │ 16269       │ 130822       │ 11           │ 101 (0.62%)      │ 1060 (0.81%)      │
+│ javascript │ 150            │ 17810       │ 144834       │ 15           │ 139 (0.78%)      │ 1501 (1.04%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 23             │ 5935        │ 35791        │ 2            │ 25 (0.42%)       │ 195 (0.54%)       │
+│ css        │ 25             │ 6353        │ 38237        │ 2            │ 25 (0.39%)       │ 195 (0.51%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 172            │ 22354       │ 167567       │ 13           │ 126 (0.56%)      │ 1255 (0.75%)      │
+│ Total:     │ 184            │ 24313       │ 184025       │ 17           │ 164 (0.67%)      │ 1696 (0.92%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 13 clones.
-Error: ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
+Found 17 clones.
+Error: ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
 ```
 
 </details>

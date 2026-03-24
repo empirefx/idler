@@ -39,7 +39,8 @@ export function getPassiveSkillBonus(equippedWeapon, playerSkills = {}) {
 			if (rank > 0 && skill.ranks[rank - 1]) {
 				const statBonus = skill.ranks[rank - 1].statBonus;
 				if (statBonus) {
-					bonus[statBonus.stat] = (bonus[statBonus.stat] || 0) + statBonus.value;
+					bonus[statBonus.stat] =
+						(bonus[statBonus.stat] || 0) + statBonus.value;
 				}
 			}
 		}
@@ -48,7 +49,13 @@ export function getPassiveSkillBonus(equippedWeapon, playerSkills = {}) {
 	return bonus;
 }
 
-export function resolveStats(player, equippedWeapon, equippedArmor, activeBuffs, playerSkills = {}) {
+export function resolveStats(
+	player,
+	equippedWeapon,
+	equippedArmor,
+	activeBuffs,
+	playerSkills = {},
+) {
 	const baseStats = { ...player.stats };
 
 	const equipmentBonus = getEquipmentStatBonus(equippedWeapon, equippedArmor);
@@ -98,7 +105,12 @@ export function rollCrit(attackerAgility) {
 	};
 }
 
-export function calculatePhysicalDamage(attackerStats, defenderStats, flatDamage = 0, applyVariance = true) {
+export function calculatePhysicalDamage(
+	attackerStats,
+	defenderStats,
+	flatDamage = 0,
+	applyVariance = true,
+) {
 	const rawDamage = (attackerStats.strength || 0) * 2 + flatDamage;
 	const defense = defenderStats.defense || 0;
 	const mitigation = defense / (defense + MITIGATION_K);
@@ -109,7 +121,12 @@ export function calculatePhysicalDamage(attackerStats, defenderStats, flatDamage
 	return Math.max(1, Math.round(damage));
 }
 
-export function calculateMagicDamage(attackerStats, defenderStats, flatDamage = 0, applyVariance = true) {
+export function calculateMagicDamage(
+	attackerStats,
+	defenderStats,
+	flatDamage = 0,
+	applyVariance = true,
+) {
 	const rawDamage = (attackerStats.intelligence || 0) * 2 + flatDamage;
 	const wisdom = defenderStats.wisdom || 0;
 	const resistance = wisdom / (wisdom + MITIGATION_K);
@@ -120,7 +137,12 @@ export function calculateMagicDamage(attackerStats, defenderStats, flatDamage = 
 	return Math.max(1, Math.round(damage));
 }
 
-export function calculateRangedDamage(attackerStats, defenderStats, flatDamage = 0, applyVariance = true) {
+export function calculateRangedDamage(
+	attackerStats,
+	defenderStats,
+	flatDamage = 0,
+	applyVariance = true,
+) {
 	const rawDamage = (attackerStats.agility || 0) * 2 + flatDamage;
 	const defense = defenderStats.defense || 0;
 	const mitigation = (defense / (defense + MITIGATION_K)) * 0.6;
@@ -131,7 +153,12 @@ export function calculateRangedDamage(attackerStats, defenderStats, flatDamage =
 	return Math.max(1, Math.round(damage));
 }
 
-export function calculateDamage(damageType, attackerStats, defenderStats, flatDamage = 0) {
+export function calculateDamage(
+	damageType,
+	attackerStats,
+	defenderStats,
+	flatDamage = 0,
+) {
 	switch (damageType) {
 		case "magic":
 			return calculateMagicDamage(attackerStats, defenderStats, flatDamage);
@@ -151,7 +178,13 @@ export function resolveAttack(
 	activeBuffs = [],
 	playerSkills = {},
 ) {
-	const finalStats = resolveStats(player, equippedWeapon, equippedArmor, activeBuffs, playerSkills);
+	const finalStats = resolveStats(
+		player,
+		equippedWeapon,
+		equippedArmor,
+		activeBuffs,
+		playerSkills,
+	);
 
 	const enemyStats = {
 		defense: enemy.defense || 0,
@@ -175,12 +208,7 @@ export function resolveAttack(
 	}
 
 	const critResult = rollCrit(finalStats.agility);
-	let damage = calculateDamage(
-		damageType,
-		finalStats,
-		enemyStats,
-		flatDamage,
-	);
+	let damage = calculateDamage(damageType, finalStats, enemyStats, flatDamage);
 
 	if (critResult.isCrit) {
 		damage = Math.round(damage * CRIT_MULTIPLIER);

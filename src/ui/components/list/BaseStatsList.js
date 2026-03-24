@@ -35,7 +35,9 @@ const BaseStatsList = ({ baseStats, exp, expToNext }) => {
 						<span>{key}</span>
 						<b>
 							{value}
-							{totalBonus > 0 && <span className="bonus"> (+{totalBonus})</span>}
+							{totalBonus > 0 && (
+								<span className="bonus"> (+{totalBonus})</span>
+							)}
 						</b>
 					</li>
 				);

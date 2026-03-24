@@ -1,6 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectSkillPoints, selectPlayerSkills, spendSkillPoint } from "../../../store/slices/playerSlice";
-import { skillsCatalog, SKILL_COLUMNS, getSkillById } from "../../../data/skillsData";
+import {
+	selectSkillPoints,
+	selectPlayerSkills,
+	spendSkillPoint,
+} from "../../../store/slices/playerSlice";
+import {
+	skillsCatalog,
+	SKILL_COLUMNS,
+	getSkillById,
+} from "../../../data/skillsData";
 import { DAMAGE_TYPES } from "../../../data/combatTypes";
 
 const SkillsSection = () => {
@@ -58,61 +66,61 @@ const SkillsSection = () => {
 			) : (
 				<div className="skills-list">
 					{skillIds.map((skillId) => {
-					const skill = getSkillById(skillId);
-					if (!skill) return null;
+						const skill = getSkillById(skillId);
+						if (!skill) return null;
 
-					const currentRank = playerSkills[skillId] || 0;
-					const canUpgrade = skillPoints > 0 && currentRank < 3;
-					const currentRankData = skill.ranks[currentRank - 1];
+						const currentRank = playerSkills[skillId] || 0;
+						const canUpgrade = skillPoints > 0 && currentRank < 3;
+						const currentRankData = skill.ranks[currentRank - 1];
 
-					return (
-						<div key={skillId} className="skill-row">
-							<div className="skill-info">
-								{renderSkillIcon(skillId)}
-								<div className="skill-details">
-									<div className="skill-name">{skill.name}</div>
-									<div className="skill-description">{skill.description}</div>
-									{currentRank > 0 && currentRankData && (
-										<div className="skill-effect">
-											Effect:{" "}
-											{currentRankData.statBonus
-												? `+${currentRankData.statBonus.value} ${currentRankData.statBonus.stat}`
-												: `Damage x${currentRankData.damageMultiplier}`}
-										</div>
-									)}
+						return (
+							<div key={skillId} className="skill-row">
+								<div className="skill-info">
+									{renderSkillIcon(skillId)}
+									<div className="skill-details">
+										<div className="skill-name">{skill.name}</div>
+										<div className="skill-description">{skill.description}</div>
+										{currentRank > 0 && currentRankData && (
+											<div className="skill-effect">
+												Effect:{" "}
+												{currentRankData.statBonus
+													? `+${currentRankData.statBonus.value} ${currentRankData.statBonus.stat}`
+													: `Damage x${currentRankData.damageMultiplier}`}
+											</div>
+										)}
+									</div>
+								</div>
+
+								<div className="skill-rank">
+									<div className="rank-dots">
+										{[1, 2, 3].map((rank) => (
+											<span
+												key={rank}
+												className={`rank-dot ${
+													rank <= currentRank ? "rank-dot--filled" : ""
+												} ${rank === currentRank + 1 && canUpgrade ? "rank-dot--next" : ""}`}
+											/>
+										))}
+									</div>
+									<button
+										type="button"
+										className={`upgrade-btn ${canUpgrade ? "upgrade-btn--active" : ""}`}
+										onClick={() => handleUpgradeSkill(skillId)}
+										disabled={!canUpgrade}
+									>
+										+
+									</button>
 								</div>
 							</div>
-
-							<div className="skill-rank">
-								<div className="rank-dots">
-									{[1, 2, 3].map((rank) => (
-										<span
-											key={rank}
-											className={`rank-dot ${
-												rank <= currentRank ? "rank-dot--filled" : ""
-											} ${rank === currentRank + 1 && canUpgrade ? "rank-dot--next" : ""}`}
-										/>
-									))}
-								</div>
-								<button
-									type="button"
-									className={`upgrade-btn ${canUpgrade ? "upgrade-btn--active" : ""}`}
-									onClick={() => handleUpgradeSkill(skillId)}
-									disabled={!canUpgrade}
-								>
-									+
-								</button>
-							</div>
-						</div>
-								);
+						);
 					})}
-			</div>
+				</div>
 			)}
 
 			{currentColumn !== null && (
-			<div className="skills-note">
-				<p>Only skills from your weapon's damage type column are active.</p>
-			</div>
+				<div className="skills-note">
+					<p>Only skills from your weapon's damage type column are active.</p>
+				</div>
 			)}
 		</div>
 	);

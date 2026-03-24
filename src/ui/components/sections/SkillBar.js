@@ -3,7 +3,11 @@ import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import { selectEnemiesForCurrentPlace } from "../../../store/slices/enemiesSlice";
 import { selectPlayerSkills } from "../../../store/slices/playerSlice";
 import { useSkillCooldownState } from "../../hooks/useSkillCooldownState";
-import { skillsCatalog, SKILL_COLUMNS, getSkillById } from "../../../data/skillsData";
+import {
+	skillsCatalog,
+	SKILL_COLUMNS,
+	getSkillById,
+} from "../../../data/skillsData";
 import { DAMAGE_TYPES, SKILL_TYPES } from "../../../data/combatTypes";
 import { useEffect, useState } from "react";
 
@@ -13,7 +17,8 @@ const SkillBar = () => {
 	const currentPlace = useSelector(selectCurrentPlace);
 	const enemies = useSelector(selectEnemiesForCurrentPlace);
 	const playerSkills = useSelector(selectPlayerSkills);
-	const { activeCooldowns, pausedCooldowns, isCooldownPaused } = useSkillCooldownState();
+	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
+		useSkillCooldownState();
 	const equippedWeapon = useSelector(
 		(state) => state.inventory.player?.equipment?.["main-weapon"],
 	);
@@ -51,10 +56,10 @@ const SkillBar = () => {
 		if (rank === 0) return null;
 
 		if (isCooldownPaused && pausedCooldowns[skillId]) {
-			return { 
-				status: "paused", 
-				remaining: pausedCooldowns[skillId], 
-				max: skill.cooldown 
+			return {
+				status: "paused",
+				remaining: pausedCooldowns[skillId],
+				max: skill.cooldown,
 			};
 		}
 
@@ -62,7 +67,11 @@ const SkillBar = () => {
 		if (cooldownEnd) {
 			const remaining = Math.max(0, cooldownEnd - currentTime);
 			const maxCooldown = skill.cooldown;
-			return { status: remaining > 0 ? "cooldown" : "ready", remaining, max: maxCooldown };
+			return {
+				status: remaining > 0 ? "cooldown" : "ready",
+				remaining,
+				max: maxCooldown,
+			};
 		}
 
 		return { status: "ready", remaining: 0, max: skill.cooldown };
@@ -103,9 +112,10 @@ const SkillBar = () => {
 					const isPaused = status.status === "paused";
 					const isCooldown = status.status === "cooldown";
 					const isReady = status.status === "ready";
-					const progress = isCooldown || isPaused
-						? getProgressPercent(status.remaining, status.max)
-						: 100;
+					const progress =
+						isCooldown || isPaused
+							? getProgressPercent(status.remaining, status.max)
+							: 100;
 
 					return (
 						<div
@@ -120,9 +130,11 @@ const SkillBar = () => {
 						>
 							<div className="skill-icon-container">
 								<div className="skill-icon">{skill.name.charAt(0)}</div>
-									<div
+								<div
 									className={`skill-cooldown-overlay ${
-										isCooldown || isPaused ? "skill-cooldown-overlay--active" : ""
+										isCooldown || isPaused
+											? "skill-cooldown-overlay--active"
+											: ""
 									}`}
 									style={{
 										background: `conic-gradient(transparent ${100 - progress}%, rgba(0,0,0,0.7) ${

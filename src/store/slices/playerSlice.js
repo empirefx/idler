@@ -215,7 +215,9 @@ export const playerSlice = createSlice({
 				state.pausedCooldowns = {};
 			}
 			if (state.activeCooldowns) {
-				for (const [skillId, endTime] of Object.entries(state.activeCooldowns)) {
+				for (const [skillId, endTime] of Object.entries(
+					state.activeCooldowns,
+				)) {
 					const remaining = Math.max(0, endTime - now);
 					if (remaining > 0) {
 						state.pausedCooldowns[skillId] = remaining;
@@ -227,7 +229,9 @@ export const playerSlice = createSlice({
 		resumeCooldowns: (state) => {
 			const now = Date.now();
 			if (state.pausedCooldowns) {
-				for (const [skillId, remaining] of Object.entries(state.pausedCooldowns)) {
+				for (const [skillId, remaining] of Object.entries(
+					state.pausedCooldowns,
+				)) {
 					if (!state.activeCooldowns) {
 						state.activeCooldowns = {};
 					}
@@ -366,8 +370,10 @@ export const selectWorkersByPlace = (placeId) =>
 	);
 
 export const selectActiveBuffs = (state) => state.player.activeBuffs || [];
-export const selectActiveCooldowns = (state) => state.player.activeCooldowns || {};
-export const selectPausedCooldowns = (state) => state.player.pausedCooldowns || {};
+export const selectActiveCooldowns = (state) =>
+	state.player.activeCooldowns || {};
+export const selectPausedCooldowns = (state) =>
+	state.player.pausedCooldowns || {};
 export const selectIsCooldownPaused = createSelector(
 	[selectPausedCooldowns],
 	(pausedCooldowns) => Object.keys(pausedCooldowns).length > 0,

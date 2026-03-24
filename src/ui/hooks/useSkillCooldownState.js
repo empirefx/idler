@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
 import { shallowEqual } from "react-redux";
-import { selectActiveCooldowns, selectPausedCooldowns } from "../../store/slices/playerSlice";
+import {
+	selectActiveCooldowns,
+	selectPausedCooldowns,
+} from "../../store/slices/playerSlice";
 
 export const useSkillCooldownState = () => {
 	const activeCooldowns = useSelector(selectActiveCooldowns, shallowEqual);

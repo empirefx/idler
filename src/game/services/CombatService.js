@@ -3,7 +3,15 @@ import Logger from "../utils/Logger";
 import { batch } from "react-redux";
 import { enemyAttacked, playerDamaged, enemyDead } from "../events";
 import { addItem } from "../../store/slices/inventorySlice";
-import { gainExp, updateLastAttackTime, tickBuffs, activateSkill, addBuff, pauseCooldowns, resumeCooldowns } from "../../store/slices/playerSlice";
+import {
+	gainExp,
+	updateLastAttackTime,
+	tickBuffs,
+	activateSkill,
+	addBuff,
+	pauseCooldowns,
+	resumeCooldowns,
+} from "../../store/slices/playerSlice";
 import { createItem } from "../factory/itemFactory";
 import { resolveAttack, resolveEnemyAttack } from "../core/combatCalculator";
 import {
@@ -54,7 +62,11 @@ export const CombatService = {
 		const activeCooldowns = state.player.activeCooldowns || {};
 
 		// Find next ready skill to activate (filters out on-cooldown skills)
-		const skill = getNextSkillToActivate(equippedWeapon, playerSkills, activeCooldowns);
+		const skill = getNextSkillToActivate(
+			equippedWeapon,
+			playerSkills,
+			activeCooldowns,
+		);
 		if (!skill) return;
 
 		// Get rank data
@@ -75,9 +87,15 @@ export const CombatService = {
 			this.store.dispatch(addBuff(buff));
 
 			// Set cooldown
-			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+			this.store.dispatch(
+				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
+			);
 
-			Logger.log(`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`, 0, "combat");
+			Logger.log(
+				`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`,
+				0,
+				"combat",
+			);
 		} else if (skill.type === "active_damage") {
 			// Calculate and apply skill damage
 			const weaponProfile = getWeaponProfile(equippedWeapon);
@@ -104,7 +122,9 @@ export const CombatService = {
 			});
 
 			// Set cooldown
-			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+			this.store.dispatch(
+				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
+			);
 
 			Logger.log(`${skill.name} hits for ${skillDamage} damage!`, 0, "combat");
 		}
@@ -129,8 +149,14 @@ export const CombatService = {
 				type: "buff",
 			};
 			this.store.dispatch(addBuff(buff));
-			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
-			Logger.log(`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`, 0, "combat");
+			this.store.dispatch(
+				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
+			);
+			Logger.log(
+				`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`,
+				0,
+				"combat",
+			);
 		} else if (skill.type === "active_damage") {
 			const weaponProfile = getWeaponProfile(equippedWeapon);
 			const damageType = weaponProfile.damageType || "physical";
@@ -152,7 +178,9 @@ export const CombatService = {
 				type: "enemies/damageEnemy",
 				payload: { id: targetEnemy.id, amount: skillDamage },
 			});
-			this.store.dispatch(activateSkill({ skillId: skill.id, cooldown: skill.cooldown }));
+			this.store.dispatch(
+				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
+			);
 			Logger.log(`${skill.name} hits for ${skillDamage} damage!`, 0, "combat");
 		}
 
@@ -292,7 +320,8 @@ export const CombatService = {
 		const inventory = state.inventory?.player;
 		const equippedWeapon = inventory?.equipment?.["main-weapon"] || null;
 		const equippedArmor = Object.values(inventory?.equipment || {}).filter(
-			(item) => item && item.type !== "main-weapon" && item.type !== "second-weapon",
+			(item) =>
+				item && item.type !== "main-weapon" && item.type !== "second-weapon",
 		);
 		const now = Date.now();
 
@@ -312,7 +341,11 @@ export const CombatService = {
 		// Check if any skill is ready FIRST - skill takes priority over normal attack
 		const playerSkills = player.skills || {};
 		const activeCooldowns = state.player.activeCooldowns || {};
-		const readySkill = getNextSkillToActivate(equippedWeapon, playerSkills, activeCooldowns);
+		const readySkill = getNextSkillToActivate(
+			equippedWeapon,
+			playerSkills,
+			activeCooldowns,
+		);
 
 		if (readySkill) {
 			// SKILL PATH: Execute only skill, skip normal attack
