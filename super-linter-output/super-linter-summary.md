@@ -12,7 +12,7 @@
 | HTML                       | Pass ✅           |
 | JSCPD                      | Fail ❌           |
 | MARKDOWN                   | Pass ✅           |
-| MARKDOWN_PRETTIER          | Pass ✅           |
+| MARKDOWN_PRETTIER          | Fail ❌           |
 | NATURAL_LANGUAGE           | Pass ✅           |
 | PRE_COMMIT                 | Pass ✅           |
 | SPELL_CODESPELL            | Pass ✅           |
@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23514645282)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23514823529)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 94.
-Checked 142 files in 1913ms. No fixes applied.
+Checked 142 files in 1671ms. No fixes applied.
 Found 61 errors.
 Found 47 warnings.
 Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
@@ -545,6 +545,17 @@ Error: ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
     at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
+```
+
+</details>
+
+<details>
+
+<summary>MARKDOWN_PRETTIER</summary>
+
+```text
+Checking formatting...[[33mwarn[39m] CHANGELOG.md
+[[33mwarn[39m] Code style issues found in the above file. Run Prettier with --write to fix.
 ```
 
 </details>

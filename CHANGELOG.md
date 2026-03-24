@@ -35,7 +35,7 @@
 * display inventory currentWeight with 1 decimal place ([a440b42](https://github.com/empirefx/idler/commit/a440b425957b0d09149067522bdf4b76e4374c2f))
 * display item gold worth ([71b9598](https://github.com/empirefx/idler/commit/71b9598b1e18595db4a0338398d5f2e299e0b7bc))
 * display item gold worth & stats ([8d93a37](https://github.com/empirefx/idler/commit/8d93a374d9de6916f6ae34498e345f47b0167602))
-* item iron ore name ([6e13659](https://github.com/empirefx/idler/commit/6e13659421d3e620e1ee65ea94c18a9319a54e0a))
+* item iron or name ([6e13659](https://github.com/empirefx/idler/commit/6e13659421d3e620e1ee65ea94c18a9319a54e0a))
 * log scroll bottom in new entries ([1557777](https://github.com/empirefx/idler/commit/155777759afd6df9c4fac28fadfaedcc1d6f58f9))
 * log scroll bottom, ignore biome ([8cc85ed](https://github.com/empirefx/idler/commit/8cc85ed2b03891c587dd416f2fee5d7549ff970a))
 * npc dialog animation ([1300f89](https://github.com/empirefx/idler/commit/1300f8912c702370ae1cd8a59e15624b3c5d6a75))
