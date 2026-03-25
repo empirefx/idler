@@ -51,8 +51,8 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 		(e, item) => {
 			e.preventDefault();
 
-			// Handle recipe items in player inventory - learn the recipe
-			if (item.type === "recipe" && inventoryId === "player" && item.recipeId) {
+			// Handle recipe items - learn the recipe
+			if (item.type === "recipe" && item.recipeId) {
 				// Check if already known
 				if (knownRecipes.includes(item.recipeId)) {
 					dispatch({

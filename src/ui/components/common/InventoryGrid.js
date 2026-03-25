@@ -53,7 +53,7 @@ const InventoryGrid = ({
 								showQuantity
 								showBuyPrice={showBuyPrice}
 								onClick={handleItemClick}
-								onContextMenu={otherInventory ? onContextMenu : undefined}
+								onContextMenu={onContextMenu}
 							/>
 						)}
 					</div>
