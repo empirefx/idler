@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23573516707)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23573589744)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -33,7 +33,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
 Diagnostics not shown: 97.
-Checked 142 files in 1890ms. No fixes applied.
+Checked 142 files in 1825ms. No fixes applied.
 Found 62 errors.
 Found 49 warnings.
 Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
