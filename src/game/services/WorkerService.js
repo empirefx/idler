@@ -27,6 +27,7 @@ import {
 	selectWorkerSlots,
 	selectGold,
 } from "../../store/slices/playerSlice";
+import { addNotification } from "../../store/slices/notificationSlice";
 
 const REROLL_COST = 25;
 const SLOT_COST = 200;
@@ -186,6 +187,17 @@ export default class WorkerService {
 		this.dispatch(workerHired(newWorker));
 		this.eventBus.emit(WORKER_HIRED, { worker: newWorker });
 		Logger.log(`Worker hired: ${newWorker.name} for ${cost}g`, 0, "worker");
+
+		if (remainingWorkers.length === 0) {
+			const newAvailableWorkers = this.generateAvailableWorkers();
+			this.dispatch({
+				type: "player/updateAvailableWorkers",
+				payload: newAvailableWorkers,
+			});
+			this.dispatch(addNotification("All workers hired! New workers available.", "info"));
+			this.eventBus.emit(WORKER_REROLLED, { availableWorkers: newAvailableWorkers });
+			Logger.log("All workers hired - auto refreshed available workers", 0, "worker");
+		}
 	}
 
 	getNextWorkerId() {
