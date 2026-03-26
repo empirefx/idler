@@ -3,6 +3,20 @@ import { addNotification } from "../../store/slices/notificationSlice.js";
 import { NOTIFICATION_TYPES } from "../../store/slices/notificationSlice.js";
 
 const notificationMiddleware = (store) => (next) => (action) => {
+	// Handle addItem for player inventory - check if full BEFORE adding
+	if (action.type === "inventory/addItem" && action.payload?.inventoryId === "player") {
+		const state = store.getState();
+		const playerInventory = state.inventory.player;
+
+		if (playerInventory && playerInventory.items.length >= playerInventory.maxSlots) {
+			const itemName = action.payload?.item?.name || "item";
+			const error = INVENTORY_ERRORS.INVENTORY_FULL;
+			const message = `Inventory full! Lost "${itemName}"`;
+			store.dispatch(addNotification(message, NOTIFICATION_TYPES.WARNING));
+			return; // Don't call next(action) - item not added
+		}
+	}
+
 	const result = next(action);
 
 	// Handle failed inventory actions by checking for error types

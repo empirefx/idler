@@ -112,17 +112,6 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 					),
 				);
 
-				if (!success) {
-					// Handle other move errors
-					dispatch({
-						type: "notifications/addNotification",
-						payload: {
-							id: generateId(),
-							message: `Failed to move "${item.name}"`,
-							type: "error",
-						},
-					});
-				}
 			} else {
 				// Show dialog for multiple items
 				setSelectedItem(item);

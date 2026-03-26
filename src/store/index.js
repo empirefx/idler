@@ -12,6 +12,7 @@ import logMiddleware from "./middleware/logMiddleware";
 import gameEventMiddleware from "./middleware/gameEventMiddleware";
 import questsReducer from "./slices/questSlice";
 import gameplayMiddleware from "./middleware/gameplayMiddleware";
+import notificationMiddleware from "./middleware/notificationMiddleware";
 
 export const store = configureStore({
 	reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
 			logMiddleware,
 			gameEventMiddleware,
 			gameplayMiddleware,
+			notificationMiddleware,
 		),
 });
 
