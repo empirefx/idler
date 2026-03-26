@@ -1,19 +1,33 @@
 import { INVENTORY_ERRORS } from "../../store/slices/inventory/inventoryTypes.js";
 import { addNotification } from "../../store/slices/notificationSlice.js";
 import { NOTIFICATION_TYPES } from "../../store/slices/notificationSlice.js";
+import { calculateTotalPlayerWeight } from "../slices/inventory/inventoryUtils.js";
 
 const notificationMiddleware = (store) => (next) => (action) => {
-	// Handle addItem for player inventory - check if full BEFORE adding
+	// Handle addItem for player inventory - check capacity BEFORE adding
 	if (action.type === "inventory/addItem" && action.payload?.inventoryId === "player") {
 		const state = store.getState();
 		const playerInventory = state.inventory.player;
+		const item = action.payload?.item;
+		const itemWeight = (item?.weight || 0) * (item?.quantity || 1);
 
+		// Check inventory slots
 		if (playerInventory && playerInventory.items.length >= playerInventory.maxSlots) {
-			const itemName = action.payload?.item?.name || "item";
-			const error = INVENTORY_ERRORS.INVENTORY_FULL;
+			const itemName = item?.name || "item";
 			const message = `Inventory full! Lost "${itemName}"`;
 			store.dispatch(addNotification(message, NOTIFICATION_TYPES.WARNING));
 			return; // Don't call next(action) - item not added
+		}
+
+		// Check weight limit
+		if (playerInventory?.maxWeight) {
+			const currentWeight = calculateTotalPlayerWeight(playerInventory);
+			if (currentWeight + itemWeight > playerInventory.maxWeight) {
+				const itemName = item?.name || "item";
+				const message = `Too heavy! Lost "${itemName}"`;
+				store.dispatch(addNotification(message, NOTIFICATION_TYPES.WARNING));
+				return; // Don't call next(action) - item not added
+			}
 		}
 	}
 
