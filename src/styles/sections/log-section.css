@@ -13,6 +13,12 @@
 	margin-bottom: var(--spacing-md);
 }
 
+.log-header-controls {
+	display: flex;
+	gap: var(--spacing-sm);
+	align-items: center;
+}
+
 .log-section h2 {
 	margin: 0;
 	color: var(--color-primary);
@@ -45,6 +51,11 @@
 
 .log-filter-toggle:hover {
 	opacity: 0.9;
+}
+
+.log-filter-toggle.active {
+	background-color: #585858;
+	color: white;
 }
 
 .log-filter-dropdown {

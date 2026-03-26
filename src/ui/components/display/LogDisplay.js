@@ -7,7 +7,7 @@ const _LOG_CATEGORIES = {
 	default: { label: "Default", color: "default" },
 };
 
-export default function LogDisplay({ filteredLogs }) {
+export default function LogDisplay({ filteredLogs, showTimestamps }) {
 	const containerRef = useRef(null);
 
 	// Auto-scroll to bottom when new logs are added
@@ -26,14 +26,17 @@ export default function LogDisplay({ filteredLogs }) {
 						key={l.id}
 						className={`log-entry log-entry-${l.category || "default"}`}
 					>
-						<small>
-							{new Date(l.ts).toLocaleTimeString(undefined, {
-								hour: "2-digit",
-								minute: "2-digit",
-								hour12: false,
-							})}
-						</small>
-						&nbsp;{l.message}
+						{showTimestamps && (
+							<small>
+								{new Date(l.ts).toLocaleTimeString(undefined, {
+									hour: "2-digit",
+									minute: "2-digit",
+									hour12: false,
+								})}
+							</small>
+						)}
+						{showTimestamps && <span>&nbsp;</span>}
+						{l.message}
 					</div>
 				))}
 			</div>
