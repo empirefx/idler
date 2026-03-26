@@ -22,7 +22,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23515634920)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23573516707)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,10 +32,10 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 94.
-Checked 142 files in 1863ms. No fixes applied.
-Found 61 errors.
-Found 47 warnings.
+Diagnostics not shown: 97.
+Checked 142 files in 1890ms. No fixes applied.
+Found 62 errors.
+Found 49 warnings.
 Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
 
   i Useless case clause.
@@ -528,15 +528,15 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 150            │ 17810       │ 144834       │ 15           │ 139 (0.78%)      │ 1501 (1.04%)      │
+│ javascript │ 150            │ 17868       │ 145350       │ 15           │ 139 (0.78%)      │ 1501 (1.03%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 25             │ 6353        │ 38237        │ 2            │ 25 (0.39%)       │ 195 (0.51%)       │
+│ css        │ 25             │ 6364        │ 38289        │ 2            │ 25 (0.39%)       │ 195 (0.51%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 184            │ 24313       │ 184025       │ 17           │ 164 (0.67%)      │ 1696 (0.92%)      │
+│ Total:     │ 184            │ 24382       │ 184593       │ 17           │ 164 (0.67%)      │ 1696 (0.92%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 17 clones.
 Error: ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)

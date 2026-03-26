@@ -111,7 +111,6 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 						1,
 					),
 				);
-
 			} else {
 				// Show dialog for multiple items
 				setSelectedItem(item);

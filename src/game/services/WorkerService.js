@@ -194,9 +194,17 @@ export default class WorkerService {
 				type: "player/updateAvailableWorkers",
 				payload: newAvailableWorkers,
 			});
-			this.dispatch(addNotification("All workers hired! New workers available.", "info"));
-			this.eventBus.emit(WORKER_REROLLED, { availableWorkers: newAvailableWorkers });
-			Logger.log("All workers hired - auto refreshed available workers", 0, "worker");
+			this.dispatch(
+				addNotification("All workers hired! New workers available.", "info"),
+			);
+			this.eventBus.emit(WORKER_REROLLED, {
+				availableWorkers: newAvailableWorkers,
+			});
+			Logger.log(
+				"All workers hired - auto refreshed available workers",
+				0,
+				"worker",
+			);
 		}
 	}
 

@@ -5,14 +5,20 @@ import { calculateTotalPlayerWeight } from "../slices/inventory/inventoryUtils.j
 
 const notificationMiddleware = (store) => (next) => (action) => {
 	// Handle addItem for player inventory - check capacity BEFORE adding
-	if (action.type === "inventory/addItem" && action.payload?.inventoryId === "player") {
+	if (
+		action.type === "inventory/addItem" &&
+		action.payload?.inventoryId === "player"
+	) {
 		const state = store.getState();
 		const playerInventory = state.inventory.player;
 		const item = action.payload?.item;
 		const itemWeight = (item?.weight || 0) * (item?.quantity || 1);
 
 		// Check inventory slots
-		if (playerInventory && playerInventory.items.length >= playerInventory.maxSlots) {
+		if (
+			playerInventory &&
+			playerInventory.items.length >= playerInventory.maxSlots
+		) {
 			const itemName = item?.name || "item";
 			const message = `Inventory full! Lost "${itemName}"`;
 			store.dispatch(addNotification(message, NOTIFICATION_TYPES.WARNING));
