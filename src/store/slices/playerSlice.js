@@ -35,7 +35,13 @@ export const assignWorkerToSocketWithEvent = (
 		const state = getState();
 		const buildingName = getBuildingName(state, placeId, socketIndex);
 		dispatch(
-			assignWorkerToSocket({ workerId, placeId, socketIndex, material, buildingName }),
+			assignWorkerToSocket({
+				workerId,
+				placeId,
+				socketIndex,
+				material,
+				buildingName,
+			}),
 		);
 
 		// Only log if building actually exists at this socket
@@ -91,7 +97,8 @@ export const playerSlice = createSlice({
 	initialState,
 	reducers: {
 		assignWorkerToSocket: (state, action) => {
-			const { workerId, placeId, socketIndex, material, buildingName } = action.payload;
+			const { workerId, placeId, socketIndex, material, buildingName } =
+				action.payload;
 			const worker = state.workers.find((w) => w.id === workerId);
 			if (worker) {
 				if (!worker.assignments) {

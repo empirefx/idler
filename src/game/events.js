@@ -61,7 +61,12 @@ export const workerUnassigned = (
 	payload: { workerId, workerName, buildingId, buildingName },
 });
 
-export const locationChanged = (fromPlaceId, fromPlaceName, toPlaceId, toPlaceName) => ({
+export const locationChanged = (
+	fromPlaceId,
+	fromPlaceName,
+	toPlaceId,
+	toPlaceName,
+) => ({
 	type: LOCATION_CHANGED,
 	payload: { fromPlaceId, fromPlaceName, toPlaceId, toPlaceName },
 });

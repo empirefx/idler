@@ -14,12 +14,20 @@ export const NavigationService = {
 			}
 
 			// Get place names
-			const fromPlaceName = placesData[previousPlaceId]?.name || previousPlaceId;
+			const fromPlaceName =
+				placesData[previousPlaceId]?.name || previousPlaceId;
 			const toPlaceName = placesData[currentPlaceId]?.name || currentPlaceId;
 
 			// Emit location changed event for logging
 			if (dispatch && typeof dispatch === "function") {
-				dispatch(locationChanged(previousPlaceId, fromPlaceName, currentPlaceId, toPlaceName));
+				dispatch(
+					locationChanged(
+						previousPlaceId,
+						fromPlaceName,
+						currentPlaceId,
+						toPlaceName,
+					),
+				);
 
 				Logger.log(
 					`Player moves from ${fromPlaceName} to ${toPlaceName}`,

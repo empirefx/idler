@@ -13,16 +13,15 @@
 | JSCPD                      | Fail ❌           |
 | MARKDOWN                   | Pass ✅           |
 | MARKDOWN_PRETTIER          | Fail ❌           |
-| NATURAL_LANGUAGE           | Pass ✅           |
 | PRE_COMMIT                 | Pass ✅           |
-| SPELL_CODESPELL            | Pass ✅           |
+| SPELL_CODESPELL            | Fail ❌           |
 | TRIVY                      | Pass ✅           |
 | YAML                       | Pass ✅           |
 | YAML_PRETTIER              | Pass ✅           |
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23573589744)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23671430554)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -32,9 +31,9 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 97.
-Checked 142 files in 1825ms. No fixes applied.
-Found 62 errors.
+Diagnostics not shown: 98.
+Checked 142 files in 1428ms. No fixes applied.
+Found 63 errors.
 Found 49 warnings.
 Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
 
@@ -458,8 +457,8 @@ lint ━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ```text
 Clone found (javascript):
- - src/ui/components/common/NPCDialog/useNPCDialog.js [347:2 - 355:11] (8 lines, 85 tokens)
-   src/ui/components/common/NPCDialog/useNPCDialog.js [326:2 - 334:8]
+ - src/ui/components/common/NPCDialog/useNPCDialog.js [342:2 - 350:11] (8 lines, 85 tokens)
+   src/ui/components/common/NPCDialog/useNPCDialog.js [321:2 - 329:8]
 
 Clone found (javascript):
  - src/ui/components/sections/CraftingSection.js [204:6 - 216:2] (12 lines, 116 tokens)
@@ -528,15 +527,15 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 150            │ 17868       │ 145350       │ 15           │ 139 (0.78%)      │ 1501 (1.03%)      │
+│ javascript │ 150            │ 17944       │ 145913       │ 15           │ 139 (0.77%)      │ 1501 (1.03%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 25             │ 6364        │ 38289        │ 2            │ 25 (0.39%)       │ 195 (0.51%)       │
+│ css        │ 25             │ 6374        │ 38345        │ 2            │ 25 (0.39%)       │ 195 (0.51%)       │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 184            │ 24382       │ 184593       │ 17           │ 164 (0.67%)      │ 1696 (0.92%)      │
+│ Total:     │ 184            │ 24468       │ 185212       │ 17           │ 164 (0.67%)      │ 1696 (0.92%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 17 clones.
 Error: ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
@@ -556,6 +555,31 @@ Error: ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
 ```text
 Checking formatting...[[33mwarn[39m] CHANGELOG.md
 [[33mwarn[39m] Code style issues found in the above file. Run Prettier with --write to fix.
+```
+
+</details>
+
+<details>
+
+<summary>SPELL_CODESPELL</summary>
+
+```text
+/github/workspace/src/data/itemCatalog.js:17: ore ==> or
+/github/workspace/src/data/itemCatalog.js:1432: ore ==> or
+/github/workspace/src/data/itemCatalog.js:1438: Ore ==> Or
+/github/workspace/src/data/itemCatalog.js:1440: ore ==> or
+/github/workspace/src/data/npcCatalog.js:48: ore ==> or
+/github/workspace/src/data/npcCatalog.js:48: ore ==> or
+/github/workspace/src/data/npcCatalog.js:56: ore ==> or
+/github/workspace/src/data/npcCatalog.js:58: ore ==> or
+/github/workspace/src/data/questCatalog.js:50: Ore ==> Or
+/github/workspace/src/data/questCatalog.js:52: ore ==> or
+/github/workspace/src/data/questCatalog.js:52: ore ==> or
+/github/workspace/src/data/questCatalog.js:73: ore ==> or
+/github/workspace/src/data/questCatalog.js:77: ore ==> or
+/github/workspace/src/data/questCatalog.js:82: ore ==> or
+/github/workspace/src/data/questCatalog.js:82: ore ==> or
+/github/workspace/src/data/questCatalog.js:83: ore ==> or
 ```
 
 </details>
