@@ -25,9 +25,9 @@ export const BUILD_SUCCESS = "game/BUILD_SUCCESS";
 export const BUILD_FAILED = "game/BUILD_FAILED";
 
 // Action creators
-export const workerCreatedItem = (workerId, itemType) => ({
+export const workerCreatedItem = (workerId, workerName, itemName) => ({
 	type: WORKER_CREATED_ITEM,
-	payload: { workerId, itemType },
+	payload: { workerId, workerName, itemName },
 });
 
 export const enemyAttacked = (
@@ -61,9 +61,9 @@ export const workerUnassigned = (
 	payload: { workerId, workerName, buildingId, buildingName },
 });
 
-export const locationChanged = (fromPlace, toPlace) => ({
+export const locationChanged = (fromPlaceId, fromPlaceName, toPlaceId, toPlaceName) => ({
 	type: LOCATION_CHANGED,
-	payload: { fromPlace, toPlace },
+	payload: { fromPlaceId, fromPlaceName, toPlaceId, toPlaceName },
 });
 
 export const playerIntentAcceptQuest = (questId, npcId) => ({

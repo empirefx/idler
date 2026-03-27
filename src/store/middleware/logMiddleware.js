@@ -21,7 +21,7 @@ const logMiddleware = (store) => (next) => (action) => {
 		case WORKER_CREATED_ITEM:
 			store.dispatch(
 				addLog({
-					message: `Worker ${action.payload.workerId} made a ${action.payload.itemType}`,
+					message: `Worker ${action.payload.workerName} made a ${action.payload.itemName}`,
 					category: "worker",
 				}),
 			);
@@ -53,27 +53,31 @@ const logMiddleware = (store) => (next) => (action) => {
 		}
 
 		case WORKER_ASSIGNED:
-			store.dispatch(
-				addLog({
-					message: `Worker ${action.payload.workerName} assigned to ${action.payload.buildingName || action.payload.buildingId}`,
-					category: "worker",
-				}),
-			);
+			if (action.payload.buildingName) {
+				store.dispatch(
+					addLog({
+						message: `Worker ${action.payload.workerName} assigned to ${action.payload.buildingName}`,
+						category: "worker",
+					}),
+				);
+			}
 			break;
 
 		case WORKER_UNASSIGNED:
-			store.dispatch(
-				addLog({
-					message: `Worker ${action.payload.workerName} unassigned from ${action.payload.buildingName || action.payload.buildingId}`,
-					category: "worker",
-				}),
-			);
+			if (action.payload.buildingName) {
+				store.dispatch(
+					addLog({
+						message: `Worker ${action.payload.workerName} unassigned from ${action.payload.buildingName}`,
+						category: "worker",
+					}),
+				);
+			}
 			break;
 
 		case LOCATION_CHANGED:
 			store.dispatch(
 				addLog({
-					message: `Moved from ${action.payload.fromPlace} to ${action.payload.toPlace}`,
+					message: `Moved from ${action.payload.fromPlaceName} to ${action.payload.toPlaceName}`,
 					category: "movement",
 				}),
 			);

@@ -2,6 +2,7 @@
 import Logger from "../utils/Logger";
 import { removeEnemiesByPlace } from "../../store/slices/enemiesSlice";
 import { locationChanged } from "../events";
+import { placesData } from "../../data/places";
 
 export const NavigationService = {
 	// Handle place change detection and enemy cleanup
@@ -12,12 +13,16 @@ export const NavigationService = {
 				this.eventBus.emit("enterPlace", currentPlaceId);
 			}
 
+			// Get place names
+			const fromPlaceName = placesData[previousPlaceId]?.name || previousPlaceId;
+			const toPlaceName = placesData[currentPlaceId]?.name || currentPlaceId;
+
 			// Emit location changed event for logging
 			if (dispatch && typeof dispatch === "function") {
-				dispatch(locationChanged(previousPlaceId, currentPlaceId));
+				dispatch(locationChanged(previousPlaceId, fromPlaceName, currentPlaceId, toPlaceName));
 
 				Logger.log(
-					`Player moves from ${previousPlaceId} to ${currentPlaceId}`,
+					`Player moves from ${fromPlaceName} to ${toPlaceName}`,
 					0,
 					"navigation",
 				);

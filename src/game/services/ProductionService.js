@@ -1,5 +1,7 @@
 import Logger from "../utils/Logger";
 import { addNotification } from "../../store/slices/notificationSlice";
+import { unassignWorkerFromSocketWithEvent } from "../../store/slices/playerSlice";
+import { workerCreatedItem } from "../events";
 
 export default class ProductionService {
 	constructor(inventoryService, itemFactory, store, dispatch, events) {
@@ -77,10 +79,7 @@ export default class ProductionService {
 							"warning",
 						),
 					);
-					this.dispatch({
-						type: "player/unassignWorkerFromSocket",
-						payload: { workerId: worker.id, placeId },
-					});
+					this.dispatch(unassignWorkerFromSocketWithEvent(worker.id, placeId));
 				}
 				return;
 			}
@@ -88,8 +87,7 @@ export default class ProductionService {
 			this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
 
 			if (this.dispatch) {
-				const { workerCreatedItem } = require("../events");
-				this.dispatch(workerCreatedItem(worker.id, item.type));
+				this.dispatch(workerCreatedItem(worker.id, worker.name, item.name));
 			}
 		} catch (error) {
 			console.error("Failed to create item during production", error);

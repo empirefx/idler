@@ -1,12 +1,28 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 import { playerData } from "../../data/player";
+import { buildingsData } from "../../data/buildings";
 import { workerAssigned, workerUnassigned } from "../../game/events";
 
 const getNextWorkerId = (workers) => {
 	if (!workers || workers.length === 0) return 1;
 	const maxId = Math.max(...workers.map((w) => w.id));
 	return maxId + 1;
+};
+
+const getBuildingName = (state, placeId, socketIndex) => {
+	if (socketIndex === undefined || socketIndex === null) {
+		return null;
+	}
+
+	const place = state.places?.[placeId];
+	const socket = place?.sockets?.[socketIndex];
+	if (socket?.buildingId) {
+		const name = buildingsData[socket.buildingId]?.name;
+		if (name) return name;
+	}
+
+	return null;
 };
 
 export const assignWorkerToSocketWithEvent = (
@@ -16,21 +32,26 @@ export const assignWorkerToSocketWithEvent = (
 	material,
 ) => {
 	return (dispatch, getState) => {
+		const state = getState();
+		const buildingName = getBuildingName(state, placeId, socketIndex);
 		dispatch(
-			assignWorkerToSocket({ workerId, placeId, socketIndex, material }),
+			assignWorkerToSocket({ workerId, placeId, socketIndex, material, buildingName }),
 		);
 
-		const state = getState();
-		const worker = state.player.workers.find((w) => w.id === workerId);
-		if (worker) {
-			dispatch(
-				workerAssigned(
-					workerId,
-					worker.name,
-					`socket_${socketIndex}`,
-					material,
-				),
-			);
+		// Only log if building actually exists at this socket
+		if (buildingName) {
+			const state = getState();
+			const worker = state.player.workers.find((w) => w.id === workerId);
+			if (worker) {
+				dispatch(
+					workerAssigned(
+						workerId,
+						worker.name,
+						`socket_${socketIndex}`,
+						buildingName,
+					),
+				);
+			}
 		}
 	};
 };
@@ -41,18 +62,19 @@ export const unassignWorkerFromSocketWithEvent = (workerId, placeId) => {
 		const worker = state.player.workers.find((w) => w.id === workerId);
 		const assignment = worker?.assignments?.[placeId];
 		const socketIndex = assignment?.socketIndex;
-		const material = assignment?.material;
+		const buildingName = assignment?.buildingName;
 		const workerName = worker?.name;
 
 		dispatch(unassignWorkerFromSocket({ workerId, placeId }));
 
-		if (workerName !== undefined) {
+		// Only log if worker was actually assigned to a building
+		if (workerName !== undefined && buildingName) {
 			dispatch(
 				workerUnassigned(
 					workerId,
 					workerName,
 					`socket_${socketIndex}`,
-					material,
+					buildingName,
 				),
 			);
 		}
@@ -69,7 +91,7 @@ export const playerSlice = createSlice({
 	initialState,
 	reducers: {
 		assignWorkerToSocket: (state, action) => {
-			const { workerId, placeId, socketIndex, material } = action.payload;
+			const { workerId, placeId, socketIndex, material, buildingName } = action.payload;
 			const worker = state.workers.find((w) => w.id === workerId);
 			if (worker) {
 				if (!worker.assignments) {
@@ -78,6 +100,7 @@ export const playerSlice = createSlice({
 				worker.assignments[placeId] = {
 					socketIndex,
 					material,
+					buildingName,
 				};
 				action.payload.workerName = worker.name;
 			}
@@ -87,6 +110,7 @@ export const playerSlice = createSlice({
 			const worker = state.workers.find((w) => w.id === workerId);
 			if (worker && worker.assignments && worker.assignments[placeId]) {
 				action.payload.workerName = worker.name;
+				action.payload.buildingName = worker.assignments[placeId].buildingName;
 				delete worker.assignments[placeId];
 			}
 		},
