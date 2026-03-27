@@ -10,6 +10,8 @@ import "./styles/npc-portraits.css";
 import "./styles/components/npc-dialog.css";
 import "./styles/components/trade-message-dialog.css";
 
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+
 const container = document.getElementById("root");
 const root = createRoot(container);
 
