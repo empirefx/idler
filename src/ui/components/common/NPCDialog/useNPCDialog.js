@@ -313,11 +313,6 @@ const useNPCDialog = ({
 				quantity: isStackable ? 1 : undefined,
 			};
 			dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
-
-			setTradeMessage({
-				type: "success",
-				message: `Bought ${item.name} for ${buyPrice} gold.`,
-			});
 		},
 		[dispatch, playerGold, playerInventory, itemCatalog],
 	);
