@@ -1,4 +1,5 @@
 import Logger from "../utils/Logger";
+import { addNotification } from "../../store/slices/notificationSlice";
 
 export default class ProductionService {
 	constructor(inventoryService, itemFactory, store, dispatch, events) {
@@ -56,6 +57,33 @@ export default class ProductionService {
 			}
 
 			const targetPlaceId = this.findClosestPlaceWithInventory(placeId, state);
+			const targetInventory = state.inventory[targetPlaceId];
+
+			const canAddCheck = this.inventoryService.canAddItem(
+				targetInventory,
+				item,
+				item.quantity || 1,
+			);
+			if (!canAddCheck.valid) {
+				Logger.log(
+					`Inventory full! ${worker.name} cannot produce ${item.name || item.type}`,
+					1,
+					"production",
+				);
+				if (this.dispatch) {
+					this.dispatch(
+						addNotification(
+							`Inventory full! ${worker.name} cannot produce ${item.name || item.type}`,
+							"warning",
+						),
+					);
+					this.dispatch({
+						type: "player/unassignWorkerFromSocket",
+						payload: { workerId: worker.id, placeId },
+					});
+				}
+				return;
+			}
 
 			this.inventoryService.addItemToInventory(this.store, targetPlaceId, item);
 
