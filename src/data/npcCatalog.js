@@ -45,7 +45,7 @@ export const npcCatalog = {
 				{
 					text: "What materials do you need?",
 					response:
-						"I can work with or from the mines. The harder the or, the better the equipment I can forge.",
+						"I can work with ore from the mines. The harder the ore, the better the equipment I can forge.",
 				},
 				{
 					text: "Can you upgrade my gear?",
@@ -53,9 +53,9 @@ export const npcCatalog = {
 						"Bring me better materials and enough gold, and I'll improve whatever you have.",
 				},
 				{
-					text: "I can bring you some iron or.",
+					text: "I can bring you some iron ore.",
 					response:
-						"Aye, I'm running low on iron or. Bring me 5 pieces and I'll reward you well.",
+						"Aye, I'm running low on iron ore. Bring me 5 pieces and I'll reward you well.",
 					startsQuestId: "blacksmith_iron_ore",
 				},
 			],

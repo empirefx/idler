@@ -47,9 +47,9 @@ export const questCatalog = {
 	},
 	blacksmith_iron_ore: {
 		id: "blacksmith_iron_ore",
-		title: "Grum's Request: Iron Or",
+		title: "Grum's Request: Iron Ore",
 		description:
-			"Grum the Blacksmith needs iron or to forge better equipment. Bring him 5 iron or.",
+			"Grum the Blacksmith needs iron ore to forge better equipment. Bring him 5 iron ore.",
 		giverNpcId: "blacksmith",
 		requirementSummary: "Speak to Grum the Blacksmith in the village center.",
 		requirements: {
@@ -70,17 +70,17 @@ export const questCatalog = {
 			exp: 50,
 			items: [{ icon: "light-gloves", quantity: 1 }],
 		},
-		acceptMessage: "You agree to bring iron or to Grum.",
+		acceptMessage: "You agree to bring iron ore to Grum.",
 		conversation: [
 			{
 				npcText:
-					"I'm running low on iron or. Can't forge good equipment without it.",
+					"I'm running low on iron ore. Can't forge good equipment without it.",
 				playerText: "What do you need?",
 			},
 			{
 				npcText:
-					"Bring me 5 iron or from the mines. The harder the or, the better the gear I can make.",
-				playerText: "I can help with that. Where can I find iron or?",
+					"Bring me 5 iron ore from the mines. The harder the ore, the better the gear I can make.",
+				playerText: "I can help with that. Where can I find iron ore?",
 			},
 			{
 				npcText:

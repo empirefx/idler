@@ -52,8 +52,9 @@ jobs:
           VALIDATE_VUE_PRETTIER: false
           VALIDATE_JSONC_PRETTIER: false
           VALIDATE_JSON5_PRETTIER: false
+          VALIDATE_NATURAL_LANGUAGE: false
           FIX_SHELL_SHFMT: true
-          FIX_SPELL_CODESPELL: true
+          FIX_SPELL_CODESPELL: false
           FIX_GITHUB_ACTIONS_ZIZMOR: true
           FIX_YAML_PRETTIER: true
           VALIDATE_PYTHON_RUFF: false
