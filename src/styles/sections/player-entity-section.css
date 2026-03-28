@@ -1,3 +1,7 @@
+.player-entity-section {
+	cursor: pointer;
+}
+
 .player-entity-section img {
 	max-height: 210px;
 	object-fit: cover;
