@@ -21,7 +21,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23671497216)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23689469615)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,9 +31,9 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 98.
-Checked 142 files in 1446ms. No fixes applied.
-Found 63 errors.
+Diagnostics not shown: 101.
+Checked 145 files in 1663ms. No fixes applied.
+Found 66 errors.
 Found 49 warnings.
 Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
 
@@ -178,6 +178,29 @@ src/game/engine/GameEngine.js:137:40 lint/correctness/noUnusedFunctionParameters
         137 │ + → calculateProductionRate(buildingData,·_state)·{
     138 138 │   		return buildingData.baseProductionRate || 0;
     139 139 │   	}
+
+
+src/game/services/CraftingService.js:121:9 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━
+
+  ! This variable knownRecipes is unused.
+
+    119 │ 	craft(recipeId, outputItemId = null) {
+    120 │ 		const state = this.store.getState();
+  > 121 │ 		const knownRecipes = state.player?.knownRecipes || [];
+        │ 		      ^^^^^^^^^^^^
+    122 │
+    123 │ 		const validation = this.canCraft(state, recipeId, outputItemId);
+
+  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
+
+  i Unsafe fix: If this is intentional, prepend knownRecipes with an underscore.
+
+    119 119 │   	craft(recipeId, outputItemId = null) {
+    120 120 │   		const state = this.store.getState();
+    121     │ - → → const·knownRecipes·=·state.player?.knownRecipes·||·[];
+        121 │ + → → const·_knownRecipes·=·state.player?.knownRecipes·||·[];
+    122 122 │
+    123 123 │   		const validation = this.canCraft(state, recipeId, outputItemId);
 
 
 src/ui/components/sections/SkillBar.js:7:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
@@ -345,79 +368,63 @@ src/ui/components/sections/SkillBar.js:158:25 lint/suspicious/noArrayIndexKey �
   i Check the React documentation.
 
 
-src/ui/components/sections/WorkerManagerSection.js:108:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/WorkerManagerSection.js:142:10 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━
 
   × Provide an explicit type prop for the button element.
 
-    106 │ 			<div className="worker-manager-header">
-    107 │ 				<h3>Worker Manager</h3>
-  > 108 │ 				<button className="close-btn" onClick={closeWorkerManagerWindow}>
-        │ 				^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    109 │ 					×
-    110 │ 				</button>
-
-  i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
-
-  i Allowed button types are: submit, button or reset
-
-
-src/ui/components/sections/WorkerManagerSection.js:143:10 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━
-
-  × Provide an explicit type prop for the button element.
-
-    141 │ 										</span>
-    142 │ 									</div>
-  > 143 │ 									<button
+    140 │ 										</span>
+    141 │ 									</div>
+  > 142 │ 									<button
         │ 									^^^^^^^
-  > 144 │ 										className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
-  > 145 │ 										disabled={!canHireMore || gold < workerCost}
-  > 146 │ 										onClick={() => handleHire(worker.id)}
-  > 147 │ 									>
+  > 143 │ 										className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
+  > 144 │ 										disabled={!canHireMore || gold < workerCost}
+  > 145 │ 										onClick={() => handleHire(worker.id)}
+  > 146 │ 									>
         │ 									^
-    148 │ 										Hire ({workerCost}g)
-    149 │ 									</button>
+    147 │ 										Hire ({workerCost}g)
+    148 │ 									</button>
 
   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
 
   i Allowed button types are: submit, button or reset
 
 
-src/ui/components/sections/WorkerManagerSection.js:157:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/WorkerManagerSection.js:156:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
 
   × Provide an explicit type prop for the button element.
 
-    155 │ 			</div>
-    156 │ 			<div className="worker-manager-actions">
-  > 157 │ 				<button
+    154 │ 			</div>
+    155 │ 			<div className="worker-manager-actions">
+  > 156 │ 				<button
         │ 				^^^^^^^
-  > 158 │ 					className={`reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
-  > 159 │ 					disabled={gold < REROLL_COST}
-  > 160 │ 					onClick={handleReroll}
-  > 161 │ 				>
+  > 157 │ 					className={`reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
+  > 158 │ 					disabled={gold < REROLL_COST}
+  > 159 │ 					onClick={handleReroll}
+  > 160 │ 				>
         │ 				^
-    162 │ 					Reroll Workers ({REROLL_COST}g)
-    163 │ 				</button>
+    161 │ 					Reroll Workers ({REROLL_COST}g)
+    162 │ 				</button>
 
   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
 
   i Allowed button types are: submit, button or reset
 
 
-src/ui/components/sections/WorkerManagerSection.js:165:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/WorkerManagerSection.js:164:5 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━
 
   × Provide an explicit type prop for the button element.
 
-    163 │ 				</button>
-    164 │
-  > 165 │ 				<button
+    162 │ 				</button>
+    163 │
+  > 164 │ 				<button
         │ 				^^^^^^^
-  > 166 │ 					className={`buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
-  > 167 │ 					disabled={gold < SLOT_COST}
-  > 168 │ 					onClick={handleBuySlot}
-  > 169 │ 				>
+  > 165 │ 					className={`buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
+  > 166 │ 					disabled={gold < SLOT_COST}
+  > 167 │ 					onClick={handleBuySlot}
+  > 168 │ 				>
         │ 				^
-    170 │ 					Buy Worker Slot ({SLOT_COST}g)
-    171 │ 				</button>
+    169 │ 					Buy Worker Slot ({SLOT_COST}g)
+    170 │ 				</button>
 
   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
 
@@ -461,12 +468,12 @@ Clone found (javascript):
    src/ui/components/common/NPCDialog/useNPCDialog.js [321:2 - 329:8]
 
 Clone found (javascript):
- - src/ui/components/sections/CraftingSection.js [204:6 - 216:2] (12 lines, 116 tokens)
-   src/ui/components/sections/CraftingSection.js [191:9 - 203:15]
+ - src/ui/components/sections/CraftingSection.js [199:6 - 211:2] (12 lines, 116 tokens)
+   src/ui/components/sections/CraftingSection.js [186:9 - 198:15]
 
 Clone found (javascript):
- - src/ui/components/sections/CraftingSection.js [257:6 - 269:2] (12 lines, 93 tokens)
-   src/ui/components/sections/CraftingSection.js [241:9 - 253:15]
+ - src/ui/components/sections/CraftingSection.js [252:6 - 264:2] (12 lines, 93 tokens)
+   src/ui/components/sections/CraftingSection.js [236:9 - 248:15]
 
 Clone found (javascript):
  - src/ui/components/display/LogDisplay.js [3:2 - 10:7] (7 lines, 88 tokens)
@@ -475,14 +482,6 @@ Clone found (javascript):
 Clone found (javascript):
  - src/ui/components/common/TradeMessageDialog.js [38:5 - 45:2] (7 lines, 77 tokens)
    src/ui/components/common/NPCDialog/index.js [98:6 - 105:21]
-
-Clone found (css):
- - src/styles/sections/crafting-section.css [1:2 - 16:17] (15 lines, 110 tokens)
-   src/styles/sections/worker-manager-section.css [1:2 - 16:23]
-
-Clone found (css):
- - src/styles/sections/crafting-section.css [16:2 - 26:20] (10 lines, 85 tokens)
-   src/styles/sections/worker-manager-section.css [16:2 - 26:26]
 
 Clone found (javascript):
  - src/store/slices/inventorySlice.js [177:13 - 188:16] (11 lines, 93 tokens)
@@ -527,23 +526,23 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 150            │ 17944       │ 145913       │ 15           │ 139 (0.77%)      │ 1501 (1.03%)      │
+│ javascript │ 152            │ 18193       │ 148071       │ 15           │ 139 (0.76%)      │ 1501 (1.01%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 25             │ 6374        │ 38345        │ 2            │ 25 (0.39%)       │ 195 (0.51%)       │
+│ css        │ 26             │ 6382        │ 38347        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 184            │ 24468       │ 185212       │ 17           │ 164 (0.67%)      │ 1696 (0.92%)      │
+│ Total:     │ 187            │ 24725       │ 187372       │ 15           │ 139 (0.56%)      │ 1501 (0.8%)       │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
-Found 17 clones.
-Error: ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
+Found 15 clones.
+Error: ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
     at ThresholdReporter.report (/node_modules/@jscpd/finder/dist/index.js:615:13)
     at /node_modules/@jscpd/finder/dist/index.js:109:18
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
-    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.67%) over threshold (0%)
+    at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)
 ```
 
 </details>

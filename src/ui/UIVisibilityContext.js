@@ -100,37 +100,37 @@ export const UIVisibilityProvider = ({ children }) => {
 	}, []);
 
 	const closePlayerCard = useCallback(() => {
-    setVisible((v) => ({ ...v, playerCard: false }));
+		setVisible((v) => ({ ...v, playerCard: false }));
 	}, []);
 
 	const closeWorkerCard = useCallback(() => {
-	    setVisible((v) => ({ ...v, workerCard: false, npcSection: true }));
+		setVisible((v) => ({ ...v, workerCard: false, npcSection: true }));
 	}, []);
 
 	const closeCraftingWindow = useCallback(() => {
-	    setVisible((v) => ({ ...v, craftingWindow: false }));
+		setVisible((v) => ({ ...v, craftingWindow: false }));
 	}, []);
 
 	return (
 		<UIVisibilityContext.Provider
 			value={{
 				...visible,
-        togglePlayerCard,
-        closePlayerCard,
-        toggleWorkerCard,
-        closeWorkerCard,
-        toggleNpcSection,
-        openNPCDialog,
-        selectNPCOption,
-        closeNPCDialog,
-        toggleCraftingWindow,
-        closeCraftingWindow,
-        toggleBuildingPanel,
-        showBuildingPanel,
-        hideBuildingPanel,
-        toggleWorkerManagerWindow,
-        openWorkerManagerWindow,
-        closeWorkerManagerWindow,
+				togglePlayerCard,
+				closePlayerCard,
+				toggleWorkerCard,
+				closeWorkerCard,
+				toggleNpcSection,
+				openNPCDialog,
+				selectNPCOption,
+				closeNPCDialog,
+				toggleCraftingWindow,
+				closeCraftingWindow,
+				toggleBuildingPanel,
+				showBuildingPanel,
+				hideBuildingPanel,
+				toggleWorkerManagerWindow,
+				openWorkerManagerWindow,
+				closeWorkerManagerWindow,
 			}}
 		>
 			{children}

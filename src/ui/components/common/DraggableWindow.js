@@ -19,7 +19,7 @@ const DraggableWindow = ({
 		isWindowAtFront,
 		getWindowPosition,
 		setWindowPosition,
-		removeFromStack
+		removeFromStack,
 	} = useWindowManager();
 
 	const [localOffset, setLocalOffset] = useState(null);
@@ -30,26 +30,35 @@ const DraggableWindow = ({
 	const zIndex = getZIndex(windowId);
 	const atFront = isWindowAtFront(windowId);
 
-useEffect(() => {
-    if (isOpen && !hasInitialized.current) {
-        bringToFront(windowId);
-        const saved = getWindowPosition(windowId);
-        if (saved) {
-            setLocalOffset(saved);
-        } else {
-            const winHeight = height ?? minHeight ?? 560;
-            setLocalOffset({
-                x: (window.innerWidth - width) / 2,
-                y: (window.innerHeight - winHeight) / 2,
-            });
-        }
-        hasInitialized.current = true;
-    }
-    if (!isOpen) {
-        removeFromStack(windowId); // <-- remove when closed
-        hasInitialized.current = false;
-    }
-}, [isOpen, windowId, bringToFront, getWindowPosition, removeFromStack, width, height, minHeight]);
+	useEffect(() => {
+		if (isOpen && !hasInitialized.current) {
+			bringToFront(windowId);
+			const saved = getWindowPosition(windowId);
+			if (saved) {
+				setLocalOffset(saved);
+			} else {
+				const winHeight = height ?? minHeight ?? 560;
+				setLocalOffset({
+					x: (window.innerWidth - width) / 2,
+					y: (window.innerHeight - winHeight) / 2,
+				});
+			}
+			hasInitialized.current = true;
+		}
+		if (!isOpen) {
+			removeFromStack(windowId); // <-- remove when closed
+			hasInitialized.current = false;
+		}
+	}, [
+		isOpen,
+		windowId,
+		bringToFront,
+		getWindowPosition,
+		removeFromStack,
+		width,
+		height,
+		minHeight,
+	]);
 
 	const handleMouseDown = useCallback(
 		(e) => {
@@ -101,11 +110,7 @@ useEffect(() => {
 	};
 
 	return (
-		<div
-			className="draggable-window"
-			style={windowStyle}
-			onClick={handleClick}
-		>
+		<div className="draggable-window" style={windowStyle} onClick={handleClick}>
 			<div className="draggable-window-header" onMouseDown={handleMouseDown}>
 				<h3 className="draggable-window-title">{title}</h3>
 				<button

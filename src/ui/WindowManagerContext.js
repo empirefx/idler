@@ -44,7 +44,7 @@ export const WindowManagerProvider = ({ children }) => {
 	}, []);
 
 	const removeFromStack = useCallback((windowId) => {
-    setWindowStack((prev) => prev.filter((id) => id !== windowId));
+		setWindowStack((prev) => prev.filter((id) => id !== windowId));
 	}, []);
 
 	return (
