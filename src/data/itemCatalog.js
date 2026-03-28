@@ -1010,7 +1010,7 @@ export const itemCatalog = {
 		weight: 2,
 		buy: { gold: 15 },
 		sellable: { gold: 5 },
-		stats: { attack: 2, strength: 1 },
+		stats: { attack: 2, intelligence: 2 },
 	},
 	staff2: {
 		id: 91,
@@ -1022,7 +1022,7 @@ export const itemCatalog = {
 		weight: 3,
 		buy: { gold: 30 },
 		sellable: { gold: 10 },
-		stats: { attack: 3, strength: 1, agility: 1 },
+		stats: { attack: 3, agility: 1, intelligence: 4 },
 	},
 	staff3: {
 		id: 92,
@@ -1034,7 +1034,7 @@ export const itemCatalog = {
 		weight: 3,
 		buy: { gold: 50 },
 		sellable: { gold: 17 },
-		stats: { attack: 4, strength: 2, agility: 1 },
+		stats: { attack: 4, agility: 1, intelligence: 6 },
 	},
 	staff4: {
 		id: 93,
@@ -1046,7 +1046,7 @@ export const itemCatalog = {
 		weight: 4,
 		buy: { gold: 80 },
 		sellable: { gold: 27 },
-		stats: { attack: 5, strength: 2, agility: 2 },
+		stats: { attack: 5, agility: 2, intelligence: 10 },
 	},
 	wand1: {
 		id: 94,
@@ -1058,7 +1058,7 @@ export const itemCatalog = {
 		weight: 0.5,
 		buy: { gold: 15 },
 		sellable: { gold: 5 },
-		stats: { attack: 1, agility: 1 },
+		stats: { attack: 1, agility: 1, intelligence: 3 },
 	},
 	wand2: {
 		id: 95,
@@ -1070,7 +1070,7 @@ export const itemCatalog = {
 		weight: 1,
 		buy: { gold: 35 },
 		sellable: { gold: 12 },
-		stats: { attack: 3, agility: 2 },
+		stats: { attack: 3, agility: 2, intelligence: 6 },
 	},
 	wand3: {
 		id: 96,
@@ -1082,7 +1082,7 @@ export const itemCatalog = {
 		weight: 1.5,
 		buy: { gold: 60 },
 		sellable: { gold: 20 },
-		stats: { attack: 5, agility: 3 },
+		stats: { attack: 5, agility: 3, intelligence: 11 },
 	},
 	trident: {
 		id: 97,
@@ -1475,6 +1475,6 @@ export const itemCatalog = {
 };
 
 export const metadata = {
-	version: "1.0.11",
-	lastUpdated: "2026-02-22",
+	version: "1.0.12",
+	lastUpdated: "2026-03-28",
 };

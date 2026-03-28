@@ -322,7 +322,7 @@ export const inventoryData = {
 				weight: 2,
 				buy: { gold: 15 },
 				sellable: { gold: 5 },
-				stats: { attack: 2, strength: 1 },
+				stats: { attack: 2, intelligence: 2 },
 			},
 			{
 				icon: "wand1",
@@ -333,7 +333,7 @@ export const inventoryData = {
 				weight: 0.5,
 				buy: { gold: 15 },
 				sellable: { gold: 5 },
-				stats: { attack: 1, agility: 1 },
+				stats: { attack: 1, agility: 1, intelligence: 3 },
 			},
 		],
 	},
@@ -368,6 +368,6 @@ export const inventoryData = {
 };
 
 export const metadata = {
-	version: "1.1.6",
-	lastUpdated: "2026-02-19",
+	version: "1.1.7",
+	lastUpdated: "2026-03-28",
 };
