@@ -1,4 +1,5 @@
 import { UIVisibilityProvider } from "./ui/UIVisibilityContext";
+import { WindowManagerProvider } from "./ui/WindowManagerContext";
 import InputManager from "./ui/InputManager";
 import { useGameState } from "./ui/hooks/useGameState";
 import GameLayout from "./ui/layouts/GameLayout";
@@ -17,12 +18,14 @@ const App = () => {
 	}
 
 	return (
-		<UIVisibilityProvider>
-			<InputManager />
-			<div className="App">
-				<GameLayout clearCache={clearCache} />
-			</div>
-		</UIVisibilityProvider>
+		<WindowManagerProvider>
+			<UIVisibilityProvider>
+				<InputManager />
+				<div className="App">
+					<GameLayout clearCache={clearCache} />
+				</div>
+			</UIVisibilityProvider>
+		</WindowManagerProvider>
 	);
 };
 

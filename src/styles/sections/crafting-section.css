@@ -1,47 +1,9 @@
 .crafting-section {
-	position: absolute;
-	inset: 0;
-	margin: auto;
-	width: 700px;
-	height: 560px;
-	background: var(--color-dark);
-	color: white;
-	z-index: 15;
-	border-radius: var(--border-radius-lg);
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 	display: flex;
 	flex-direction: column;
-}
-
-.crafting-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: var(--spacing-md);
-	background: rgba(0, 0, 0, 0.3);
-	border-bottom: 1px solid var(--color-gray-dark);
-	border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-}
-
-.crafting-header h3 {
-	margin: 0;
-	text-transform: uppercase;
-	font-size: 1rem;
-	color: var(--color-secondary);
-}
-
-.crafting-header .close-btn {
-	background: none;
-	border: none;
-	color: var(--color-gray);
-	font-size: 1.5rem;
-	cursor: pointer;
-	padding: 0;
-	line-height: 1;
-}
-
-.crafting-header .close-btn:hover {
-	color: var(--color-danger);
+	height: 100%;
+	min-height: 0;
+	flex: 1;
 }
 
 .crafting-groups {
@@ -49,6 +11,7 @@
 	gap: var(--spacing-xs);
 	padding: var(--spacing-sm) var(--spacing-md);
 	background: rgba(0, 0, 0, 0.2);
+	flex-shrink: 0;
 }
 
 .group-tab {
@@ -79,6 +42,7 @@
 .crafting-content {
 	display: flex;
 	flex: 1;
+	min-height: 0;
 }
 
 .recipe-list {
@@ -87,6 +51,7 @@
 	border-right: 1px solid var(--color-gray-dark);
 	overflow-y: auto;
 	padding: var(--spacing-sm);
+	min-height: 0;
 }
 
 .recipe-list .no-recipes {

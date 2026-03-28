@@ -38,6 +38,7 @@ export const UIVisibilityProvider = ({ children }) => {
 	}, []);
 
 	const openNPCDialog = useCallback((npcId) => {
+		console.log("openNPCDialog called", npcId); // does this fire?
 		setVisible((v) => ({
 			...v,
 			npcDialog: {
@@ -59,6 +60,7 @@ export const UIVisibilityProvider = ({ children }) => {
 	}, []);
 
 	const closeNPCDialog = useCallback(() => {
+		console.trace("closeNPCDialog called"); // trace shows the full call stack
 		setVisible((v) => ({
 			...v,
 			npcDialog: {
@@ -97,23 +99,38 @@ export const UIVisibilityProvider = ({ children }) => {
 		setVisible((v) => ({ ...v, workerManagerWindow: false }));
 	}, []);
 
+	const closePlayerCard = useCallback(() => {
+    setVisible((v) => ({ ...v, playerCard: false }));
+	}, []);
+
+	const closeWorkerCard = useCallback(() => {
+	    setVisible((v) => ({ ...v, workerCard: false, npcSection: true }));
+	}, []);
+
+	const closeCraftingWindow = useCallback(() => {
+	    setVisible((v) => ({ ...v, craftingWindow: false }));
+	}, []);
+
 	return (
 		<UIVisibilityContext.Provider
 			value={{
 				...visible,
-				togglePlayerCard,
-				toggleWorkerCard,
-				toggleNpcSection,
-				openNPCDialog,
-				selectNPCOption,
-				closeNPCDialog,
-				toggleCraftingWindow,
-				toggleBuildingPanel,
-				showBuildingPanel,
-				hideBuildingPanel,
-				toggleWorkerManagerWindow,
-				openWorkerManagerWindow,
-				closeWorkerManagerWindow,
+        togglePlayerCard,
+        closePlayerCard,
+        toggleWorkerCard,
+        closeWorkerCard,
+        toggleNpcSection,
+        openNPCDialog,
+        selectNPCOption,
+        closeNPCDialog,
+        toggleCraftingWindow,
+        closeCraftingWindow,
+        toggleBuildingPanel,
+        showBuildingPanel,
+        hideBuildingPanel,
+        toggleWorkerManagerWindow,
+        openWorkerManagerWindow,
+        closeWorkerManagerWindow,
 			}}
 		>
 			{children}

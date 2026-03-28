@@ -22,6 +22,7 @@ import {
 	WORKER_REROLL_FAILED,
 	WORKER_SLOT_FAILED,
 } from "../../../game/events";
+import DraggableWindow from "../common/DraggableWindow";
 
 const REROLL_COST = 25;
 const BASE_WORKER_COST = 50;
@@ -99,17 +100,15 @@ const WorkerManagerSection = () => {
 		globalEventBus.emit(PLAYER_INTENT_BUY_WORKER_SLOT, {});
 	}, []);
 
-	if (!workerManagerWindow) return null;
-
 	return (
-		<section className="worker-manager-section">
-			<div className="worker-manager-header">
-				<h3>Worker Manager</h3>
-				<button className="close-btn" onClick={closeWorkerManagerWindow}>
-					×
-				</button>
-			</div>
-
+		<DraggableWindow
+			windowId="worker-manager"
+			title="Worker Manager"
+			width={700}
+			isOpen={workerManagerWindow}
+			onClose={closeWorkerManagerWindow}
+			backgroundImage="assets/background/worker-bg.png"
+		>
 			<div className="worker-manager-stats">
 				<span className="worker-count">
 					Workers: {workerCount} / {workerSlots}
@@ -170,7 +169,7 @@ const WorkerManagerSection = () => {
 					Buy Worker Slot ({SLOT_COST}g)
 				</button>
 			</div>
-		</section>
+		</DraggableWindow>
 	);
 };
 

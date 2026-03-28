@@ -5,18 +5,27 @@ import { useUIVisibility } from "../../UIVisibilityContext";
 import PlayerCard from "../card/PlayerCard";
 import { selectPlayer } from "../../../store/slices/playerSlice";
 import { selectCurrentPlace } from "../../../store/slices/placesSlice";
+import DraggableWindow from "../common/DraggableWindow";
 
 const PlayerSection = () => {
-	const { playerCard } = useUIVisibility();
+	const { playerCard, togglePlayerCard } = useUIVisibility();
 	const playerInfo = useSelector(selectPlayer);
 	const currentPlace = useSelector(selectCurrentPlace);
 
-	if (!playerCard || !playerInfo) return null;
+	if (!playerInfo) return null;
 
 	return (
-		<section className="player-section">
+		<DraggableWindow
+			windowId="player"
+			title="Character"
+			width={970}
+			height={530}
+			isOpen={playerCard}
+			onClose={togglePlayerCard}
+			backgroundImage="assets/background/player-bg.png"
+		>
 			<PlayerCard player={playerInfo} vaultId={currentPlace.id} />
-		</section>
+		</DraggableWindow>
 	);
 };
 

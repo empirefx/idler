@@ -14,6 +14,7 @@ import {
 	CRAFT_FAILED,
 } from "../../../game/events";
 import Item from "../common/Item";
+import DraggableWindow from "../common/DraggableWindow";
 
 const groupLabels = {
 	[craftingGroups.FOOD]: "Food",
@@ -39,13 +40,9 @@ const CraftingSection = () => {
 	}, [selectedRecipe]);
 
 	useEffect(() => {
-		const handleCraftSuccess = ({ outputItemName }) => {
-			// Handled by CraftingService notification
-		};
+		const handleCraftSuccess = ({ outputItemName }) => {};
 
-		const handleCraftFailed = ({ error }) => {
-			// Handled by CraftingService notification
-		};
+		const handleCraftFailed = ({ error }) => {};
 
 		globalEventBus.on(CRAFT_SUCCESS.type, handleCraftSuccess);
 		globalEventBus.on(CRAFT_FAILED.type, handleCraftFailed);
@@ -102,7 +99,6 @@ const CraftingSection = () => {
 
 	const handleCraft = useCallback(
 		(recipe) => {
-			// Double-check recipe is known before emitting craft event
 			const isKnown = knownRecipes.includes(recipe.id);
 			if (!isKnown) {
 				console.log("Cannot craft: recipe not known");
@@ -125,17 +121,16 @@ const CraftingSection = () => {
 		[canCraft, selectedOutputItem, knownRecipes],
 	);
 
-	if (!craftingWindow) return null;
-
 	return (
-		<section className="crafting-section">
-			<div className="crafting-header">
-				<h3>Crafting</h3>
-				<button className="close-btn" onClick={toggleCraftingWindow}>
-					×
-				</button>
-			</div>
-
+		<DraggableWindow
+			windowId="crafting"
+			title="Crafting"
+			width={700}
+			minHeight={560}
+			isOpen={craftingWindow}
+			onClose={toggleCraftingWindow}
+			backgroundImage="assets/background/crafting-bg.png"
+		>
 			<div className="crafting-groups">
 				{Object.keys(groupLabels).map((group) => (
 					<button
@@ -288,7 +283,7 @@ const CraftingSection = () => {
 													>
 														<span className="mat-name">
 															{matItem?.name || mat.icon}
-														</span>
+									</span>
 														<span className="mat-qty">
 															{available} / {mat.quantity}
 														</span>
@@ -334,7 +329,7 @@ const CraftingSection = () => {
 					)}
 				</div>
 			</div>
-		</section>
+		</DraggableWindow>
 	);
 };
 
