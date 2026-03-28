@@ -87,7 +87,6 @@ const PlayerCard = ({ player, vaultId }) => {
 								</div>
 
 								<div className="player-stats">
-									<p>Stats</p>
 									<div className="stats-columns">
 										<div className="stats-column">
 											{player.stats && (
