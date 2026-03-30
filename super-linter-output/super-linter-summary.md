@@ -21,7 +21,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23689746266)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/23755821672)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -31,10 +31,10 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
 ```text
 The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
-Diagnostics not shown: 101.
-Checked 145 files in 1497ms. No fixes applied.
-Found 66 errors.
-Found 49 warnings.
+Diagnostics not shown: 102.
+Checked 147 files in 1509ms. No fixes applied.
+Found 68 errors.
+Found 48 warnings.
 Found 6 infos.src/game/core/combatCalculator.js:167:3 lint/complexity/noUselessSwitchCase  FIXABLE  ━━━━━━━━━━━━━━
 
   i Useless case clause.
@@ -180,29 +180,6 @@ src/game/engine/GameEngine.js:137:40 lint/correctness/noUnusedFunctionParameters
     139 139 │   	}
 
 
-src/game/services/CraftingService.js:121:9 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━━
-
-  ! This variable knownRecipes is unused.
-
-    119 │ 	craft(recipeId, outputItemId = null) {
-    120 │ 		const state = this.store.getState();
-  > 121 │ 		const knownRecipes = state.player?.knownRecipes || [];
-        │ 		      ^^^^^^^^^^^^
-    122 │
-    123 │ 		const validation = this.canCraft(state, recipeId, outputItemId);
-
-  i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
-
-  i Unsafe fix: If this is intentional, prepend knownRecipes with an underscore.
-
-    119 119 │   	craft(recipeId, outputItemId = null) {
-    120 120 │   		const state = this.store.getState();
-    121     │ - → → const·knownRecipes·=·state.player?.knownRecipes·||·[];
-        121 │ + → → const·_knownRecipes·=·state.player?.knownRecipes·||·[];
-    122 122 │
-    123 123 │   		const validation = this.canCraft(state, recipeId, outputItemId);
-
-
 src/ui/components/sections/SkillBar.js:7:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━
 
   ! Several of these imports are unused.
@@ -225,27 +202,27 @@ src/ui/components/sections/SkillBar.js:7:2 lint/correctness/noUnusedImports  FIX
       9   8 │   	getSkillById,
 
 
-src/ui/components/sections/SkillBar.js:18:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━
+src/ui/components/sections/SkillBar.js:20:8 lint/correctness/noUnusedVariables  FIXABLE  ━━━━━━━━━━━
 
   ! This variable enemies is unused.
 
-    16 │ const SkillBar = () => {
-    17 │ 	const currentPlace = useSelector(selectCurrentPlace);
-  > 18 │ 	const enemies = useSelector(selectEnemiesForCurrentPlace);
+    18 │ const SkillBar = () => {
+    19 │ 	const currentPlace = useSelector(selectCurrentPlace);
+  > 20 │ 	const enemies = useSelector(selectEnemiesForCurrentPlace);
        │ 	      ^^^^^^^
-    19 │ 	const playerSkills = useSelector(selectPlayerSkills);
-    20 │ 	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
+    21 │ 	const playerSkills = useSelector(selectPlayerSkills);
+    22 │ 	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
 
   i Unused variables are often the result of typos, incomplete refactors, or other sources of bugs.
 
   i Unsafe fix: If this is intentional, prepend enemies with an underscore.
 
-     16  16 │   const SkillBar = () => {
-     17  17 │   	const currentPlace = useSelector(selectCurrentPlace);
-     18     │ - → const·enemies·=·useSelector(selectEnemiesForCurrentPlace);
-         18 │ + → const·_enemies·=·useSelector(selectEnemiesForCurrentPlace);
-     19  19 │   	const playerSkills = useSelector(selectPlayerSkills);
-     20  20 │   	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
+     18  18 │   const SkillBar = () => {
+     19  19 │   	const currentPlace = useSelector(selectCurrentPlace);
+     20     │ - → const·enemies·=·useSelector(selectEnemiesForCurrentPlace);
+         20 │ + → const·_enemies·=·useSelector(selectEnemiesForCurrentPlace);
+     21  21 │   	const playerSkills = useSelector(selectPlayerSkills);
+     22  22 │   	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
 
 
 src/ui/components/sections/SkillsSection.js:8:2 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━
@@ -327,6 +304,20 @@ src/game/services/EventBusService.js:27:24 lint/suspicious/useIterableCallbackRe
     29 │ }
 
 
+src/ui/components/sections/PlayerEntitySection.js:13:3 lint/a11y/noStaticElementInteractions ━━━━━━━━━━
+
+  × Static Elements should not be interactive.
+
+    11 │ 	if (!playerInfo) return null;
+    12 │ 	return (
+  > 13 │ 		<section className="player-entity-section" onClick={togglePlayerCard}>
+       │ 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    14 │ 			<EntityCard entity={playerInfo} avatarFolder="players" />
+    15 │ 		</section>
+
+  i To add interactivity such as a mouse or key event listener to a static element, give the element an appropriate role value.
+
+
 src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLevel ━━━━━━━━━━━━━━━━
 
   × This hook is being called from a nested function, but all hooks must be called unconditionally from the top-level component.
@@ -343,25 +334,25 @@ src/ui/components/sections/QuestSection.js:22:21 lint/correctness/useHookAtTopLe
   i See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
 
 
-src/ui/components/sections/SkillBar.js:158:25 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━
+src/ui/components/sections/SkillBar.js:161:25 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━
 
   × Avoid using the index of an array as key property in an element.
 
-    156 │ 				})}
-    157 │ 				{Array.from({ length: emptySlots }).map((_, index) => (
-  > 158 │ 					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
+    159 │ 				})}
+    160 │ 				{Array.from({ length: emptySlots }).map((_, index) => (
+  > 161 │ 					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
         │ 					                   ^^^^^
-    159 │ 						<div className="skill-icon-container">
-    160 │ 							<div className="skill-icon skill-icon--empty">?</div>
+    162 │ 						<div className="skill-icon-container">
+    163 │ 							<div className="skill-icon skill-icon--empty">?</div>
 
   i This is the source of the key value.
 
-    155 │ 					);
-    156 │ 				})}
-  > 157 │ 				{Array.from({ length: emptySlots }).map((_, index) => (
+    158 │ 					);
+    159 │ 				})}
+  > 160 │ 				{Array.from({ length: emptySlots }).map((_, index) => (
         │ 				                                            ^^^^^
-    158 │ 					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
-    159 │ 						<div className="skill-icon-container">
+    161 │ 					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
+    162 │ 						<div className="skill-icon-container">
 
   i The order of the items may change, and this also affects performances and component state.
 
@@ -526,15 +517,15 @@ Clone found (javascript):
 ┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
 │ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ javascript │ 152            │ 18203       │ 148185       │ 15           │ 139 (0.76%)      │ 1501 (1.01%)      │
+│ javascript │ 153            │ 18264       │ 148718       │ 15           │ 139 (0.76%)      │ 1501 (1.01%)      │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ css        │ 26             │ 6383        │ 38356        │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ css        │ 27             │ 6527        │ 39308        │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ json       │ 8              │ 139         │ 847          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 187            │ 24736       │ 187495       │ 15           │ 139 (0.56%)      │ 1501 (0.8%)       │
+│ Total:     │ 189            │ 24941       │ 188980       │ 15           │ 139 (0.56%)      │ 1501 (0.79%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 15 clones.
 Error: ERROR: jscpd found too many duplicates (0.56%) over threshold (0%)

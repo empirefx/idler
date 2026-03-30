@@ -23,7 +23,7 @@
 
 .player-grid {
 	display: grid;
-	grid-template-columns: minmax(0, 280px) 1fr 1fr;;
+	grid-template-columns: minmax(0, 280px) 1fr 1fr;
 	grid-template-rows: repeat(2, 1fr);
 	gap: 0px;
 	grid-template-areas:
