@@ -331,6 +331,8 @@ export const selectPlayer = createSelector(
 		exp: player.exp,
 		expToNext: player.level * 100,
 		resources: player.resources,
+		activeBuffs: player.activeBuffs || [],
+		activeCooldowns: player.activeCooldowns || {},
 	}),
 );
 

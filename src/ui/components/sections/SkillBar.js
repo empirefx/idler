@@ -12,6 +12,8 @@ import { DAMAGE_TYPES, SKILL_TYPES } from "../../../data/combatTypes";
 import { useEffect, useState } from "react";
 
 import "../../../styles/sections/skill-bar.css";
+import "../../../styles/sections/buff-bar.css";
+import BuffBar from "./BuffBar";
 
 const SkillBar = () => {
 	const currentPlace = useSelector(selectCurrentPlace);
@@ -90,6 +92,7 @@ const SkillBar = () => {
 
 	return (
 		<div className="skill-bar">
+			<BuffBar />
 			<div className="skill-bar-slots">
 				{activeSkillIds.map((skillId) => {
 					const skill = getSkillById(skillId);
