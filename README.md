@@ -11,7 +11,7 @@ Very early stage for an RPG-idler(browser) game built with React, Redux & Parcel
 - [ ] `Player` death & punishment(15% lost EXP)
 - [x] `Player` skills and buffs
 - [ ] `Player` AOE skills
-- [ ] Display `Player` active buffs ui
+- [x] Display `Player` active buffs ui
 
 ### Enemies
 
