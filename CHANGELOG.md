@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.2.0](https://github.com/empirefx/idler/compare/v3.1.0...v3.2.0) (2026-03-28)
+
+
+### Features
+
+* **ui:** add reusable DraggableWindow component ([2e6b0c0](https://github.com/empirefx/idler/commit/2e6b0c038aedd0e496030d26f9c7ac8d6edcf937))
+
+
+### Bug Fixes
+
+* disable text selection and context menu(rclick) ([7d580f4](https://github.com/empirefx/idler/commit/7d580f4bdb4c894b7ecb1e1492b26a04e27187d0))
+* display actual name not by id ([9272411](https://github.com/empirefx/idler/commit/92724117b4cbc7b6f1a1307f31ae6769cadd269d))
+* **inventory:** drops being added even inventory is full and remove duplicate notification ([6b4e6eb](https://github.com/empirefx/idler/commit/6b4e6eb329eacae819b321e42bf0dab99b568b92))
+* **inventory:** drops check max weight and notification ([12daab1](https://github.com/empirefx/idler/commit/12daab18b1f7bb8a0eef0024f5e5641511f0a608))
+* **inventory:** prevent recipe not being learn ([3e921a5](https://github.com/empirefx/idler/commit/3e921a5e4073f9cce21c0c9af25228198c566679))
+* **log:** toggle time entries ([29d00f1](https://github.com/empirefx/idler/commit/29d00f1a4dcfeb63d5b3e2a826312a7aeb7abebc))
+* **production:** toggle worker if place inventory full ([503ed5f](https://github.com/empirefx/idler/commit/503ed5f4909c22ecfd3ca22acb913a905fec956a))
+* **workers:** auto-reroll if all workers has been hired ([d7e7502](https://github.com/empirefx/idler/commit/d7e7502721a5e1f98f4f6884d3ad0bf87331f2bb))
+
 ## [3.1.0](https://github.com/empirefx/idler/compare/v3.0.0...v3.1.0) (2026-03-24)
 
 
