@@ -23,9 +23,9 @@
 
 .player-grid {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: minmax(0, 280px) 1fr 1fr;
 	grid-template-rows: repeat(2, 1fr);
-	gap: 8px;
+	gap: 0px;
 	grid-template-areas:
 		"display panel panel"
 		"display panel panel";
@@ -43,6 +43,8 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
+	max-width: 280px;
+	width: 100%;
 }
 
 .player-display h1 {
@@ -64,7 +66,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	mask-image: linear-gradient(to top, transparent 11%, black 35%);
-	width: 300px;
+	width: 250px;
 	height: 380px;
 	margin-top: 40px;
 	z-index: 1;
@@ -75,6 +77,7 @@
 	display: flex;
 	flex-direction: column;
 	padding: 0;
+	margin: 10px 10px 10px 0px;
 }
 
 .player-tabs {
@@ -285,6 +288,7 @@
 	background-color: var(--color-red-dark);
 	border: 2px solid var(--color-red);
 	cursor: pointer;
+	margin-right: 10px;
 }
 
 .equipment-flex > div span {

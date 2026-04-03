@@ -283,7 +283,7 @@ const CraftingSection = () => {
 													>
 														<span className="mat-name">
 															{matItem?.name || mat.icon}
-									</span>
+														</span>
 														<span className="mat-qty">
 															{available} / {mat.quantity}
 														</span>
