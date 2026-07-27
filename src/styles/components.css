@@ -145,6 +145,17 @@
 	cursor: default;
 }
 
+.no-npcs-message,
+.no-workers-message {
+	font-size: 1.2rem;
+	text-align: center;
+	color: var(--color-gray);
+	background: rgb(255 255 255 / 10%);
+	padding: var(--spacing-md);
+	margin: var(--spacing-lg);
+	border-radius: var(--border-radius-md);
+}
+
 /* tooltip text (ui/components/common/ToolTip.js) */
 
 .tooltip {

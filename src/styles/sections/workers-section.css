@@ -34,16 +34,6 @@
 	gap: var(--spacing-sm);
 }
 
-.no-workers-message {
-	font-size: 1.2rem;
-	text-align: center;
-	color: var(--color-gray);
-	background: rgb(255 255 255 / 10%);
-	padding: var(--spacing-md);
-	margin: var(--spacing-lg);
-	border-radius: var(--border-radius-md);
-}
-
 .worker-card {
 	width: 360px;
 	background: white;

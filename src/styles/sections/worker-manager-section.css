@@ -123,8 +123,7 @@
 	border-top: 1px solid var(--color-gray-dark);
 }
 
-.reroll-btn,
-.buy-slot-btn {
+.panel-action-btn {
 	flex: 1;
 	padding: var(--spacing-sm) var(--spacing-md);
 	border: none;
@@ -133,6 +132,10 @@
 	font-size: 0.85rem;
 	cursor: pointer;
 	transition: background 0.15s ease;
+}
+
+.reroll-btn,
+.buy-slot-btn {
 	text-transform: uppercase;
 }
 
@@ -280,18 +283,6 @@
 .fire-confirm-panel .confirm-actions {
 	display: flex;
 	gap: var(--spacing-md);
-}
-
-.fire-confirm-panel .cancel-btn,
-.fire-confirm-panel .confirm-fire-btn {
-	flex: 1;
-	padding: var(--spacing-sm) var(--spacing-md);
-	border: none;
-	border-radius: var(--border-radius-sm);
-	font-weight: 600;
-	font-size: 0.85rem;
-	cursor: pointer;
-	transition: background 0.15s ease;
 }
 
 .fire-confirm-panel .cancel-btn {
