@@ -58,6 +58,7 @@ jobs:
           VALIDATE_PYTHON_BLACK: false
           VALIDATE_GIT_COMMITLINT: false
           SAVE_SUPER_LINTER_SUMMARY: true
+          IGNORE_GITIGNORED_FILES: true
       - name: Commit and push linting fixes
         if: always()
         uses: >-
