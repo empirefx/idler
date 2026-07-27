@@ -80,10 +80,11 @@ const BuildingPanel = ({ onClose }) => {
 			const canAffordUpgrade = gold >= (upgrade?.cost || 0);
 			const hasUpgrade = !!upgrade;
 
-		return (
-			// biome-ignore lint/suspicious/noArrayIndexKey: socket index is stable, never reordered
-			<BuildingCard key={i}
-				slotIndex={i}
+			return (
+				<BuildingCard
+					// biome-ignore lint/suspicious/noArrayIndexKey: socket index is stable, never reordered
+					key={i}
+					slotIndex={i}
 					socket={socket}
 					buildingData={building}
 					level={level}
@@ -110,7 +111,11 @@ const BuildingPanel = ({ onClose }) => {
 							<span>{lockedCount} locked</span>
 						</div>
 					)}
-					<button type="button" className="building-panel-close" onClick={onClose}>
+					<button
+						type="button"
+						className="building-panel-close"
+						onClick={onClose}
+					>
 						&times;
 					</button>
 				</div>

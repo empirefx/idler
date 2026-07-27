@@ -14,10 +14,11 @@ const BuildingSection = () => {
 	const socketItems = sockets.map((socket, idx) => {
 		if (socket.status === "occupied") {
 			const building = allBuildings[socket.buildingId];
-		return building ? (
-			// biome-ignore lint/suspicious/noArrayIndexKey: socket index is stable, never reordered
-			<img key={idx}
-				className="building-mini-icon"
+			return building ? (
+				<img
+					// biome-ignore lint/suspicious/noArrayIndexKey: socket index is stable, never reordered
+					key={idx}
+					className="building-mini-icon"
 					src={`assets/icons/buildings/${building.icon}`}
 					alt={building.name}
 				/>

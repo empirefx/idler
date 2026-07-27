@@ -157,12 +157,12 @@ const BuildingCard = ({
 				)}
 
 				{hasUpgrade && canAffordUpgrade && (
-				<button
-					type="button"
-					className="upgrade-btn"
-					onClick={(e) => {
-						e.stopPropagation();
-						onUpgrade(slotIndex);
+					<button
+						type="button"
+						className="upgrade-btn"
+						onClick={(e) => {
+							e.stopPropagation();
+							onUpgrade(slotIndex);
 						}}
 					>
 						Upgrade ({upgradeCost}g)

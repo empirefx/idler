@@ -129,14 +129,18 @@ const DraggableWindow = ({
 			role="button"
 			tabIndex={0}
 		>
-			<div className="draggable-window-header" role="none" onMouseDown={handleMouseDown}>
-				<h3 className="draggable-window-title">{title}</h3>
-			<button
-				type="button"
-				className="draggable-window-close"
-				onClick={onClose}
-				disabled={!atFront}
+			<div
+				className="draggable-window-header"
+				role="none"
+				onMouseDown={handleMouseDown}
 			>
+				<h3 className="draggable-window-title">{title}</h3>
+				<button
+					type="button"
+					className="draggable-window-close"
+					onClick={onClose}
+					disabled={!atFront}
+				>
 					×
 				</button>
 			</div>

@@ -120,7 +120,11 @@ const WorkerCard = ({
 				)}
 				{!isAssigned && onFire && (
 					<div className="worker-actions">
-						<button type="button" className="fire-btn" onClick={handleFireClick}>
+						<button
+							type="button"
+							className="fire-btn"
+							onClick={handleFireClick}
+						>
 							Fire
 						</button>
 					</div>

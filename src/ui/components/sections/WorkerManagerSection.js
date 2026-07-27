@@ -139,12 +139,12 @@ const WorkerManagerSection = () => {
 											{worker.gender === "male" ? "Male" : "Female"}
 										</span>
 									</div>
-								<button
-									type="button"
-									className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
-									disabled={!canHireMore || gold < workerCost}
-									onClick={() => handleHire(worker.id)}
-								>
+									<button
+										type="button"
+										className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
+										disabled={!canHireMore || gold < workerCost}
+										onClick={() => handleHire(worker.id)}
+									>
 										Hire ({workerCost}g)
 									</button>
 								</div>
