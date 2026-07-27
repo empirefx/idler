@@ -14,14 +14,14 @@
 | MARKDOWN                   | Pass ✅           |
 | MARKDOWN_PRETTIER          | Pass ✅           |
 | PRE_COMMIT                 | Pass ✅           |
-| SPELL_CODESPELL            | Fail ❌           |
+| SPELL_CODESPELL            | Pass ✅           |
 | TRIVY                      | Pass ✅           |
 | YAML                       | Pass ✅           |
 | YAML_PRETTIER              | Pass ✅           |
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/30313783777)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/30314434374)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -30,7 +30,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Checked 148 files in 397ms. No fixes applied.
+Checked 148 files in 535ms. No fixes applied.
 Found 1 error.src/ui/components/common/NotificationContainer.jsx format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Formatter would have printed the following content:
@@ -148,16 +148,6 @@ Error: ERROR: jscpd found too many duplicates (0.65%) over threshold (0%)
     at Array.forEach (<anonymous>)
     at /node_modules/@jscpd/finder/dist/index.js:108:22
     at async /node_modules/jscpd/dist/bin/jscpd.js:9:5ERROR: jscpd found too many duplicates (0.65%) over threshold (0%)
-```
-
-</details>
-
-<details>
-
-<summary>SPELL_CODESPELL</summary>
-
-```text
-/github/workspace/package-lock.json:6152: vEw ==> view, vow, vex
 ```
 
 </details>
