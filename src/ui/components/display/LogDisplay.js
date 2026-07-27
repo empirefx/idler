@@ -1,12 +1,5 @@
 import { useEffect, useRef } from "react";
 
-const _LOG_CATEGORIES = {
-	worker: { label: "Workers", color: "worker" },
-	combat: { label: "Combat", color: "combat" },
-	movement: { label: "Movement", color: "movement" },
-	default: { label: "Default", color: "default" },
-};
-
 export default function LogDisplay({ filteredLogs, showTimestamps }) {
 	const containerRef = useRef(null);
 

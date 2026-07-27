@@ -20,6 +20,25 @@ export const InventoryService = {
 		return inventories?.[inventoryId];
 	},
 
+	_findItem(inventory, itemId) {
+		if (!inventory) {
+			return { valid: false, error: "INVENTORY_NOT_FOUND" };
+		}
+		const itemCheck = validateItemExists(inventory, itemId);
+		if (!itemCheck.isValid) {
+			return {
+				valid: false,
+				error: itemCheck.error,
+				message: itemCheck.message,
+			};
+		}
+		return {
+			valid: true,
+			item: inventory.items[itemCheck.itemIndex],
+			itemIndex: itemCheck.itemIndex,
+		};
+	},
+
 	canAddItem(inventory, item, quantity = 1) {
 		if (!inventory) {
 			return { valid: false, error: "INVENTORY_NOT_FOUND" };
@@ -54,22 +73,10 @@ export const InventoryService = {
 	},
 
 	canRemoveItem(inventory, itemId, quantity = 1) {
-		if (!inventory) {
-			return { valid: false, error: "INVENTORY_NOT_FOUND" };
-		}
+		const found = this._findItem(inventory, itemId);
+		if (!found.valid) return found;
 
-		const itemCheck = validateItemExists(inventory, itemId);
-		if (!itemCheck.isValid) {
-			return {
-				valid: false,
-				error: itemCheck.error,
-				message: itemCheck.message,
-			};
-		}
-
-		const item = inventory.items[itemCheck.itemIndex];
-		const quantityCheck = validateMoveQuantity(item, quantity);
-
+		const quantityCheck = validateMoveQuantity(found.item, quantity);
 		return quantityCheck;
 	},
 
@@ -138,17 +145,10 @@ export const InventoryService = {
 			return { valid: false, error: "INVALID_INVENTORY" };
 		}
 
-		const itemCheck = validateItemExists(inventory, itemId);
-		if (!itemCheck.isValid) {
-			return {
-				valid: false,
-				error: itemCheck.error,
-				message: itemCheck.message,
-			};
-		}
+		const found = this._findItem(inventory, itemId);
+		if (!found.valid) return found;
 
-		const item = inventory.items[itemCheck.itemIndex];
-		const slotValidation = validateEquipmentSlot(item, slot);
+		const slotValidation = validateEquipmentSlot(found.item, slot);
 
 		if (!slotValidation.isValid) {
 			return {
@@ -325,16 +325,8 @@ export const InventoryService = {
 	},
 
 	addItemToInventory(store, inventoryId, item) {
-		const inventory = this.getInventory(store.getState(), inventoryId);
-		const check = this.canAddItem(inventory, item, item.quantity || 1);
-
-		if (!check.valid) {
-			console.warn(check.message || check.error);
-			return false;
-		}
-
-		store.dispatch(this.addItem(inventoryId, item));
-		return true;
+		const result = this.dispatchAddItem(store, inventoryId, item);
+		return result !== null;
 	},
 
 	getInventorySummary(inventory) {

@@ -28,6 +28,18 @@ const BuildingCard = ({
 		}
 	};
 
+	const interactiveProps = {
+		role: "button",
+		tabIndex: 0,
+		onClick: handleClick,
+		onKeyDown: (e) => {
+			if (e.key === "Enter" || e.key === " ") {
+				e.preventDefault();
+				handleClick();
+			}
+		},
+	};
+
 	const currentLevel = level || 1;
 	const upgrades = buildingData?.upgrades || {};
 
@@ -59,18 +71,7 @@ const BuildingCard = ({
 
 	if (isLocked) {
 		return (
-			<div
-				className={getCardClass()}
-				onClick={handleClick}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						e.preventDefault();
-						handleClick();
-					}
-				}}
-				role="button"
-				tabIndex={0}
-			>
+			<div className={getCardClass()} {...interactiveProps}>
 				<span className="locked-socket">LOCK</span>
 			</div>
 		);
@@ -78,18 +79,7 @@ const BuildingCard = ({
 
 	if (isEmpty) {
 		return (
-			<div
-				className={getCardClass()}
-				onClick={handleClick}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						e.preventDefault();
-						handleClick();
-					}
-				}}
-				role="button"
-				tabIndex={0}
-			>
+			<div className={getCardClass()} {...interactiveProps}>
 				<span className="building-label">+ Build</span>
 			</div>
 		);
@@ -99,18 +89,7 @@ const BuildingCard = ({
 	const lockedMaterials = getLockedMaterials();
 
 	return (
-		<div
-			className={getCardClass()}
-			onClick={handleClick}
-			onKeyDown={(e) => {
-				if (e.key === "Enter" || e.key === " ") {
-					e.preventDefault();
-					handleClick();
-				}
-			}}
-			role="button"
-			tabIndex={0}
-		>
+		<div className={getCardClass()} {...interactiveProps}>
 			<div className="building-header">
 				{currentLevel > 1 && (
 					<span className="building-level">Lv.{currentLevel}</span>

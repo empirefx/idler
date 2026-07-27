@@ -1,24 +1,8 @@
-import { useEffect, useRef } from "react";
+import DialogContent from "./DialogContent";
+import useDialog from "./useDialog";
 
 function TradeMessageDialog({ isOpen, message, type = "success", onClose }) {
-	const dialogRef = useRef(null);
-
-	useEffect(() => {
-		const dialog = dialogRef.current;
-		if (!dialog) return;
-
-		if (isOpen) {
-			dialog.showModal();
-		} else {
-			dialog.close();
-		}
-	}, [isOpen]);
-
-	const handleBackdropClick = (e) => {
-		if (e.target === dialogRef.current) {
-			onClose();
-		}
-	};
+	const { dialogRef, handleBackdropClick } = useDialog({ isOpen, onClose });
 
 	if (!isOpen) return null;
 
@@ -33,16 +17,9 @@ function TradeMessageDialog({ isOpen, message, type = "success", onClose }) {
 				}
 			}}
 		>
-			<div
+			<DialogContent
 				className="trade-message-content"
 				onClick={(e) => e.stopPropagation()}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						e.stopPropagation();
-					}
-				}}
-				role="button"
-				tabIndex={0}
 			>
 				<div className={`trade-message-icon ${type}`}>
 					{type === "success" ? "✓" : "✗"}
@@ -51,7 +28,7 @@ function TradeMessageDialog({ isOpen, message, type = "success", onClose }) {
 				<button type="button" className="trade-message-btn" onClick={onClose}>
 					OK
 				</button>
-			</div>
+			</DialogContent>
 		</dialog>
 	);
 }

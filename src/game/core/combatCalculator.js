@@ -27,6 +27,20 @@ function applyVarianceFn(baseDamage) {
 	return baseDamage * variance;
 }
 
+function applyMitigationAndVariance(
+	rawDamage,
+	defense,
+	mitigationFactor,
+	applyVariance,
+) {
+	const mitigation = (defense / (defense + MITIGATION_K)) * mitigationFactor;
+	const damage = rawDamage * (1 - mitigation);
+	if (applyVariance) {
+		return Math.max(1, Math.round(applyVarianceFn(damage)));
+	}
+	return Math.max(1, Math.round(damage));
+}
+
 export function getPassiveSkillBonus(equippedWeapon, playerSkills = {}) {
 	const bonus = {};
 	const damageType = equippedWeapon?.damageType || DAMAGE_TYPES.PHYSICAL;
@@ -113,12 +127,7 @@ export function calculatePhysicalDamage(
 ) {
 	const rawDamage = (attackerStats.strength || 0) * 2 + flatDamage;
 	const defense = defenderStats.defense || 0;
-	const mitigation = defense / (defense + MITIGATION_K);
-	const damage = rawDamage * (1 - mitigation);
-	if (applyVariance) {
-		return Math.max(1, Math.round(applyVarianceFn(damage)));
-	}
-	return Math.max(1, Math.round(damage));
+	return applyMitigationAndVariance(rawDamage, defense, 1, applyVariance);
 }
 
 export function calculateMagicDamage(
@@ -129,12 +138,7 @@ export function calculateMagicDamage(
 ) {
 	const rawDamage = (attackerStats.intelligence || 0) * 2 + flatDamage;
 	const wisdom = defenderStats.wisdom || 0;
-	const resistance = wisdom / (wisdom + MITIGATION_K);
-	const damage = rawDamage * (1 - resistance);
-	if (applyVariance) {
-		return Math.max(1, Math.round(applyVarianceFn(damage)));
-	}
-	return Math.max(1, Math.round(damage));
+	return applyMitigationAndVariance(rawDamage, wisdom, 1, applyVariance);
 }
 
 export function calculateRangedDamage(
@@ -145,12 +149,7 @@ export function calculateRangedDamage(
 ) {
 	const rawDamage = (attackerStats.agility || 0) * 2 + flatDamage;
 	const defense = defenderStats.defense || 0;
-	const mitigation = (defense / (defense + MITIGATION_K)) * 0.6;
-	const damage = rawDamage * (1 - mitigation);
-	if (applyVariance) {
-		return Math.max(1, Math.round(applyVarianceFn(damage)));
-	}
-	return Math.max(1, Math.round(damage));
+	return applyMitigationAndVariance(rawDamage, defense, 0.6, applyVariance);
 }
 
 export function calculateDamage(

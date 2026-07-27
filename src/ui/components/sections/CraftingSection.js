@@ -24,6 +24,40 @@ const groupLabels = {
 	[craftingGroups.SHIELD]: "Shield",
 };
 
+const CraftableItem = ({ id, item, isSelected, onSelect }) => (
+	<div
+		key={id}
+		role="button"
+		tabIndex={0}
+		className={`craftable-item ${isSelected ? "selected" : ""}`}
+		onClick={() => onSelect(id)}
+		onKeyDown={(e) => {
+			if (e.key === "Enter" || e.key === " ") {
+				e.preventDefault();
+				onSelect(id);
+			}
+		}}
+	>
+		<Item item={item} />
+	</div>
+);
+
+const VariantBadgeList = ({ label, items }) => (
+	<div className="output-info">
+		<strong>{label}:</strong>
+		<div className="variant-list">
+			{items.map((v) => {
+				const item = itemCatalog[v];
+				return item ? (
+					<span key={v} className="variant-badge">
+						{item.name}
+					</span>
+				) : null;
+			})}
+		</div>
+	</div>
+);
+
 const CraftingSection = () => {
 	const { craftingWindow, toggleCraftingWindow } = useUIVisibility();
 	const knownRecipes = useSelector(selectKnownRecipes);
@@ -194,44 +228,19 @@ const CraftingSection = () => {
 							<>
 								<div className="detail-header">
 									<div className="craftable-items-list">
-										{selectedRecipe.output.variants?.map((v) => {
+										{[
+											...(selectedRecipe.output.variants || []),
+											...(selectedRecipe.output.items || []),
+										].map((v) => {
 											const item = itemCatalog[v];
 											return item ? (
-												<div
+												<CraftableItem
 													key={v}
-													role="button"
-													tabIndex={0}
-													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-													onClick={() => setSelectedOutputItem(v)}
-													onKeyDown={(e) => {
-														if (e.key === "Enter" || e.key === " ") {
-															e.preventDefault();
-															setSelectedOutputItem(v);
-														}
-													}}
-												>
-													<Item item={item} />
-												</div>
-											) : null;
-										})}
-										{selectedRecipe.output.items?.map((v) => {
-											const item = itemCatalog[v];
-											return item ? (
-												<div
-													key={v}
-													role="button"
-													tabIndex={0}
-													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
-													onClick={() => setSelectedOutputItem(v)}
-													onKeyDown={(e) => {
-														if (e.key === "Enter" || e.key === " ") {
-															e.preventDefault();
-															setSelectedOutputItem(v);
-														}
-													}}
-												>
-													<Item item={item} />
-												</div>
+													id={v}
+													item={item}
+													isSelected={selectedOutputItem === v}
+													onSelect={setSelectedOutputItem}
+												/>
 											) : null;
 										})}
 										{!selectedRecipe.output.variants &&
@@ -264,35 +273,17 @@ const CraftingSection = () => {
 								</div>
 
 								{selectedRecipe.output.variants && (
-									<div className="output-info">
-										<strong>Variants:</strong>
-										<div className="variant-list">
-											{selectedRecipe.output.variants.map((v) => {
-												const item = itemCatalog[v];
-												return item ? (
-													<span key={v} className="variant-badge">
-														{item.name}
-													</span>
-												) : null;
-											})}
-										</div>
-									</div>
+									<VariantBadgeList
+										label="Variants"
+										items={selectedRecipe.output.variants}
+									/>
 								)}
 
 								{selectedRecipe.output.items && (
-									<div className="output-info">
-										<strong>Set Items:</strong>
-										<div className="variant-list">
-											{selectedRecipe.output.items.map((v) => {
-												const item = itemCatalog[v];
-												return item ? (
-													<span key={v} className="variant-badge">
-														{item.name}
-													</span>
-												) : null;
-											})}
-										</div>
-									</div>
+									<VariantBadgeList
+										label="Set Items"
+										items={selectedRecipe.output.items}
+									/>
 								)}
 
 								{!selectedRecipe.output.variants &&

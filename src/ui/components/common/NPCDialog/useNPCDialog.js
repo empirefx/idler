@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { itemCatalog } from "../../../../data/itemCatalog";
 import { questCatalog } from "../../../../data/questCatalog";
@@ -18,6 +18,7 @@ import {
 	selectPlayer,
 	spendGold,
 } from "../../../../store/slices/playerSlice";
+import useDialog from "../useDialog";
 
 const useNPCDialog = ({
 	isOpen,
@@ -27,7 +28,6 @@ const useNPCDialog = ({
 	onOptionSelect,
 }) => {
 	const dispatch = useDispatch();
-	const dialogRef = useRef(null);
 
 	const player = useSelector(selectPlayer);
 	const playerInventory = useSelector((state) =>
@@ -42,11 +42,7 @@ const useNPCDialog = ({
 	const [questConversationState, setQuestConversationState] = useState(null);
 	const [tradeMessage, setTradeMessage] = useState(null);
 
-	// Reset conversation state when switching NPCs
-	useEffect(() => {
-		setQuestConversationState(null);
-		setTradeMessage(null);
-	}, []);
+	const { dialogRef, handleBackdropClick } = useDialog({ isOpen, onClose });
 
 	// Get player gold amount
 	const playerGold = useMemo(() => {
@@ -133,28 +129,6 @@ const useNPCDialog = ({
 			return { ...objective, current, targetName };
 		});
 	}, [currentQuest, playerInventory, questsState]);
-
-	// Handle ESC key and native dialog API
-	useEffect(() => {
-		const dialog = dialogRef.current;
-		if (!dialog) return;
-
-		if (isOpen) {
-			dialog.showModal();
-		} else {
-			dialog.close();
-		}
-	}, [isOpen]);
-
-	// Close on backdrop click
-	const handleBackdropClick = useCallback(
-		(e) => {
-			if (e.target === dialogRef.current && onClose) {
-				onClose();
-			}
-		},
-		[onClose],
-	);
 
 	const resetQuestConversation = useCallback(() => {
 		setQuestConversationState(null);
@@ -316,18 +290,19 @@ const useNPCDialog = ({
 		[dispatch, playerGold, playerInventory],
 	);
 
+	const getConversationStep = useCallback(() => {
+		if (!questConversationState || !currentQuest) return null;
+		const steps = currentQuest?.conversation || [];
+		return (
+			steps[questConversationState.stepIndex] || steps[steps.length - 1] || null
+		);
+	}, [questConversationState, currentQuest]);
+
 	// Text getters
 	const getResponseText = useCallback(() => {
-		if (questConversationState && currentQuest) {
-			const steps = currentQuest?.conversation || [];
-			const step =
-				steps[questConversationState.stepIndex] ||
-				steps[steps.length - 1] ||
-				null;
-
-			if (step?.npcText) {
-				return step.npcText;
-			}
+		const step = getConversationStep();
+		if (step?.npcText) {
+			return step.npcText;
 		}
 
 		if (!npc.dialogue) return "This NPC has nothing to say.";
@@ -336,20 +311,12 @@ const useNPCDialog = ({
 			return npc.dialogue.options[selectedOption].response;
 		}
 		return npc.dialogue.initial || "Hello, traveler.";
-	}, [questConversationState, currentQuest, npc, selectedOption]);
+	}, [getConversationStep, npc, selectedOption]);
 
 	const getPlayerText = useCallback(() => {
-		if (questConversationState && currentQuest) {
-			const steps = currentQuest?.conversation || [];
-			const step =
-				steps[questConversationState.stepIndex] ||
-				steps[steps.length - 1] ||
-				null;
-
-			if (step?.playerText) {
-				return step.playerText;
-			}
-			return "...";
+		const step = getConversationStep();
+		if (step?.playerText) {
+			return step.playerText;
 		}
 
 		if (!npc.dialogue?.options) return "";
@@ -358,7 +325,7 @@ const useNPCDialog = ({
 			return npc.dialogue.options[selectedOption].text;
 		}
 		return "...";
-	}, [questConversationState, currentQuest, npc, selectedOption]);
+	}, [getConversationStep, npc, selectedOption]);
 
 	return {
 		// Data

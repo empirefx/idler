@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUIVisibility } from "../../../UIVisibilityContext";
 import WorkerManagerSection from "../../sections/WorkerManagerSection";
+import DialogContent from "../DialogContent";
 import TradeMessageDialog from "../TradeMessageDialog";
 import NPCDialogOptions from "./NPCDialogOptions";
 import NPCDialogProfile from "./NPCDialogProfile";
@@ -93,16 +94,9 @@ const NPCDialog = ({
 						onNpcItemBuy={handleNpcItemBuy}
 					/>
 				)}
-				<div
+				<DialogContent
 					className="npc-dialog-content"
 					onClick={(e) => e.stopPropagation()}
-					onKeyDown={(e) => {
-						if (e.key === "Enter" || e.key === " ") {
-							e.stopPropagation();
-						}
-					}}
-					role="button"
-					tabIndex={0}
 				>
 					<div className="key-bind-container">
 						<span className="key-bind">ESC</span>
@@ -130,7 +124,7 @@ const NPCDialog = ({
 							npcDialogOptions={npc?.dialogue?.options || []}
 						/>
 					</NPCDialogProfile>
-				</div>
+				</DialogContent>
 				<TradeMessageDialog
 					isOpen={!!tradeMessage}
 					message={tradeMessage?.message}

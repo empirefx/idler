@@ -58,21 +58,44 @@ export default class BuildingService {
 		return this.buildingsData[buildingId];
 	}
 
+	validatePlaceSocket(placeId, socketIndex) {
+		const place = this.getPlace(placeId);
+		if (!place?.sockets?.[socketIndex]) {
+			return { valid: false, error: "Invalid place or socket" };
+		}
+		return { valid: true, place, socket: place.sockets[socketIndex] };
+	}
+
+	validateSocketStatus(placeId, socketIndex, expectedStatus) {
+		const result = this.validatePlaceSocket(placeId, socketIndex);
+		if (!result.valid) return result;
+
+		if (result.socket.status !== expectedStatus) {
+			const labels = {
+				locked: "locked",
+				empty: "empty",
+				occupied: "occupied",
+			};
+			return {
+				valid: false,
+				error: `Socket is not ${labels[expectedStatus]}`,
+			};
+		}
+		return result;
+	}
+
 	getSocketCost(placeId) {
 		const place = this.getPlace(placeId);
 		return place?.socketCost || 100;
 	}
 
 	canBuySocket(placeId, socketIndex) {
-		const place = this.getPlace(placeId);
-		if (!place?.sockets?.[socketIndex]) {
-			return { valid: false, error: "Invalid place or socket" };
-		}
-
-		const socket = place.sockets[socketIndex];
-		if (socket.status !== "locked") {
-			return { valid: false, error: "Socket is not locked" };
-		}
+		const validation = this.validateSocketStatus(
+			placeId,
+			socketIndex,
+			"locked",
+		);
+		if (!validation.valid) return validation;
 
 		const cost = this.getSocketCost(placeId);
 		const gold = this.getGold();
@@ -114,15 +137,8 @@ export default class BuildingService {
 	}
 
 	canBuild(placeId, socketIndex, buildingId) {
-		const place = this.getPlace(placeId);
-		if (!place?.sockets?.[socketIndex]) {
-			return { valid: false, error: "Invalid place or socket" };
-		}
-
-		const socket = place.sockets[socketIndex];
-		if (socket.status !== "empty") {
-			return { valid: false, error: "Socket is not empty" };
-		}
+		const validation = this.validateSocketStatus(placeId, socketIndex, "empty");
+		if (!validation.valid) return validation;
 
 		const building = this.getBuildingDefinition(buildingId);
 		if (!building) {
@@ -173,22 +189,19 @@ export default class BuildingService {
 	}
 
 	canUpgrade(placeId, socketIndex) {
-		const place = this.getPlace(placeId);
-		if (!place?.sockets?.[socketIndex]) {
-			return { valid: false, error: "Invalid place or socket" };
-		}
+		const validation = this.validateSocketStatus(
+			placeId,
+			socketIndex,
+			"occupied",
+		);
+		if (!validation.valid) return validation;
 
-		const socket = place.sockets[socketIndex];
-		if (socket.status !== "occupied") {
-			return { valid: false, error: "Socket is not occupied" };
-		}
-
-		const building = this.getBuildingDefinition(socket.buildingId);
+		const building = this.getBuildingDefinition(validation.socket.buildingId);
 		if (!building) {
 			return { valid: false, error: "Building not found" };
 		}
 
-		const nextLevel = (socket.level || 1) + 1;
+		const nextLevel = (validation.socket.level || 1) + 1;
 		const upgradeKey = `level${nextLevel}`;
 		const upgrade = building.upgrades?.[upgradeKey];
 
@@ -240,15 +253,12 @@ export default class BuildingService {
 	}
 
 	canDemolish(placeId, socketIndex) {
-		const place = this.getPlace(placeId);
-		if (!place?.sockets?.[socketIndex]) {
-			return { valid: false, error: "Invalid place or socket" };
-		}
-
-		const socket = place.sockets[socketIndex];
-		if (socket.status !== "occupied") {
-			return { valid: false, error: "Socket is not occupied" };
-		}
+		const validation = this.validateSocketStatus(
+			placeId,
+			socketIndex,
+			"occupied",
+		);
+		if (!validation.valid) return validation;
 
 		return { valid: true };
 	}

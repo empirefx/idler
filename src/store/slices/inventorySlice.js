@@ -24,6 +24,12 @@ const getInitialState = () => {
 	return inventories;
 };
 
+const normalizeInventoryState = (inventoryData) => ({
+	...inventoryData,
+	items: inventoryData.items || [],
+	equipment: inventoryData.equipment || {},
+});
+
 const inventorySlice = createSlice({
 	name: "inventory",
 	initialState: getInitialState(),
@@ -166,22 +172,14 @@ const inventorySlice = createSlice({
 		updateInventory(state, action) {
 			const { inventoryId, inventoryData } = action.payload;
 			if (inventoryData) {
-				state[inventoryId] = {
-					...inventoryData,
-					items: inventoryData.items || [],
-					equipment: inventoryData.equipment || {},
-				};
+				state[inventoryId] = normalizeInventoryState(inventoryData);
 			}
 		},
 
 		addInventory(state, action) {
 			const { inventoryId, inventoryData } = action.payload;
 			if (inventoryData) {
-				state[inventoryId] = {
-					...inventoryData,
-					items: inventoryData.items || [],
-					equipment: inventoryData.equipment || {},
-				};
+				state[inventoryId] = normalizeInventoryState(inventoryData);
 			}
 		},
 

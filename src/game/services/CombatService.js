@@ -68,68 +68,7 @@ export const CombatService = {
 		);
 		if (!skill) return;
 
-		// Get rank data
-		const rankData = getRankData(skill, playerSkills);
-		if (!rankData) return;
-
-		// Apply skill effect based on type
-		if (skill.type === "active_buff") {
-			// Add buff to player
-			const buff = {
-				id: `${skill.id}_${Date.now()}`,
-				skillId: skill.id,
-				stat: rankData.statBonus.stat,
-				value: rankData.statBonus.value,
-				duration: rankData.duration,
-				type: "buff",
-			};
-			this.store.dispatch(addBuff(buff));
-
-			// Set cooldown
-			this.store.dispatch(
-				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
-			);
-
-			Logger.log(
-				`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`,
-				0,
-				"combat",
-			);
-		} else if (skill.type === "active_damage") {
-			// Calculate and apply skill damage
-			const weaponProfile = getWeaponProfile(equippedWeapon);
-			const damageType = weaponProfile.damageType || "physical";
-			const multiplier = rankData.damageMultiplier || 1.0;
-
-			// Calculate base damage based on damage type
-			let baseDamage = 0;
-			if (damageType === "magic") {
-				baseDamage = (player.stats.intelligence || 0) * 2;
-			} else if (damageType === "ranged") {
-				baseDamage = (player.stats.agility || 0) * 2;
-			} else {
-				baseDamage = (player.stats.strength || 0) * 2;
-			}
-
-			const flatDamage = weaponProfile.flatDamage || 0;
-			const skillDamage = Math.round((baseDamage + flatDamage) * multiplier);
-
-			// Apply damage to enemy
-			this.store.dispatch({
-				type: "enemies/damageEnemy",
-				payload: { id: targetEnemy.id, amount: skillDamage },
-			});
-
-			// Set cooldown
-			this.store.dispatch(
-				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
-			);
-
-			Logger.log(`${skill.name} hits for ${skillDamage} damage!`, 0, "combat");
-		}
-
-		// Mark skill as last activated
-		markSkillActivated(skill);
+		this.executeSkill(skill, player, equippedWeapon, targetEnemy);
 	},
 
 	// Execute a skill (refactored from tryActivateSkill)

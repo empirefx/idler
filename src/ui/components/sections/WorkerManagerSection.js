@@ -156,7 +156,7 @@ const WorkerManagerSection = () => {
 			<div className="worker-manager-actions">
 				<button
 					type="button"
-					className={`reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
+					className={`panel-action-btn reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
 					disabled={gold < REROLL_COST}
 					onClick={handleReroll}
 				>
@@ -165,7 +165,7 @@ const WorkerManagerSection = () => {
 
 				<button
 					type="button"
-					className={`buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
+					className={`panel-action-btn buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
 					disabled={gold < SLOT_COST}
 					onClick={handleBuySlot}
 				>
