@@ -73,7 +73,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 			}
 
 			// Original move item logic
-			if (!otherInventoryId) return; // Do nothing if no target inventory
+			if (!otherInventoryId || !otherInventory) return; // Do nothing if no target inventory
 
 			const quantity = item.quantity || 1;
 
