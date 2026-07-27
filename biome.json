@@ -18,7 +18,11 @@
 			"correctness": {
 				"noUnusedFunctionParameters": "warn"
 			},
+			"suspicious": {
+				"noDuplicateProperties": "off"
+			},
 			"style": {
+				"noDescendingSpecificity": "off",
 				"noExportedImports": "warn"
 			}
 		}

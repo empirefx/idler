@@ -33,12 +33,8 @@ const BuffBar = () => {
 	return (
 		<div className="buff-bar">
 			<div className="buff-bar-slots">
-				{buffSlots.map((slot, index) => (
-					<div
-						// biome-ignore lint/suspicious/noArrayIndexKey: index only for uniqueness within stable slot list
-						key={`${slot.skillId}-${index}`}
-						className="buff-slot buff-slot--active"
-					>
+				{buffSlots.map((slot) => (
+					<div key={slot.skillId} className="buff-slot buff-slot--active">
 						<div className="buff-icon-container">
 							<div className="buff-icon">{slot.name.charAt(0)}</div>
 							<div className="buff-duration">{slot.duration}s</div>

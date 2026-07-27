@@ -122,7 +122,6 @@
 	border: 2px solid red;
 }
 
-/* biome-ignore lint/style/noDescendingSpecificity: base style for worker actions, scoped overrides follow */
 .worker-actions {
 	margin-top: var(--spacing-xs);
 }

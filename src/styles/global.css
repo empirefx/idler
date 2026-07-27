@@ -136,7 +136,6 @@ h6 {
 	display: none;
 }
 
-/* biome-ignore lint/style/noDescendingSpecificity: base style for progress bar span, scoped override follows */
 .progress-bar span {
 	font-weight: bolder;
 }
