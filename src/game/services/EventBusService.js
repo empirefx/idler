@@ -24,7 +24,9 @@ export class EventBusService {
 	// Emit an event
 	emit(event, data) {
 		if (!this.handlers[event]) return;
-		this.handlers[event].forEach((handler) => handler(data));
+		for (const handler of this.handlers[event]) {
+			handler(data);
+		}
 	}
 }
 

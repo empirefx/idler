@@ -27,7 +27,7 @@ const WorkersSection = () => {
 			.filter((idx) => idx !== -1) || [];
 
 	const assignedSocketIndexesForPlace = workers
-		.filter((w) => w.assignments && w.assignments[currentPlaceId])
+		.filter((w) => w.assignments?.[currentPlaceId])
 		.map((w) => w.assignments[currentPlaceId].socketIndex)
 		.filter((idx) => idx !== null && idx !== undefined);
 
@@ -37,7 +37,7 @@ const WorkersSection = () => {
 
 	const getSocketMaterials = (socketIndex) => {
 		const socket = socketData.sockets?.[socketIndex];
-		if (!socket || !socket.buildingId) return [];
+		if (!socket?.buildingId) return [];
 
 		const building = buildingsData[socket.buildingId];
 		if (!building?.upgrades) return [];

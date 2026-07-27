@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import "../../../styles/sections/worker-manager-section.css";

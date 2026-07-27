@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import {
 	selectActiveQuestIds,
-	selectQuestProgress,
 	selectCompletedQuestIds,
 } from "../../../store/slices/questSlice";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
@@ -13,19 +12,19 @@ const QuestItem = ({ questId }) => {
 	const playerInventory = useSelector((state) =>
 		selectInventoryById(state, "player"),
 	);
+	const allQuestProgress = useSelector(
+		(state) => state.quests?.activeById?.[questId]?.progress || {},
+	);
 	if (!quest) return null;
 
 	// Get progress for each objective
 	const progressData =
 		quest.objectives &&
 		Object.entries(quest.objectives).map(([key, objective]) => {
-			const progress = useSelector(
-				selectQuestProgress(quest.id, objective.progressKey),
-			);
 			return {
 				key,
 				objective,
-				progress: progress || 0,
+				progress: allQuestProgress[objective.progressKey] || 0,
 			};
 		});
 

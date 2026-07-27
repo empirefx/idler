@@ -4,7 +4,7 @@ import { InventoryService } from "../services/InventoryService";
 import { CraftingService } from "../services/CraftingService";
 import { createItem } from "../factory/itemFactory";
 import SpawnService from "../services/SpawnService";
-import { EventBusService, globalEventBus } from "../services/EventBusService";
+import { globalEventBus } from "../services/EventBusService";
 import { CombatService } from "../services/CombatService";
 import {
 	workerCreatedItem,
@@ -134,7 +134,7 @@ class GameEngine {
 	}
 
 	// Calculate production rate for a building
-	calculateProductionRate(buildingData, state) {
+	calculateProductionRate(buildingData, _state) {
 		return buildingData.baseProductionRate || 0;
 	}
 
@@ -174,7 +174,7 @@ class GameEngine {
 
 		placeIds.forEach((placeId) => {
 			const place = places[placeId];
-			if (!place || !place.sockets) return;
+			if (!place?.sockets) return;
 
 			place.sockets.forEach((socket, socketIndex) => {
 				if (socket.status !== "occupied") return;

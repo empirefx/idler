@@ -173,11 +173,11 @@ class Gameplay {
 	processQuestsByType(type, eventData) {
 		const activeQuests = this.getActiveQuests();
 
-		Object.entries(activeQuests).forEach(([questId, questState]) => {
+		Object.entries(activeQuests).forEach(([questId, _questState]) => {
 			const quest = questCatalog[questId];
 			if (!quest?.objectives) return;
 
-			Object.entries(quest.objectives).forEach(([objectiveKey, objective]) => {
+			Object.entries(quest.objectives).forEach(([_objectiveKey, objective]) => {
 				if (objective.type === type) {
 					this.questHandlers[type]?.({
 						questId,
@@ -312,7 +312,7 @@ class Gameplay {
 		return this.handleQuestAcceptIntent({ questId, npcId });
 	}
 
-	requestQuestComplete({ questId, npcId }) {
+	requestQuestComplete({ questId, _npcId }) {
 		return this.completeQuestAtNpc(questId);
 	}
 
@@ -332,7 +332,7 @@ class Gameplay {
 		);
 	}
 
-	handleQuestObjectiveCompleted({ questId, progressKey }) {
+	handleQuestObjectiveCompleted({ questId, _progressKey }) {
 		this.checkQuestCompletion(questId);
 	}
 }

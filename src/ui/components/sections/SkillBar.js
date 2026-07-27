@@ -1,13 +1,8 @@
 import { useSelector } from "react-redux";
 import { selectCurrentPlace } from "../../../store/slices/placesSlice";
-import { selectEnemiesForCurrentPlace } from "../../../store/slices/enemiesSlice";
 import { selectPlayerSkills } from "../../../store/slices/playerSlice";
 import { useSkillCooldownState } from "../../hooks/useSkillCooldownState";
-import {
-	skillsCatalog,
-	SKILL_COLUMNS,
-	getSkillById,
-} from "../../../data/skillsData";
+import { SKILL_COLUMNS, getSkillById } from "../../../data/skillsData";
 import { DAMAGE_TYPES, SKILL_TYPES } from "../../../data/combatTypes";
 import { useEffect, useState } from "react";
 
@@ -17,7 +12,6 @@ import BuffBar from "./BuffBar";
 
 const SkillBar = () => {
 	const currentPlace = useSelector(selectCurrentPlace);
-	const enemies = useSelector(selectEnemiesForCurrentPlace);
 	const playerSkills = useSelector(selectPlayerSkills);
 	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
 		useSkillCooldownState();
@@ -158,7 +152,8 @@ const SkillBar = () => {
 					);
 				})}
 				{Array.from({ length: emptySlots }).map((_, index) => (
-					<div key={`empty-${index}`} className="skill-slot skill-slot--empty">
+					// biome-ignore lint/suspicious/noArrayIndexKey: static list of empty placeholder slots, never reorders
+					<div key={`empty-slot-${index}`} className="skill-slot skill-slot--empty">
 						<div className="skill-icon-container">
 							<div className="skill-icon skill-icon--empty">?</div>
 						</div>

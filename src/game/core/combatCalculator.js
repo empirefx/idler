@@ -164,7 +164,6 @@ export function calculateDamage(
 			return calculateMagicDamage(attackerStats, defenderStats, flatDamage);
 		case "ranged":
 			return calculateRangedDamage(attackerStats, defenderStats, flatDamage);
-		case "physical":
 		default:
 			return calculatePhysicalDamage(attackerStats, defenderStats, flatDamage);
 	}

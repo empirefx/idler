@@ -4,11 +4,7 @@ import {
 	selectPlayerSkills,
 	spendSkillPoint,
 } from "../../../store/slices/playerSlice";
-import {
-	skillsCatalog,
-	SKILL_COLUMNS,
-	getSkillById,
-} from "../../../data/skillsData";
+import { SKILL_COLUMNS, getSkillById } from "../../../data/skillsData";
 import { DAMAGE_TYPES } from "../../../data/combatTypes";
 
 const SkillsSection = () => {
