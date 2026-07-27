@@ -129,7 +129,7 @@ const WorkerManagerSection = () => {
 								<div key={worker.id} className="worker-item">
 									<div className="worker-avatar">
 										<img
-											src={`/assets/avatars/${worker.avatar}`}
+											src={`assets/avatars/${worker.avatar}`}
 											alt={worker.firstName}
 										/>
 									</div>
