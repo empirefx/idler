@@ -4,8 +4,8 @@ import {
 	validateWeightLimit,
 	validateItemExists,
 	validateEquipmentSlot,
-	validateItemMove,
 } from "../src/store/slices/inventory/inventoryValidators";
+import { InventoryService } from "../src/game/services/InventoryService";
 
 describe("inventoryValidators", () => {
 	describe("validateSlotLimit", () => {
@@ -84,8 +84,8 @@ describe("inventoryValidators", () => {
 
 	describe("validateEquipmentSlot", () => {
 		it("should pass for valid equipment", () => {
-			const item = { type: "equipment", piece: "head" };
-			const result = validateEquipmentSlot(item, "head");
+			const item = { id: "sword", type: "main-weapon" };
+			const result = validateEquipmentSlot(item, "main-weapon");
 
 			expect(result.isValid).toBe(true);
 		});
@@ -99,8 +99,8 @@ describe("inventoryValidators", () => {
 		});
 
 		it("should fail for invalid slot", () => {
-			const item = { type: "equipment", piece: "invalid" };
-			const result = validateEquipmentSlot(item, "head");
+			const item = { id: "sword", type: "main-weapon" };
+			const result = validateEquipmentSlot(item, "invalid");
 
 			expect(result.isValid).toBe(false);
 			expect(result.error).toBe("EQUIPMENT_SLOT_INVALID");
@@ -121,30 +121,30 @@ describe("inventoryValidators", () => {
 		};
 
 		it("should pass for valid move", () => {
-			const result = validateItemMove(fromInventory, toInventory, "test", 2);
+			const result = InventoryService.canMoveItem(fromInventory, toInventory, "test", 2);
 
-			expect(result.isValid).toBe(true);
+			expect(result.valid).toBe(true);
 			expect(result.item).toEqual(fromInventory.items[0]);
 			expect(result.itemIndex).toBe(0);
 			expect(result.moveQuantity).toBe(2);
 		});
 
 		it("should fail when source inventory is null", () => {
-			const result = validateItemMove(null, toInventory, "test", 2);
+			const result = InventoryService.canMoveItem(null, toInventory, "test", 2);
 
-			expect(result.isValid).toBe(false);
-			expect(result.error).toBe("ITEM_NOT_FOUND");
+			expect(result.valid).toBe(false);
+			expect(result.error).toBe("INVENTORY_NOT_FOUND");
 		});
 
 		it("should fail when item not found in source", () => {
-			const result = validateItemMove(
+			const result = InventoryService.canMoveItem(
 				fromInventory,
 				toInventory,
 				"nonexistent",
 				2,
 			);
 
-			expect(result.isValid).toBe(false);
+			expect(result.valid).toBe(false);
 			expect(result.error).toBe("ITEM_NOT_FOUND");
 		});
 	});

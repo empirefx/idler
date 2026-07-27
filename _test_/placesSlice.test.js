@@ -4,7 +4,7 @@ import placesReducer, {
 	selectCurrentPlace,
 	selectAvailableConnections,
 	selectBackgroundImage,
-	selectCurrentPlaceBuildings,
+	selectCurrentPlaceSockets,
 } from "../src/store/slices/placesSlice";
 import { placesData } from "../src/data/places";
 
@@ -34,8 +34,9 @@ describe("placesSlice reducer and selectors", () => {
 		expect(bg).toBe(placesData.village_center["background-image"]);
 	});
 
-	it("selectCurrentPlaceBuildings returns buildings array", () => {
-		const buildings = selectCurrentPlaceBuildings({ places: initialState });
-		expect(buildings).toEqual(placesData.village_center.buildings);
+	it("selectCurrentPlaceSockets returns sockets and cost", () => {
+		const result = selectCurrentPlaceSockets({ places: initialState });
+		expect(result.sockets).toEqual(initialState.village_center.sockets);
+		expect(result.cost).toBe(initialState.village_center.socketCost);
 	});
 });

@@ -36,6 +36,7 @@ describe("enemiesSlice reducer and selectors", () => {
 			countdown: 0,
 			initialAttackDelay: 0,
 			isCountdownActive: false,
+			isDead: false,
 		});
 		expect(newState.allIds).toContain("e1");
 	});
@@ -66,16 +67,17 @@ describe("enemiesSlice reducer and selectors", () => {
 		expect(s.allIds).toContain("e2");
 	});
 
-	it("should handle damageEnemy and remove on zero health", () => {
+	it("should handle damageEnemy and mark as dead on zero health", () => {
 		let s = enemiesReducer(
 			state,
 			addEnemy({ placeId: "p", enemy: { id: "e1", health: 5 } }),
 		);
 		s = enemiesReducer(s, damageEnemy({ id: "e1", amount: 3 }));
 		expect(s.byId["e1"].health).toBe(2);
+		expect(s.byId["e1"].isDead).toBe(false);
 		s = enemiesReducer(s, damageEnemy({ id: "e1", amount: 5 }));
-		expect(s.byId).not.toHaveProperty("e1");
-		expect(s.allIds).not.toContain("e1");
+		expect(s.byId["e1"].health).toBe(0);
+		expect(s.byId["e1"].isDead).toBe(true);
 	});
 
 	it("selectAllEnemies returns list", () => {

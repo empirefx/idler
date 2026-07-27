@@ -24,11 +24,11 @@ describe("canItemsStack", () => {
 		expect(canItemsStack(item1, item2)).toBe(false);
 	});
 
-	it("should return true for equipment items with identical stats", () => {
+	it("should return false for equipment items even with identical stats", () => {
 		const stats = { atk: 5 };
 		const item1 = { type: "equipment", name: "Sword", stats };
 		const item2 = { type: "equipment", name: "Sword", stats: { atk: 5 } };
-		expect(canItemsStack(item1, item2)).toBe(true);
+		expect(canItemsStack(item1, item2)).toBe(false);
 	});
 
 	it("should return false for equipment items with different stats", () => {

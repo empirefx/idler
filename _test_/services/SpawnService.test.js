@@ -256,12 +256,12 @@ describe("WaveSpawner - Single Enemy Mode", () => {
 
 			// Simulate enemy death - find enemyDead handler
 			const deathCall = eventBusService.on.mock.calls.find(
-				(call) => call[0] === `enemyDead:test_place`,
+				(call) => call[0] === "enemyDead",
 			);
 			if (deathCall && deathCall[1] && spawnedEnemyId) {
 				const deathHandler = deathCall[1];
 				// Simulate enemy object with the actual spawned enemy ID
-				deathHandler({ enemy: { id: spawnedEnemyId } });
+				deathHandler({ placeId: "test_place", enemy: { id: spawnedEnemyId } });
 			}
 
 			// Fast-forward time

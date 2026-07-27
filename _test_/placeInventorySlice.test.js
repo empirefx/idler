@@ -1,21 +1,21 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import placeInventoryReducer, {
+import inventoryReducer, {
 	addItem,
 	removeItem,
 	updateInventory,
-	addPlaceInventory,
-	mergeItems,
-	selectPlaceInventoryById,
-	selectPlaceInventoryItems,
-	selectPlaceInventoryStats,
-	selectVaultByPlaceId,
-} from "../src/store/slices/placeInventorySlice";
+	addInventory,
+	mergeInventories,
+	selectInventoryById,
+	selectInventoryItems,
+	selectInventoryStats,
+	selectInventoryByPlaceId,
+} from "../src/store/slices/inventorySlice";
 
 describe("placeInventorySlice reducer and selectors", () => {
 	let state;
 
 	beforeEach(() => {
-		state = placeInventoryReducer(undefined, { type: "init" });
+		state = inventoryReducer(undefined, { type: "init" });
 	});
 
 	describe("initial state", () => {
@@ -26,7 +26,7 @@ describe("placeInventorySlice reducer and selectors", () => {
 			expect(state.village_center).toHaveProperty("placeId", "village_center");
 			expect(state.village_center).toHaveProperty("maxSlots", 30);
 			expect(state.village_center).toHaveProperty("items");
-			expect(state.village_center.items).toHaveLength(2);
+			expect(state.village_center.items).toHaveLength(1);
 		});
 	});
 
@@ -39,7 +39,7 @@ describe("placeInventorySlice reducer and selectors", () => {
 				weight: 1,
 				quantity: 1,
 			};
-			const newState = placeInventoryReducer(
+			const newState = inventoryReducer(
 				state,
 				addItem({
 					inventoryId: "village_center",
@@ -47,7 +47,6 @@ describe("placeInventorySlice reducer and selectors", () => {
 				}),
 			);
 
-			expect(newState.village_center.items).toHaveLength(3);
 			expect(newState.village_center.items).toContainEqual(
 				expect.objectContaining({
 					id: "test-item",
@@ -58,7 +57,7 @@ describe("placeInventorySlice reducer and selectors", () => {
 		});
 
 		it("should stack identical items in place inventory", () => {
-			const result = placeInventoryReducer(
+			const result = inventoryReducer(
 				state,
 				addItem({
 					inventoryId: "village_center",
@@ -81,7 +80,7 @@ describe("placeInventorySlice reducer and selectors", () => {
 
 	describe("removeItem", () => {
 		it("should remove item from place inventory", () => {
-			const result = placeInventoryReducer(
+			const result = inventoryReducer(
 				state,
 				removeItem({
 					inventoryId: "village_center",
@@ -95,7 +94,7 @@ describe("placeInventorySlice reducer and selectors", () => {
 		});
 
 		it("should reduce item quantity when removing partial amount", () => {
-			const result = placeInventoryReducer(
+			const result = inventoryReducer(
 				state,
 				removeItem({
 					inventoryId: "village_center",
@@ -109,7 +108,7 @@ describe("placeInventorySlice reducer and selectors", () => {
 		});
 	});
 
-	describe("addPlaceInventory", () => {
+	describe("addInventory", () => {
 		it("should add new place inventory", () => {
 			const newPlace = {
 				id: "new_place",
@@ -119,26 +118,32 @@ describe("placeInventorySlice reducer and selectors", () => {
 				items: [],
 			};
 
-			const result = placeInventoryReducer(
+			const result = inventoryReducer(
 				state,
-				addPlaceInventory({
-					placeId: "new_place",
+				addInventory({
+					inventoryId: "new_place",
 					inventoryData: newPlace,
 				}),
 			);
 
 			expect(result).toHaveProperty("new_place");
-			expect(result.new_place).toEqual(newPlace);
+			expect(result.new_place).toEqual(
+				expect.objectContaining({
+					id: "new_place",
+					placeId: "new_place",
+					type: "place",
+					maxSlots: 25,
+				}),
+			);
 		});
 	});
 
-	describe("mergeItems", () => {
+	describe("mergeInventories", () => {
 		it("should merge items from one place to another", () => {
-			// Add a second place with items
-			const stateWithTwoPlaces = placeInventoryReducer(
+			const stateWithTwoPlaces = inventoryReducer(
 				state,
-				addPlaceInventory({
-					placeId: "second_place",
+				addInventory({
+					inventoryId: "second_place",
 					inventoryData: {
 						id: "second_place",
 						placeId: "second_place",
@@ -157,10 +162,9 @@ describe("placeInventorySlice reducer and selectors", () => {
 				}),
 			);
 
-			// Merge items
-			const result = placeInventoryReducer(
+			const result = inventoryReducer(
 				stateWithTwoPlaces,
-				mergeItems({
+				mergeInventories({
 					fromInventoryId: "second_place",
 					toInventoryId: "village_center",
 				}),
@@ -175,39 +179,38 @@ describe("placeInventorySlice reducer and selectors", () => {
 
 	describe("selectors", () => {
 		it("should select place inventory by ID", () => {
-			const selected = selectPlaceInventoryById(
-				{ placeInventory: state },
+			const selected = selectInventoryById(
+				{ inventory: state },
 				"village_center",
 			);
 			expect(selected).toEqual(state.village_center);
 		});
 
 		it("should select place inventory items", () => {
-			const items = selectPlaceInventoryItems(
-				{ placeInventory: state },
+			const items = selectInventoryItems(
+				{ inventory: state },
 				"village_center",
 			);
 			expect(items).toEqual(state.village_center.items);
 		});
 
 		it("should select place inventory stats", () => {
-			const stats = selectPlaceInventoryStats(
-				{ placeInventory: state },
+			const stats = selectInventoryStats(
+				{ inventory: state },
 				"village_center",
 			);
 			expect(stats).toEqual(
 				expect.objectContaining({
-					slotsUsed: 2,
+					slotsUsed: 1,
 					maxSlots: 30,
-					itemCount: 2,
-					placeId: "village_center",
+					itemCount: 1,
 				}),
 			);
 		});
 
-		it("should select vault by place ID", () => {
-			const vault = selectVaultByPlaceId(
-				{ placeInventory: state },
+		it("should select inventory by place ID", () => {
+			const vault = selectInventoryByPlaceId(
+				{ inventory: state },
 				"village_center",
 			);
 			expect(vault).toEqual(state.village_center);

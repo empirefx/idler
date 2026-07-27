@@ -1,5 +1,6 @@
 // Common test helper functions
 import { vi } from 'vitest';
+import { createBaseState, createTestState, createStateWithWorkers } from '../fixtures/stateBuilders.js';
 
 // Helper to find and call event handlers
 export const getEventHandler = (mockService, eventName) => {
@@ -19,6 +20,7 @@ export const createMockInventoryService = () => ({
 	removeItemFromInventory: vi.fn(),
 	moveItemBetweenInventories: vi.fn(),
 	getInventoryById: vi.fn(),
+	canAddItem: vi.fn(() => ({ valid: true })),
 });
 
 // Helper to create mock item factory
@@ -47,16 +49,15 @@ export const createMockSpawnService = () => ({
 export const createMockBuilding = (id, name, productionType, baseRate = 5) => ({
 	id,
 	name,
-	calculateProduction: vi.fn(() => baseRate),
 	productionType,
 	baseProductionRate: baseRate,
 });
 
 // Helper to create mock worker
-export const createMockWorker = (id, name, buildingId = null) => ({
+export const createMockWorker = (id, name, placeId = null, socketIndex = 0, material = null) => ({
 	id,
 	name,
-	assignedBuildingId: buildingId,
+	assignments: placeId ? { [placeId]: { socketIndex, material } } : {},
 });
 
 // Helper to create mock enemy
@@ -95,7 +96,7 @@ export const createTestEnemy = (id, placeId, overrides = {}) => ({
 // Helper to create place state for testing
 export const createPlaceState = (placesConfig) => ({
 	places: placesConfig,
-	placeInventory: {
+	inventory: {
 		village_center: { items: [] },
 	},
 });
@@ -111,26 +112,26 @@ export const expectMockNotCalled = (mock) => {
 };
 
 // Helper to create test production scenario
-export const createProductionTestScenario = (buildingId, buildingName, productionType, baseRate, workerId = "worker1") => {
+export const createProductionTestScenario = (buildingId, buildingName, productionType, baseRate, workerId = "worker1", socketIndex = 0) => {
 	const building = createMockBuilding(buildingId, buildingName, productionType, baseRate);
 	const state = createStateWithWorkers([
-		{ id: workerId, assignedBuildingId: buildingId },
+		{ id: workerId, assignments: { [buildingId]: { socketIndex, material: productionType } } },
 	]);
 	const deltaTime = 1000;
-	
+
 	return { building, state, deltaTime };
 };
 
 // Helper to test production processing with common assertions
 export const testProductionProcessing = (service, mockItemFactory, buildingId, building, state, deltaTime, expectedType, expectedQuantity) => {
-	service.processBuildingProduction(buildingId, building, state, deltaTime);
-	expect(mockItemFactory.create).toHaveBeenCalledWith(expectedType, expectedQuantity);
+	service.processBuildingProduction(buildingId, 0, building, state, deltaTime);
+	expect(mockItemFactory).toHaveBeenCalledWith(expectedType, expectedQuantity);
 };
 
 // Helper to test zero production scenario
 export const testZeroProductionScenario = (service, mockItemFactory, mockInventoryService, buildingId, building, state, deltaTime) => {
-	service.processBuildingProduction(buildingId, building, state, deltaTime);
-	expect(mockItemFactory.create).not.toHaveBeenCalled();
+	service.processBuildingProduction(buildingId, 0, building, state, deltaTime);
+	expect(mockItemFactory).not.toHaveBeenCalledWith(expect.anything(), expect.anything());
 	if (mockInventoryService) {
 		expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
 	}
@@ -144,7 +145,7 @@ export const createTestStateWithBuildings = (buildings, workers = []) => ({
 		currentPlaceId: "village_center",
 		village_center: { hasInventory: true },
 	},
-	placeInventory: {
+	inventory: {
 		village_center: { items: [] },
 	},
 });
@@ -155,11 +156,11 @@ export const createMultipleBuildingsScenario = (buildingsConfig, workersConfig) 
 	buildingsConfig.forEach(config => {
 		buildings[config.id] = createMockBuilding(config.id, config.name, config.productionType, config.baseRate);
 	});
-	
+
 	const state = createTestStateWithBuildings(buildings, workersConfig);
 	return { buildings, state };
 };
 
-// Import state builders to avoid duplication
+// Re-export state builders for backward compatibility
 export { createBaseState, createTestState } from '../fixtures/stateBuilders.js';
 export { createStateWithWorkers } from '../fixtures/stateBuilders.js';

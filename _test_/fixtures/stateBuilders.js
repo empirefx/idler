@@ -29,6 +29,9 @@ export const createBaseState = (overrides = {}) => ({
 			items: [],
 		},
 	},
+	inventory: {
+		village_center: { items: [] },
+	},
 	...overrides,
 });
 

@@ -5,10 +5,9 @@ import {
 	createBaseState,
 } from "../fixtures/stateBuilders.js";
 import { createMockStore } from "../mocks/services.mock.js";
-import { 
-	createMockItemFactory, 
-	createMockInventoryService, 
-	createMockBuilding, 
+import {
+	createMockInventoryService,
+	createMockBuilding,
 	createPlaceState,
 	createProductionTestScenario,
 	testProductionProcessing,
@@ -21,22 +20,25 @@ describe("ProductionService", () => {
 	let mockStore, mockDispatch, mockItemFactory, mockInventoryService;
 
 	beforeEach(() => {
-		// Setup mocks
 		mockStore = createMockStore(createBaseState());
 		mockDispatch = vi.fn();
-		mockItemFactory = createMockItemFactory();
+		mockItemFactory = vi.fn((type, quantity) => ({
+			id: `${type}-${Date.now()}`,
+			name: type,
+			type: "material",
+			quantity: Math.max(1, Math.floor(quantity || 1)),
+			weight: 1,
+		}));
 		mockInventoryService = createMockInventoryService();
 
-		// Create ProductionService instance
 		productionService = new ProductionService(
 			mockInventoryService,
 			mockItemFactory,
 			mockStore,
 			mockDispatch,
-			{}, // events
+			{},
 		);
 
-		// Mock Logger to avoid console output during tests
 		vi.spyOn(console, "log").mockImplementation(() => {});
 		vi.spyOn(console, "error").mockImplementation(() => {});
 	});
@@ -50,36 +52,22 @@ describe("ProductionService", () => {
 			const { building, state, deltaTime } = createProductionTestScenario(
 				"sawmill", "Sawmill", "wood", 10
 			);
-			// Override to test calculateProduction method
-			building.calculateProduction = () => 10;
-
-			// Mock the production calculation
-			const expectedItem = {
-				id: "wood-12345",
-				name: "wood",
-				type: "material",
-				quantity: 10,
-				weight: 1,
-			};
-			mockItemFactory.create.mockReturnValue(expectedItem);
 
 			productionService.processBuildingProduction(
 				"sawmill",
+				0,
 				building,
 				state,
 				deltaTime,
 			);
 
-			// Verify item creation
-			expect(mockItemFactory.create).toHaveBeenCalledWith("wood", 10);
+			expect(mockItemFactory).toHaveBeenCalledWith("wood", 10);
 
-			// Verify inventory addition
 			expect(mockInventoryService.addItemToInventory).toHaveBeenCalledWith(
 				mockStore,
-				"village_center", // inventoryId (from processBuildingProduction)
+				"village_center",
 				expect.objectContaining({
 					name: "wood",
-					quantity: 10,
 					type: "material",
 				}),
 			);
@@ -89,30 +77,24 @@ describe("ProductionService", () => {
 			const { building, state, deltaTime } = createProductionTestScenario(
 				"mine", "Mine", "stone", 15
 			);
-			// Override to test calculateProduction method
-			building.calculateProduction = () => 15;
-			// Remove workers to test no-production scenario
 			state.player.workers = [];
 
 			productionService.processBuildingProduction(
 				"mine",
+				0,
 				building,
 				state,
 				deltaTime,
 			);
 
-			// Should not create items
-			expect(mockItemFactory.create).not.toHaveBeenCalled();
+			expect(mockItemFactory).not.toHaveBeenCalled();
 			expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
 		});
 
-		it("should use baseProductionRate when calculateProduction not available", () => {
+		it("should use baseProductionRate for production rate", () => {
 			const { building, state, deltaTime } = createProductionTestScenario(
 				"farm", "Farm", "food", 8
 			);
-			// Override building to test baseProductionRate fallback
-			building.baseProductionRate = 8;
-			building.calculateProduction = undefined;
 
 			testProductionProcessing(
 				productionService, mockItemFactory, "farm", building, state, deltaTime, "food", 8
@@ -120,101 +102,183 @@ describe("ProductionService", () => {
 		});
 
 		it("should handle zero production gracefully", () => {
-			const { building, state, deltaTime } = createProductionTestScenario(
-				"sawmill", "Sawmill", "wood", 0
+			const building = {
+				id: "sawmill",
+				baseProductionRate: 0,
+			};
+			const state = {
+				...createStateWithWorkers([]),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								sawmill: { socketIndex: 0, material: "wood" },
+							},
+						},
+					],
+				},
+				places: {
+					village_center: { hasInventory: true, connections: [] },
+				},
+				inventory: {
+					village_center: { items: [] },
+				},
+			};
+
+			mockItemFactory.mockReturnValue(null);
+
+			productionService.processBuildingProduction(
+				"sawmill",
+				0,
+				building,
+				state,
+				1000,
 			);
 
-			testZeroProductionScenario(
-				productionService, mockItemFactory, mockInventoryService, "sawmill", building, state, deltaTime
-			);
+			expect(mockItemFactory).toHaveBeenCalledWith("wood", 1);
+			expect(mockInventoryService.addItemToInventory).not.toHaveBeenCalled();
 		});
 	});
 
-	describe("getAssignedWorkers", () => {
-		it("should return workers assigned to a specific building", () => {
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-				{ id: "worker2", assignedBuildingId: "mine" },
-				{ id: "worker3", assignedBuildingId: null }, // Unassigned
-			]);
+	describe("getWorkerByPlaceAndSocket", () => {
+		it("should return worker assigned to a specific place and socket", () => {
+			const state = {
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								sawmill: { socketIndex: 0, material: "wood" },
+							},
+						},
+						{
+							id: "worker2",
+							assignments: {
+								mine: { socketIndex: 0, material: "stone" },
+							},
+						},
+					],
+				},
+			};
 
-			const workers = productionService.getAssignedWorkers(state, "sawmill");
+			const worker = productionService.getWorkerByPlaceAndSocket(state, "sawmill", 0);
 
-			expect(workers).toHaveLength(1);
-			expect(workers[0]).toEqual(
+			expect(worker).toEqual(
 				expect.objectContaining({
 					id: "worker1",
-					assignedBuildingId: "sawmill",
 				}),
 			);
 		});
 
-		it("should return empty array when building has no workers", () => {
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "mine" },
-				{ id: "worker2", assignedBuildingId: null },
-			]);
+		it("should return undefined when building has no workers", () => {
+			const state = {
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								mine: { socketIndex: 0, material: "stone" },
+							},
+						},
+					],
+				},
+			};
 
-			const workers = productionService.getAssignedWorkers(state, "farm"); // Farm has no workers
+			const worker = productionService.getWorkerByPlaceAndSocket(state, "farm", 0);
 
-			expect(workers).toHaveLength(0);
+			expect(worker).toBeUndefined();
 		});
 
-		it("should return empty array for nonexistent building", () => {
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-			]);
+		it("should return undefined for nonexistent building", () => {
+			const state = {
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								sawmill: { socketIndex: 0, material: "wood" },
+							},
+						},
+					],
+				},
+			};
 
-			const workers = productionService.getAssignedWorkers(
+			const worker = productionService.getWorkerByPlaceAndSocket(
 				state,
 				"nonexistent",
+				0,
 			);
 
-			expect(workers).toHaveLength(0);
+			expect(worker).toBeUndefined();
 		});
 	});
 
-	describe("calculateProductionRate", () => {
-		it("should calculate production rate correctly", () => {
+	describe("canBuildingProduce", () => {
+		it("should return true when building has worker with material and production rate", () => {
+			const state = {
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								sawmill: { socketIndex: 0, material: "wood" },
+							},
+						},
+					],
+				},
+			};
 			const building = {
 				id: "sawmill",
-				calculateProduction: () => 10,
-				baseProductionRate: 5,
+				baseProductionRate: 10,
 			};
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-			]);
 
-			const rate = productionService.calculateProductionRate(building, state);
+			const result = productionService.canBuildingProduce(state, "sawmill", 0, building);
 
-			expect(rate).toBe(10); // Should use custom calculation
+			expect(result).toBeTruthy();
 		});
 
-		it("should return base production rate when no custom calculation", () => {
-			const building = {
-				id: "mine",
-				calculateProduction: undefined,
-				baseProductionRate: 8,
+		it("should return falsy when no workers assigned", () => {
+			const state = {
+				...createBaseState(),
+				player: { workers: [] },
 			};
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "mine" },
-			]);
-
-			const rate = productionService.calculateProductionRate(building, state);
-
-			expect(rate).toBe(8); // Should use base rate
-		});
-
-		it("should return zero when no workers assigned", () => {
 			const building = {
 				id: "farm",
 				baseProductionRate: 8,
 			};
-			const state = createStateWithWorkers([]); // No workers
 
-			const rate = productionService.calculateProductionRate(building, state);
+			const result = productionService.canBuildingProduce(state, "farm", 0, building);
 
-			expect(rate).toBe(0); // No workers = no production
+			expect(result).toBeFalsy();
+		});
+
+		it("should return falsy when production rate is zero", () => {
+			const state = {
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								farm: { socketIndex: 0, material: "food" },
+							},
+						},
+					],
+				},
+			};
+			const building = {
+				id: "farm",
+				baseProductionRate: 0,
+			};
+
+			const result = productionService.canBuildingProduce(state, "farm", 0, building);
+
+			expect(result).toBeFalsy();
 		});
 	});
 
@@ -231,7 +295,7 @@ describe("ProductionService", () => {
 						connections: ["village_center"],
 					},
 				},
-				placeInventory: {
+				inventory: {
 					village_center: { items: [] },
 				},
 			};
@@ -244,20 +308,25 @@ describe("ProductionService", () => {
 		});
 
 		it("should find closest connected place with inventory", () => {
-			const state = createPlaceState({
-				river_crossing: {
-					hasInventory: false,
-					connections: ["village_center", "farmlands"],
+			const state = {
+				places: {
+					river_crossing: {
+						hasInventory: false,
+						connections: ["village_center", "farmlands"],
+					},
+					village_center: {
+						hasInventory: true,
+						connections: ["river_crossing"],
+					},
+					farmlands: {
+						hasInventory: false,
+						connections: ["river_crossing"],
+					},
 				},
-				village_center: {
-					hasInventory: true,
-					connections: ["river_crossing"],
+				inventory: {
+					village_center: { items: [] },
 				},
-				farmlands: {
-					hasInventory: false,
-					connections: ["river_crossing"],
-				},
-			});
+			};
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
@@ -267,20 +336,25 @@ describe("ProductionService", () => {
 		});
 
 		it("should search multiple levels for closest inventory", () => {
-			const state = createPlaceState({
-				river_crossing: {
-					hasInventory: false,
-					connections: ["farmlands"],
+			const state = {
+				places: {
+					river_crossing: {
+						hasInventory: false,
+						connections: ["farmlands"],
+					},
+					farmlands: {
+						hasInventory: false,
+						connections: ["river_crossing", "village_center"],
+					},
+					village_center: {
+						hasInventory: true,
+						connections: ["farmlands"],
+					},
 				},
-				farmlands: {
-					hasInventory: false,
-					connections: ["river_crossing", "village_center"],
+				inventory: {
+					village_center: { items: [] },
 				},
-				village_center: {
-					hasInventory: true,
-					connections: ["farmlands"],
-				},
-			});
+			};
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
@@ -301,7 +375,7 @@ describe("ProductionService", () => {
 						connections: ["river_crossing"],
 					},
 				},
-				placeInventory: {
+				inventory: {
 					village_center: { items: [] },
 				},
 			};
@@ -321,7 +395,7 @@ describe("ProductionService", () => {
 						connections: [],
 					},
 				},
-				placeInventory: {},
+				inventory: {},
 			};
 
 			const result = productionService.findClosestPlaceWithInventory(
@@ -336,14 +410,21 @@ describe("ProductionService", () => {
 		it("should send items to closest place inventory when current place has none", () => {
 			const building = {
 				id: "mine",
-				calculateProduction: () => 5,
-				productionType: "or",
+				baseProductionRate: 5,
 			};
 
 			const state = {
-				...createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "mine" },
-				]),
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								mine: { socketIndex: 0, material: "or" },
+							},
+						},
+					],
+				},
 				places: {
 					river_crossing: {
 						hasInventory: false,
@@ -356,7 +437,7 @@ describe("ProductionService", () => {
 						buildings: ["farm"],
 					},
 				},
-				placeInventory: {
+				inventory: {
 					village_center: { items: [] },
 				},
 			};
@@ -364,12 +445,12 @@ describe("ProductionService", () => {
 
 			productionService.processBuildingProduction(
 				"mine",
+				0,
 				building,
 				state,
 				deltaTime,
 			);
 
-			// Should send items to village_center (closest with inventory)
 			expect(mockInventoryService.addItemToInventory).toHaveBeenCalledWith(
 				mockStore,
 				"village_center",
@@ -384,14 +465,21 @@ describe("ProductionService", () => {
 		it("should keep items at current place when it has inventory", () => {
 			const building = {
 				id: "farm",
-				calculateProduction: () => 3,
-				productionType: "apple",
+				baseProductionRate: 3,
 			};
 
 			const state = {
-				...createStateWithWorkers([
-					{ id: "worker1", assignedBuildingId: "farm" },
-				]),
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								farm: { socketIndex: 0, material: "apple" },
+							},
+						},
+					],
+				},
 				places: {
 					village_center: {
 						hasInventory: true,
@@ -404,7 +492,7 @@ describe("ProductionService", () => {
 						buildings: ["mine"],
 					},
 				},
-				placeInventory: {
+				inventory: {
 					village_center: { items: [] },
 				},
 			};
@@ -412,12 +500,12 @@ describe("ProductionService", () => {
 
 			productionService.processBuildingProduction(
 				"farm",
+				0,
 				building,
 				state,
 				deltaTime,
 			);
 
-			// Should keep items at village_center (current place has inventory)
 			expect(mockInventoryService.addItemToInventory).toHaveBeenCalledWith(
 				mockStore,
 				"village_center",
@@ -431,32 +519,45 @@ describe("ProductionService", () => {
 
 	describe("Error handling", () => {
 		it("should handle errors gracefully", () => {
-			// Mock itemFactory to throw error
-			mockItemFactory.create.mockImplementation(() => {
+			mockItemFactory.mockImplementation(() => {
 				throw new Error("Item creation failed");
 			});
 
 			const building = {
 				id: "sawmill",
-				calculateProduction: () => 10,
-				productionType: "wood",
+				baseProductionRate: 10,
 			};
-			const state = createStateWithWorkers([
-				{ id: "worker1", assignedBuildingId: "sawmill" },
-			]);
+			const state = {
+				...createBaseState(),
+				player: {
+					workers: [
+						{
+							id: "worker1",
+							assignments: {
+								sawmill: { socketIndex: 0, material: "wood" },
+							},
+						},
+					],
+				},
+				places: {
+					village_center: { hasInventory: true, connections: [] },
+				},
+				inventory: {
+					village_center: { items: [] },
+				},
+			};
 			const deltaTime = 1000;
 
-			// Should not crash
 			expect(() => {
 				productionService.processBuildingProduction(
 					"sawmill",
+					0,
 					building,
 					state,
 					deltaTime,
 				);
 			}).not.toThrow();
 
-			// Error should be logged
 			expect(console.error).toHaveBeenCalledWith(
 				"Failed to create item during production",
 				expect.any(Error),

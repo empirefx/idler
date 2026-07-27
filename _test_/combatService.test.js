@@ -1,9 +1,10 @@
 // Test CombatService functionality
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CombatService } from "../src/game/services/CombatService";
-import { addItem } from "../src/store/slices/playerInventorySlice";
+import { addItem } from "../src/store/slices/inventorySlice";
 import { gainExp } from "../src/store/slices/playerSlice";
-import { createCombatState, createMockEnemy } from "./utils/testHelpers.js";
+import { createMockEnemy } from "./utils/testHelpers.js";
+import { createCombatState } from "./utils/stateFactory.js";
 
 describe("CombatService", () => {
 	let mockStore;
@@ -158,6 +159,7 @@ describe("CombatService", () => {
 					attackCooldown: 1000,
 					lastAttackTime: now - 500, // 500ms ago (less than 1000ms cooldown)
 				},
+				combat: { targetEnemyId: null },
 			});
 
 			const enemies = [{ id: "enemy1", placeId: "village_center", health: 50 }];
@@ -181,17 +183,19 @@ describe("CombatService", () => {
 					attackCooldown: 1000,
 					lastAttackTime: now - 1500, // 1500ms ago (more than 1000ms cooldown)
 				},
+				combat: { targetEnemyId: null },
 			});
 
 			const enemies = [{ id: "enemy1", placeId: "village_center", health: 50 }];
 
 			CombatService.handlePlayerAttack(enemies);
 
-			// Should attack since cooldown has elapsed
-			expect(mockStore.dispatch).toHaveBeenCalledWith({
-				type: "enemies/damageEnemy",
-				payload: { id: "enemy1", amount: 16 },
-			});
+			// Should have attacked the enemy (amount varies due to hit/miss)
+			const attackCalls = mockStore.dispatch.mock.calls.filter(
+				(call) => call[0].type === "enemies/damageEnemy",
+			);
+			expect(attackCalls.length).toBe(1);
+			expect(attackCalls[0][0].payload.id).toBe("enemy1");
 
 			// Should update last attack time
 			const updateCalls = mockStore.dispatch.mock.calls.filter(

@@ -2,6 +2,21 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CombatService } from "../src/game/services/CombatService";
 import { placesData } from "../src/data/places";
 
+vi.mock("../src/game/core/combatCalculator", () => ({
+	resolveAttack: vi.fn(() => ({
+		hit: true,
+		damage: 0,
+		crit: false,
+		damageType: "physical",
+	})),
+	resolveEnemyAttack: vi.fn(() => ({
+		hit: true,
+		damage: 5,
+		crit: false,
+		damageType: "physical",
+	})),
+}));
+
 describe("CombatService Staggered Attack Tests", () => {
 	let combatService;
 	let mockStore;
@@ -55,17 +70,19 @@ describe("CombatService Staggered Attack Tests", () => {
 				combat: {
 					isInCombat: true,
 				},
+				player: {
+					stats: { defense: 0, agility: 0, wisdom: 0 },
+				},
 			});
 		});
 
 		it("should handle enemies ready to attack", () => {
-			const currentTime = Date.now();
 			const enemies = [
 				{
 					id: "enemy1",
 					health: 50,
 					attackPattern: "staggered",
-					countdown: 0, // Ready to attack
+					countdown: -100,
 					isCountdownActive: true,
 					attackDelayRange: [2000, 5000],
 				},
@@ -73,7 +90,7 @@ describe("CombatService Staggered Attack Tests", () => {
 					id: "enemy2",
 					health: 30,
 					attackPattern: "staggered",
-					countdown: 1000, // Not ready
+					countdown: 1000,
 					isCountdownActive: true,
 					attackDelayRange: [2000, 5000],
 				},
@@ -89,8 +106,8 @@ describe("CombatService Staggered Attack Tests", () => {
 
 			// Should reset countdown for attacking enemy
 			expect(mockStore.dispatch).toHaveBeenCalledWith({
-				type: "enemies/resetEnemyCountdown",
-				payload: { id: "enemy1" },
+				type: "enemies/initializeCountdown",
+				payload: { id: "enemy1", countdown: expect.any(Number) },
 			});
 		});
 
@@ -100,7 +117,7 @@ describe("CombatService Staggered Attack Tests", () => {
 					id: "enemy1",
 					health: 50,
 					attackPattern: "staggered",
-					countdown: 0, // Ready
+					countdown: -100,
 					isCountdownActive: true,
 					attackDelayRange: [2000, 5000],
 				},
@@ -108,7 +125,7 @@ describe("CombatService Staggered Attack Tests", () => {
 					id: "enemy2",
 					health: 30,
 					attackPattern: "staggered",
-					countdown: 0, // Ready
+					countdown: -200,
 					isCountdownActive: true,
 					attackDelayRange: [2000, 5000],
 				},
@@ -124,9 +141,9 @@ describe("CombatService Staggered Attack Tests", () => {
 
 			// Should reset countdowns for both enemies
 			const resetCalls = mockStore.dispatch.mock.calls.filter(
-				(call) => call[0].type === "enemies/resetEnemyCountdown",
+				(call) => call[0].type === "enemies/initializeCountdown",
 			);
-			expect(resetCalls.length).toBe(2); // Both enemies should get reset
+			expect(resetCalls.length).toBe(2);
 		});
 
 		it("should ignore enemies with normal attack pattern", () => {
@@ -176,51 +193,54 @@ describe("CombatService Staggered Attack Tests", () => {
 				places: {
 					currentPlaceId: "test_place",
 				},
+				combat: {
+					targetEnemyId: null,
+				},
+			});
+		});
+
+		it("should select a random enemy when no current target", () => {
+			const aliveEnemies = [
+				{ id: "enemy1", health: 50 },
+				{ id: "enemy2", health: 30 },
+				{ id: "enemy3", health: 40 },
+			];
+
+			const selected = combatService.getOrSelectTarget(aliveEnemies);
+
+			// Should return one of the alive enemies
+			expect(aliveEnemies).toContain(selected);
+			// Should dispatch setTarget
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "combat/setTarget",
+				payload: selected.id,
+			});
+		});
+
+		it("should keep current target if still alive", () => {
+			mockStore.getState.mockReturnValue({
+				places: {
+					currentPlaceId: "test_place",
+				},
+				combat: {
+					targetEnemyId: "enemy2",
+				},
 			});
 
-			// Mock places data
-			global.placesData = {
-				test_place: {
-					spawn: {
-						attackPattern: {
-							attackOrder: "random",
-						},
-					},
-				},
-			};
-		});
-
-		it("should select random enemy for random attack order", () => {
-			const readyEnemies = [
-				{ id: "enemy1", nextAttackTime: 1000 },
-				{ id: "enemy2", nextAttackTime: 2000 },
-				{ id: "enemy3", nextAttackTime: 1500 },
+			const aliveEnemies = [
+				{ id: "enemy1", health: 50 },
+				{ id: "enemy2", health: 30 },
+				{ id: "enemy3", health: 40 },
 			];
 
-			const selected = combatService.selectAttackingEnemy(readyEnemies);
+			const selected = combatService.getOrSelectTarget(aliveEnemies);
 
-			// Should return one of the ready enemies
-			expect(readyEnemies).toContain(selected);
-		});
-
-		it("should select enemy with oldest attack time for sequential order", () => {
-			global.placesData.test_place.spawn.attackPattern.attackOrder =
-				"sequential";
-
-			const readyEnemies = [
-				{ id: "enemy1", nextAttackTime: 1000 }, // Oldest
-				{ id: "enemy2", nextAttackTime: 2000 },
-				{ id: "enemy3", nextAttackTime: 1500 },
-			];
-
-			const selected = combatService.selectAttackingEnemy(readyEnemies);
-
-			// Should return enemy that has been waiting longest (1000ms is the earliest)
-			expect([1000, 1500, 2000]).toContain(selected.nextAttackTime);
-		});
-
-		afterEach(() => {
-			delete global.placesData;
+			// Should return the current target
+			expect(selected.id).toBe("enemy2");
+			// Should not dispatch setTarget (kept existing target)
+			expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+				expect.objectContaining({ type: "combat/setTarget" }),
+			);
 		});
 	});
 
@@ -229,6 +249,12 @@ describe("CombatService Staggered Attack Tests", () => {
 			mockStore.getState.mockReturnValue({
 				places: {
 					currentPlaceId: "ancient_ruins",
+				},
+				combat: {
+					isInCombat: true,
+				},
+				player: {
+					stats: { defense: 0, agility: 0, wisdom: 0 },
 				},
 			});
 		});
@@ -255,21 +281,30 @@ describe("CombatService Staggered Attack Tests", () => {
 				},
 			];
 
-			// Mock combat state as active
-			mockStore.getState.mockReturnValue({
-				places: { currentPlaceId: "ancient_ruins" },
-				combat: { isInCombat: true },
-			});
-
 			combatService.handleStaggeredAttacks(enemies);
 
-			// Should dispatch synchronized countdown initialization
+			// Should dispatch individual countdown initialization for each enemy
 			expect(mockStore.dispatch).toHaveBeenCalledWith({
-				type: "enemies/initializeCountdownsForPlace",
+				type: "enemies/initializeCountdown",
 				payload: {
-					placeId: "ancient_ruins",
-					baseTimestamp: expect.any(Number),
+					id: "enemy1",
+					countdown: expect.any(Number),
 				},
+			});
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "enemies/setCountdownActive",
+				payload: { id: "enemy1", isActive: true },
+			});
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "enemies/initializeCountdown",
+				payload: {
+					id: "enemy2",
+					countdown: expect.any(Number),
+				},
+			});
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "enemies/setCountdownActive",
+				payload: { id: "enemy2", isActive: true },
 			});
 		});
 
@@ -290,6 +325,9 @@ describe("CombatService Staggered Attack Tests", () => {
 			mockStore.getState.mockReturnValue({
 				places: { currentPlaceId: "ancient_ruins" },
 				combat: { isInCombat: false },
+				player: {
+					stats: { defense: 0, agility: 0, wisdom: 0 },
+				},
 			});
 
 			combatService.handleStaggeredAttacks(enemies);

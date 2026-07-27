@@ -1,16 +1,16 @@
 import { describe, it, expect } from "vitest";
 import playerReducer, {
-	unassignWorker,
-	assignWorkerToBuilding,
+	unassignWorkerFromSocket,
+	assignWorkerToSocket,
 	damagePlayer,
 	healPlayer,
 	setPlayerState,
 	gainExp,
 	levelUp,
+	addWorker,
 	selectWorkers,
 	selectResources,
 	selectPlayer,
-	listBuildingsWithAssignedWorkers,
 	selectAssignedWorkers,
 	selectUnassignedWorkers,
 	selectGold,
@@ -44,18 +44,22 @@ describe("playerSlice reducer and selectors", () => {
 	});
 
 	it("should assign and unassign worker", () => {
-		const workerId = initialState.workers[0].id;
 		let state = playerReducer(
 			initialState,
-			assignWorkerToBuilding({ workerId, buildingId: "b1" }),
+			addWorker({ id: 1, name: "Test Worker" }),
+		);
+		const workerId = state.workers[0].id;
+		state = playerReducer(
+			state,
+			assignWorkerToSocket({ workerId, placeId: "p1", socketIndex: 0, material: null, buildingName: "b1" }),
 		);
 		expect(
-			state.workers.find((w) => w.id === workerId).assignedBuildingId,
-		).toBe("b1");
-		state = playerReducer(state, unassignWorker({ workerId }));
+			state.workers.find((w) => w.id === workerId).assignments["p1"].socketIndex,
+		).toBe(0);
+		state = playerReducer(state, unassignWorkerFromSocket({ workerId, placeId: "p1" }));
 		expect(
-			state.workers.find((w) => w.id === workerId).assignedBuildingId,
-		).toBe(null);
+			state.workers.find((w) => w.id === workerId).assignments,
+		).toEqual({});
 	});
 
 	it("should damage and heal player health", () => {
@@ -85,16 +89,18 @@ describe("playerSlice reducer and selectors", () => {
 	});
 
 	it("should list assigned and unassigned workers", () => {
-		const workerId = initialState.workers[0].id;
-		const state = playerReducer(
+		let state = playerReducer(
 			initialState,
-			assignWorkerToBuilding({ workerId, buildingId: "b1" }),
+			addWorker({ id: 1, name: "Test Worker" }),
 		);
-		expect(listBuildingsWithAssignedWorkers({ player: state })).toEqual(["b1"]);
-		expect(selectAssignedWorkers({ player: state }).length).toBeGreaterThan(0);
-		expect(selectUnassignedWorkers({ player: initialState }).length).toBe(
-			initialState.workers.length,
+		const workerId = state.workers[0].id;
+		state = playerReducer(
+			state,
+			assignWorkerToSocket({ workerId, placeId: "p1", socketIndex: 0, material: null, buildingName: "b1" }),
 		);
+		expect(selectAssignedWorkers({ player: state }).length).toBe(1);
+		expect(selectUnassignedWorkers({ player: state }).length).toBe(0);
+		expect(selectUnassignedWorkers({ player: initialState }).length).toBe(0);
 	});
 
 	it("selectPlayer returns correct UI player object", () => {

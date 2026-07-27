@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { configureStore } from "@reduxjs/toolkit";
-import playerInventoryReducer from "../../src/store/slices/playerInventorySlice";
-import placeInventoryReducer from "../../src/store/slices/placeInventorySlice";
+import inventoryReducer from "../../src/store/slices/inventorySlice";
 import playerReducer from "../../src/store/slices/playerSlice";
 import buildingsReducer from "../../src/store/slices/buildingsSlice";
 import placesReducer from "../../src/store/slices/placesSlice";
@@ -26,8 +25,7 @@ describe("GameEngine Integration Tests", () => {
 				places: placesReducer,
 				enemies: enemiesReducer,
 				combat: combatReducer,
-				playerInventory: playerInventoryReducer,
-				placeInventory: placeInventoryReducer,
+			inventory: inventoryReducer,
 			},
 			preloadedState: {
 				player: {
@@ -92,7 +90,7 @@ describe("GameEngine Integration Tests", () => {
 
 			// Verify the production cycle ran without errors
 			const state = store.getState();
-			const inventory = state.placeInventory["village_center"];
+			const inventory = state.inventory["village_center"];
 
 			expect(inventory).toBeDefined();
 			expect(inventory.items).toBeDefined();
@@ -178,8 +176,7 @@ describe("GameEngine Integration Tests", () => {
 			expect(state).toHaveProperty("player");
 			expect(state).toHaveProperty("buildings");
 			expect(state).toHaveProperty("places");
-			expect(state).toHaveProperty("playerInventory");
-			expect(state).toHaveProperty("placeInventory");
+			expect(state).toHaveProperty("inventory");
 
 			gameEngine.stop();
 		});
