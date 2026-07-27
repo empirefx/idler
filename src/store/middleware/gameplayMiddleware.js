@@ -1,8 +1,8 @@
 import Gameplay from "../../game/core/Gameplay";
 import {
+	ENEMY_DEAD,
 	PLAYER_INTENT_ACCEPT_QUEST,
 	PLAYER_INTENT_COMPLETE_QUEST,
-	ENEMY_DEAD,
 } from "../../game/events";
 
 let gameplayInstance = null;

@@ -1,6 +1,6 @@
-import SkillBar from "./SkillBar";
 import ControlSection from "./ControlSection";
 import PlayerEntitySection from "./PlayerEntitySection";
+import SkillBar from "./SkillBar";
 
 import "../../../styles/sections/action-section.css";
 

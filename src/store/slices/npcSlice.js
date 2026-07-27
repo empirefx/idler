@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { npcCatalog } from "../../data/npcCatalog";
 
 // Merge catalog data with runtime state

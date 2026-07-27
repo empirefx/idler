@@ -1,26 +1,27 @@
 // Combat Service - coordinates combat state with game loop
-import Logger from "../utils/Logger";
+
 import { batch } from "react-redux";
-import { enemyAttacked, playerDamaged, enemyDead } from "../events";
 import { addItem } from "../../store/slices/inventorySlice";
 import {
-	gainExp,
-	updateLastAttackTime,
-	tickBuffs,
 	activateSkill,
 	addBuff,
+	gainExp,
 	pauseCooldowns,
 	resumeCooldowns,
+	tickBuffs,
+	updateLastAttackTime,
 } from "../../store/slices/playerSlice";
-import { createItem } from "../factory/itemFactory";
 import { resolveAttack, resolveEnemyAttack } from "../core/combatCalculator";
+import { enemyAttacked, enemyDead, playerDamaged } from "../events";
+import { createItem } from "../factory/itemFactory";
+import { getWeaponProfile } from "../utils/combatResolvers";
+import Logger from "../utils/Logger";
 import {
 	getNextSkillToActivate,
-	markSkillActivated,
 	getRankData,
+	markSkillActivated,
 	resetSkillRotation,
 } from "../utils/skillResolver";
-import { getWeaponProfile } from "../utils/combatResolvers";
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.

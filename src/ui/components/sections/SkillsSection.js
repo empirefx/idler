@@ -1,11 +1,11 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { DAMAGE_TYPES } from "../../../data/combatTypes";
+import { getSkillById, SKILL_COLUMNS } from "../../../data/skillsData";
 import {
-	selectSkillPoints,
 	selectPlayerSkills,
+	selectSkillPoints,
 	spendSkillPoint,
 } from "../../../store/slices/playerSlice";
-import { SKILL_COLUMNS, getSkillById } from "../../../data/skillsData";
-import { DAMAGE_TYPES } from "../../../data/combatTypes";
 
 const SkillsSection = () => {
 	const dispatch = useDispatch();

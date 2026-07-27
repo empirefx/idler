@@ -387,10 +387,10 @@
 	.ca-panel,
 	.ca-panel::before,
 	.ca-icon {
-		animation: none !important;
+		animation: none;
 	}
 	.ca-btn {
-		transition: none !important;
+		transition: none;
 	}
 }
 

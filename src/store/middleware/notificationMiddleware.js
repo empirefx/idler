@@ -1,6 +1,8 @@
 import { INVENTORY_ERRORS } from "../../store/slices/inventory/inventoryTypes.js";
-import { addNotification } from "../../store/slices/notificationSlice.js";
-import { NOTIFICATION_TYPES } from "../../store/slices/notificationSlice.js";
+import {
+	addNotification,
+	NOTIFICATION_TYPES,
+} from "../../store/slices/notificationSlice.js";
 import { calculateTotalPlayerWeight } from "../slices/inventory/inventoryUtils.js";
 
 const notificationMiddleware = (store) => (next) => (action) => {

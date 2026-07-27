@@ -1,14 +1,14 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { inventoryData } from "../../data/inventory.js";
 import {
 	EQUIPMENT_SLOTS,
 	INVENTORY_TYPES,
 } from "./inventory/inventoryTypes.js";
 import {
+	calculateTotalPlayerWeight,
+	calculateWeight,
 	canItemsStack,
 	cloneItem,
-	calculateWeight,
-	calculateTotalPlayerWeight,
 	countSlots,
 } from "./inventory/inventoryUtils.js";
 

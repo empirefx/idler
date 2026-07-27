@@ -2,7 +2,7 @@ import React from "react";
 
 const BuildingCard = ({
 	slotIndex,
-	socket,
+	socket: _socket,
 	buildingData,
 	level,
 	isLocked,
@@ -98,6 +98,7 @@ const BuildingCard = ({
 					<span className="section-title">Materials</span>
 					<div className="material-list">
 						{unlockedMaterials.map((item, idx) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: materials list is static, never reordered
 							<div key={idx} className="material-item unlocked">
 								<span className="material-level">Lv.{item.level}</span>
 								<span className="material-name">{item.material}</span>
@@ -111,6 +112,7 @@ const BuildingCard = ({
 						<span className="section-title">LOCKED</span>
 						<div className="material-list">
 							{lockedMaterials.map((item, idx) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: locked materials list is static, never reordered
 								<div key={idx} className="material-item locked">
 									<span className="material-level">Lv.{item.level}</span>
 									<span className="material-name">{item.material}</span>

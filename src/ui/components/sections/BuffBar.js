@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { selectPlayer } from "../../../store/slices/playerSlice";
 import { skillsCatalog } from "../../../data/skillsData";
+import { selectPlayer } from "../../../store/slices/playerSlice";
 
 const BuffBar = () => {
 	const player = useSelector(selectPlayer);
@@ -34,8 +34,8 @@ const BuffBar = () => {
 		<div className="buff-bar">
 			<div className="buff-bar-slots">
 				{buffSlots.map((slot, index) => (
-					<div
-						key={`${slot.skillId}-${index}`}
+					// biome-ignore lint/suspicious/noArrayIndexKey: index only for uniqueness within stable slot list
+					<div key={`${slot.skillId}-${index}`}
 						className="buff-slot buff-slot--active"
 					>
 						<div className="buff-icon-container">

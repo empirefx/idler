@@ -1,22 +1,20 @@
 import { useSelector } from "react-redux";
-import { useUIVisibility } from "../UIVisibilityContext";
-
-import CurrentPlaceDisplay from "../components/display/CurrentPlaceDisplay";
-import PlayerSection from "../components/sections/PlayerSection";
-import WorkersSection from "../components/sections/WorkersSection";
-import BuildingSection from "../components/sections/BuildingSection";
-import BuildingPanel from "../components/sections/BuildingPanel";
-import EnemySection from "../components/sections/EnemySection";
-import ActionSection from "../components/sections/ActionSection";
-import NPCSection from "../components/sections/NPCSection";
-import PlacesSection from "../components/sections/PlacesSection";
-import LogSection from "../components/sections/LogSection";
+import { selectBackgroundImage } from "../../store/slices/placesSlice";
 import NotificationContainer from "../components/common/NotificationContainer";
 import NPCDialog from "../components/common/NPCDialog";
+import CurrentPlaceDisplay from "../components/display/CurrentPlaceDisplay";
+import ActionSection from "../components/sections/ActionSection";
+import BuildingPanel from "../components/sections/BuildingPanel";
+import BuildingSection from "../components/sections/BuildingSection";
 import CraftingSection from "../components/sections/CraftingSection";
+import EnemySection from "../components/sections/EnemySection";
+import LogSection from "../components/sections/LogSection";
+import NPCSection from "../components/sections/NPCSection";
+import PlacesSection from "../components/sections/PlacesSection";
+import PlayerSection from "../components/sections/PlayerSection";
 import WorkerManagerSection from "../components/sections/WorkerManagerSection";
-
-import { selectBackgroundImage } from "../../store/slices/placesSlice";
+import WorkersSection from "../components/sections/WorkersSection";
+import { useUIVisibility } from "../UIVisibilityContext";
 
 const GameLayout = ({ clearCache }) => {
 	const currentPlaceBackgroundImage = useSelector(selectBackgroundImage);

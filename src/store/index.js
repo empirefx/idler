@@ -1,18 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import playerReducer from "./slices/playerSlice";
+import gameEventMiddleware from "./middleware/gameEventMiddleware";
+import gameplayMiddleware from "./middleware/gameplayMiddleware";
+import logMiddleware from "./middleware/logMiddleware";
+import notificationMiddleware from "./middleware/notificationMiddleware";
 import buildingsReducer from "./slices/buildingsSlice";
-import placesReducer from "./slices/placesSlice";
-import inventoryReducer from "./slices/inventorySlice";
-import npcReducer from "./slices/npcSlice";
-import enemiesReducer from "./slices/enemiesSlice";
 import combatReducer from "./slices/combatSlice";
+import enemiesReducer from "./slices/enemiesSlice";
+import inventoryReducer from "./slices/inventorySlice";
 import logReducer from "./slices/logSlice";
 import notificationReducer from "./slices/notificationSlice";
-import logMiddleware from "./middleware/logMiddleware";
-import gameEventMiddleware from "./middleware/gameEventMiddleware";
+import npcReducer from "./slices/npcSlice";
+import placesReducer from "./slices/placesSlice";
+import playerReducer from "./slices/playerSlice";
 import questsReducer from "./slices/questSlice";
-import gameplayMiddleware from "./middleware/gameplayMiddleware";
-import notificationMiddleware from "./middleware/notificationMiddleware";
 
 export const store = configureStore({
 	reducer: {

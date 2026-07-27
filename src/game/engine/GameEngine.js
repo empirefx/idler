@@ -1,24 +1,23 @@
-import Logger from "../utils/Logger";
-
-import { InventoryService } from "../services/InventoryService";
-import { CraftingService } from "../services/CraftingService";
-import { createItem } from "../factory/itemFactory";
-import SpawnService from "../services/SpawnService";
-import { globalEventBus } from "../services/EventBusService";
-import { CombatService } from "../services/CombatService";
+import { buildingsData } from "../../data/buildings";
+import GameLoop from "../core/GameLoop";
 import {
-	workerCreatedItem,
 	playerIntentCraft,
 	playerIntentLearnRecipe,
+	workerCreatedItem,
 } from "../events";
-import GameLoop from "../core/GameLoop";
+import { createItem } from "../factory/itemFactory";
+import BuildingService from "../services/BuildingService";
+import { CombatService } from "../services/CombatService";
+import { CraftingService } from "../services/CraftingService";
+import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
+import { globalEventBus } from "../services/EventBusService";
+import { InventoryService } from "../services/InventoryService";
+import { NavigationService } from "../services/NavigationService";
 import ProductionService from "../services/ProductionService";
 import { SaveService } from "../services/SaveService";
-import { NavigationService } from "../services/NavigationService";
-import { EnemyLifecycleService } from "../services/EnemyLifecycleService";
-import BuildingService from "../services/BuildingService";
+import SpawnService from "../services/SpawnService";
 import WorkerService from "../services/WorkerService";
-import { buildingsData } from "../../data/buildings";
+import Logger from "../utils/Logger";
 
 /**
  * GameEngine: wires systems + runs game loop

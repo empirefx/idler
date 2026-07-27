@@ -1,7 +1,9 @@
-import { selectIsReadyToLevelUp } from "../slices/playerSlice";
 import { selectIsInCombat } from "../slices/combatSlice";
-import { addNotification } from "../slices/notificationSlice";
-import { NOTIFICATION_TYPES } from "../slices/notificationSlice";
+import {
+	addNotification,
+	NOTIFICATION_TYPES,
+} from "../slices/notificationSlice";
+import { selectIsReadyToLevelUp } from "../slices/playerSlice";
 
 const gameEventMiddleware = (store) => (next) => (action) => {
 	const prevState = store.getState();

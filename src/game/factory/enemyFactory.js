@@ -1,5 +1,5 @@
-import Logger from "../utils/Logger";
 import { enemyCatalog } from "../../data/enemyCatalog";
+import Logger from "../utils/Logger";
 
 // Factory for creating enemy instances with base stats
 export const createEnemy = (type, options = {}) => {

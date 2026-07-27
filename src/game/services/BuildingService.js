@@ -1,12 +1,12 @@
-import Logger from "../utils/Logger";
 import {
-	PLAYER_INTENT_BUY_SOCKET,
-	PLAYER_INTENT_BUILD,
-	PLAYER_INTENT_UPGRADE,
-	PLAYER_INTENT_DEMOLISH,
-	buildSuccess,
 	buildFailed,
+	buildSuccess,
+	PLAYER_INTENT_BUILD,
+	PLAYER_INTENT_BUY_SOCKET,
+	PLAYER_INTENT_DEMOLISH,
+	PLAYER_INTENT_UPGRADE,
 } from "../events";
+import Logger from "../utils/Logger";
 
 export default class BuildingService {
 	constructor(store, dispatch, eventBus, buildingsData) {
@@ -65,7 +65,7 @@ export default class BuildingService {
 
 	canBuySocket(placeId, socketIndex) {
 		const place = this.getPlace(placeId);
-		if (!place || !place.sockets || !place.sockets[socketIndex]) {
+		if (!place?.sockets?.[socketIndex]) {
 			return { valid: false, error: "Invalid place or socket" };
 		}
 
@@ -115,7 +115,7 @@ export default class BuildingService {
 
 	canBuild(placeId, socketIndex, buildingId) {
 		const place = this.getPlace(placeId);
-		if (!place || !place.sockets || !place.sockets[socketIndex]) {
+		if (!place?.sockets?.[socketIndex]) {
 			return { valid: false, error: "Invalid place or socket" };
 		}
 
@@ -174,7 +174,7 @@ export default class BuildingService {
 
 	canUpgrade(placeId, socketIndex) {
 		const place = this.getPlace(placeId);
-		if (!place || !place.sockets || !place.sockets[socketIndex]) {
+		if (!place?.sockets?.[socketIndex]) {
 			return { valid: false, error: "Invalid place or socket" };
 		}
 
@@ -241,7 +241,7 @@ export default class BuildingService {
 
 	canDemolish(placeId, socketIndex) {
 		const place = this.getPlace(placeId);
-		if (!place || !place.sockets || !place.sockets[socketIndex]) {
+		if (!place?.sockets?.[socketIndex]) {
 			return { valid: false, error: "Invalid place or socket" };
 		}
 

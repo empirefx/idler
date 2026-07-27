@@ -1,4 +1,4 @@
-import { createSlice, createSelector, nanoid } from "@reduxjs/toolkit";
+import { createSelector, createSlice, nanoid } from "@reduxjs/toolkit";
 
 // Notification types
 export const NOTIFICATION_TYPES = {

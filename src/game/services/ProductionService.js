@@ -1,7 +1,7 @@
-import Logger from "../utils/Logger";
 import { addNotification } from "../../store/slices/notificationSlice";
 import { unassignWorkerFromSocketWithEvent } from "../../store/slices/playerSlice";
 import { workerCreatedItem } from "../events";
+import Logger from "../utils/Logger";
 
 export default class ProductionService {
 	constructor(inventoryService, itemFactory, store, dispatch, events) {
@@ -102,16 +102,14 @@ export default class ProductionService {
 	getWorkerByPlaceAndSocket(state, placeId, socketIndex) {
 		const workers = state.player?.workers || [];
 		return workers.find(
-			(worker) =>
-				worker.assignments?.[placeId]?.socketIndex === socketIndex,
+			(worker) => worker.assignments?.[placeId]?.socketIndex === socketIndex,
 		);
 	}
 
 	getWorkersByPlaceAndSocket(state, placeId, socketIndex) {
 		const workers = state.player?.workers || [];
 		return workers.filter(
-			(worker) =>
-				worker.assignments?.[placeId]?.socketIndex === socketIndex,
+			(worker) => worker.assignments?.[placeId]?.socketIndex === socketIndex,
 		);
 	}
 
@@ -152,9 +150,6 @@ export default class ProductionService {
 	canBuildingProduce(state, placeId, socketIndex, buildingData) {
 		const worker = this.getWorkerByPlaceAndSocket(state, placeId, socketIndex);
 		const assignment = worker?.assignments?.[placeId];
-		return (
-			assignment?.material &&
-			(buildingData.baseProductionRate || 0) > 0
-		);
+		return assignment?.material && (buildingData.baseProductionRate || 0) > 0;
 	}
 }

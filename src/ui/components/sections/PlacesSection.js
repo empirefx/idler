@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/places-section.css";
-import InventoryDisplay from "../display/InventoryDisplay";
-import PlaceCard from "../card/PlaceCard";
-import {
-	selectCurrentPlace,
-	selectAvailableConnections,
-} from "../../../store/slices/placesSlice";
 import { selectInventoryByPlaceId } from "../../../store/slices/inventorySlice";
+import {
+	selectAvailableConnections,
+	selectCurrentPlace,
+} from "../../../store/slices/placesSlice";
+import PlaceCard from "../card/PlaceCard";
+import InventoryDisplay from "../display/InventoryDisplay";
 
 const PlacesSection = () => {
 	const currentPlace = useSelector(selectCurrentPlace);

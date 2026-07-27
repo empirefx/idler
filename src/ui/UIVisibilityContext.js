@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 // Manages the visibility of UI panels/cards
 const UIVisibilityContext = createContext();

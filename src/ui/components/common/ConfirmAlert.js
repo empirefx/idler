@@ -51,6 +51,7 @@
  */
 
 var React = require("react");
+
 import "./../../../styles/components/ConfirmAlert.css";
 
 /* ── Default configuration ──────────────────────────────────────── */
@@ -86,8 +87,8 @@ var VARIANT_ICONS = {
 function cfg(props) {
 	var out = {};
 	var keys = Object.keys(DEFAULTS);
-	for (var i = 0; i < keys.length; i++) {
-		var k = keys[i];
+	for (let i = 0; i < keys.length; i++) {
+		const k = keys[i];
 		out[k] = props[k] !== undefined ? props[k] : DEFAULTS[k];
 	}
 	// onClose falls back to onCancel
@@ -120,7 +121,7 @@ function ConfirmAlert(rawProps) {
 	var panelRef = React.useRef(null);
 	React.useEffect(() => {
 		if (p.open && panelRef.current) {
-			var first = panelRef.current.querySelector(
+			const first = panelRef.current.querySelector(
 				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
 			);
 			if (first) first.focus();
@@ -180,7 +181,7 @@ function ConfirmAlert(rawProps) {
 			)
 		: null;
 
-	var actionsClass = "ca-actions" + (p.stacked ? " ca-stacked" : "");
+	var actionsClass = `ca-actions${p.stacked ? " ca-stacked" : ""}`;
 
 	/* ── Close (×) button ── */
 	var closeBtn = p.showClose
@@ -201,7 +202,7 @@ function ConfirmAlert(rawProps) {
 		"div",
 		{
 			ref: panelRef,
-			className: "ca-panel ca-variant-" + p.variant,
+			className: `ca-panel ca-variant-${p.variant}`,
 			role: "alertdialog",
 			"aria-modal": "true",
 			"aria-labelledby": "ca-title",
@@ -265,7 +266,7 @@ function ConfirmAlert(rawProps) {
 	return React.createElement(
 		"div",
 		{
-			className: "ca-overlay" + (p.overlay ? "" : " ca-overlay--bare"),
+			className: `ca-overlay${p.overlay ? "" : " ca-overlay--bare"}`,
 			role: "presentation",
 			onClick: handleOverlayClick,
 		},

@@ -1,9 +1,7 @@
 import { useSelector } from "react-redux";
-
+import { getPassiveSkillBonus } from "../../../game/core/combatCalculator";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import { selectPlayerSkills } from "../../../store/slices/playerSlice";
-import { getPassiveSkillBonus } from "../../../game/core/combatCalculator";
-import { getWeaponProfile } from "../../../game/utils/combatResolvers";
 
 const BaseStatsList = ({ baseStats, exp, expToNext }) => {
 	const playerInventory = useSelector((state) =>

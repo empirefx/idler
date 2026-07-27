@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { shallowEqual } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import {
 	selectActiveCooldowns,
 	selectPausedCooldowns,

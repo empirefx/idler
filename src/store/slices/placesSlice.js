@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { placesData } from "../../data/places";
 
 const initialState = {
@@ -51,14 +51,14 @@ export const placesSlice = createSlice({
 		buySocket: (state, action) => {
 			const { placeId, socketIndex } = action.payload;
 			const place = state[placeId];
-			if (place && place.sockets && place.sockets[socketIndex]) {
+			if (place?.sockets?.[socketIndex]) {
 				place.sockets[socketIndex].status = "empty";
 			}
 		},
 		buildBuilding: (state, action) => {
 			const { placeId, socketIndex, buildingId } = action.payload;
 			const place = state[placeId];
-			if (place && place.sockets && place.sockets[socketIndex]) {
+			if (place?.sockets?.[socketIndex]) {
 				place.sockets[socketIndex] = {
 					status: "occupied",
 					buildingId,
@@ -69,7 +69,7 @@ export const placesSlice = createSlice({
 		upgradeBuilding: (state, action) => {
 			const { placeId, socketIndex } = action.payload;
 			const place = state[placeId];
-			if (place && place.sockets && place.sockets[socketIndex]) {
+			if (place?.sockets?.[socketIndex]) {
 				const socket = place.sockets[socketIndex];
 				if (socket.status === "occupied") {
 					socket.level = (socket.level || 1) + 1;
@@ -79,7 +79,7 @@ export const placesSlice = createSlice({
 		demolishBuilding: (state, action) => {
 			const { placeId, socketIndex } = action.payload;
 			const place = state[placeId];
-			if (place && place.sockets && place.sockets[socketIndex]) {
+			if (place?.sockets?.[socketIndex]) {
 				place.sockets[socketIndex] = { status: "empty" };
 			}
 		},

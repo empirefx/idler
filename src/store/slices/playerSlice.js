@@ -1,7 +1,6 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
-
-import { playerData } from "../../data/player";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { buildingsData } from "../../data/buildings";
+import { playerData } from "../../data/player";
 import { workerAssigned, workerUnassigned } from "../../game/events";
 
 const getNextWorkerId = (workers) => {
@@ -115,7 +114,7 @@ export const playerSlice = createSlice({
 		unassignWorkerFromSocket: (state, action) => {
 			const { workerId, placeId } = action.payload;
 			const worker = state.workers.find((w) => w.id === workerId);
-			if (worker && worker.assignments && worker.assignments[placeId]) {
+			if (worker?.assignments?.[placeId]) {
 				action.payload.workerName = worker.name;
 				action.payload.buildingName = worker.assignments[placeId].buildingName;
 				delete worker.assignments[placeId];
@@ -389,17 +388,14 @@ export const selectWorkerByPlaceAndSocket = (placeId, socketIndex) =>
 	createSelector([selectWorkers], (workers) =>
 		workers.find(
 			(worker) =>
-				worker.assignments &&
-				worker.assignments[placeId] &&
+				worker.assignments?.[placeId] &&
 				worker.assignments[placeId].socketIndex === socketIndex,
 		),
 	);
 
 export const selectWorkersByPlace = (placeId) =>
 	createSelector([selectWorkers], (workers) =>
-		workers.filter(
-			(worker) => worker.assignments && worker.assignments[placeId],
-		),
+		workers.filter((worker) => worker.assignments?.[placeId]),
 	);
 
 export const selectActiveBuffs = (state) => state.player.activeBuffs || [];

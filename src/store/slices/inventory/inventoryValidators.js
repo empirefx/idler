@@ -1,7 +1,7 @@
 import {
+	EQUIPMENT_SLOTS,
 	INVENTORY_ERRORS,
 	INVENTORY_TYPES,
-	EQUIPMENT_SLOTS,
 	TYPE_TO_SLOT,
 } from "./inventoryTypes.js";
 import { calculateWeight, countSlots } from "./inventoryUtils.js";

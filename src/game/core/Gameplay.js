@@ -1,11 +1,5 @@
-import Logger from "../utils/Logger";
-import { checkQuestEligibility } from "../utils/questValidators";
-import {
-	questAccepted,
-	questProgressUpdated,
-	questCompleted,
-} from "../../store/slices/questSlice";
-import { addGold, gainExp } from "../../store/slices/playerSlice";
+import { itemCatalog } from "../../data/itemCatalog";
+import { questCatalog } from "../../data/questCatalog";
 import {
 	addItem as addPlayerItem,
 	removeItem as removePlayerItem,
@@ -14,8 +8,14 @@ import {
 	addNotification,
 	NOTIFICATION_TYPES,
 } from "../../store/slices/notificationSlice";
-import { questCatalog } from "../../data/questCatalog";
-import { itemCatalog } from "../../data/itemCatalog";
+import { addGold, gainExp } from "../../store/slices/playerSlice";
+import {
+	questAccepted,
+	questCompleted,
+	questProgressUpdated,
+} from "../../store/slices/questSlice";
+import Logger from "../utils/Logger";
+import { checkQuestEligibility } from "../utils/questValidators";
 
 class Gameplay {
 	constructor(store, dispatch) {

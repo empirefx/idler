@@ -1,22 +1,22 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/building-panel.css";
-import { useUIVisibility } from "../../UIVisibilityContext";
-import BuildingCard from "../card/BuildingCard";
-import BuildingSelector from "../card/BuildingSelector";
+import {
+	PLAYER_INTENT_BUILD,
+	PLAYER_INTENT_BUY_SOCKET,
+	PLAYER_INTENT_UPGRADE,
+} from "../../../game/events";
 import { globalEventBus } from "../../../game/services/EventBusService";
+import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
 import {
 	selectCurrentPlace,
 	selectCurrentPlaceSockets,
 } from "../../../store/slices/placesSlice";
-import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
 import { selectGold } from "../../../store/slices/playerSlice";
-import {
-	PLAYER_INTENT_BUY_SOCKET,
-	PLAYER_INTENT_BUILD,
-	PLAYER_INTENT_UPGRADE,
-} from "../../../game/events";
+import { useUIVisibility } from "../../UIVisibilityContext";
+import BuildingCard from "../card/BuildingCard";
+import BuildingSelector from "../card/BuildingSelector";
 
 const BuildingPanel = ({ onClose }) => {
 	const { buildingPanel } = useUIVisibility();
@@ -80,10 +80,10 @@ const BuildingPanel = ({ onClose }) => {
 			const canAffordUpgrade = gold >= (upgrade?.cost || 0);
 			const hasUpgrade = !!upgrade;
 
-			return (
-				<BuildingCard
-					key={i}
-					slotIndex={i}
+		return (
+			// biome-ignore lint/suspicious/noArrayIndexKey: socket index is stable, never reordered
+			<BuildingCard key={i}
+				slotIndex={i}
 					socket={socket}
 					buildingData={building}
 					level={level}

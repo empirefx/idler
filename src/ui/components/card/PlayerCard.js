@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-
-import InventoryDisplay from "../display/InventoryDisplay";
+import { levelUp } from "../../../store/slices/playerSlice";
+import NewLevelDialog from "../common/NewLevelDialog";
 import EquipmentDisplay from "../display/EquipmentDisplay";
+import InventoryDisplay from "../display/InventoryDisplay";
 import BaseStatsList from "../list/BaseStatsList";
 import DerivedStatsList from "../list/DerivedStatsList";
-import NewLevelDialog from "../common/NewLevelDialog";
 import QuestSection from "../sections/QuestSection";
 import SkillsSection from "../sections/SkillsSection";
-import { levelUp } from "../../../store/slices/playerSlice";
 
 const PlayerCard = ({ player, vaultId }) => {
 	const dispatch = useDispatch();

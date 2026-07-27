@@ -1,14 +1,13 @@
-import { moveItem, addItem, removeItem } from "./inventorySlice.js";
+import { INVENTORY_TYPES } from "./inventory/inventoryTypes.js";
+import { canItemsStack } from "./inventory/inventoryUtils.js";
 import {
 	validateItemExists,
 	validateMoveQuantity,
 	validateSlotLimit,
 	validateWeightLimit,
 } from "./inventory/inventoryValidators.js";
-import { canItemsStack, cloneItem } from "./inventory/inventoryUtils.js";
-import { addNotification } from "./notificationSlice.js";
-import { NOTIFICATION_TYPES } from "./notificationSlice.js";
-import { INVENTORY_TYPES } from "./inventory/inventoryTypes.js";
+import { moveItem, removeItem } from "./inventorySlice.js";
+import { addNotification, NOTIFICATION_TYPES } from "./notificationSlice.js";
 
 const validateMove = (fromInventory, toInventory, itemId, quantity) => {
 	if (!fromInventory || !toInventory) {
@@ -95,7 +94,7 @@ export const moveItemBetweenInventories = (
 			return false;
 		}
 
-		const { item, moveQuantity } = validation;
+		const { moveQuantity } = validation;
 
 		try {
 			dispatch(

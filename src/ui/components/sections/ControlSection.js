@@ -1,19 +1,19 @@
-import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 
 import "../../../styles/sections/control-section.css";
-import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import {
 	selectIsInCombat,
 	startCombat,
 	stopCombat,
 } from "../../../store/slices/combatSlice";
+import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import {
 	selectResources,
 	selectWorkers,
 } from "../../../store/slices/playerSlice";
-import ControlDisplay from "../display/ControlDisplay";
 import KeyBind from "../common/KeyBind";
+import ControlDisplay from "../display/ControlDisplay";
 
 // selectors
 const selectMaxWorkers = (state) => state.player.MAX_WORKERS || 0;

@@ -1,18 +1,17 @@
-import { useSelector, shallowEqual } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
-
-import { selectInventoryById } from "../../../store/slices/inventorySlice";
-import { selectPlayerSkills } from "../../../store/slices/playerSlice";
+import { shallowEqual, useSelector } from "react-redux";
 import {
-	resolveStats,
-	getMaxHealth,
-	rollHit,
-	rollCrit,
-	calculatePhysicalDamage,
 	calculateMagicDamage,
+	calculatePhysicalDamage,
 	calculateRangedDamage,
+	getMaxHealth,
+	resolveStats,
+	rollCrit,
+	rollHit,
 } from "../../../game/core/combatCalculator";
 import { getWeaponProfile } from "../../../game/utils/combatResolvers";
+import { selectInventoryById } from "../../../store/slices/inventorySlice";
+import { selectPlayerSkills } from "../../../store/slices/playerSlice";
 
 const selectPlayerData = createSelector(
 	[(state) => selectInventoryById(state, "player"), (state) => state.player],

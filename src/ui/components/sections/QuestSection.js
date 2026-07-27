@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
+import { itemCatalog } from "../../../data/itemCatalog";
+import { questCatalog } from "../../../data/questCatalog";
+import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import {
 	selectActiveQuestIds,
 	selectCompletedQuestIds,
 } from "../../../store/slices/questSlice";
-import { selectInventoryById } from "../../../store/slices/inventorySlice";
-import { questCatalog } from "../../../data/questCatalog";
-import { itemCatalog } from "../../../data/itemCatalog";
 
 const QuestItem = ({ questId }) => {
 	const quest = questCatalog[questId];

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-	unequipItem,
 	selectInventoryById,
+	unequipItem,
 } from "../../../store/slices/inventorySlice";
 import Item from "../common/Item";
 

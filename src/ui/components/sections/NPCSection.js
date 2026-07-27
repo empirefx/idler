@@ -2,11 +2,11 @@ import { useSelector } from "react-redux";
 import { useUIVisibility } from "../../UIVisibilityContext";
 
 import "../../../styles/sections/npc-section.css";
-import NPCList from "../list/NPCList";
 import {
-	selectNPCsForCurrentPlace,
 	selectAllNPCs,
+	selectNPCsForCurrentPlace,
 } from "../../../store/slices/npcSlice";
+import NPCList from "../list/NPCList";
 
 const NPCSection = () => {
 	const npcs = useSelector(selectNPCsForCurrentPlace);

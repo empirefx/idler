@@ -270,6 +270,7 @@
 	text-align: center;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: base style for unknown recipe heading, scoped override follows */
 .unknown-recipe h4 {
 	font-size: 1.2rem;
 	color: var(--color-gray);

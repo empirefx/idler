@@ -6,7 +6,6 @@ const InputManager = () => {
 	const {
 		togglePlayerCard,
 		toggleWorkerCard,
-		toggleWorkerManagerWindow,
 		toggleCraftingWindow,
 		toggleBuildingPanel,
 		closePlayerCard,
@@ -63,7 +62,6 @@ const InputManager = () => {
 	}, [
 		togglePlayerCard,
 		toggleWorkerCard,
-		toggleWorkerManagerWindow,
 		toggleBuildingPanel,
 		closeNPCDialog,
 		toggleCraftingWindow,

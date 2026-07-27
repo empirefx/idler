@@ -1,6 +1,6 @@
-import Logger from "../utils/Logger";
-import createEnemy from "../factory/enemyFactory";
 import { placesData } from "../../data/places";
+import createEnemy from "../factory/enemyFactory";
+import Logger from "../utils/Logger";
 
 class BaseSpawner {
 	#isDestroyed = false; // Flag to track if the spawner is destroyed

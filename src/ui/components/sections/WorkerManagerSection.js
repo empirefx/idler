@@ -1,27 +1,27 @@
-import { useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import "../../../styles/sections/worker-manager-section.css";
-import { useUIVisibility } from "../../UIVisibilityContext";
 import {
-	selectWorkers,
-	selectWorkerSlots,
-	selectGold,
-	selectAvailableWorkers,
-} from "../../../store/slices/playerSlice";
-import { addNotification } from "../../../store/slices/notificationSlice";
-import { globalEventBus } from "../../../game/services/EventBusService";
-import {
+	PLAYER_INTENT_BUY_WORKER_SLOT,
 	PLAYER_INTENT_HIRE_WORKER,
 	PLAYER_INTENT_REROLL_WORKERS,
-	PLAYER_INTENT_BUY_WORKER_SLOT,
-	WORKER_HIRED,
-	WORKER_REROLLED,
-	WORKER_SLOT_PURCHASED,
 	WORKER_HIRE_FAILED,
+	WORKER_HIRED,
 	WORKER_REROLL_FAILED,
+	WORKER_REROLLED,
 	WORKER_SLOT_FAILED,
+	WORKER_SLOT_PURCHASED,
 } from "../../../game/events";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { addNotification } from "../../../store/slices/notificationSlice";
+import {
+	selectAvailableWorkers,
+	selectGold,
+	selectWorkerSlots,
+	selectWorkers,
+} from "../../../store/slices/playerSlice";
+import { useUIVisibility } from "../../UIVisibilityContext";
 import DraggableWindow from "../common/DraggableWindow";
 
 const REROLL_COST = 25;

@@ -1,13 +1,13 @@
 import {
-	WORKER_CREATED_ITEM,
 	ENEMY_ATTACKED,
-	WORKER_ASSIGNED,
-	WORKER_UNASSIGNED,
 	LOCATION_CHANGED,
 	PLAYER_DAMAGED,
+	WORKER_ASSIGNED,
+	WORKER_CREATED_ITEM,
+	WORKER_UNASSIGNED,
 } from "../../game/events";
-import { addLog } from "../slices/logSlice";
 import { getEnemyDisplayName } from "../../utils/enemyUtils";
+import { addLog } from "../slices/logSlice";
 
 const logMiddleware = (store) => (next) => (action) => {
 	// Don't process log actions to prevent recursion

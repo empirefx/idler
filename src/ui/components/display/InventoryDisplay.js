@@ -1,19 +1,17 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
-import { selectKnownRecipes } from "../../../store/slices/playerSlice.js";
-import MoveItemDialog from "../common/MoveItemDialog";
-import KeyBind from "../common/KeyBind";
-import InventoryGrid from "../common/InventoryGrid";
-
+import { playerIntentLearnRecipe } from "../../../game/events";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
 import {
 	selectInventoryById,
 	selectInventoryByPlaceId,
 } from "../../../store/slices/inventorySlice";
-import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
-import { globalEventBus } from "../../../game/services/EventBusService";
-import { playerIntentLearnRecipe } from "../../../game/events";
+import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
+import { selectKnownRecipes } from "../../../store/slices/playerSlice.js";
+import InventoryGrid from "../common/InventoryGrid";
+import KeyBind from "../common/KeyBind";
+import MoveItemDialog from "../common/MoveItemDialog";
 
 const generateId = () =>
 	`${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -103,7 +101,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 				}
 
 				// Direct move for single item
-				const success = dispatch(
+				const _success = dispatch(
 					moveItemBetweenInventories(
 						inventory.id,
 						otherInventoryId,
@@ -117,14 +115,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 				setDialogOpen(true);
 			}
 		},
-		[
-			otherInventory,
-			otherInventoryId,
-			inventory.id,
-			dispatch,
-			knownRecipes,
-			inventoryId,
-		],
+		[otherInventory, otherInventoryId, inventory.id, dispatch, knownRecipes],
 	);
 
 	// Handle confirm button for moving items between inventories

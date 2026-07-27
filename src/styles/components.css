@@ -104,6 +104,7 @@
 	right: 20px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: base style for inventory info span, overridden below */
 .inventory-info span {
 	font-weight: normal;
 }

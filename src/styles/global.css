@@ -18,6 +18,7 @@
 
 body {
 	-webkit-context-menu: none;
+	/* biome-ignore lint/correctness/noUnknownProperty: non-standard property, kept for potential future use */
 	context-menu: none;
 }
 
@@ -135,6 +136,7 @@ h6 {
 	display: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: base style for progress bar span, scoped override follows */
 .progress-bar span {
 	font-weight: bolder;
 }

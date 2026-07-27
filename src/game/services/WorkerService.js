@@ -1,33 +1,33 @@
-import Logger from "../utils/Logger";
 import { workerNames } from "../../data/workerNames";
+import { addNotification } from "../../store/slices/notificationSlice";
 import {
-	PLAYER_INTENT_HIRE_WORKER,
-	PLAYER_INTENT_REROLL_WORKERS,
+	selectGold,
+	selectWorkerSlots,
+	selectWorkers,
+} from "../../store/slices/playerSlice";
+import {
 	PLAYER_INTENT_BUY_WORKER_SLOT,
 	PLAYER_INTENT_FIRE_WORKER,
-	WORKER_HIRED,
-	WORKER_REROLLED,
-	WORKER_SLOT_PURCHASED,
+	PLAYER_INTENT_HIRE_WORKER,
+	PLAYER_INTENT_REROLL_WORKERS,
+	WORKER_FIRE_FAILED,
 	WORKER_FIRED,
 	WORKER_HIRE_FAILED,
+	WORKER_HIRED,
 	WORKER_REROLL_FAILED,
+	WORKER_REROLLED,
 	WORKER_SLOT_FAILED,
-	WORKER_FIRE_FAILED,
-	workerHired,
-	workerRerolled,
-	workerSlotPurchased,
+	WORKER_SLOT_PURCHASED,
 	workerFired,
+	workerFireFailed,
+	workerHired,
 	workerHireFailed,
+	workerRerolled,
 	workerRerollFailed,
 	workerSlotFailed,
-	workerFireFailed,
+	workerSlotPurchased,
 } from "../events";
-import {
-	selectWorkers,
-	selectWorkerSlots,
-	selectGold,
-} from "../../store/slices/playerSlice";
-import { addNotification } from "../../store/slices/notificationSlice";
+import Logger from "../utils/Logger";
 
 const REROLL_COST = 25;
 const SLOT_COST = 200;

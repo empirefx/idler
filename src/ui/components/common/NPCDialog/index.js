@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import useNPCDialog from "./useNPCDialog";
-import NPCDialogTrade from "./NPCDialogTrade";
-import NPCDialogProfile from "./NPCDialogProfile";
-import NPCDialogOptions from "./NPCDialogOptions";
-import TradeMessageDialog from "../TradeMessageDialog";
-import WorkerManagerSection from "../../sections/WorkerManagerSection";
+import { useEffect, useState } from "react";
 import { useUIVisibility } from "../../../UIVisibilityContext";
+import WorkerManagerSection from "../../sections/WorkerManagerSection";
+import TradeMessageDialog from "../TradeMessageDialog";
+import NPCDialogOptions from "./NPCDialogOptions";
+import NPCDialogProfile from "./NPCDialogProfile";
+import NPCDialogTrade from "./NPCDialogTrade";
+import useNPCDialog from "./useNPCDialog";
 
 const NPCDialog = ({
 	isOpen,

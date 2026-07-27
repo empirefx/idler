@@ -12,7 +12,7 @@ const NPCDialogOptions = ({
 	onDecline,
 	onOptionClick,
 	onAdvance,
-	onClose,
+	onClose: _onClose,
 	npcDialogOptions,
 }) => {
 	if (questConversationState && currentQuest) {

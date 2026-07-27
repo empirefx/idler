@@ -45,6 +45,7 @@ const BuildingSelector = ({ buildings, onSelect, onClose, gold }) => {
 								<div className="building-option-cost">
 									<span className="cost">{building.buildCost}g</span>
 									{getMaterialStrings(building).map((txt, idx) => (
+										// biome-ignore lint/suspicious/noArrayIndexKey: material strings are display-only, never reordered
 										<span className="production" key={idx}>
 											+{txt}
 										</span>

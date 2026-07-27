@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	selectPlayer,
-	addGold,
-	spendGold,
-} from "../../../../store/slices/playerSlice";
-import {
-	selectInventoryById,
-	selectInventoryByNpcId,
-	addItem as addPlayerItem,
-	removeItem as removePlayerItem,
-} from "../../../../store/slices/inventorySlice";
-import { selectNPCById } from "../../../../store/slices/npcSlice";
+import { itemCatalog } from "../../../../data/itemCatalog";
 import { questCatalog } from "../../../../data/questCatalog";
 import {
 	playerIntentAcceptQuest,
 	playerIntentCompleteQuest,
 } from "../../../../game/events";
-import { itemCatalog } from "../../../../data/itemCatalog";
+import {
+	addItem as addPlayerItem,
+	removeItem as removePlayerItem,
+	selectInventoryById,
+	selectInventoryByNpcId,
+} from "../../../../store/slices/inventorySlice";
+import { selectNPCById } from "../../../../store/slices/npcSlice";
+import {
+	addGold,
+	selectPlayer,
+	spendGold,
+} from "../../../../store/slices/playerSlice";
 
 const useNPCDialog = ({
 	isOpen,
@@ -46,7 +46,7 @@ const useNPCDialog = ({
 	useEffect(() => {
 		setQuestConversationState(null);
 		setTradeMessage(null);
-	}, [npcId]);
+	}, []);
 
 	// Get player gold amount
 	const playerGold = useMemo(() => {
@@ -183,7 +183,7 @@ const useNPCDialog = ({
 
 	const handleOptionClick = useCallback(
 		(index) => {
-			if (!npc || !npc.dialogue?.options) return;
+			if (!npc?.dialogue?.options) return;
 
 			const option = npc.dialogue.options[index];
 
@@ -269,13 +269,12 @@ const useNPCDialog = ({
 		(_event, item) => {
 			// Try direct item.buy first
 			let buyPrice = null;
-			if (item && item.buy && typeof item.buy.gold === "number") {
+			if (item?.buy && typeof item.buy.gold === "number") {
 				buyPrice = item.buy.gold;
 			}
 			// Fallback to itemCatalog
 			else if (
-				item &&
-				item.icon &&
+				item?.icon &&
 				itemCatalog[item.icon] &&
 				itemCatalog[item.icon].buy &&
 				typeof itemCatalog[item.icon].buy.gold === "number"
@@ -314,7 +313,7 @@ const useNPCDialog = ({
 			};
 			dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
 		},
-		[dispatch, playerGold, playerInventory, itemCatalog],
+		[dispatch, playerGold, playerInventory],
 	);
 
 	// Text getters
@@ -353,7 +352,7 @@ const useNPCDialog = ({
 			return "...";
 		}
 
-		if (!npc.dialogue || !npc.dialogue.options) return "";
+		if (!npc.dialogue?.options) return "";
 
 		if (selectedOption !== null && npc.dialogue.options?.[selectedOption]) {
 			return npc.dialogue.options[selectedOption].text;

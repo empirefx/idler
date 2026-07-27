@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import ProgressBar from "../common/ProgressBar";
+import { useDispatch, useSelector } from "react-redux";
 import CircularProgressTimer from "../common/CircularProgressTimer";
+import ProgressBar from "../common/ProgressBar";
 
 const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	const dispatch = useDispatch();

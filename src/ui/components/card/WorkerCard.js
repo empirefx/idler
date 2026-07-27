@@ -1,12 +1,12 @@
-import React, { useMemo, useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import Item from "../common/Item";
-import ConfirmAlert from "../common/ConfirmAlert";
 import { itemCatalog } from "../../../data/itemCatalog";
 import {
 	assignWorkerToSocketWithEvent,
 	unassignWorkerFromSocketWithEvent,
 } from "../../../store/slices/playerSlice";
+import ConfirmAlert from "../common/ConfirmAlert";
+import Item from "../common/Item";
 
 const WorkerAvatar = ({ avatar, name, bgClass }) => (
 	<div className="worker-avatar">
@@ -33,8 +33,8 @@ const WorkerCard = ({
 	worker,
 	placeId,
 	availableSocketIndexes,
-	occupiedSocketIndexes,
-	socketData,
+	occupiedSocketIndexes: _occupiedSocketIndexes,
+	socketData: _socketData,
 	getSocketMaterials,
 	isAssigned = false,
 	onFire,
@@ -102,14 +102,7 @@ const WorkerCard = ({
 		return availableSocketIndexes.flatMap((socketIndex) =>
 			getSocketMaterials(socketIndex).map((mat) => ({ socketIndex, mat })),
 		);
-	}, [
-		isAssigned,
-		worker,
-		placeId,
-		availableSocketIndexes,
-		getSocketMaterials,
-		socketData,
-	]);
+	}, [isAssigned, worker, availableSocketIndexes, getSocketMaterials]);
 
 	const workerName = worker.name ? worker.name.split(" ")[0] : "Worker";
 

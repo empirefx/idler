@@ -1,8 +1,8 @@
-import Logger from "../utils/Logger";
 import { craftingRecipes } from "../../data/craftingRecipes";
 import { itemCatalog } from "../../data/itemCatalog";
+import { craftFailed, craftSuccess, recipeLearned } from "../events";
 import { createItem } from "../factory/itemFactory";
-import { craftSuccess, craftFailed, recipeLearned } from "../events";
+import Logger from "../utils/Logger";
 
 const generateId = () =>
 	`${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;

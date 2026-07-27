@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/player-section.css";
+import { selectCurrentPlace } from "../../../store/slices/placesSlice";
+import { selectPlayer } from "../../../store/slices/playerSlice";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import PlayerCard from "../card/PlayerCard";
-import { selectPlayer } from "../../../store/slices/playerSlice";
-import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import DraggableWindow from "../common/DraggableWindow";
 
 const PlayerSection = () => {

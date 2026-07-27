@@ -1,18 +1,18 @@
 import {
-	validateSlotLimit,
-	validateWeightLimit,
-	validateItemExists,
-	validateMoveQuantity,
-	validateEquipmentSlot,
-} from "../../store/slices/inventory/inventoryValidators.js";
+	EQUIPMENT_SLOTS,
+	TYPE_TO_SLOT,
+} from "../../store/slices/inventory/inventoryTypes.js";
 import {
 	canItemsStack,
 	getInventorySummary,
 } from "../../store/slices/inventory/inventoryUtils.js";
 import {
-	EQUIPMENT_SLOTS,
-	TYPE_TO_SLOT,
-} from "../../store/slices/inventory/inventoryTypes.js";
+	validateEquipmentSlot,
+	validateItemExists,
+	validateMoveQuantity,
+	validateSlotLimit,
+	validateWeightLimit,
+} from "../../store/slices/inventory/inventoryValidators.js";
 
 export const InventoryService = {
 	getInventory(state, inventoryId) {

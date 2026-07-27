@@ -1,18 +1,18 @@
 import {
-	MITIGATION_K,
-	CRIT_BASE,
 	CRIT_AGI_SCALE,
-	HIT_BASE,
-	HIT_MIN,
-	HIT_MAX,
+	CRIT_BASE,
 	CRIT_MULTIPLIER,
-	DAMAGE_VARIANCE_MIN,
-	DAMAGE_VARIANCE_MAX,
 	DAMAGE_TYPES,
+	DAMAGE_VARIANCE_MAX,
+	DAMAGE_VARIANCE_MIN,
+	HIT_BASE,
+	HIT_MAX,
+	HIT_MIN,
+	MITIGATION_K,
 	SKILL_TYPES,
 } from "../../data/combatTypes";
+import { SKILL_COLUMNS, skillsCatalog } from "../../data/skillsData";
 import { getEquipmentStatBonus } from "../utils/combatResolvers";
-import { skillsCatalog, SKILL_COLUMNS } from "../../data/skillsData";
 
 function clamp(value, min, max) {
 	return Math.max(min, Math.min(max, value));

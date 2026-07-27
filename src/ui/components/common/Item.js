@@ -8,7 +8,7 @@ const Item = ({
 	showItemInfo = true,
 	onClick,
 	onContextMenu,
-	onKeyDown,
+	onKeyDown: _onKeyDown,
 }) => {
 	if (!item) return null;
 
@@ -39,7 +39,7 @@ const Item = ({
 			{content}
 		</ItemInfo>
 	) : (
-		<>{content}</>
+		content
 	);
 };
 

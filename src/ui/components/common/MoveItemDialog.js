@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
-import QuantitySlider from "./QuantitySlider.js";
+import { useEffect, useMemo, useState } from "react";
 import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils.js";
+import QuantitySlider from "./QuantitySlider.js";
 
 function calculateMaxMovableItems(item, targetInventory, currentQuantity) {
 	if (!item || !targetInventory) return currentQuantity;

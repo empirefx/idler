@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import Notification from "./Notification";
 import { selectVisibleNotifications } from "../../../store/slices/notificationSlice";
+import Notification from "./Notification";
 import "../../../styles/sections/notifications.css";
 
 const NotificationContainer = () => {

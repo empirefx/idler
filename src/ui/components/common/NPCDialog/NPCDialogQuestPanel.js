@@ -5,10 +5,10 @@ const NPCDialogQuestPanel = ({ objectives, rewards }) => (
 		<div className="quest-objectives-display">
 			<h4>Objectives:</h4>
 			<ul>
-				{objectives.map((obj, i) => (
-					<li
-						key={i}
-						className={obj.current >= obj.required ? "completed" : ""}
+			{objectives.map((obj, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: objectives list is static, never reordered
+				<li key={i}
+					className={obj.current >= obj.required ? "completed" : ""}
 					>
 						{obj.type === "collect"
 							? `Collect: ${obj.current}/${obj.required} ${obj.targetName}`
@@ -25,8 +25,9 @@ const NPCDialogQuestPanel = ({ objectives, rewards }) => (
 				<ul>
 					{rewards.gold && <li>🪙 {rewards.gold} gold</li>}
 					{rewards.exp && <li>✨ {rewards.exp} exp</li>}
-					{rewards.items?.map((item, i) => (
-						<li key={i}>
+				{rewards.items?.map((item, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: rewards list is static, never reordered
+					<li key={i}>
 							📦 {itemCatalog[item.icon]?.name} x{item.quantity}
 						</li>
 					))}

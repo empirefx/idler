@@ -1,15 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-
+import { TYPE_TO_SLOT } from "../../../store/slices/inventory/inventoryTypes.js";
 import { equipItem } from "../../../store/slices/inventorySlice";
 import { removeItemFromInventory } from "../../../store/slices/inventoryThunks.js";
 import { healPlayer } from "../../../store/slices/playerSlice";
-import { TYPE_TO_SLOT } from "../../../store/slices/inventory/inventoryTypes.js";
 import Item from "./Item";
 
 const InventoryGrid = ({
 	inventory,
-	otherInventory,
+	otherInventory: _otherInventory,
 	onContextMenu,
 	columns = 10,
 	showBuyPrice = false,

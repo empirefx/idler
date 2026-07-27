@@ -1,17 +1,17 @@
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/workers-section.css";
-import { useUIVisibility } from "../../UIVisibilityContext";
-import WorkerCard from "../card/WorkerCard";
-import { selectWorkers } from "../../../store/slices/playerSlice";
-import {
-	selectCurrentPlaceSockets,
-	selectCurrentPlaceId,
-} from "../../../store/slices/placesSlice";
 import { buildingsData } from "../../../data/buildings";
 import { itemCatalog } from "../../../data/itemCatalog";
-import { globalEventBus } from "../../../game/services/EventBusService";
 import { PLAYER_INTENT_FIRE_WORKER } from "../../../game/events";
+import { globalEventBus } from "../../../game/services/EventBusService";
+import {
+	selectCurrentPlaceId,
+	selectCurrentPlaceSockets,
+} from "../../../store/slices/placesSlice";
+import { selectWorkers } from "../../../store/slices/playerSlice";
+import { useUIVisibility } from "../../UIVisibilityContext";
+import WorkerCard from "../card/WorkerCard";
 
 const WorkersSection = () => {
 	const { workerCard } = useUIVisibility();
