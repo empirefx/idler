@@ -21,7 +21,7 @@
 
 Super-linter detected linting errors
 
-For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/30313150569)
+For more information, see the [GitHub Actions workflow run](https://github.com/empirefx/idler/actions/runs/30313783777)
 
 Powered by [Super-linter](https://github.com/super-linter/super-linter)
 
@@ -30,7 +30,7 @@ Powered by [Super-linter](https://github.com/super-linter/super-linter)
 <summary>BIOME_FORMAT</summary>
 
 ```text
-Checked 148 files in 500ms. No fixes applied.
+Checked 148 files in 397ms. No fixes applied.
 Found 1 error.src/ui/components/common/NotificationContainer.jsx format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   × Formatter would have printed the following content:
@@ -137,9 +137,9 @@ Clone found (javascript):
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
 │ markup     │ 1              │ 11          │ 107          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ json       │ 8              │ 147         │ 895          │ 0            │ 0 (0%)           │ 0 (0%)            │
+│ json       │ 8              │ 146         │ 891          │ 0            │ 0 (0%)           │ 0 (0%)            │
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
-│ Total:     │ 193            │ 24910       │ 188739       │ 12           │ 163 (0.65%)      │ 1236 (0.65%)      │
+│ Total:     │ 193            │ 24909       │ 188735       │ 12           │ 163 (0.65%)      │ 1236 (0.65%)      │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
 Found 12 clones.
 Error: ERROR: jscpd found too many duplicates (0.65%) over threshold (0%)
