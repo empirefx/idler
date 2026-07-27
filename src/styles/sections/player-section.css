@@ -436,18 +436,6 @@
 	flex: 1;
 }
 
-.skill-icon {
-	width: 36px;
-	height: 36px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: var(--color-secondary);
-	border-radius: var(--border-radius-sm);
-	font-weight: bold;
-	font-size: 1rem;
-}
-
 .skill-details {
 	flex: 1;
 }
