@@ -110,7 +110,7 @@ const BuildingPanel = ({ onClose }) => {
 							<span>{lockedCount} locked</span>
 						</div>
 					)}
-					<button className="building-panel-close" onClick={onClose}>
+					<button type="button" className="building-panel-close" onClick={onClose}>
 						&times;
 					</button>
 				</div>

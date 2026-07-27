@@ -120,14 +120,23 @@ const DraggableWindow = ({
 			className="draggable-window"
 			style={windowStyle}
 			onClick={handleClick}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					handleClick();
+				}
+			}}
+			role="button"
+			tabIndex={0}
 		>
-			<div className="draggable-window-header" onMouseDown={handleMouseDown}>
+			<div className="draggable-window-header" role="none" onMouseDown={handleMouseDown}>
 				<h3 className="draggable-window-title">{title}</h3>
-				<button
-					className="draggable-window-close"
-					onClick={onClose}
-					disabled={!atFront}
-				>
+			<button
+				type="button"
+				className="draggable-window-close"
+				onClick={onClose}
+				disabled={!atFront}
+			>
 					×
 				</button>
 			</div>

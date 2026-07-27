@@ -93,15 +93,17 @@ const NPCDialog = ({
 						onNpcItemBuy={handleNpcItemBuy}
 					/>
 				)}
-				<div
-					className="npc-dialog-content"
-					onClick={(e) => e.stopPropagation()}
-					onKeyDown={(e) => {
-						if (e.key === "Enter" || e.key === " ") {
-							e.stopPropagation();
-						}
-					}}
-				>
+			<div
+				className="npc-dialog-content"
+				onClick={(e) => e.stopPropagation()}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.stopPropagation();
+					}
+				}}
+				role="button"
+				tabIndex={0}
+			>
 					<div className="key-bind-container">
 						<span className="key-bind">ESC</span>
 						<span>escape</span>

@@ -10,9 +10,9 @@ const PlayerEntitySection = () => {
 	const { togglePlayerCard } = useUIVisibility();
 	if (!playerInfo) return null;
 	return (
-		<section className="player-entity-section" onClick={togglePlayerCard}>
+		<div className="player-entity-section" role="button" tabIndex={0} onClick={togglePlayerCard} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); togglePlayerCard(); } }}>
 			<EntityCard entity={playerInfo} avatarFolder="players" />
-		</section>
+		</div>
 	);
 };
 

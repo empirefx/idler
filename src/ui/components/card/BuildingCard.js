@@ -59,7 +59,18 @@ const BuildingCard = ({
 
 	if (isLocked) {
 		return (
-			<div className={getCardClass()} onClick={handleClick}>
+			<div
+				className={getCardClass()}
+				onClick={handleClick}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						handleClick();
+					}
+				}}
+				role="button"
+				tabIndex={0}
+			>
 				<span className="locked-socket">LOCK</span>
 			</div>
 		);
@@ -67,7 +78,18 @@ const BuildingCard = ({
 
 	if (isEmpty) {
 		return (
-			<div className={getCardClass()} onClick={handleClick}>
+			<div
+				className={getCardClass()}
+				onClick={handleClick}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						handleClick();
+					}
+				}}
+				role="button"
+				tabIndex={0}
+			>
 				<span className="building-label">+ Build</span>
 			</div>
 		);
@@ -77,7 +99,18 @@ const BuildingCard = ({
 	const lockedMaterials = getLockedMaterials();
 
 	return (
-		<div className={getCardClass()} onClick={handleClick}>
+		<div
+			className={getCardClass()}
+			onClick={handleClick}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					handleClick();
+				}
+			}}
+			role="button"
+			tabIndex={0}
+		>
 			<div className="building-header">
 				{currentLevel > 1 && (
 					<span className="building-level">Lv.{currentLevel}</span>
@@ -124,11 +157,12 @@ const BuildingCard = ({
 				)}
 
 				{hasUpgrade && canAffordUpgrade && (
-					<button
-						className="upgrade-btn"
-						onClick={(e) => {
-							e.stopPropagation();
-							onUpgrade(slotIndex);
+				<button
+					type="button"
+					className="upgrade-btn"
+					onClick={(e) => {
+						e.stopPropagation();
+						onUpgrade(slotIndex);
 						}}
 					>
 						Upgrade ({upgradeCost}g)

@@ -139,11 +139,12 @@ const WorkerManagerSection = () => {
 											{worker.gender === "male" ? "Male" : "Female"}
 										</span>
 									</div>
-									<button
-										className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
-										disabled={!canHireMore || gold < workerCost}
-										onClick={() => handleHire(worker.id)}
-									>
+								<button
+									type="button"
+									className={`hire-btn ${!canHireMore || gold < workerCost ? "disabled" : ""}`}
+									disabled={!canHireMore || gold < workerCost}
+									onClick={() => handleHire(worker.id)}
+								>
 										Hire ({workerCost}g)
 									</button>
 								</div>
@@ -154,6 +155,7 @@ const WorkerManagerSection = () => {
 			</div>
 			<div className="worker-manager-actions">
 				<button
+					type="button"
 					className={`reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
 					disabled={gold < REROLL_COST}
 					onClick={handleReroll}
@@ -162,6 +164,7 @@ const WorkerManagerSection = () => {
 				</button>
 
 				<button
+					type="button"
 					className={`buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
 					disabled={gold < SLOT_COST}
 					onClick={handleBuySlot}

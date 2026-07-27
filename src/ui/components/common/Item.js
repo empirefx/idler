@@ -18,14 +18,22 @@ const Item = ({
 
 	const content = (
 		<>
-			<div
-				className="item-sprite"
-				id={item.icon}
-				onClick={handleClick}
-				onContextMenu={
-					onContextMenu ? (e) => onContextMenu(e, item) : undefined
+		<div
+			className="item-sprite"
+			id={item.icon}
+			onClick={handleClick}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					handleClick();
 				}
-			/>
+			}}
+			onContextMenu={
+				onContextMenu ? (e) => onContextMenu(e, item) : undefined
+			}
+			role="button"
+			tabIndex={0}
+		/>
 			{showQuantity && item.quantity > 1 && (
 				<p>
 					<span>{item.quantity}</span>

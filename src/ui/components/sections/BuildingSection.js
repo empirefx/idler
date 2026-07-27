@@ -36,8 +36,16 @@ const BuildingSection = () => {
 	return (
 		<div
 			className="buildings-section"
+			role="button"
+			tabIndex={0}
 			onMouseEnter={showBuildingPanel}
 			onClick={toggleBuildingPanel}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					toggleBuildingPanel();
+				}
+			}}
 		>
 			{hasSockets && socketItems}
 		</div>

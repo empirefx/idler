@@ -57,6 +57,7 @@ const GameLayout = ({ clearCache }) => {
 			</main>
 			<div
 				className="building-panel-container"
+				role="none"
 				onMouseEnter={showBuildingPanel}
 				onMouseLeave={hideBuildingPanel}
 			>

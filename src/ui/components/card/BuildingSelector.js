@@ -16,11 +16,19 @@ function getMaterialStrings(obj) {
 
 const BuildingSelector = ({ buildings, onSelect, onClose, gold }) => {
 	return (
-		<div className="building-selector-overlay" onClick={onClose}>
-			<div className="building-selector" onClick={(e) => e.stopPropagation()}>
+		<div
+			className="building-selector-overlay"
+			onClick={onClose}
+			onKeyDown={(e) => {
+				if (e.key === "Escape") onClose();
+			}}
+			role="button"
+			tabIndex={0}
+		>
+			<div className="building-selector" role="none" onClick={(e) => e.stopPropagation()}>
 				<div className="building-selector-header">
 					<h3>Select Building</h3>
-					<button className="building-selector-close" onClick={onClose}>
+					<button type="button" className="building-selector-close" onClick={onClose}>
 						&times;
 					</button>
 				</div>
@@ -28,10 +36,18 @@ const BuildingSelector = ({ buildings, onSelect, onClose, gold }) => {
 					{Object.values(buildings).map((building) => {
 						const canAfford = gold >= (building.buildCost || 0);
 						return (
-							<div
-								key={building.id}
-								className={`building-option ${!canAfford ? "disabled" : ""}`}
-								onClick={() => canAfford && onSelect(building.id)}
+						<div
+							key={building.id}
+							className={`building-option ${!canAfford ? "disabled" : ""}`}
+							onClick={() => canAfford && onSelect(building.id)}
+							onKeyDown={(e) => {
+								if ((e.key === "Enter" || e.key === " ") && canAfford) {
+									e.preventDefault();
+									onSelect(building.id);
+								}
+							}}
+							role="button"
+							tabIndex={0}
 							>
 								<img
 									className="building-option-img"

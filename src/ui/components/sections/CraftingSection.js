@@ -138,6 +138,7 @@ const CraftingSection = () => {
 			<div className="crafting-groups">
 				{Object.keys(groupLabels).map((group) => (
 					<button
+						type="button"
 						key={group}
 						className={`group-tab ${selectedGroup === group ? "active" : ""}`}
 						onClick={() => {
@@ -158,11 +159,14 @@ const CraftingSection = () => {
 						currentGroupRecipes.map((recipe) => {
 							const isKnown = knownRecipes.includes(recipe.id);
 							return (
-								<div
-									key={recipe.id}
-									className={`recipe-item ${selectedRecipe?.id === recipe.id ? "selected" : ""} ${!isKnown ? "unknown" : ""}`}
-									onClick={() => setSelectedRecipe(recipe)}
-								>
+							<div
+								key={recipe.id}
+								role="button"
+								tabIndex={0}
+								className={`recipe-item ${selectedRecipe?.id === recipe.id ? "selected" : ""} ${!isKnown ? "unknown" : ""}`}
+								onClick={() => setSelectedRecipe(recipe)}
+								onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedRecipe(recipe); } }}
+							>
 									<span className="recipe-name">
 										{isKnown ? recipe.name : "???"}
 									</span>
@@ -190,8 +194,11 @@ const CraftingSection = () => {
 											return item ? (
 												<div
 													key={v}
+													role="button"
+													tabIndex={0}
 													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
 													onClick={() => setSelectedOutputItem(v)}
+													onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedOutputItem(v); } }}
 												>
 													<Item item={item} />
 												</div>
@@ -202,8 +209,11 @@ const CraftingSection = () => {
 											return item ? (
 												<div
 													key={v}
+													role="button"
+													tabIndex={0}
 													className={`craftable-item ${selectedOutputItem === v ? "selected" : ""}`}
 													onClick={() => setSelectedOutputItem(v)}
+													onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedOutputItem(v); } }}
 												>
 													<Item item={item} />
 												</div>
@@ -212,12 +222,15 @@ const CraftingSection = () => {
 										{!selectedRecipe.output.variants &&
 											!selectedRecipe.output.items &&
 											selectedRecipe.output.icon && (
-												<div
-													className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
-													onClick={() =>
-														setSelectedOutputItem(selectedRecipe.output.icon)
-													}
-												>
+											<div
+												role="button"
+												tabIndex={0}
+												className={`craftable-item ${selectedOutputItem === selectedRecipe.output.icon ? "selected" : ""}`}
+												onClick={() =>
+													setSelectedOutputItem(selectedRecipe.output.icon)
+												}
+												onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedOutputItem(selectedRecipe.output.icon); } }}
+											>
 													<Item
 														item={itemCatalog[selectedRecipe.output.icon]}
 													/>
@@ -294,11 +307,12 @@ const CraftingSection = () => {
 									</div>
 								</div>
 
-								<button
-									className={`craft-btn ${canCraft(selectedRecipe) ? "" : "disabled"}`}
-									disabled={!canCraft(selectedRecipe)}
-									onClick={() => handleCraft(selectedRecipe)}
-								>
+							<button
+								type="button"
+								className={`craft-btn ${canCraft(selectedRecipe) ? "" : "disabled"}`}
+								disabled={!canCraft(selectedRecipe)}
+								onClick={() => handleCraft(selectedRecipe)}
+							>
 									Craft
 								</button>
 							</>

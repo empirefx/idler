@@ -33,15 +33,17 @@ function TradeMessageDialog({ isOpen, message, type = "success", onClose }) {
 				}
 			}}
 		>
-			<div
-				className="trade-message-content"
-				onClick={(e) => e.stopPropagation()}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						e.stopPropagation();
-					}
-				}}
-			>
+		<div
+			className="trade-message-content"
+			onClick={(e) => e.stopPropagation()}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.stopPropagation();
+				}
+			}}
+			role="button"
+			tabIndex={0}
+		>
 				<div className={`trade-message-icon ${type}`}>
 					{type === "success" ? "✓" : "✗"}
 				</div>
