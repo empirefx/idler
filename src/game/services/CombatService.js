@@ -17,12 +17,10 @@ import { resolveAttack, resolveEnemyAttack } from "../core/combatCalculator";
 import {
 	getNextSkillToActivate,
 	markSkillActivated,
-	isSkillOnCooldown,
 	getRankData,
 	resetSkillRotation,
 } from "../utils/skillResolver";
 import { getWeaponProfile } from "../utils/combatResolvers";
-import { getSkillById } from "../../data/skillsData";
 
 /**
  * CombatService coordinates combat state with game loop and handles combat mechanics.
@@ -213,7 +211,7 @@ export const CombatService = {
 		this.isStartingCombat = true;
 		Logger.log("Starting combat system", 0, "combat");
 		this.store.dispatch(resumeCooldowns());
-		if (!gameLoop || !gameLoop.register) {
+		if (!gameLoop?.register) {
 			Logger.log(
 				"GameLoop is not available or missing register method",
 				0,
@@ -232,7 +230,7 @@ export const CombatService = {
 			(deltaTime) => {
 				// Get current game state from store subscription
 				const state = this.store.getState();
-				if (!state || !state.places) {
+				if (!state?.places) {
 					return; // Skip update if state not ready
 				}
 				const currentPlaceId = state.places.currentPlaceId;
@@ -425,7 +423,7 @@ export const CombatService = {
 	handleStaggeredAttacks(enemies) {
 		// Get current combat state with safety checks
 		const currentState = this.store?.getState();
-		if (!currentState || !currentState.combat) {
+		if (!currentState?.combat) {
 			console.error("CombatService: store state or combat state not available");
 			return;
 		}

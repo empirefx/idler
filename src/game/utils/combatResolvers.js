@@ -1,6 +1,5 @@
 import {
 	DAMAGE_TYPES,
-	WEAPON_SLOTS,
 	ARMOR_SLOTS,
 } from "../../data/combatTypes";
 
@@ -34,7 +33,6 @@ export function getWeaponProfile(weapon) {
 	}
 
 	const weaponStats = weapon.stats || {};
-	const itemType = weapon.type;
 
 	let damageType = weapon.damageType;
 	let primaryStat = weapon.primaryStat;

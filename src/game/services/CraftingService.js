@@ -118,7 +118,6 @@ export class CraftingService {
 
 	craft(recipeId, outputItemId = null) {
 		const state = this.store.getState();
-		const knownRecipes = state.player?.knownRecipes || [];
 
 		const validation = this.canCraft(state, recipeId, outputItemId);
 
@@ -150,7 +149,7 @@ export class CraftingService {
 			outputItem = { ...itemCatalog[actualOutputItemId], quantity: 1 };
 		}
 
-		if (!outputItem || !outputItem.name) {
+		if (!outputItem?.name) {
 			Logger.log(
 				`Failed to create output item: ${actualOutputItemId} not found in catalog`,
 				2,

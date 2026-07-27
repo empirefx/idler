@@ -151,9 +151,9 @@ const SkillBar = () => {
 						</div>
 					);
 				})}
-				{Array.from({ length: emptySlots }).map((_, index) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: static list of empty placeholder slots, never reorders
-					<div key={`empty-slot-${index}`} className="skill-slot skill-slot--empty">
+			{Array.from({ length: emptySlots }).map((_, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: static list of empty placeholder slots, never reorders
+				<div key={`empty-slot-${index}`} className="skill-slot skill-slot--empty">
 						<div className="skill-icon-container">
 							<div className="skill-icon skill-icon--empty">?</div>
 						</div>

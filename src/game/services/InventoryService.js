@@ -7,9 +7,6 @@ import {
 } from "../../store/slices/inventory/inventoryValidators.js";
 import {
 	canItemsStack,
-	cloneItem,
-	calculateWeight,
-	calculateTotalPlayerWeight,
 	getInventorySummary,
 } from "../../store/slices/inventory/inventoryUtils.js";
 import {
@@ -137,7 +134,7 @@ export const InventoryService = {
 	},
 
 	canEquipItem(inventory, itemId, slot) {
-		if (!inventory || inventory.type !== "player") {
+		if (inventory?.type !== "player") {
 			return { valid: false, error: "INVALID_INVENTORY" };
 		}
 
@@ -165,7 +162,7 @@ export const InventoryService = {
 	},
 
 	canUnequipItem(inventory, slot) {
-		if (!inventory || inventory.type !== "player") {
+		if (inventory?.type !== "player") {
 			return { valid: false, error: "INVALID_INVENTORY" };
 		}
 

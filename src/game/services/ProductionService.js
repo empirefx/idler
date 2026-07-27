@@ -36,7 +36,7 @@ export default class ProductionService {
 			}
 
 			const assignment = worker.assignments[placeId];
-			if (!assignment || !assignment.material) {
+			if (!assignment?.material) {
 				Logger.log(
 					`Worker ${worker.name} has no material assigned at socket ${socketIndex} in ${placeId}`,
 					1,
@@ -103,9 +103,7 @@ export default class ProductionService {
 		const workers = state.player?.workers || [];
 		return workers.find(
 			(worker) =>
-				worker.assignments &&
-				worker.assignments[placeId] &&
-				worker.assignments[placeId].socketIndex === socketIndex,
+				worker.assignments?.[placeId]?.socketIndex === socketIndex,
 		);
 	}
 
@@ -113,9 +111,7 @@ export default class ProductionService {
 		const workers = state.player?.workers || [];
 		return workers.filter(
 			(worker) =>
-				worker.assignments &&
-				worker.assignments[placeId] &&
-				worker.assignments[placeId].socketIndex === socketIndex,
+				worker.assignments?.[placeId]?.socketIndex === socketIndex,
 		);
 	}
 
@@ -157,8 +153,7 @@ export default class ProductionService {
 		const worker = this.getWorkerByPlaceAndSocket(state, placeId, socketIndex);
 		const assignment = worker?.assignments?.[placeId];
 		return (
-			assignment &&
-			assignment.material &&
+			assignment?.material &&
 			(buildingData.baseProductionRate || 0) > 0
 		);
 	}
