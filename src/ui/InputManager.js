@@ -30,9 +30,6 @@ const InputManager = () => {
 			if (["INPUT", "TEXTAREA"].includes(document.activeElement.tagName))
 				return;
 
-			// Ignore keydown that originated from a form element
-			if (e.target.closest("button, a")) return;
-
 			if (e.key === "c" || e.key === "i") {
 				togglePlayerCard();
 			} else if (e.key === "w") {
