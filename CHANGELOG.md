@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.2.1](https://github.com/empirefx/idler/compare/v3.2.0...v3.2.1) (2026-07-28)
+
+
+### Bug Fixes
+
+* biome lint ([6ff6a63](https://github.com/empirefx/idler/commit/6ff6a63be367128998baaad0e3754b49d9385422))
+* biome lint ([f893301](https://github.com/empirefx/idler/commit/f89330140ad2289b083f846c76a3bd4e171cddc1))
+* biome lint ([d4a65e9](https://github.com/empirefx/idler/commit/d4a65e9cb48d74454313e029e0bf3d94a874ac1d))
+* biome lint ([6f3e3e9](https://github.com/empirefx/idler/commit/6f3e3e9d6b7a5d9dd7b6403694c8e37c4b73e198))
+* biome lint ([02e13cd](https://github.com/empirefx/idler/commit/02e13cd044732c67e0dc633eff3aab8788b2c520))
+* biome lint ([0af476b](https://github.com/empirefx/idler/commit/0af476bb4f9aa2f94c998e7b140d7627b6696939))
+* biome linter ([607e31e](https://github.com/empirefx/idler/commit/607e31eaa9f28691a9982543061f35770eb0346f))
+* character window toggle (C key) not working after clicking inside window ([584610f](https://github.com/empirefx/idler/commit/584610f44ea5b1db6b54819c424e06896e9dceee))
+* codespell ([30a1352](https://github.com/empirefx/idler/commit/30a1352b18e93ed88339ef180c9581a18f3cba26))
+* cspell ignore ([438cc10](https://github.com/empirefx/idler/commit/438cc10e98668e419ea17f751c9d2ec4bfc08df7))
+* package-lock ([ad43b0c](https://github.com/empirefx/idler/commit/ad43b0c386698599593d6e41ce63eccc76758709))
+* prevent fire move item if no inventory in place ([95b48f9](https://github.com/empirefx/idler/commit/95b48f912936c23e3f931d3dd006c58e735a0c7b))
+* remove invalid workflows permission from GitHub Actions workflow ([e9164d8](https://github.com/empirefx/idler/commit/e9164d8699bd59878dec618a3c338218b2666d25))
+* resolve JSCPD duplicates and BIOME_FORMAT issues ([a2591c0](https://github.com/empirefx/idler/commit/a2591c0c0f041732e1ed8ce29b57061cdff55226))
+* super-ling ignore changelog.md ([d89278c](https://github.com/empirefx/idler/commit/d89278c9e644c16453c2acbe1d47c1c89450bb1c))
+* super-linter write ([b815792](https://github.com/empirefx/idler/commit/b81579210e081970e047c8f47a8f3eb888f6df64))
+* toggleable windows not responding to keybinds after clicking tab/button ([9f0b029](https://github.com/empirefx/idler/commit/9f0b0298a2ebbaa87c7d2a7acd38fa9eb1a982bb))
+* use action type constants for event bus emits in CraftingSection and InventoryDisplay ([8d3bc92](https://github.com/empirefx/idler/commit/8d3bc92e0e4aa7def2a996b84efb68253b5bc191))
+* use action type constants for event bus subscriptions instead of undefined .type ([1a73742](https://github.com/empirefx/idler/commit/1a737422df74f56b291fc6c5519b1bfd48cce804))
+* worker manager avatar ([678a2c2](https://github.com/empirefx/idler/commit/678a2c25e68c4f9b985611e43ff336734737239b))
+* **workflow:** github token ([13e9eef](https://github.com/empirefx/idler/commit/13e9eef0eaf24be87a57af7106fbee99ff5f159e))
+
 ## [3.2.0](https://github.com/empirefx/idler/compare/v3.1.0...v3.2.0) (2026-03-28)
 
 
