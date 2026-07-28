@@ -15,6 +15,19 @@ import {
 } from "../utils/testHelpers.js";
 import ProductionService from "../../src/game/services/ProductionService.js";
 
+const createSawmillState = (overrides = {}) => ({
+	...createStateWithWorkers([
+		{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
+	]),
+	places: {
+		village_center: { hasInventory: true, connections: [] },
+	},
+	inventory: {
+		village_center: { items: [] },
+	},
+	...overrides,
+});
+
 describe("ProductionService", () => {
 	let productionService;
 	let mockStore, mockDispatch, mockItemFactory, mockInventoryService;
@@ -102,21 +115,8 @@ describe("ProductionService", () => {
 		});
 
 		it("should handle zero production gracefully", () => {
-			const building = {
-				id: "sawmill",
-				baseProductionRate: 0,
-			};
-			const state = {
-				...createStateWithWorkers([
-					{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
-				]),
-				places: {
-					village_center: { hasInventory: true, connections: [] },
-				},
-				inventory: {
-					village_center: { items: [] },
-				},
-			};
+			const building = { id: "sawmill", baseProductionRate: 0 };
+			const state = createSawmillState();
 
 			mockItemFactory.mockReturnValue(null);
 
@@ -269,8 +269,8 @@ describe("ProductionService", () => {
 			expect(result).toBe("village_center");
 		});
 
-		it("should find closest connected place with inventory", () => {
-			const state = createPlaceState({
+		it.each([
+			["directly connected", {
 				river_crossing: {
 					hasInventory: false,
 					connections: ["village_center", "farmlands"],
@@ -283,17 +283,8 @@ describe("ProductionService", () => {
 					hasInventory: false,
 					connections: ["river_crossing"],
 				},
-			});
-
-			const result = productionService.findClosestPlaceWithInventory(
-				"river_crossing",
-				state,
-			);
-			expect(result).toBe("village_center");
-		});
-
-		it("should search multiple levels for closest inventory", () => {
-			const state = createPlaceState({
+			}],
+			["multi-level", {
 				river_crossing: {
 					hasInventory: false,
 					connections: ["farmlands"],
@@ -306,17 +297,8 @@ describe("ProductionService", () => {
 					hasInventory: true,
 					connections: ["farmlands"],
 				},
-			});
-
-			const result = productionService.findClosestPlaceWithInventory(
-				"river_crossing",
-				state,
-			);
-			expect(result).toBe("village_center");
-		});
-
-		it("should fallback to village_center when no other inventory found", () => {
-			const state = createPlaceState({
+			}],
+			["fallback to village_center when no path", {
 				river_crossing: {
 					hasInventory: false,
 					connections: ["farmlands"],
@@ -325,8 +307,9 @@ describe("ProductionService", () => {
 					hasInventory: false,
 					connections: ["river_crossing"],
 				},
-			});
-
+			}],
+		])("should find closest place with inventory (%s)", (_, places) => {
+			const state = createPlaceState(places);
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
 				state,
@@ -454,21 +437,8 @@ describe("ProductionService", () => {
 				throw new Error("Item creation failed");
 			});
 
-			const building = {
-				id: "sawmill",
-				baseProductionRate: 10,
-			};
-			const state = {
-				...createStateWithWorkers([
-					{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
-				]),
-				places: {
-					village_center: { hasInventory: true, connections: [] },
-				},
-				inventory: {
-					village_center: { items: [] },
-				},
-			};
+			const building = { id: "sawmill", baseProductionRate: 10 };
+			const state = createSawmillState();
 			const deltaTime = 1000;
 
 			expect(() => {

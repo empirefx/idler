@@ -130,25 +130,14 @@ describe("DraggableWindow", () => {
 			expect(mockWindow.bringToFront).toHaveBeenCalledWith("test");
 		});
 
-		it("brings window to front on Enter key", () => {
+		it.each([{ key: "Enter" }, { key: " " }])("brings window to front on $key key", ({ key }) => {
 			const { container } = render(
 				<DraggableWindow windowId="test" title="Test" isOpen={true}>
 					<div>Content</div>
 				</DraggableWindow>,
 			);
 			const windowEl = container.querySelector(".draggable-window");
-			fireEvent.keyDown(windowEl, { key: "Enter" });
-			expect(mockWindow.bringToFront).toHaveBeenCalledWith("test");
-		});
-
-		it("brings window to front on Space key", () => {
-			const { container } = render(
-				<DraggableWindow windowId="test" title="Test" isOpen={true}>
-					<div>Content</div>
-				</DraggableWindow>,
-			);
-			const windowEl = container.querySelector(".draggable-window");
-			fireEvent.keyDown(windowEl, { key: " " });
+			fireEvent.keyDown(windowEl, { key });
 			expect(mockWindow.bringToFront).toHaveBeenCalledWith("test");
 		});
 	});
