@@ -11,6 +11,14 @@ const {
 	mockEventBusInstance,
 	mockCreateItem,
 	mockProductionServiceInstance,
+	mockCraftingServiceConstructor,
+	mockCraftingServiceInstance,
+	mockBuildingServiceConstructor,
+	mockBuildingServiceInstance,
+	mockWorkerServiceConstructor,
+	mockWorkerServiceInstance,
+	mockSpawnServiceConstructor,
+	mockSpawnServiceInstance,
 } = vi.hoisted(() => {
 	const mockGameLoopInstance = {
 		start: vi.fn(),
@@ -37,10 +45,12 @@ const {
 	};
 	const mockNavigationServiceInstance = {
 		subscribeToPlaceChanges: vi.fn(),
+		eventBus: null,
 	};
 	const mockEnemyLifecycleServiceInstance = {
 		initialize: vi.fn(),
 		subscribeToEnemyChanges: vi.fn(),
+		eventBusService: null,
 	};
 	const mockEventBusInstance = {
 		on: vi.fn(),
@@ -59,6 +69,20 @@ const {
 		getWorkersBySocketIndex: vi.fn(),
 		canBuildingProduce: vi.fn(),
 	};
+	const mockCraftingServiceInstance = {
+		craft: vi.fn(),
+		learnRecipe: vi.fn(),
+	};
+	const mockCraftingServiceConstructor = vi.fn(() => mockCraftingServiceInstance);
+	const mockBuildingServiceInstance = {};
+	const mockBuildingServiceConstructor = vi.fn(() => mockBuildingServiceInstance);
+	const mockWorkerServiceInstance = {};
+	const mockWorkerServiceConstructor = vi.fn(() => mockWorkerServiceInstance);
+	const mockSpawnServiceInstance = {
+		spawners: {},
+		currentPlaceId: null,
+	};
+	const mockSpawnServiceConstructor = vi.fn(() => mockSpawnServiceInstance);
 
 	return {
 		mockGameLoopInstance,
@@ -71,6 +95,14 @@ const {
 		mockEventBusInstance,
 		mockCreateItem,
 		mockProductionServiceInstance,
+		mockCraftingServiceConstructor,
+		mockCraftingServiceInstance,
+		mockBuildingServiceConstructor,
+		mockBuildingServiceInstance,
+		mockWorkerServiceConstructor,
+		mockWorkerServiceInstance,
+		mockSpawnServiceConstructor,
+		mockSpawnServiceInstance,
 	};
 });
 
@@ -100,6 +132,18 @@ vi.mock("../../src/game/services/ProductionService", () => ({
 }));
 vi.mock("../../src/game/factory/itemFactory", () => ({
 	createItem: mockCreateItem,
+}));
+vi.mock("../../src/game/services/CraftingService", () => ({
+	CraftingService: mockCraftingServiceConstructor,
+}));
+vi.mock("../../src/game/services/BuildingService", () => ({
+	default: mockBuildingServiceConstructor,
+}));
+vi.mock("../../src/game/services/WorkerService", () => ({
+	default: mockWorkerServiceConstructor,
+}));
+vi.mock("../../src/game/services/SpawnService", () => ({
+	default: mockSpawnServiceConstructor,
 }));
 
 import GameEngine from "../../src/game/engine/GameEngine";
@@ -370,6 +414,374 @@ describe("GameEngine", () => {
 			gameEngine.start();
 
 			expect(mockStore.subscribe).toHaveBeenCalled();
+		});
+	});
+
+	describe("Constructor - Service Initialization", () => {
+		it("should initialize all services", () => {
+			expect(gameEngine.productionService).toBe(mockProductionServiceInstance);
+			expect(gameEngine.craftingService).toBe(mockCraftingServiceInstance);
+			expect(gameEngine.buildingService).toBe(mockBuildingServiceInstance);
+			expect(gameEngine.workerService).toBe(mockWorkerServiceInstance);
+			expect(gameEngine.spawnService).toBe(mockSpawnServiceInstance);
+		});
+
+		it("should call combatService.initialize with store and eventBus", () => {
+			expect(mockCombatServiceInstance.initialize).toHaveBeenCalledWith(
+				mockStore,
+				mockEventBusInstance,
+			);
+		});
+
+		it("should register playerIntentCraft event handler", () => {
+			const craftHandler = mockEventBusInstance.on.mock.calls[1]?.[1];
+			expect(craftHandler).toBeDefined();
+		});
+
+		it("should register playerIntentLearnRecipe event handler", () => {
+			const learnHandler = mockEventBusInstance.on.mock.calls[2]?.[1];
+			expect(learnHandler).toBeDefined();
+		});
+
+		it("should delegate playerIntentCraft to craftingService.craft", () => {
+			const handler = mockEventBusInstance.on.mock.calls[1]?.[1];
+			handler({ recipeId: "recipe1", outputItemId: "sword" });
+			expect(mockCraftingServiceInstance.craft).toHaveBeenCalledWith(
+				"recipe1",
+				"sword",
+			);
+		});
+
+		it("should delegate playerIntentLearnRecipe to craftingService.learnRecipe", () => {
+			const handler = mockEventBusInstance.on.mock.calls[2]?.[1];
+			handler({ recipeId: "recipe1", itemId: "iron_sword" });
+			expect(mockCraftingServiceInstance.learnRecipe).toHaveBeenCalledWith(
+				"recipe1",
+				"iron_sword",
+			);
+		});
+
+		it("should store lastState from store.getState()", () => {
+			expect(gameEngine.lastState).toBe(mockStore.getState());
+		});
+
+		it("should initialize lastUpdate", () => {
+			expect(gameEngine.lastUpdate).toBeDefined();
+			expect(typeof gameEngine.lastUpdate).toBe("number");
+		});
+	});
+
+	describe("processBuildingProduction()", () => {
+		it("should delegate to productionService.processBuildingProduction", () => {
+			const state = createBaseState({ combat: { isInCombat: false } });
+			gameEngine.processBuildingProduction(
+				"village_center",
+				0,
+				{ id: "lumber_mill" },
+				state,
+				1000,
+			);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction,
+			).toHaveBeenCalledWith(
+				"village_center",
+				0,
+				{ id: "lumber_mill" },
+				state,
+				1000,
+			);
+		});
+	});
+
+	describe("getAssignedWorkersBySocketIndex()", () => {
+		it("should delegate to productionService.getWorkersBySocketIndex", () => {
+			const expected = [{ id: "worker1" }];
+			mockProductionServiceInstance.getWorkersBySocketIndex.mockReturnValue(
+				expected,
+			);
+			const state = createBaseState({ combat: { isInCombat: false } });
+			const result = gameEngine.getAssignedWorkersBySocketIndex(state, 0);
+			expect(
+				mockProductionServiceInstance.getWorkersBySocketIndex,
+			).toHaveBeenCalledWith(state, 0);
+			expect(result).toBe(expected);
+		});
+	});
+
+	describe("calculateProductionRate()", () => {
+		it("should return baseProductionRate from buildingData", () => {
+			const rate = gameEngine.calculateProductionRate(
+				{ baseProductionRate: 5 },
+				createBaseState(),
+			);
+			expect(rate).toBe(5);
+		});
+
+		it("should return 0 when no baseProductionRate", () => {
+			const rate = gameEngine.calculateProductionRate({}, createBaseState());
+			expect(rate).toBe(0);
+		});
+	});
+
+	describe("canBuildingProduce()", () => {
+		it("should delegate to productionService.canBuildingProduce", () => {
+			mockProductionServiceInstance.canBuildingProduce.mockReturnValue(true);
+			const state = createBaseState({ combat: { isInCombat: false } });
+			const result = gameEngine.canBuildingProduce(state, 0, {
+				id: "lumber_mill",
+			});
+			expect(
+				mockProductionServiceInstance.canBuildingProduce,
+			).toHaveBeenCalledWith(state, 0, { id: "lumber_mill" });
+			expect(result).toBe(true);
+		});
+	});
+
+	describe("getCraftingService()", () => {
+		it("should return craftingService", () => {
+			expect(gameEngine.getCraftingService()).toBe(
+				mockCraftingServiceInstance,
+			);
+		});
+	});
+
+	describe("validateLoadedState()", () => {
+		it("should delegate to saveService.validateLoadedState", () => {
+			mockSaveServiceInstance.validateLoadedState.mockReturnValue(true);
+			const result = gameEngine.validateLoadedState({ player: {} });
+			expect(
+				mockSaveServiceInstance.validateLoadedState,
+			).toHaveBeenCalledWith({ player: {} });
+			expect(result).toBe(true);
+		});
+	});
+
+	describe("hasSavedState()", () => {
+		it("should delegate to saveService.hasSavedState", () => {
+			mockSaveServiceInstance.hasSavedState.mockReturnValue(true);
+			const result = gameEngine.hasSavedState();
+			expect(mockSaveServiceInstance.hasSavedState).toHaveBeenCalled();
+			expect(result).toBe(true);
+		});
+	});
+
+	describe("clearSavedState()", () => {
+		it("should delegate to saveService.clearSavedState", () => {
+			gameEngine.clearSavedState();
+			expect(mockSaveServiceInstance.clearSavedState).toHaveBeenCalled();
+		});
+	});
+
+	describe("update() - Filtering", () => {
+		it("should filter out currentPlaceId key", () => {
+			const state = {
+				...createBaseState({ combat: { isInCombat: false } }),
+				places: {
+					currentPlaceId: "village_center",
+					village_center: {
+						sockets: [
+							{ status: "occupied", buildingId: "lumber_mill" },
+						],
+					},
+				},
+			};
+			gameEngine.update(state, 1000);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction,
+			).toHaveBeenCalledTimes(1);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction.mock
+					.calls[0][0],
+			).toBe("village_center");
+		});
+
+		it("should filter out previousPlaceId key", () => {
+			const state = {
+				...createBaseState({ combat: { isInCombat: false } }),
+				places: {
+					previousPlaceId: "old_place",
+					village_center: {
+						sockets: [
+							{ status: "occupied", buildingId: "lumber_mill" },
+						],
+					},
+				},
+			};
+			gameEngine.update(state, 1000);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction,
+			).toHaveBeenCalledTimes(1);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction.mock
+					.calls[0][0],
+			).toBe("village_center");
+		});
+
+		it("should filter out availableConnections key", () => {
+			const state = {
+				...createBaseState({ combat: { isInCombat: false } }),
+				places: {
+					availableConnections: ["forest"],
+					village_center: {
+						sockets: [
+							{ status: "occupied", buildingId: "lumber_mill" },
+						],
+					},
+				},
+			};
+			gameEngine.update(state, 1000);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction,
+			).toHaveBeenCalledTimes(1);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction.mock
+					.calls[0][0],
+			).toBe("village_center");
+		});
+
+		it("should handle places with null sockets", () => {
+			const state = {
+				...createBaseState({ combat: { isInCombat: false } }),
+				places: {
+					village_center: { sockets: null },
+				},
+			};
+			gameEngine.update(state, 1000);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction,
+			).not.toHaveBeenCalled();
+		});
+
+		it("should skip sockets with unknown buildingId", () => {
+			const state = {
+				...createBaseState({ combat: { isInCombat: false } }),
+				places: {
+					village_center: {
+						sockets: [
+							{ status: "occupied", buildingId: "nonexistent" },
+						],
+					},
+				},
+			};
+			gameEngine.update(state, 1000);
+			expect(
+				mockProductionServiceInstance.processBuildingProduction,
+			).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("start() - Lifecycle Subscriptions", () => {
+		it("should initialize enemyLifecycleService", () => {
+			gameEngine.start();
+			expect(
+				mockEnemyLifecycleServiceInstance.initialize,
+			).toHaveBeenCalledWith(mockStore.getState());
+		});
+
+		it("should subscribe enemyLifecycleService to enemy changes", () => {
+			gameEngine.start();
+			expect(
+				mockEnemyLifecycleServiceInstance.subscribeToEnemyChanges,
+			).toHaveBeenCalledWith(mockStore);
+		});
+
+		it("should subscribe navigationService to place changes", () => {
+			gameEngine.start();
+			expect(
+				mockNavigationServiceInstance.subscribeToPlaceChanges,
+			).toHaveBeenCalledWith(mockStore);
+		});
+
+		it("should set combatService store and eventBusService on start", () => {
+			gameEngine.start();
+			expect(mockCombatServiceInstance.store).toBe(mockStore);
+			expect(mockCombatServiceInstance.eventBusService).toBe(
+				mockEventBusInstance,
+			);
+		});
+
+		it("should set navigationService eventBus on start", () => {
+			gameEngine.start();
+			expect(mockNavigationServiceInstance.eventBus).toBe(
+				mockEventBusInstance,
+			);
+		});
+
+		it("should call handleCombatStateChange when combat state changes", () => {
+			gameEngine.start();
+			const subscribeCallback = mockStore.subscribe.mock.calls[0]?.[0];
+			expect(subscribeCallback).toBeDefined();
+
+			// Simulate combat state change from false to true
+			mockStore.getState.mockReturnValue({
+				...createBaseState({ combat: { isInCombat: true } }),
+			});
+			subscribeCallback();
+
+			expect(
+				mockCombatServiceInstance.handleCombatStateChange,
+			).toHaveBeenCalledWith(false, true, mockGameLoopInstance);
+		});
+
+		it("should not call handleCombatStateChange when combat state unchanged", () => {
+			gameEngine.start();
+			const subscribeCallback = mockStore.subscribe.mock.calls[0]?.[0];
+
+			// Simulate no combat state change
+			subscribeCallback();
+
+			expect(
+				mockCombatServiceInstance.handleCombatStateChange,
+			).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("load() - Partial State", () => {
+		it("should load only player state when only player exists", () => {
+			const savedState = { player: { gold: 100 } };
+			global.localStorage.getItem.mockReturnValue(
+				JSON.stringify(savedState),
+			);
+			gameEngine.load();
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "player/setPlayerState",
+				payload: savedState.player,
+			});
+			expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+				expect.objectContaining({ type: "buildings/setBuildings" }),
+			);
+		});
+
+		it("should load only buildings when only buildings exist", () => {
+			const savedState = { buildings: { mine: { level: 2 } } };
+			global.localStorage.getItem.mockReturnValue(
+				JSON.stringify(savedState),
+			);
+			gameEngine.load();
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "buildings/setBuildings",
+				payload: savedState.buildings,
+			});
+			expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+				expect.objectContaining({ type: "player/setPlayerState" }),
+			);
+		});
+	});
+
+	describe("spawnEnemy Event Handler", () => {
+		it("should dispatch enemies/addEnemy when spawnEnemy event fires", () => {
+			const handler = mockEventBusInstance.on.mock.calls.find(
+				(call) => call[0] === "spawnEnemy",
+			)?.[1];
+			const payload = {
+				placeId: "forest",
+				enemy: { id: "enemy1", name: "Goblin" },
+			};
+			handler(payload);
+			expect(mockStore.dispatch).toHaveBeenCalledWith({
+				type: "enemies/addEnemy",
+				payload,
+			});
 		});
 	});
 });
