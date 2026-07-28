@@ -17,7 +17,7 @@
 	"scripts": {
 		"clean": "rimraf dist public .parcel-cache",
 		"prestart": "npm run clean",
-		"start": "cross-env NODE_ENV=development parcel",
+		"start": "cross-env NODE_ENV=development parcel --open",
 		"build": "npm run clean && cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
 		"process-images": "parcel build --target images --public-url ./ --no-source-maps --no-cache",
 		"test": "vitest",
