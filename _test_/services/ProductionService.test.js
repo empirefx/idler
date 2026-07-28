@@ -22,11 +22,11 @@ describe("ProductionService", () => {
 	beforeEach(() => {
 		mockStore = createMockStore(createBaseState());
 		mockDispatch = vi.fn();
-		mockItemFactory = vi.fn((type, quantity) => ({
+		mockItemFactory = vi.fn().mockImplementation((type, qty) => ({
 			id: `${type}-${Date.now()}`,
 			name: type,
 			type: "material",
-			quantity: Math.max(1, Math.floor(quantity || 1)),
+			quantity: Math.max(1, Math.floor(qty || 1)),
 			weight: 1,
 		}));
 		mockInventoryService = createMockInventoryService();
@@ -107,17 +107,9 @@ describe("ProductionService", () => {
 				baseProductionRate: 0,
 			};
 			const state = {
-				...createStateWithWorkers([]),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								sawmill: { socketIndex: 0, material: "wood" },
-							},
-						},
-					],
-				},
+				...createStateWithWorkers([
+					{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
+				]),
 				places: {
 					village_center: { hasInventory: true, connections: [] },
 				},
@@ -193,19 +185,9 @@ describe("ProductionService", () => {
 		});
 
 		it("should return undefined for nonexistent building", () => {
-			const state = {
-				...createBaseState(),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								sawmill: { socketIndex: 0, material: "wood" },
-							},
-						},
-					],
-				},
-			};
+			const state = createStateWithWorkers([
+				{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
+			]);
 
 			const worker = productionService.getWorkerByPlaceAndSocket(
 				state,
@@ -219,19 +201,9 @@ describe("ProductionService", () => {
 
 	describe("canBuildingProduce", () => {
 		it("should return true when building has worker with material and production rate", () => {
-			const state = {
-				...createBaseState(),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								sawmill: { socketIndex: 0, material: "wood" },
-							},
-						},
-					],
-				},
-			};
+			const state = createStateWithWorkers([
+				{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
+			]);
 			const building = {
 				id: "sawmill",
 				baseProductionRate: 10,
@@ -258,19 +230,9 @@ describe("ProductionService", () => {
 		});
 
 		it("should return falsy when production rate is zero", () => {
-			const state = {
-				...createBaseState(),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								farm: { socketIndex: 0, material: "food" },
-							},
-						},
-					],
-				},
-			};
+			const state = createStateWithWorkers([
+				{ id: "worker1", assignments: { farm: { socketIndex: 0, material: "food" } } },
+			]);
 			const building = {
 				id: "farm",
 				baseProductionRate: 0,
@@ -308,25 +270,20 @@ describe("ProductionService", () => {
 		});
 
 		it("should find closest connected place with inventory", () => {
-			const state = {
-				places: {
-					river_crossing: {
-						hasInventory: false,
-						connections: ["village_center", "farmlands"],
-					},
-					village_center: {
-						hasInventory: true,
-						connections: ["river_crossing"],
-					},
-					farmlands: {
-						hasInventory: false,
-						connections: ["river_crossing"],
-					},
+			const state = createPlaceState({
+				river_crossing: {
+					hasInventory: false,
+					connections: ["village_center", "farmlands"],
 				},
-				inventory: {
-					village_center: { items: [] },
+				village_center: {
+					hasInventory: true,
+					connections: ["river_crossing"],
 				},
-			};
+				farmlands: {
+					hasInventory: false,
+					connections: ["river_crossing"],
+				},
+			});
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
@@ -336,25 +293,20 @@ describe("ProductionService", () => {
 		});
 
 		it("should search multiple levels for closest inventory", () => {
-			const state = {
-				places: {
-					river_crossing: {
-						hasInventory: false,
-						connections: ["farmlands"],
-					},
-					farmlands: {
-						hasInventory: false,
-						connections: ["river_crossing", "village_center"],
-					},
-					village_center: {
-						hasInventory: true,
-						connections: ["farmlands"],
-					},
+			const state = createPlaceState({
+				river_crossing: {
+					hasInventory: false,
+					connections: ["farmlands"],
 				},
-				inventory: {
-					village_center: { items: [] },
+				farmlands: {
+					hasInventory: false,
+					connections: ["river_crossing", "village_center"],
 				},
-			};
+				village_center: {
+					hasInventory: true,
+					connections: ["farmlands"],
+				},
+			});
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
@@ -364,21 +316,16 @@ describe("ProductionService", () => {
 		});
 
 		it("should fallback to village_center when no other inventory found", () => {
-			const state = {
-				places: {
-					river_crossing: {
-						hasInventory: false,
-						connections: ["farmlands"],
-					},
-					farmlands: {
-						hasInventory: false,
-						connections: ["river_crossing"],
-					},
+			const state = createPlaceState({
+				river_crossing: {
+					hasInventory: false,
+					connections: ["farmlands"],
 				},
-				inventory: {
-					village_center: { items: [] },
+				farmlands: {
+					hasInventory: false,
+					connections: ["river_crossing"],
 				},
-			};
+			});
 
 			const result = productionService.findClosestPlaceWithInventory(
 				"river_crossing",
@@ -414,17 +361,9 @@ describe("ProductionService", () => {
 			};
 
 			const state = {
-				...createBaseState(),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								mine: { socketIndex: 0, material: "or" },
-							},
-						},
-					],
-				},
+				...createStateWithWorkers([
+					{ id: "worker1", assignments: { mine: { socketIndex: 0, material: "or" } } },
+				]),
 				places: {
 					river_crossing: {
 						hasInventory: false,
@@ -469,17 +408,9 @@ describe("ProductionService", () => {
 			};
 
 			const state = {
-				...createBaseState(),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								farm: { socketIndex: 0, material: "apple" },
-							},
-						},
-					],
-				},
+				...createStateWithWorkers([
+					{ id: "worker1", assignments: { farm: { socketIndex: 0, material: "apple" } } },
+				]),
 				places: {
 					village_center: {
 						hasInventory: true,
@@ -528,17 +459,9 @@ describe("ProductionService", () => {
 				baseProductionRate: 10,
 			};
 			const state = {
-				...createBaseState(),
-				player: {
-					workers: [
-						{
-							id: "worker1",
-							assignments: {
-								sawmill: { socketIndex: 0, material: "wood" },
-							},
-						},
-					],
-				},
+				...createStateWithWorkers([
+					{ id: "worker1", assignments: { sawmill: { socketIndex: 0, material: "wood" } } },
+				]),
 				places: {
 					village_center: { hasInventory: true, connections: [] },
 				},

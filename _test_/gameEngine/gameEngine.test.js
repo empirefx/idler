@@ -581,55 +581,15 @@ describe("GameEngine", () => {
 	});
 
 	describe("update() - Filtering", () => {
-		it("should filter out currentPlaceId key", () => {
+		it.each([
+			["currentPlaceId", "village_center"],
+			["previousPlaceId", "old_place"],
+			["availableConnections", ["forest"]],
+		])("should filter out %s key", (key, value) => {
 			const state = {
 				...createBaseState({ combat: { isInCombat: false } }),
 				places: {
-					currentPlaceId: "village_center",
-					village_center: {
-						sockets: [
-							{ status: "occupied", buildingId: "lumber_mill" },
-						],
-					},
-				},
-			};
-			gameEngine.update(state, 1000);
-			expect(
-				mockProductionServiceInstance.processBuildingProduction,
-			).toHaveBeenCalledTimes(1);
-			expect(
-				mockProductionServiceInstance.processBuildingProduction.mock
-					.calls[0][0],
-			).toBe("village_center");
-		});
-
-		it("should filter out previousPlaceId key", () => {
-			const state = {
-				...createBaseState({ combat: { isInCombat: false } }),
-				places: {
-					previousPlaceId: "old_place",
-					village_center: {
-						sockets: [
-							{ status: "occupied", buildingId: "lumber_mill" },
-						],
-					},
-				},
-			};
-			gameEngine.update(state, 1000);
-			expect(
-				mockProductionServiceInstance.processBuildingProduction,
-			).toHaveBeenCalledTimes(1);
-			expect(
-				mockProductionServiceInstance.processBuildingProduction.mock
-					.calls[0][0],
-			).toBe("village_center");
-		});
-
-		it("should filter out availableConnections key", () => {
-			const state = {
-				...createBaseState({ combat: { isInCombat: false } }),
-				places: {
-					availableConnections: ["forest"],
+					[key]: value,
 					village_center: {
 						sockets: [
 							{ status: "occupied", buildingId: "lumber_mill" },
