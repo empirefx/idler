@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { playerIntentLearnRecipe } from "../../../game/events";
+import { PLAYER_INTENT_LEARN_RECIPE } from "../../../game/events";
 import { globalEventBus } from "../../../game/services/EventBusService";
 import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
 import {
@@ -65,7 +65,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 				}
 
 				// Emit event to learn the recipe (service handles removal and state update)
-				globalEventBus.emit(playerIntentLearnRecipe.type, {
+				globalEventBus.emit(PLAYER_INTENT_LEARN_RECIPE, {
 					recipeId: item.recipeId,
 					itemId: item.id,
 				});

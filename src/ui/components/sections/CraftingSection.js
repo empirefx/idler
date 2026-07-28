@@ -7,7 +7,7 @@ import { itemCatalog } from "../../../data/itemCatalog";
 import {
 	CRAFT_FAILED,
 	CRAFT_SUCCESS,
-	playerIntentCraft,
+	PLAYER_INTENT_CRAFT,
 } from "../../../game/events";
 import { globalEventBus } from "../../../game/services/EventBusService";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
@@ -151,7 +151,7 @@ const CraftingSection = () => {
 				recipe.output.items?.[0] ||
 				recipe.output.icon;
 
-			globalEventBus.emit(playerIntentCraft.type, {
+			globalEventBus.emit(PLAYER_INTENT_CRAFT, {
 				recipeId: recipe.id,
 				outputItemId,
 			});
