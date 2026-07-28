@@ -434,17 +434,23 @@ describe("GameEngine", () => {
 		});
 
 		it("should register playerIntentCraft event handler", () => {
-			const craftHandler = mockEventBusInstance.on.mock.calls[1]?.[1];
-			expect(craftHandler).toBeDefined();
+			const handler = mockEventBusInstance.on.mock.calls.find(
+				(call) => call[0] === "game/PLAYER_INTENT_CRAFT",
+			)?.[1];
+			expect(handler).toBeDefined();
 		});
 
 		it("should register playerIntentLearnRecipe event handler", () => {
-			const learnHandler = mockEventBusInstance.on.mock.calls[2]?.[1];
-			expect(learnHandler).toBeDefined();
+			const handler = mockEventBusInstance.on.mock.calls.find(
+				(call) => call[0] === "game/PLAYER_INTENT_LEARN_RECIPE",
+			)?.[1];
+			expect(handler).toBeDefined();
 		});
 
 		it("should delegate playerIntentCraft to craftingService.craft", () => {
-			const handler = mockEventBusInstance.on.mock.calls[1]?.[1];
+			const handler = mockEventBusInstance.on.mock.calls.find(
+				(call) => call[0] === "game/PLAYER_INTENT_CRAFT",
+			)?.[1];
 			handler({ recipeId: "recipe1", outputItemId: "sword" });
 			expect(mockCraftingServiceInstance.craft).toHaveBeenCalledWith(
 				"recipe1",
@@ -453,7 +459,9 @@ describe("GameEngine", () => {
 		});
 
 		it("should delegate playerIntentLearnRecipe to craftingService.learnRecipe", () => {
-			const handler = mockEventBusInstance.on.mock.calls[2]?.[1];
+			const handler = mockEventBusInstance.on.mock.calls.find(
+				(call) => call[0] === "game/PLAYER_INTENT_LEARN_RECIPE",
+			)?.[1];
 			handler({ recipeId: "recipe1", itemId: "iron_sword" });
 			expect(mockCraftingServiceInstance.learnRecipe).toHaveBeenCalledWith(
 				"recipe1",

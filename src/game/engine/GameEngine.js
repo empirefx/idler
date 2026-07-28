@@ -1,8 +1,8 @@
 import { buildingsData } from "../../data/buildings";
 import GameLoop from "../core/GameLoop";
 import {
-	playerIntentCraft,
-	playerIntentLearnRecipe,
+	PLAYER_INTENT_CRAFT,
+	PLAYER_INTENT_LEARN_RECIPE,
 	workerCreatedItem,
 } from "../events";
 import { createItem } from "../factory/itemFactory";
@@ -96,14 +96,14 @@ class GameEngine {
 		});
 
 		this.eventBusService.on(
-			playerIntentCraft.type,
+			PLAYER_INTENT_CRAFT,
 			({ recipeId, outputItemId }) => {
 				this.craftingService.craft(recipeId, outputItemId);
 			},
 		);
 
 		this.eventBusService.on(
-			playerIntentLearnRecipe.type,
+			PLAYER_INTENT_LEARN_RECIPE,
 			({ recipeId, itemId }) => {
 				this.craftingService.learnRecipe(recipeId, itemId);
 			},
