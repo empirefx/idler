@@ -11,12 +11,31 @@ import inventoryReducer, {
 	selectInventoryStats,
 } from "../src/store/slices/inventorySlice";
 import { TYPE_TO_SLOT } from "../src/store/slices/inventory/inventoryTypes.js";
+import { createInitialInventoryState } from "./utils/testHelpers.js";
+
+function addAndEquipArmor(st, armorId = "test-armor", armorName = "Test Armor") {
+	st = inventoryReducer(
+		st,
+		addItem({
+			inventoryId: "player",
+			item: { id: armorId, name: armorName, type: "body", weight: 5 },
+		}),
+	);
+	return inventoryReducer(
+		st,
+		equipItem({
+			inventoryId: "player",
+			itemId: armorId,
+			typeToSlot: TYPE_TO_SLOT,
+		}),
+	);
+}
 
 describe("playerInventorySlice reducer and selectors", () => {
 	let state;
 
 	beforeEach(() => {
-		state = inventoryReducer(undefined, { type: "init" });
+		state = createInitialInventoryState();
 	});
 
 	describe("initial state", () => {
@@ -141,26 +160,7 @@ describe("playerInventorySlice reducer and selectors", () => {
 		});
 
 		it("should swap items when slot is occupied", () => {
-			let testState = inventoryReducer(
-				state,
-				addItem({
-					inventoryId: "player",
-					item: {
-						id: "test-armor",
-						name: "Test Armor",
-						type: "body",
-						weight: 5,
-					},
-				}),
-			);
-			testState = inventoryReducer(
-				testState,
-				equipItem({
-					inventoryId: "player",
-					itemId: "test-armor",
-					typeToSlot: TYPE_TO_SLOT,
-				}),
-			);
+			let testState = addAndEquipArmor(state);
 
 			testState = inventoryReducer(
 				testState,
@@ -197,26 +197,7 @@ describe("playerInventorySlice reducer and selectors", () => {
 
 	describe("unequipItem", () => {
 		it("should unequip item back to inventory", () => {
-			let testState = inventoryReducer(
-				state,
-				addItem({
-					inventoryId: "player",
-					item: {
-						id: "test-armor",
-						name: "Test Armor",
-						type: "body",
-						weight: 5,
-					},
-				}),
-			);
-			testState = inventoryReducer(
-				testState,
-				equipItem({
-					inventoryId: "player",
-					itemId: "test-armor",
-					typeToSlot: TYPE_TO_SLOT,
-				}),
-			);
+			let testState = addAndEquipArmor(state);
 
 			const result = inventoryReducer(
 				testState,

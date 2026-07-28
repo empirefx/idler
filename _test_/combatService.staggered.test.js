@@ -23,6 +23,24 @@ describe("CombatService Staggered Attack Tests", () => {
 	let mockEventBusService;
 	let mockGameLoop;
 
+	const createStaggeredEnemy = (id, countdown, overrides = {}) => ({
+		id,
+		health: 50,
+		attackPattern: "staggered",
+		countdown,
+		isCountdownActive: true,
+		attackDelayRange: [2000, 5000],
+		...overrides,
+	});
+
+	const setupAncientRuinsCombatState = (mockStoreRef) => {
+		mockStoreRef.getState.mockReturnValue({
+			places: { currentPlaceId: "ancient_ruins" },
+			combat: { isInCombat: true },
+			player: { stats: { defense: 0, agility: 0, wisdom: 0 } },
+		});
+	};
+
 	beforeEach(() => {
 		// Mock store
 		mockStore = {
@@ -63,37 +81,13 @@ describe("CombatService Staggered Attack Tests", () => {
 
 	describe("Staggered Attack Handling", () => {
 		beforeEach(() => {
-			mockStore.getState.mockReturnValue({
-				places: {
-					currentPlaceId: "ancient_ruins",
-				},
-				combat: {
-					isInCombat: true,
-				},
-				player: {
-					stats: { defense: 0, agility: 0, wisdom: 0 },
-				},
-			});
+			setupAncientRuinsCombatState(mockStore);
 		});
 
 		it("should handle enemies ready to attack", () => {
 			const enemies = [
-				{
-					id: "enemy1",
-					health: 50,
-					attackPattern: "staggered",
-					countdown: -100,
-					isCountdownActive: true,
-					attackDelayRange: [2000, 5000],
-				},
-				{
-					id: "enemy2",
-					health: 30,
-					attackPattern: "staggered",
-					countdown: 1000,
-					isCountdownActive: true,
-					attackDelayRange: [2000, 5000],
-				},
+				createStaggeredEnemy("enemy1", -100),
+				createStaggeredEnemy("enemy2", 1000, { health: 30 }),
 			];
 
 			combatService.handleStaggeredAttacks(enemies);
@@ -113,22 +107,8 @@ describe("CombatService Staggered Attack Tests", () => {
 
 		it("should handle multiple ready enemies with attack queue", () => {
 			const enemies = [
-				{
-					id: "enemy1",
-					health: 50,
-					attackPattern: "staggered",
-					countdown: -100,
-					isCountdownActive: true,
-					attackDelayRange: [2000, 5000],
-				},
-				{
-					id: "enemy2",
-					health: 30,
-					attackPattern: "staggered",
-					countdown: -200,
-					isCountdownActive: true,
-					attackDelayRange: [2000, 5000],
-				},
+				createStaggeredEnemy("enemy1", -100),
+				createStaggeredEnemy("enemy2", -200, { health: 30 }),
 			];
 
 			combatService.handleStaggeredAttacks(enemies);
@@ -246,39 +226,20 @@ describe("CombatService Staggered Attack Tests", () => {
 
 	describe("Synchronized Enemy Countdowns", () => {
 		beforeEach(() => {
-			mockStore.getState.mockReturnValue({
-				places: {
-					currentPlaceId: "ancient_ruins",
-				},
-				combat: {
-					isInCombat: true,
-				},
-				player: {
-					stats: { defense: 0, agility: 0, wisdom: 0 },
-				},
-			});
+			setupAncientRuinsCombatState(mockStore);
 		});
 
 		it("should initialize countdowns for all enemies at place when combat starts", () => {
 			const enemies = [
-				{
-					id: "enemy1",
-					placeId: "ancient_ruins",
-					health: 50,
-					attackPattern: "staggered",
-					countdown: 0,
+				createStaggeredEnemy("enemy1", 0, {
 					isCountdownActive: false,
-					attackDelayRange: [2000, 5000],
-				},
-				{
-					id: "enemy2",
 					placeId: "ancient_ruins",
+				}),
+				createStaggeredEnemy("enemy2", 0, {
 					health: 30,
-					attackPattern: "staggered",
-					countdown: 0,
 					isCountdownActive: false,
-					attackDelayRange: [2000, 5000],
-				},
+					placeId: "ancient_ruins",
+				}),
 			];
 
 			combatService.handleStaggeredAttacks(enemies);
@@ -310,15 +271,7 @@ describe("CombatService Staggered Attack Tests", () => {
 
 		it("should deactivate countdowns when combat ends", () => {
 			const enemies = [
-				{
-					id: "enemy1",
-					placeId: "ancient_ruins",
-					health: 50,
-					attackPattern: "staggered",
-					countdown: 1000,
-					isCountdownActive: true,
-					attackDelayRange: [2000, 5000],
-				},
+				createStaggeredEnemy("enemy1", 1000, { placeId: "ancient_ruins" }),
 			];
 
 			// Mock combat state as inactive
@@ -343,15 +296,9 @@ describe("CombatService Staggered Attack Tests", () => {
 	describe("Countdown Decrements", () => {
 		it("should decrease countdown values over time", () => {
 			const enemies = [
-				{
-					id: "enemy1",
+				createStaggeredEnemy("enemy1", 3000, {
 					placeId: "ancient_ruins",
-					health: 50,
-					attackPattern: "staggered",
-					countdown: 3000, // 3 seconds
-					isCountdownActive: true,
-					attackDelayRange: [2000, 5000],
-				},
+				}),
 			];
 
 			// Simulate deltaTime of 0.1 seconds (100ms)

@@ -1,6 +1,7 @@
 // Common test helper functions
 import { vi } from 'vitest';
 import { createBaseState, createTestState, createStateWithWorkers } from '../fixtures/stateBuilders.js';
+import inventoryReducer from '../../src/store/slices/inventorySlice.js';
 
 // Helper to find and call event handlers
 export const getEventHandler = (mockService, eventName) => {
@@ -160,6 +161,9 @@ export const createMultipleBuildingsScenario = (buildingsConfig, workersConfig) 
 	const state = createTestStateWithBuildings(buildings, workersConfig);
 	return { buildings, state };
 };
+
+// Helper to create initial inventory state
+export const createInitialInventoryState = () => inventoryReducer(undefined, { type: "init" });
 
 // Re-export state builders for backward compatibility
 export { createBaseState, createTestState } from '../fixtures/stateBuilders.js';

@@ -10,12 +10,13 @@ import inventoryReducer, {
 	selectInventoryStats,
 	selectInventoryByPlaceId,
 } from "../src/store/slices/inventorySlice";
+import { createInitialInventoryState } from "./utils/testHelpers.js";
 
 describe("placeInventorySlice reducer and selectors", () => {
 	let state;
 
 	beforeEach(() => {
-		state = inventoryReducer(undefined, { type: "init" });
+		state = createInitialInventoryState();
 	});
 
 	describe("initial state", () => {

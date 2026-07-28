@@ -10,6 +10,23 @@ import { createTestItem } from "./utils/stateFactory.js";
 
 const baseState = createTestState();
 
+const createAppleStore = (overrides = {}) =>
+	createTestStore({
+		player: {
+			...baseState.playerInventory.player,
+			items: [createTestItem("apple1", "apple", "consumable", 5, 0.5)],
+		},
+		...overrides,
+	});
+
+const expectAppleQuantity = (testStore, expected) => {
+	const state = testStore.getState();
+	const apples = state.inventory.player.items.find(
+		(item) => item.id === "apple1",
+	);
+	expect(apples.quantity).toBe(expected);
+};
+
 const createTestStore = (inventoryOverrides = {}) => {
 	return configureStore({
 		reducer: {
@@ -35,31 +52,20 @@ describe("inventoryThunks", () => {
 
 	describe("moveItemBetweenInventories", () => {
 		it("should move item from player inventory to place inventory", () => {
-			const testStore = createTestStore({
-				player: {
-					...baseState.playerInventory.player,
-					items: [
-						createTestItem("apple1", "apple", "consumable", 5, 0.5),
-					],
-				},
-			});
+			const testStore = createAppleStore();
 
 			const result = testStore.dispatch(
 				moveItemBetweenInventories("player", "village_center", "apple1", 2),
 			);
 
 			expect(result).toBe(true);
+			expectAppleQuantity(testStore, 3);
 
-			const state = testStore.getState();
-
-			const playerApples = state.inventory.player.items.find(
-				(item) => item.id === "apple1",
-			);
-			expect(playerApples.quantity).toBe(3);
-
-			const villageApples = state.inventory.village_center.items.find(
-				(item) => item.name === "apple",
-			);
+			const villageApples = testStore
+				.getState()
+				.inventory.village_center.items.find(
+					(item) => item.name === "apple",
+				);
 			expect(villageApples.quantity).toBe(2);
 		});
 
@@ -236,26 +242,14 @@ describe("inventoryThunks", () => {
 
 	describe("removeItemFromInventory", () => {
 		it("should remove item from player inventory", () => {
-			const testStore = createTestStore({
-				player: {
-					...baseState.playerInventory.player,
-					items: [
-						createTestItem("apple1", "apple", "consumable", 5, 0.5),
-					],
-				},
-			});
+			const testStore = createAppleStore();
 
 			const result = testStore.dispatch(
 				removeItemFromInventory("player", "apple1", 2),
 			);
 
 			expect(result).toBe(true);
-
-			const state = testStore.getState();
-			const playerApples = state.inventory.player.items.find(
-				(item) => item.id === "apple1",
-			);
-			expect(playerApples.quantity).toBe(3);
+			expectAppleQuantity(testStore, 3);
 		});
 
 		it("should remove item from place inventory", () => {

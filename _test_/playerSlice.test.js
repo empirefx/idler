@@ -22,6 +22,16 @@ import { playerData } from "../src/data/player";
 describe("playerSlice reducer and selectors", () => {
 	const initialState = playerReducer(undefined, { type: "" });
 
+	const addAndAssignWorker = (state) => {
+		let s = playerReducer(state, addWorker({ id: 1, name: "Test Worker" }));
+		const workerId = s.workers[0].id;
+		s = playerReducer(
+			s,
+			assignWorkerToSocket({ workerId, placeId: "p1", socketIndex: 0, material: null, buildingName: "b1" }),
+		);
+		return { state: s, workerId };
+	};
+
 	it("should initialize state from playerData and selectors", () => {
 		expect(initialState.id).toBe(playerData.id);
 		expect(initialState.name).toBe(playerData.name);
@@ -44,15 +54,7 @@ describe("playerSlice reducer and selectors", () => {
 	});
 
 	it("should assign and unassign worker", () => {
-		let state = playerReducer(
-			initialState,
-			addWorker({ id: 1, name: "Test Worker" }),
-		);
-		const workerId = state.workers[0].id;
-		state = playerReducer(
-			state,
-			assignWorkerToSocket({ workerId, placeId: "p1", socketIndex: 0, material: null, buildingName: "b1" }),
-		);
+		let { state, workerId } = addAndAssignWorker(initialState);
 		expect(
 			state.workers.find((w) => w.id === workerId).assignments["p1"].socketIndex,
 		).toBe(0);
@@ -89,15 +91,7 @@ describe("playerSlice reducer and selectors", () => {
 	});
 
 	it("should list assigned and unassigned workers", () => {
-		let state = playerReducer(
-			initialState,
-			addWorker({ id: 1, name: "Test Worker" }),
-		);
-		const workerId = state.workers[0].id;
-		state = playerReducer(
-			state,
-			assignWorkerToSocket({ workerId, placeId: "p1", socketIndex: 0, material: null, buildingName: "b1" }),
-		);
+		let { state } = addAndAssignWorker(initialState);
 		expect(selectAssignedWorkers({ player: state }).length).toBe(1);
 		expect(selectUnassignedWorkers({ player: state }).length).toBe(0);
 		expect(selectUnassignedWorkers({ player: initialState }).length).toBe(0);
