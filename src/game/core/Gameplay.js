@@ -1,5 +1,5 @@
-import { itemCatalog } from "../../data/itemCatalog";
-import { questCatalog } from "../../data/questCatalog";
+import { itemCatalog } from "../../../shared/data/itemCatalog";
+import { questCatalog } from "../../../shared/data/questCatalog";
 import {
 	addItem as addPlayerItem,
 	removeItem as removePlayerItem,

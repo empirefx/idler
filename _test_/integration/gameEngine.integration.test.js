@@ -6,7 +6,7 @@ import buildingsReducer from "../../src/store/slices/buildingsSlice";
 import placesReducer from "../../src/store/slices/placesSlice";
 import enemiesReducer from "../../src/store/slices/enemiesSlice";
 import combatReducer from "../../src/store/slices/combatSlice";
-import { playerData } from "../../src/data/player";
+import { playerData } from "../../shared/data/player";
 
 import GameEngine from "../../src/game/engine/GameEngine";
 import { createMockLocalStorage } from "../mocks/localStorage.mock.js";

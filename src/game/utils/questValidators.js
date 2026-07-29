@@ -1,4 +1,4 @@
-import { questCatalog } from "../../data/questCatalog";
+import { questCatalog } from "../../../shared/data/questCatalog";
 
 export const QUEST_ELIGIBILITY_REASONS = {
 	QUEST_NOT_FOUND: "QUEST_NOT_FOUND",

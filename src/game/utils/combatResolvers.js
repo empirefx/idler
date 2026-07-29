@@ -1,4 +1,4 @@
-import { ARMOR_SLOTS, DAMAGE_TYPES } from "../../data/combatTypes";
+import { ARMOR_SLOTS, DAMAGE_TYPES } from "../../../shared/data/combatTypes";
 
 const WEAPON_TYPE_MAP = {
 	sword: { damageType: DAMAGE_TYPES.PHYSICAL, primaryStat: "strength" },

@@ -5,7 +5,7 @@ import buildingsReducer, {
 	selectAllBuildings,
 	selectBuildingById,
 } from "../src/store/slices/buildingsSlice";
-import { buildingsData } from "../src/data/buildings";
+import { buildingsData } from "../shared/data/buildings";
 
 describe("buildingsSlice", () => {
 	let initialState;

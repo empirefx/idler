@@ -1,5 +1,5 @@
-import { craftingRecipes } from "../../data/craftingRecipes";
-import { itemCatalog } from "../../data/itemCatalog";
+import { craftingRecipes } from "../../../shared/data/craftingRecipes";
+import { itemCatalog } from "../../../shared/data/itemCatalog";
 import { craftFailed, craftSuccess, recipeLearned } from "../events";
 import { createItem } from "../factory/itemFactory";
 import Logger from "../utils/Logger";

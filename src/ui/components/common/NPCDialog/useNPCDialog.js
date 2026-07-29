@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { itemCatalog } from "../../../../data/itemCatalog";
-import { questCatalog } from "../../../../data/questCatalog";
+import { itemCatalog } from "../../../../../shared/data/itemCatalog";
+import { questCatalog } from "../../../../../shared/data/questCatalog";
 import {
 	playerIntentAcceptQuest,
 	playerIntentCompleteQuest,

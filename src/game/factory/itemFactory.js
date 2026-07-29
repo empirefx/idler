@@ -1,4 +1,4 @@
-import { itemCatalog } from "../../data/itemCatalog";
+import { itemCatalog } from "../../../shared/data/itemCatalog";
 
 // Handles item creation logic, including randomization, upgrades, etc.
 export const createItem = (productionType, quantity, options = {}) => {

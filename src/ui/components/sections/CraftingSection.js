@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/crafting-section.css";
-import { craftingGroups, craftingRecipes } from "../../../data/craftingRecipes";
-import { itemCatalog } from "../../../data/itemCatalog";
+import { craftingGroups, craftingRecipes } from "../../../../shared/data/craftingRecipes";
+import { itemCatalog } from "../../../../shared/data/itemCatalog";
 import {
 	CRAFT_FAILED,
 	CRAFT_SUCCESS,

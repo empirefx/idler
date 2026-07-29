@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { DAMAGE_TYPES } from "../../../data/combatTypes";
-import { getSkillById, SKILL_COLUMNS } from "../../../data/skillsData";
+import { DAMAGE_TYPES } from "../../../../shared/data/combatTypes";
+import { getSkillById, SKILL_COLUMNS } from "../../../../shared/data/skillsData";
 import {
 	selectPlayerSkills,
 	selectSkillPoints,

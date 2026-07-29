@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { npcCatalog } from "../../data/npcCatalog";
+import { npcCatalog } from "../../../shared/data/npcCatalog";
 
 // Merge catalog data with runtime state
 const initialState = {

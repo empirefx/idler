@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { inventoryData } from "../../data/inventory.js";
+import { inventoryData } from "../../../shared/data/inventory.js";
 import {
 	EQUIPMENT_SLOTS,
 	INVENTORY_TYPES,

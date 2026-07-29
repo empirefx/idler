@@ -10,8 +10,8 @@ import {
 	HIT_MIN,
 	MITIGATION_K,
 	SKILL_TYPES,
-} from "../../data/combatTypes";
-import { SKILL_COLUMNS, skillsCatalog } from "../../data/skillsData";
+} from "../../../shared/data/combatTypes";
+import { SKILL_COLUMNS, skillsCatalog } from "../../../shared/data/skillsData";
 import { getEquipmentStatBonus } from "../utils/combatResolvers";
 
 function clamp(value, min, max) {

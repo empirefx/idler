@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { placesData } from "../../data/places";
+import { placesData } from "../../../shared/data/places";
 
 const initialState = {
 	...placesData,

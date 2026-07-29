@@ -1,4 +1,4 @@
-import { workerNames } from "../../data/workerNames";
+import { workerNames } from "../../../shared/data/workerNames";
 import { addNotification } from "../../store/slices/notificationSlice";
 import {
 	selectGold,

@@ -1,6 +1,6 @@
 // Navigation Service - handles place changes and enemy despawning
 
-import { placesData } from "../../data/places";
+import { placesData } from "../../../shared/data/places";
 import { removeEnemiesByPlace } from "../../store/slices/enemiesSlice";
 import { locationChanged } from "../events";
 import Logger from "../utils/Logger";

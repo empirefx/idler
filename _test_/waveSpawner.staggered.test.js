@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { WaveSpawner } from "../src/game/services/SpawnService";
-import { enemyCatalog } from "../src/data/enemyCatalog";
-import { placesData } from "../src/data/places";
+import { enemyCatalog } from "../shared/data/enemyCatalog";
+import { placesData } from "../shared/data/places";
 
 describe("WaveSpawner Staggered Attack Tests", () => {
 	let eventBusService;

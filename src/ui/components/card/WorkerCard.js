@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { itemCatalog } from "../../../data/itemCatalog";
+import { itemCatalog } from "../../../../shared/data/itemCatalog";
 import {
 	assignWorkerToSocketWithEvent,
 	unassignWorkerFromSocketWithEvent,

@@ -1,5 +1,5 @@
-import { DAMAGE_TYPES, SKILL_TYPES } from "../../data/combatTypes";
-import { SKILL_COLUMNS, skillsCatalog } from "../../data/skillsData";
+import { DAMAGE_TYPES, SKILL_TYPES } from "../../../shared/data/combatTypes";
+import { SKILL_COLUMNS, skillsCatalog } from "../../../shared/data/skillsData";
 
 let lastActivatedOrder = 0;
 

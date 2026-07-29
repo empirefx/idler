@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { buildingsData } from "../../data/buildings";
+import { buildingsData } from "../../../shared/data/buildings";
 
 const initialState = { ...buildingsData };
 

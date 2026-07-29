@@ -1,4 +1,4 @@
-import { enemyCatalog } from "../data/enemyCatalog";
+import { enemyCatalog } from "../../shared/data/enemyCatalog";
 
 /**
  * Get enemy display name from Redux state by enemy ID

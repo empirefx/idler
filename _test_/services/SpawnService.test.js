@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import SpawnService, {
 	WaveSpawner,
 } from "../../src/game/services/SpawnService";
-import { placesData } from "../../src/data/places";
-import { enemyCatalog } from "../../src/data/enemyCatalog";
+import { placesData } from "../../shared/data/places";
+import { enemyCatalog } from "../../shared/data/enemyCatalog";
 import { getEventHandler } from "../utils/testHelpers.js";
 
 describe("SpawnService", () => {

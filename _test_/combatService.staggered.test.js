@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CombatService } from "../src/game/services/CombatService";
-import { placesData } from "../src/data/places";
+import { placesData } from "../shared/data/places";
 
 vi.mock("../src/game/core/combatCalculator", () => ({
 	resolveAttack: vi.fn(() => ({

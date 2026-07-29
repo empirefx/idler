@@ -1,4 +1,4 @@
-import { placesData } from "../../data/places";
+import { placesData } from "../../../shared/data/places";
 import createEnemy from "../factory/enemyFactory";
 import Logger from "../utils/Logger";
 

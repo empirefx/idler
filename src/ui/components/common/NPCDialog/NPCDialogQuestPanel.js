@@ -1,4 +1,4 @@
-import { itemCatalog } from "../../../../data/itemCatalog";
+import { itemCatalog } from "../../../../../shared/data/itemCatalog";
 
 const NPCDialogQuestPanel = ({ objectives, rewards }) => (
 	<div className="quest-details-panel">

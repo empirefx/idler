@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { DAMAGE_TYPES, SKILL_TYPES } from "../../../data/combatTypes";
-import { getSkillById, SKILL_COLUMNS } from "../../../data/skillsData";
+import { DAMAGE_TYPES, SKILL_TYPES } from "../../../../shared/data/combatTypes";
+import { getSkillById, SKILL_COLUMNS } from "../../../../shared/data/skillsData";
 import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import { selectPlayerSkills } from "../../../store/slices/playerSlice";
 import { useSkillCooldownState } from "../../hooks/useSkillCooldownState";

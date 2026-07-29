@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/workers-section.css";
-import { buildingsData } from "../../../data/buildings";
-import { itemCatalog } from "../../../data/itemCatalog";
+import { buildingsData } from "../../../../shared/data/buildings";
+import { itemCatalog } from "../../../../shared/data/itemCatalog";
 import { PLAYER_INTENT_FIRE_WORKER } from "../../../game/events";
 import { globalEventBus } from "../../../game/services/EventBusService";
 import {

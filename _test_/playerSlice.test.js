@@ -17,7 +17,7 @@ import playerReducer, {
 	selectWorkerCount,
 	selectMaxWorkers,
 } from "../src/store/slices/playerSlice";
-import { playerData } from "../src/data/player";
+import { playerData } from "../shared/data/player";
 
 describe("playerSlice reducer and selectors", () => {
 	const initialState = playerReducer(undefined, { type: "" });

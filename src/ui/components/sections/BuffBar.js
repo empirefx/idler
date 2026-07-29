@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { skillsCatalog } from "../../../data/skillsData";
+import { skillsCatalog } from "../../../../shared/data/skillsData";
 import { selectPlayer } from "../../../store/slices/playerSlice";
 
 const BuffBar = () => {

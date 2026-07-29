@@ -1,4 +1,4 @@
-import { buildingsData } from "../../data/buildings";
+import { buildingsData } from "../../../shared/data/buildings";
 import GameLoop from "../core/GameLoop";
 import {
 	PLAYER_INTENT_CRAFT,

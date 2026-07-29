@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { buildingsData } from "../../data/buildings";
-import { playerData } from "../../data/player";
+import { buildingsData } from "../../../shared/data/buildings";
+import { playerData } from "../../../shared/data/player";
 import { workerAssigned, workerUnassigned } from "../../game/events";
 
 const getNextWorkerId = (workers) => {
