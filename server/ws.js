@@ -10,9 +10,9 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 		});
 	});
 
-	function send(ws, type, data) {
+	function send(ws, payload) {
 		if (ws.readyState !== 1) return;
-		ws.send(JSON.stringify({ type, data: JSON.stringify(data) }));
+		ws.send(JSON.stringify(payload));
 	}
 
 	wss.on("connection", (ws) => {
@@ -23,27 +23,28 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 				const msg = JSON.parse(raw.toString());
 				switch (msg.type) {
 					case "JOIN": {
-						const { nickname } = JSON.parse(msg.data);
-						const result = await sessionManager.createSession(nickname);
+						const result = await sessionManager.createSession(msg.nickname);
 						if (result.accepted) {
-							currentNickname = nickname;
-							clients.set(nickname, ws);
+							currentNickname = msg.nickname;
+							clients.set(msg.nickname, ws);
+							send(ws, { type: "ACCEPTED", sessionId: result.session_id });
+						} else {
+							send(ws, { type: "ERROR", message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
 						}
-						send(ws, "JOIN", result);
-						logger.log(`JOIN: ${nickname} accepted=${result.accepted}`, "WS");
+						logger.log(`JOIN: ${msg.nickname} accepted=${result.accepted}`, "WS");
 						break;
 					}
 					case "INVENTORY_ACTION": {
 						if (!currentNickname) {
-							send(ws, "ERROR", { code: "NOT_JOINED", message: "Must join first" });
+							send(ws, { type: "ERROR", message: "Must join first" });
 							return;
 						}
 						const action = JSON.parse(msg.data);
 						const result = await inventoryHandler.handleAction(currentNickname, action);
 						if (result.success) {
-							send(ws, "INVENTORY_DIFF", result.diff);
+							send(ws, { type: "INVENTORY_DIFF", data: JSON.stringify(result.diff) });
 						} else {
-							send(ws, "ERROR", { code: result.error, message: result.error });
+							send(ws, { type: "ERROR", message: result.error });
 						}
 						break;
 					}
@@ -52,7 +53,7 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 				}
 			} catch (err) {
 				logger.error(`Message handling error: ${err.message}`);
-				send(ws, "ERROR", { code: "PARSE_ERROR", message: err.message });
+				send(ws, { type: "ERROR", message: err.message });
 			}
 		});
 
