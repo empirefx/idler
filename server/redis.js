@@ -57,6 +57,22 @@ export class RedisClient {
 		return result === 1;
 	}
 
+	async hgetall(key) {
+		return this.client.hgetall(key);
+	}
+
+	async hkeys(key) {
+		return this.client.hkeys(key);
+	}
+
+	async smembers(key) {
+		return this.client.smembers(key);
+	}
+
+	async sadd(key, value) {
+		return this.client.sadd(key, value);
+	}
+
 	async disconnect() {
 		if (this.client) {
 			await this.client.quit();

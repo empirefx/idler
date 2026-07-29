@@ -8,6 +8,10 @@ const mockRedis = {
 	hget: vi.fn(),
 	hset: vi.fn(),
 	hdel: vi.fn(),
+	hgetall: vi.fn(),
+	hkeys: vi.fn(),
+	smembers: vi.fn(),
+	sadd: vi.fn(),
 	del: vi.fn(),
 	expire: vi.fn(),
 	exists: vi.fn(),
@@ -81,6 +85,34 @@ describe("RedisClient", () => {
 		mockRedis.exists.mockResolvedValue(1);
 		const result = await client.exists("key");
 		expect(result).toBe(true);
+	});
+
+	it("should hgetall a hash", async () => {
+		mockRedis.hgetall.mockResolvedValue({ field1: "val1", field2: "val2" });
+		const result = await client.hgetall("hash");
+		expect(result).toEqual({ field1: "val1", field2: "val2" });
+		expect(mockRedis.hgetall).toHaveBeenCalledWith("hash");
+	});
+
+	it("should hkeys a hash", async () => {
+		mockRedis.hkeys.mockResolvedValue(["field1", "field2"]);
+		const result = await client.hkeys("hash");
+		expect(result).toEqual(["field1", "field2"]);
+		expect(mockRedis.hkeys).toHaveBeenCalledWith("hash");
+	});
+
+	it("should smembers a set", async () => {
+		mockRedis.smembers.mockResolvedValue(["a", "b"]);
+		const result = await client.smembers("set");
+		expect(result).toEqual(["a", "b"]);
+		expect(mockRedis.smembers).toHaveBeenCalledWith("set");
+	});
+
+	it("should sadd a value to a set", async () => {
+		mockRedis.sadd.mockResolvedValue(1);
+		const result = await client.sadd("set", "value");
+		expect(result).toBe(1);
+		expect(mockRedis.sadd).toHaveBeenCalledWith("set", "value");
 	});
 
 	it("should disconnect", async () => {
