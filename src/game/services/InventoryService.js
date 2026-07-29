@@ -259,6 +259,7 @@ export const InventoryService = {
 		}
 
 		store.dispatch(this.addItem(inventoryId, item));
+		this._sendAction("ADD", { inventory_id: inventoryId, item });
 	},
 
 	dispatchRemoveItem(store, inventoryId, itemId, quantity) {
@@ -271,6 +272,7 @@ export const InventoryService = {
 		}
 
 		store.dispatch(this.removeItem(inventoryId, itemId, quantity));
+		this._sendAction("REMOVE", { inventory_id: inventoryId, item_id: itemId, quantity });
 	},
 
 	dispatchMoveItem(store, fromId, toId, itemId, quantity) {
@@ -289,6 +291,7 @@ export const InventoryService = {
 		}
 
 		store.dispatch(this.moveItem(fromId, toId, itemId, quantity));
+		this._sendAction("MOVE", { from_id: fromId, to_id: toId, item_id: itemId, quantity });
 	},
 
 	dispatchEquipItem(store, inventoryId, itemId) {
@@ -310,6 +313,7 @@ export const InventoryService = {
 		}
 
 		store.dispatch(this.equipItem(inventoryId, itemId));
+		this._sendAction("EQUIP", { inventory_id: inventoryId, item_id: itemId });
 	},
 
 	dispatchUnequipItem(store, inventoryId, slot) {
@@ -322,11 +326,21 @@ export const InventoryService = {
 		}
 
 		store.dispatch(this.unequipItem(inventoryId, slot));
+		this._sendAction("UNEQUIP", { inventory_id: inventoryId, slot });
 	},
 
 	addItemToInventory(store, inventoryId, item) {
 		const result = this.dispatchAddItem(store, inventoryId, item);
 		return result !== null;
+	},
+
+	setWSClient(wsClient) {
+		this._wsClient = wsClient;
+	},
+
+	_sendAction(actionType, payload) {
+		if (!this._wsClient) return;
+		this._wsClient.sendAction({ action_type: actionType, ...payload });
 	},
 
 	getInventorySummary(inventory) {

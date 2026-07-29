@@ -26,6 +26,9 @@ export const useGameState = ({ sessionId, ws } = {}) => {
 
 		const client = new WSClient(ws, sessionId);
 		wsClientRef.current = client;
+		import("../../game/services/InventoryService").then(({ InventoryService }) => {
+			InventoryService.setWSClient(client);
+		});
 
 		const unsub = client.onDiff((diff) => {
 			if (diff.inventoryId && diff.inventoryData) {
