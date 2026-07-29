@@ -8,11 +8,17 @@ describe("SessionManager", () => {
 
 	beforeEach(() => {
 		mockRedis = {
-			exists: vi.fn(),
-			set: vi.fn(),
-			get: vi.fn(),
-			del: vi.fn(),
-			expire: vi.fn(),
+			exists: vi.fn().mockResolvedValue(false),
+			set: vi.fn().mockResolvedValue("OK"),
+			get: vi.fn().mockResolvedValue(null),
+			del: vi.fn().mockResolvedValue(1),
+			expire: vi.fn().mockResolvedValue(1),
+			hgetall: vi.fn().mockResolvedValue({}),
+			hset: vi.fn().mockResolvedValue(1),
+			hget: vi.fn().mockResolvedValue(null),
+			hdel: vi.fn().mockResolvedValue(1),
+			sadd: vi.fn().mockResolvedValue(1),
+			smembers: vi.fn().mockResolvedValue([]),
 		};
 		mockLogger = { log: vi.fn(), warn: vi.fn(), error: vi.fn() };
 		manager = new SessionManager(mockRedis, mockLogger, { sessionTtl: 2592000 });
@@ -39,8 +45,6 @@ describe("SessionManager", () => {
 	});
 
 	it("should create session for available nickname", async () => {
-		mockRedis.exists.mockResolvedValue(false);
-		mockRedis.set.mockResolvedValue(undefined);
 		const result = await manager.createSession("Hero");
 		expect(result.accepted).toBe(true);
 		expect(result.session_id).toBeTruthy();
@@ -54,8 +58,68 @@ describe("SessionManager", () => {
 	});
 
 	it("should disconnect session without deleting data", async () => {
-		mockRedis.del = vi.fn();
 		await manager.disconnectSession("Hero");
 		expect(mockRedis.del).not.toHaveBeenCalled();
+	});
+
+	it("should initialize full state for a new session", async () => {
+		const sessionId = "test-session-123";
+		await manager.initializeFullState(sessionId);
+
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:inventory`, "player",
+			expect.stringContaining("player")
+		);
+
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:stats`, "level", expect.any(String)
+		);
+
+		expect(mockLogger.log).toHaveBeenCalledWith(
+			expect.stringContaining("Full state initialized"), "SESSION"
+		);
+	});
+
+	it("should load full state for an existing session", async () => {
+		const sessionId = "test-session-456";
+
+		mockRedis.hgetall.mockImplementation((key) => {
+			if (key.includes("stats")) {
+				return { level: "1", gold: "0", hp: "100", currentPlaceId: '"village"' };
+			}
+			if (key.includes("inventory")) {
+				return { player: JSON.stringify({ id: "player", items: [] }) };
+			}
+			if (key.includes("buildings")) {
+				return {};
+			}
+			if (key.includes("quests:active")) {
+				return { quest_1: JSON.stringify({ progress: 0 }) };
+			}
+			if (key.includes("quests:completed")) {
+				return {};
+			}
+			if (key.includes("skills")) {
+				return { mining: JSON.stringify({ level: 1, exp: 0 }) };
+			}
+			return {};
+		});
+		mockRedis.get.mockResolvedValue(null);
+		mockRedis.smembers.mockResolvedValue(["recipe_wood_sword"]);
+
+		const state = await manager.loadFullState(sessionId);
+
+		expect(state).toHaveProperty("player");
+		expect(state).toHaveProperty("inventory");
+		expect(state).toHaveProperty("buildings");
+		expect(state).toHaveProperty("workers");
+		expect(state).toHaveProperty("quests");
+		expect(state).toHaveProperty("skills");
+		expect(state).toHaveProperty("recipes");
+
+		expect(state.player.level).toBe(1);
+		expect(state.workers).toEqual({ hired: [], available: [] });
+		expect(state.quests.active).toHaveProperty("quest_1");
+		expect(state.recipes).toEqual(["recipe_wood_sword"]);
 	});
 });

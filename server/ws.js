@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
 
-export function startWebSocketServer({ server, sessionManager, inventoryHandler, logger }) {
+export function startWebSocketServer({ server, sessionManager, logger }) {
 	const wss = new WebSocketServer({ noServer: true });
 	const clients = new Map();
 
@@ -29,8 +29,9 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 							currentNickname = msg.nickname;
 							currentSessionId = result.session_id;
 							clients.set(msg.nickname, ws);
-							await inventoryHandler.initializePlayerInventory(currentSessionId);
-							send(ws, { type: "ACCEPTED", sessionId: currentSessionId });
+							await sessionManager.initializeFullState(currentSessionId);
+							const fullState = await sessionManager.loadFullState(currentSessionId);
+							send(ws, { type: "STATE_SYNC", data: { sessionId: currentSessionId, ...fullState } });
 						} else {
 							send(ws, { type: "ERROR", message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
 						}
@@ -44,7 +45,8 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 							currentSessionId = msg.sessionId;
 							clients.set(msg.nickname, ws);
 							await sessionManager.renewSession(msg.nickname);
-							send(ws, { type: "ACCEPTED", sessionId: currentSessionId });
+							const fullState = await sessionManager.loadFullState(currentSessionId);
+							send(ws, { type: "STATE_SYNC", data: { sessionId: currentSessionId, ...fullState } });
 							logger.log(`RESUME: ${msg.nickname} session restored`, "WS");
 						} else {
 							send(ws, { type: "ERROR", message: "Session expired" });
@@ -52,20 +54,7 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 						}
 						break;
 					}
-					case "INVENTORY_ACTION": {
-						if (!currentSessionId) {
-							send(ws, { type: "ERROR", message: "Must join first" });
-							return;
-						}
-						const action = JSON.parse(msg.data);
-						const result = await inventoryHandler.handleAction(currentSessionId, action);
-						if (result.success) {
-							send(ws, { type: "INVENTORY_DIFF", data: JSON.stringify(result.diff) });
-						} else {
-							send(ws, { type: "ERROR", message: result.error });
-						}
-						break;
-					}
+
 					default:
 						logger.warn(`Unknown message type: ${msg.type}`);
 				}

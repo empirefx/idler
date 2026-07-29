@@ -1,11 +1,23 @@
 import { randomUUID } from "node:crypto";
 import { NICKNAME_REGEX, INVENTORY_ERRORS } from "../shared/constants.js";
+import { PlayerState } from "./state/PlayerState.js";
+import { InventoryState } from "./state/InventoryState.js";
+import { BuildingsState } from "./state/BuildingsState.js";
+import { WorkersState } from "./state/WorkersState.js";
+import { QuestState } from "./state/QuestState.js";
+import { EnemyState } from "./state/EnemyState.js";
 
 export class SessionManager {
 	constructor(redis, logger, config) {
 		this.redis = redis;
 		this.logger = logger;
 		this.config = config;
+		this.playerState = new PlayerState(redis);
+		this.inventoryState = new InventoryState(redis);
+		this.buildingsState = new BuildingsState(redis);
+		this.workersState = new WorkersState(redis);
+		this.questState = new QuestState(redis);
+		this.enemyState = new EnemyState(redis);
 	}
 
 	validateNickname(nickname) {
@@ -42,6 +54,40 @@ export class SessionManager {
 
 	async disconnectSession(nickname) {
 		this.logger.log(`Session ${nickname} disconnected (data preserved for TTL)`, "SESSION");
+	}
+
+	async initializeFullState(sessionId) {
+		await this.inventoryState.initialize(sessionId);
+		await this.playerState.save(sessionId, {
+			level: 1, gold: 0, exp: 0,
+			hp: 100, maxHp: 100,
+			vitality: 10, agility: 10, strength: 10, intelligence: 10,
+			skillPoints: 0,
+			currentPlaceId: "village",
+			lastSeenAt: Date.now(),
+		});
+		this.logger.log(`Full state initialized for session ${sessionId}`, "SESSION");
+	}
+
+	async loadFullState(sessionId) {
+		const stats = await this.playerState.load(sessionId);
+		const inventory = await this.inventoryState.loadAll(sessionId);
+		const buildings = await this.buildingsState.loadAll(sessionId);
+		const workers = await this.workersState.load(sessionId);
+		const active = await this.questState.loadActive(sessionId);
+		const completed = await this.questState.loadCompleted(sessionId);
+		const skills = await this.playerState.loadSkills(sessionId);
+		const recipes = await this.playerState.loadRecipes(sessionId);
+
+		return {
+			player: stats,
+			inventory,
+			buildings,
+			workers: workers || { hired: [], available: [] },
+			quests: { active, completed },
+			skills,
+			recipes,
+		};
 	}
 
 	async cleanupExpiredSessions() {

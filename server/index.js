@@ -2,7 +2,6 @@ import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
 import { RedisClient } from "./redis.js";
 import { SessionManager } from "./session.js";
-import { InventoryHandler } from "./inventory.js";
 import { startWebSocketServer } from "./ws.js";
 import { createServerLogger } from "./logger.js";
 
@@ -17,10 +16,9 @@ async function main() {
 	logger.log("Redis connected", "BOOT");
 
 	const sessionManager = new SessionManager(redis, logger, config.redis);
-	const inventoryHandler = new InventoryHandler(redis, logger);
 
 	const httpServer = createServer();
-	startWebSocketServer({ server: httpServer, redis, sessionManager, inventoryHandler, logger });
+	startWebSocketServer({ server: httpServer, redis, sessionManager, logger });
 
 	httpServer.listen(config.server.port, config.server.host, () => {
 		logger.log(`Listening on ${config.server.host}:${config.server.port}`, "BOOT");
