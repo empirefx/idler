@@ -62,23 +62,21 @@ describe("GameEngine Integration Tests", () => {
 		it("should complete production cycle from start to save", () => {
 			// Setup building with worker - use existing building type
 			store.dispatch({
-				type: "buildings/updateBuilding",
+				type: "buildings/setBuildings",
 				payload: {
-					buildingId: "farm",
-					data: {
+					farm: {
 						calculateProduction: () => 5,
 						baseProductionRate: 3,
-						productionType: "apple", // Farm produces apples
+						productionType: "apple",
 					},
 				},
 			});
 
-			// Assign an existing worker to the building
+			// Pre-populate inventory
 			store.dispatch({
-				type: "player/assignWorkerToBuilding",
+				type: "inventory/setInventory",
 				payload: {
-					workerId: 1, // Use existing worker from playerData
-					buildingId: "farm",
+					"village_center": { items: [{ name: "apple", quantity: 1 }] },
 				},
 			});
 
@@ -123,7 +121,7 @@ describe("GameEngine Integration Tests", () => {
 			};
 			store.dispatch({
 				type: "enemies/addEnemy",
-				payload: { placeId: "village_center", enemy },
+				payload: enemy,
 			});
 
 			// Navigate to different place

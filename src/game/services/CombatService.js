@@ -1,16 +1,6 @@
 // Combat Service - coordinates combat state with game loop
 
 import { batch } from "react-redux";
-import { addItem } from "../../store/slices/inventorySlice";
-import {
-	activateSkill,
-	addBuff,
-	gainExp,
-	pauseCooldowns,
-	resumeCooldowns,
-	tickBuffs,
-	updateLastAttackTime,
-} from "../../store/slices/playerSlice";
 import { resolveAttack, resolveEnemyAttack } from "../core/combatCalculator";
 import { enemyAttacked, enemyDead, playerDamaged } from "../events";
 import { createItem } from "../factory/itemFactory";
@@ -86,10 +76,11 @@ export const CombatService = {
 				duration: rankData.duration,
 				type: "buff",
 			};
-			this.store.dispatch(addBuff(buff));
-			this.store.dispatch(
-				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
-			);
+			this.store.dispatch({ type: "player/addBuff", payload: buff });
+			this.store.dispatch({
+				type: "player/activateSkill",
+				payload: { skillId: skill.id, cooldown: skill.cooldown },
+			});
 			Logger.log(
 				`${skill.name} activated! +${rankData.statBonus.value} ${rankData.statBonus.stat} for ${rankData.duration} attacks.`,
 				0,
@@ -116,9 +107,10 @@ export const CombatService = {
 				type: "enemies/damageEnemy",
 				payload: { id: targetEnemy.id, amount: skillDamage },
 			});
-			this.store.dispatch(
-				activateSkill({ skillId: skill.id, cooldown: skill.cooldown }),
-			);
+			this.store.dispatch({
+				type: "player/activateSkill",
+				payload: { skillId: skill.id, cooldown: skill.cooldown },
+			});
 			Logger.log(`${skill.name} hits for ${skillDamage} damage!`, 0, "combat");
 		}
 
@@ -150,7 +142,7 @@ export const CombatService = {
 		}
 		this.isStartingCombat = true;
 		Logger.log("Starting combat system", 0, "combat");
-		this.store.dispatch(resumeCooldowns());
+		this.store.dispatch({ type: "player/resumeCooldowns" });
 		if (!gameLoop?.register) {
 			Logger.log(
 				"GameLoop is not available or missing register method",
@@ -212,7 +204,7 @@ export const CombatService = {
 			return;
 		}
 		this.isStoppingCombat = true;
-		this.store.dispatch(pauseCooldowns());
+		this.store.dispatch({ type: "player/pauseCooldowns" });
 		resetSkillRotation();
 		gameLoop.unregister("combat");
 		this.isStoppingCombat = false;
@@ -230,12 +222,10 @@ export const CombatService = {
 				if (Math.random() < dropRate) {
 					const loot = createItem(itemId, 1);
 					if (loot) {
-						this.store.dispatch(
-							addItem({
-								inventoryId: "player",
-								item: loot,
-							}),
-						);
+						this.store.dispatch({
+							type: "inventory/addItem",
+							payload: { inventoryId: "player", item: loot },
+						});
 					}
 				}
 			});
@@ -245,7 +235,7 @@ export const CombatService = {
 	// Handle experience gain on enemy death
 	handleEnemyExpGain(enemy) {
 		// Grant experience for enemy kill (equal to enemy's max health)
-		this.store.dispatch(gainExp({ amount: enemy.maxHealth }));
+		this.store.dispatch({ type: "player/gainExp", payload: { amount: enemy.maxHealth } });
 	},
 
 	// Handle player attack with cooldown system
@@ -274,7 +264,7 @@ export const CombatService = {
 		const enemySnapshot = { ...targetEnemy };
 
 		// Update timestamp FIRST to prevent double attacks
-		this.store.dispatch(updateLastAttackTime({ timestamp: now }));
+		this.store.dispatch({ type: "player/updateLastAttackTime", payload: { timestamp: now } });
 
 		// Check if any skill is ready FIRST - skill takes priority over normal attack
 		const playerSkills = player.skills || {};
@@ -329,7 +319,7 @@ export const CombatService = {
 		}
 
 		// Tick buffs after attack
-		this.store.dispatch(tickBuffs());
+		this.store.dispatch({ type: "player/tickBuffs" });
 
 		// Check if enemy died and emit death event
 		setTimeout(() => {

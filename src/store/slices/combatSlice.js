@@ -1,33 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-	isInCombat: false,
-	targetEnemyId: null,
-};
+const initialState = { isInCombat: false, targetEnemyId: null };
 
 const combatSlice = createSlice({
-	name: "combat",
-	initialState,
-	reducers: {
-		startCombat: (state) => {
-			state.isInCombat = true;
-		},
-		stopCombat: (state) => {
-			state.isInCombat = false;
-		},
-		setTarget: (state, action) => {
-			state.targetEnemyId = action.payload;
-		},
-		clearTarget: (state) => {
-			state.targetEnemyId = null;
-		},
-	},
+  name: "combat",
+  initialState,
+  reducers: {
+    setCombatState(state, action) {
+      return { ...state, ...action.payload };
+    },
+    startCombat(state) {
+      state.isInCombat = true;
+    },
+    stopCombat(state) {
+      state.isInCombat = false;
+    },
+    setTarget(state, action) {
+      state.targetEnemyId = action.payload;
+    },
+  },
 });
 
-export const { startCombat, stopCombat, setTarget, clearTarget } =
-	combatSlice.actions;
-
-export const selectIsInCombat = (state) => state.combat.isInCombat;
-export const selectTargetEnemyId = (state) => state.combat.targetEnemyId;
-
+export const { setCombatState, startCombat, stopCombat, setTarget } = combatSlice.actions;
 export default combatSlice.reducer;

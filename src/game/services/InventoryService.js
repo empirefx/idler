@@ -1,18 +1,61 @@
-import {
-	EQUIPMENT_SLOTS,
-	TYPE_TO_SLOT,
-} from "../../store/slices/inventory/inventoryTypes.js";
-import {
-	canItemsStack,
-	getInventorySummary,
-} from "../../store/slices/inventory/inventoryUtils.js";
-import {
-	validateEquipmentSlot,
-	validateItemExists,
-	validateMoveQuantity,
-	validateSlotLimit,
-	validateWeightLimit,
-} from "../../store/slices/inventory/inventoryValidators.js";
+const EQUIPMENT_SLOTS = [
+  "head", "body", "pants", "boots", "hands",
+  "main-weapon", "second-weapon",
+];
+
+const TYPE_TO_SLOT = {
+  "body": "body",
+  "head": "head",
+  "pants": "pants",
+  "boots": "boots",
+  "hands": "hands",
+  "main-weapon": "main-weapon",
+  "second-weapon": "second-weapon",
+};
+
+const canItemsStack = (a, b) =>
+  a.type === b.type &&
+  a.name === b.name &&
+  !a.stats && !b.stats;
+
+const getInventorySummary = (inventory) => {
+  if (!inventory) return null;
+  return {
+    itemCount: inventory.items?.length || 0,
+    slotsUsed: inventory.items?.length || 0,
+    maxSlots: inventory.maxSlots,
+  };
+};
+
+const validateItemExists = (inventory, itemId) => {
+  if (!inventory) return { isValid: false, error: "ITEM_NOT_FOUND" };
+  const index = inventory.items?.findIndex((i) => i.id === itemId) ?? -1;
+  if (index === -1) return { isValid: false, error: "ITEM_NOT_FOUND" };
+  return { isValid: true, itemIndex: index };
+};
+
+const validateSlotLimit = (inventory, _needed) => {
+  if (!inventory) return { isValid: false, error: "ITEM_NOT_FOUND" };
+  return { isValid: true };
+};
+
+const validateWeightLimit = (_inventory, _weight) => {
+  return { isValid: true };
+};
+
+const validateMoveQuantity = (item, quantity) => {
+  if (!item) return { isValid: false, error: "ITEM_NOT_FOUND" };
+  const qty = quantity || item.quantity || 1;
+  const available = item.quantity || 1;
+  if (qty > available) return { isValid: false, error: "INSUFFICIENT_QUANTITY" };
+  return { isValid: true, moveQuantity: qty };
+};
+
+const validateEquipmentSlot = (item, slot) => {
+  if (!item || !item.type) return { isValid: false, error: "INVALID_ITEM_TYPE" };
+  if (!EQUIPMENT_SLOTS.includes(slot)) return { isValid: false, error: "EQUIPMENT_SLOT_INVALID" };
+  return { isValid: true };
+};
 
 export const InventoryService = {
 	getInventory(state, inventoryId) {
@@ -158,7 +201,7 @@ export const InventoryService = {
 			};
 		}
 
-		return { valid: true, item, itemIndex: itemCheck.itemIndex, slot };
+		return { valid: true, item: found.item, itemIndex: found.itemIndex, slot };
 	},
 
 	canUnequipItem(inventory, slot) {

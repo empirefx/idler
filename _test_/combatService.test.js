@@ -1,10 +1,11 @@
 // Test CombatService functionality
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CombatService } from "../src/game/services/CombatService";
-import { addItem } from "../src/store/slices/inventorySlice";
-import { gainExp } from "../src/store/slices/playerSlice";
 import { createMockEnemy } from "./utils/testHelpers.js";
 import { createCombatState } from "./utils/stateFactory.js";
+
+const addItem = (payload) => ({ type: "inventory/addItem", payload });
+const gainExp = (payload) => ({ type: "player/gainExp", payload });
 
 describe("CombatService", () => {
 	let mockStore;
