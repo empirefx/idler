@@ -3,8 +3,10 @@ import { useDispatch, useStore } from "react-redux";
 
 import GameEngine from "../../game/engine/GameEngine";
 import Logger from "../../game/utils/Logger";
+import { WSClient } from "../../game/services/WSClient";
+import { updateInventory } from "../../store/slices/inventorySlice";
 
-export const useGameState = () => {
+export const useGameState = ({ sessionId, ws } = {}) => {
 	const dispatch = useDispatch(); // Get dispatch function from Redux and pass it to GameEngine
 	const store = useStore(); // Get store instance from Redux Provider
 
@@ -14,8 +16,29 @@ export const useGameState = () => {
 		gameEngineRef.current = new GameEngine(dispatch, store);
 	}
 	const _gameEngine = gameEngineRef.current;
+	const wsClientRef = useRef(null);
 	const [error, setError] = useState(null);
 	const isInitialized = useRef(false);
+
+	// Wire up WSClient when ws/sessionId change
+	useEffect(() => {
+		if (!ws || !sessionId || !store) return;
+
+		const client = new WSClient(ws, sessionId);
+		wsClientRef.current = client;
+
+		const unsub = client.onDiff((diff) => {
+			if (diff.inventoryId && diff.inventoryData) {
+				store.dispatch(updateInventory(diff));
+			}
+		});
+
+		return () => {
+			unsub();
+			client.disconnect();
+			wsClientRef.current = null;
+		};
+	}, [ws, sessionId, store]);
 
 	// Initialize game
 	useEffect(() => {
