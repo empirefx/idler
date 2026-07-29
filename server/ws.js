@@ -17,6 +17,7 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 
 	wss.on("connection", (ws) => {
 		let currentNickname = null;
+		let currentSessionId = null;
 
 		ws.on("message", async (raw) => {
 			try {
@@ -26,21 +27,38 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 						const result = await sessionManager.createSession(msg.nickname);
 						if (result.accepted) {
 							currentNickname = msg.nickname;
+							currentSessionId = result.session_id;
 							clients.set(msg.nickname, ws);
-							send(ws, { type: "ACCEPTED", sessionId: result.session_id });
+							await inventoryHandler.initializePlayerInventory(currentSessionId);
+							send(ws, { type: "ACCEPTED", sessionId: currentSessionId });
 						} else {
 							send(ws, { type: "ERROR", message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
 						}
 						logger.log(`JOIN: ${msg.nickname} accepted=${result.accepted}`, "WS");
 						break;
 					}
+					case "RESUME": {
+						const session = await sessionManager.getSession(msg.nickname);
+						if (session && session.sessionId === msg.sessionId) {
+							currentNickname = msg.nickname;
+							currentSessionId = msg.sessionId;
+							clients.set(msg.nickname, ws);
+							await sessionManager.renewSession(msg.nickname);
+							send(ws, { type: "ACCEPTED", sessionId: currentSessionId });
+							logger.log(`RESUME: ${msg.nickname} session restored`, "WS");
+						} else {
+							send(ws, { type: "ERROR", message: "Session expired" });
+							logger.log(`RESUME: ${msg.nickname} session not found`, "WS");
+						}
+						break;
+					}
 					case "INVENTORY_ACTION": {
-						if (!currentNickname) {
+						if (!currentSessionId) {
 							send(ws, { type: "ERROR", message: "Must join first" });
 							return;
 						}
 						const action = JSON.parse(msg.data);
-						const result = await inventoryHandler.handleAction(currentNickname, action);
+						const result = await inventoryHandler.handleAction(currentSessionId, action);
 						if (result.success) {
 							send(ws, { type: "INVENTORY_DIFF", data: JSON.stringify(result.diff) });
 						} else {

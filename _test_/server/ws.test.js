@@ -11,7 +11,7 @@ describe("WebSocket handler", () => {
 	beforeEach(() => {
 		mockHttpServer = { on: vi.fn() };
 		mockSessionManager = { createSession: vi.fn(), renewSession: vi.fn(), disconnectSession: vi.fn() };
-		mockInventoryHandler = { handleAction: vi.fn() };
+		mockInventoryHandler = { handleAction: vi.fn(), initializePlayerInventory: vi.fn() };
 		mockLogger = { log: vi.fn(), warn: vi.fn(), error: vi.fn() };
 
 		wss = startWebSocketServer({

@@ -53,8 +53,9 @@ describe("SessionManager", () => {
 		expect(mockRedis.expire).toHaveBeenCalled();
 	});
 
-	it("should disconnect session", async () => {
+	it("should disconnect session without deleting data", async () => {
+		mockRedis.del = vi.fn();
 		await manager.disconnectSession("Hero");
-		expect(mockRedis.del).toHaveBeenCalledWith("session:Hero");
+		expect(mockRedis.del).not.toHaveBeenCalled();
 	});
 });

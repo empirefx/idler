@@ -51,11 +51,8 @@ describe("Multiplayer Integration: Session + Inventory", () => {
 		expect(dup.error).toBe("NICKNAME_TAKEN");
 
 		const sessionId = join.session_id;
-		const invKey = `player:${sessionId}:inventory`;
-		await redis.hset(invKey, "player", {
-			id: "player", type: "player", maxSlots: 20, maxWeight: 100,
-			items: [], equipment: {},
-		});
+
+		await inventoryHandler.initializePlayerInventory(sessionId);
 
 		const addResult = await inventoryHandler.handleAction(sessionId, {
 			action_type: "ADD",
@@ -65,7 +62,8 @@ describe("Multiplayer Integration: Session + Inventory", () => {
 		expect(addResult.success).toBe(true);
 		expect(addResult.diff.action).toBe("ADD");
 
-		const inv = await redis.hget(invKey, "player");
+		const invKey2 = `player:${sessionId}:inventory`;
+		const inv = await redis.hget(invKey2, "player");
 		expect(inv).toBeTruthy();
 		const data = typeof inv === "string" ? JSON.parse(inv) : inv;
 		expect(data.items).toHaveLength(1);
@@ -76,11 +74,10 @@ describe("Multiplayer Integration: Session + Inventory", () => {
 		});
 		expect(removeResult.success).toBe(true);
 
-		const inv2 = await redis.hget(invKey, "player");
+		const inv2 = await redis.hget(invKey2, "player");
 		const data2 = typeof inv2 === "string" ? JSON.parse(inv2) : inv2;
 		expect(data2.items[0].quantity).toBe(2);
 
 		await sessionManager.disconnectSession("Hero");
-		expect(redis.del).toHaveBeenCalledWith("session:Hero");
 	});
 });

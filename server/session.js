@@ -25,6 +25,7 @@ export class SessionManager {
 		const sessionId = randomUUID();
 		const sessionData = JSON.stringify({ nickname, sessionId, createdAt: Date.now(), lastSeen: Date.now() });
 		await this.redis.set(`session:${nickname}`, sessionData);
+		await this.redis.expire(`session:${nickname}`, this.config.sessionTtl);
 		this.logger.log(`Session created for ${nickname}`, "SESSION");
 		return { accepted: true, session_id: sessionId };
 	}
@@ -40,8 +41,7 @@ export class SessionManager {
 	}
 
 	async disconnectSession(nickname) {
-		await this.redis.del(`session:${nickname}`);
-		this.logger.log(`Session destroyed for ${nickname}`, "SESSION");
+		this.logger.log(`Session ${nickname} disconnected (data preserved for TTL)`, "SESSION");
 	}
 
 	async cleanupExpiredSessions() {

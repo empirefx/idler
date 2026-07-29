@@ -29,6 +29,20 @@ export class InventoryHandler {
 		return `player:${sessionId}:inventory`;
 	}
 
+	async initializePlayerInventory(sessionId) {
+		const invKey = this._invKey(sessionId);
+		const playerInv = {
+			id: "player",
+			type: "player",
+			maxSlots: 20,
+			maxWeight: 100,
+			items: [],
+			equipment: {},
+		};
+		await this.redis.hset(invKey, "player", JSON.stringify(playerInv));
+		this.logger.log(`Initialized player inventory for session ${sessionId}`, "INVENTORY");
+	}
+
 	_getAffectedInventories(action) {
 		const ids = [action.inventory_id];
 		if (action.action_type === "MOVE" && action.to_inventory_id) {

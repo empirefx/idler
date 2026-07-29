@@ -33,6 +33,15 @@ const mountGame = (sessionId) => {
 	);
 };
 
+const showLogin = () => {
+	sessionStorage.removeItem("sessionId");
+	sessionStorage.removeItem("nickname");
+	LOGIN_SCREEN.style.display = "flex";
+	ROOT.style.display = "none";
+	JOIN_BUTTON.disabled = false;
+	JOIN_BUTTON.textContent = "Enter";
+};
+
 const joinGame = () => {
 	const nickname = NICKNAME_INPUT.value.trim();
 	if (nickname.length < 4 || nickname.length > 15) {
@@ -49,10 +58,11 @@ const joinGame = () => {
 		ws.send(JSON.stringify({ type: "JOIN", nickname }));
 	};
 
-	ws.onmessage = (event) => {
+	ws.	ws.onmessage = (event) => {
 		const data = JSON.parse(event.data);
 		if (data.type === "ACCEPTED") {
 			sessionStorage.setItem("sessionId", data.sessionId);
+			sessionStorage.setItem("nickname", nickname);
 			mountGame(data.sessionId);
 		} else if (data.type === "ERROR") {
 			LOGIN_ERROR.textContent = data.message;
@@ -77,8 +87,21 @@ const joinGame = () => {
 };
 
 const cachedSessionId = sessionStorage.getItem("sessionId");
-if (cachedSessionId) {
-	mountGame(cachedSessionId);
+const cachedNickname = sessionStorage.getItem("nickname");
+if (cachedSessionId && cachedNickname) {
+	ws = new WebSocket(`ws://${location.hostname}:3001`);
+	ws.onopen = () => {
+		ws.send(JSON.stringify({ type: "RESUME", sessionId: cachedSessionId, nickname: cachedNickname }));
+	};
+	ws.onmessage = (event) => {
+		const data = JSON.parse(event.data);
+		if (data.type === "ACCEPTED") {
+			mountGame(data.sessionId);
+		} else {
+			showLogin();
+		}
+	};
+	ws.onerror = showLogin;
 } else {
 	LOGIN_SCREEN.style.display = "flex";
 	NICKNAME_INPUT.addEventListener("keydown", (e) => {
