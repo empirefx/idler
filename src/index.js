@@ -58,7 +58,7 @@ const joinGame = () => {
 		ws.send(JSON.stringify({ type: "JOIN", nickname }));
 	};
 
-	ws.	ws.onmessage = (event) => {
+	ws.onmessage = (event) => {
 		const data = JSON.parse(event.data);
 		if (data.type === "ACCEPTED") {
 			sessionStorage.setItem("sessionId", data.sessionId);
