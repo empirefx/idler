@@ -9,13 +9,17 @@ export class RedisClient {
 			port: this.config.port || 6379,
 			retryStrategy: (times) => Math.min(times * 100, 3000),
 		});
-
 		this.client.on("error", (err) => {
 			console.error("Redis connection error:", err.message);
 		});
 	}
 
 	async connect() {
+		if (this.client.status === "ready") return;
+		if (this.client.status === "connecting" || this.client.status === "connect") {
+			await new Promise((resolve) => this.client.once("ready", resolve));
+			return;
+		}
 		await this.client.connect();
 	}
 
@@ -45,7 +49,7 @@ export class RedisClient {
 	}
 
 	async expire(key, ttl) {
-		return this.client.expire(key, ttl);
+		return this.client.expire(key, ttl ?? this.sessionTtl);
 	}
 
 	async exists(key) {
