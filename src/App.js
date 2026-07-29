@@ -4,8 +4,8 @@ import GameLayout from "./ui/layouts/GameLayout";
 import { UIVisibilityProvider } from "./ui/UIVisibilityContext";
 import { WindowManagerProvider } from "./ui/WindowManagerContext";
 
-const App = () => {
-	const { clearCache, error } = useGameState();
+const App = ({ sessionId, ws }) => {
+	const { clearCache, error } = useGameState({ sessionId, ws });
 
 	if (error) {
 		return (

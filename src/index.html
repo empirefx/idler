@@ -6,7 +6,16 @@
     <title>Idler</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="login-screen">
+      <div class="login-container">
+        <h1>Idler</h1>
+        <p>Choose your nickname to enter</p>
+        <input type="text" id="nickname-input" maxlength="15" placeholder="Nickname (4-15 letters)" autocomplete="off" />
+        <button id="join-button">Enter</button>
+        <p id="login-error" class="login-error"></p>
+      </div>
+    </div>
+    <div id="root" style="display:none"></div>
     <script type="module" src="./index.js"></script>
   </body>
 </html>
