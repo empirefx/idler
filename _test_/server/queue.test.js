@@ -35,4 +35,10 @@ describe("createQueues", () => {
 
     expect(mockQueue).toHaveBeenCalledWith("production", { connection: customOpts });
   });
+
+  it("merges partial redisOpts with defaults", () => {
+    createQueues({ host: "10.0.0.1" });
+
+    expect(mockQueue).toHaveBeenCalledWith("production", { connection: { host: "10.0.0.1", port: 6379 } });
+  });
 });
