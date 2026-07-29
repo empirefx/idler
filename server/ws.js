@@ -1,12 +1,4 @@
 import { WebSocketServer } from "ws";
-import {
-	GameMessage,
-	JoinRequest,
-	JoinResponse,
-	InventoryAction,
-	InventoryDiff,
-	ErrorResponse,
-} from "../proto/game.mjs";
 
 export function startWebSocketServer({ server, sessionManager, inventoryHandler, logger }) {
 	const wss = new WebSocketServer({ noServer: true });
@@ -18,9 +10,9 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 		});
 	});
 
-	function send(ws, type, payload) {
-		const data = GameMessage.encode({ type, data: payload }).finish();
-		ws.send(data);
+	function send(ws, type, data) {
+		if (ws.readyState !== 1) return;
+		ws.send(JSON.stringify({ type, data: JSON.stringify(data) }));
 	}
 
 	wss.on("connection", (ws) => {
@@ -28,61 +20,39 @@ export function startWebSocketServer({ server, sessionManager, inventoryHandler,
 
 		ws.on("message", async (raw) => {
 			try {
-				const decoded = GameMessage.decode(new Uint8Array(raw));
-				switch (decoded.type) {
+				const msg = JSON.parse(raw.toString());
+				switch (msg.type) {
 					case "JOIN": {
-						const joinReq = JoinRequest.decode(decoded.data);
-						const result = await sessionManager.createSession(joinReq.nickname);
+						const { nickname } = JSON.parse(msg.data);
+						const result = await sessionManager.createSession(nickname);
 						if (result.accepted) {
-							currentNickname = joinReq.nickname;
-							clients.set(currentNickname, ws);
+							currentNickname = nickname;
+							clients.set(nickname, ws);
 						}
-						const resp = JoinResponse.encode({
-							sessionId: result.session_id || "",
-							accepted: result.accepted,
-							error: result.error || "",
-						}).finish();
-						send(ws, "JOIN_RESPONSE", resp);
-						logger.log(`JOIN: ${joinReq.nickname} accepted=${result.accepted}`, "WS");
+						send(ws, "JOIN", result);
+						logger.log(`JOIN: ${nickname} accepted=${result.accepted}`, "WS");
 						break;
 					}
 					case "INVENTORY_ACTION": {
 						if (!currentNickname) {
-							const err = ErrorResponse.encode({
-								code: "NOT_JOINED",
-								message: "Must join first",
-							}).finish();
-							send(ws, "ERROR", err);
+							send(ws, "ERROR", { code: "NOT_JOINED", message: "Must join first" });
 							return;
 						}
-						const action = InventoryAction.decode(decoded.data);
+						const action = JSON.parse(msg.data);
 						const result = await inventoryHandler.handleAction(currentNickname, action);
 						if (result.success) {
-							const diff = InventoryDiff.encode({
-								inventoryId: action.actionType || "",
-								action: result.diff.action || "",
-							}).finish();
-							send(ws, "INVENTORY_DIFF", diff);
+							send(ws, "INVENTORY_DIFF", result.diff);
 						} else {
-							const err = ErrorResponse.encode({
-								code: result.error || "UNKNOWN",
-								message: result.error || "Unknown error",
-								originalAction: "INVENTORY_ACTION",
-							}).finish();
-							send(ws, "ERROR", err);
+							send(ws, "ERROR", { code: result.error, message: result.error });
 						}
 						break;
 					}
 					default:
-						logger.warn(`Unknown message type: ${decoded.type}`);
+						logger.warn(`Unknown message type: ${msg.type}`);
 				}
 			} catch (err) {
 				logger.error(`Message handling error: ${err.message}`);
-				const errPayload = ErrorResponse.encode({
-					code: "PARSE_ERROR",
-					message: err.message,
-				}).finish();
-				send(ws, "ERROR", errPayload);
+				send(ws, "ERROR", { code: "PARSE_ERROR", message: err.message });
 			}
 		});
 
