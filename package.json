@@ -14,6 +14,7 @@
 			"source": "./src/index.html"
 		}
 	},
+	"type": "module",
 	"scripts": {
 		"clean": "rimraf dist public .parcel-cache",
 		"prestart": "npm run clean",
@@ -21,6 +22,8 @@
 		"build": "npm run clean && cross-env NODE_ENV=production parcel build --public-url ./ --no-source-maps --no-cache",
 		"process-images": "parcel build --target images --public-url ./ --no-source-maps --no-cache",
 		"test": "vitest",
+		"proto:generate": "pbjs -t static-module -w esm -o proto/game.js proto/game.proto",
+		"proto:types": "pbts -o proto/game.d.ts proto/game.js",
 		"public": "npm run build && parcel serve --dist-dir public --no-hmr --no-autoinstall --no-cache"
 	},
 	"parcel": {
@@ -30,10 +33,13 @@
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^2.12.0",
+		"ioredis": "^5.11.1",
+		"protobufjs": "^8.7.1",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",
 		"react-redux": "^9.3.0",
-		"redux": "^5.0.1"
+		"redux": "^5.0.1",
+		"ws": "^8.21.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.29.7",
@@ -48,6 +54,7 @@
 		"jsdom": "^29.1.1",
 		"parcel": "^2.16.4",
 		"process": "^0.11.10",
+		"protobufjs-cli": "^2.6.1",
 		"rimraf": "^6.1.3",
 		"sharp": "^0.35.3",
 		"vitest": "^3.2.7"

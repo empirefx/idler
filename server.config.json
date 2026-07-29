@@ -1,0 +1,17 @@
+{
+	"server": {
+		"port": 3001,
+		"host": "0.0.0.0",
+		"debug": false
+	},
+	"redis": {
+		"host": "127.0.0.1",
+		"port": 6379,
+		"sessionTtl": 2592000
+	},
+	"game": {
+		"maxPlayers": 100,
+		"sessionInactiveDays": 30,
+		"tickRate": 1000
+	}
+}
