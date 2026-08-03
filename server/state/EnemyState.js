@@ -27,4 +27,8 @@ export class EnemyState {
   async delete(sessionId, enemyId) {
     await this.redis.hdel(this._key(sessionId), enemyId);
   }
+
+  async clearAll(sessionId) {
+    await this.redis.del(this._key(sessionId));
+  }
 }
