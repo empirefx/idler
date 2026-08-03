@@ -44,8 +44,3 @@ export const workerNames = {
 		"Michaela",
 	],
 };
-
-export const metadata = {
-	version: "1.0.0",
-	lastUpdated: "2026-02-27",
-};

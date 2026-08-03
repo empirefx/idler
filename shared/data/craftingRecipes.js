@@ -234,8 +234,3 @@ export const craftingRecipes = {
 		],
 	},
 };
-
-export const metadata = {
-	version: "1.0.1",
-	lastUpdated: "2026-02-22",
-};

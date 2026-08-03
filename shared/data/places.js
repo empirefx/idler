@@ -121,8 +121,3 @@ export const placesData = {
 		},
 	},
 };
-
-export const metadata = {
-	version: "2.0.1",
-	lastUpdated: "2026-02-11",
-};

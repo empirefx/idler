@@ -60,8 +60,3 @@ export const enemyCatalog = {
 		attackPattern: "staggered",
 	},
 };
-
-export const metadata = {
-	version: "1.0.3",
-	lastUpdated: "2025-04-23",
-};

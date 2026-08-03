@@ -41,8 +41,3 @@ export const buildingsData = {
 		},
 	},
 };
-
-export const metadata = {
-	version: "1.0.11",
-	lastUpdated: "2026-02-11",
-};

@@ -91,8 +91,3 @@ export const questCatalog = {
 		],
 	},
 };
-
-export const metadata = {
-	version: "1.1.0",
-	lastUpdated: "2026-02-16",
-};

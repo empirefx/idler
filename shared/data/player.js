@@ -3,7 +3,6 @@ export const playerData = {
 	name: "John Doe",
 	MAX_WORKERS: 5,
 	avatar: "1.png",
-	baseHealth: 120,
 	health: 120,
 	attackCooldown: 2000,
 	lastAttackTime: 0,
@@ -25,9 +24,4 @@ export const playerData = {
 	workers: [],
 	workerSlots: 1,
 	availableWorkers: [],
-};
-
-export const metadata = {
-	version: "1.0.14",
-	lastUpdated: "2026-02-27",
 };

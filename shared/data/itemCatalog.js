@@ -1473,8 +1473,3 @@ export const itemCatalog = {
 		weight: 1,
 	},
 };
-
-export const metadata = {
-	version: "1.0.12",
-	lastUpdated: "2026-03-28",
-};
