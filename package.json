@@ -25,7 +25,9 @@
 		"proto:generate": "pbjs -t static-module -w esm -o proto/game.js proto/game.proto",
 		"proto:types": "pbts -o proto/game.d.ts proto/game.js",
 		"public": "npm run build && parcel serve --dist-dir public --no-hmr --no-autoinstall --no-cache",
-		"start:server": "node server/index.js"
+		"start:server": "node --env-file-if-exists=.env server/index.js",
+		"dev": "node scripts/dev.js",
+		"dev:stop": "node scripts/dev-stop.js"
 	},
 	"parcel": {
 		"plugins": [
