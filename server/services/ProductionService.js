@@ -11,7 +11,7 @@ export class ProductionService {
   }
 
   async assignWorker(sessionId, placeId, socketIndex, worker, building) {
-    const jobId = `prod:${sessionId}:${placeId}:${socketIndex}`;
+    const jobId = `prod-${sessionId}-${placeId}-${socketIndex}`;
     const interval = building.productionInterval || 5000;
 
     const key = `player:${sessionId}:production:assignments`;
@@ -28,7 +28,7 @@ export class ProductionService {
   }
 
   async unassignWorker(sessionId, placeId, socketIndex) {
-    const jobId = `prod:${sessionId}:${placeId}:${socketIndex}`;
+    const jobId = `prod-${sessionId}-${placeId}-${socketIndex}`;
     const key = `player:${sessionId}:production:assignments`;
     await this.redis.hdel(key, jobId);
     await this.productionQueue.remove(jobId);
@@ -47,12 +47,12 @@ export class ProductionService {
     await this.inventoryState.save(sessionId, "player", inventory);
 
     const result = { item, placeId, socketIndex, workerId: worker.id };
-    this.broadcaster.broadcast("PRODUCTION_TICK", result);
+    this.broadcaster.broadcast(sessionId, "PRODUCTION_TICK", result);
 
     const interval = building.productionInterval || 5000;
     await this.productionQueue.add("produce", {
       sessionId, placeId, socketIndex, worker, building,
-    }, { jobId: `prod:${sessionId}:${placeId}:${socketIndex}`, delay: interval });
+    }, { jobId: `prod-${sessionId}-${placeId}-${socketIndex}`, delay: interval });
 
     return result;
   }

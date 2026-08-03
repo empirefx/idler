@@ -42,6 +42,13 @@ export const NICKNAME_MIN = 4;
 export const NICKNAME_MAX = 15;
 export const NICKNAME_REGEX = /^[a-zA-Z]{4,15}$/;
 
+export const WORKER_REROLL_COST = 25;
+export const WORKER_BASE_COST = 50;
+export const WORKER_COST_MULTIPLIER = 25;
+export const WORKER_SLOT_COST = 200;
+export const MAX_WORKER_SLOTS = 5;
+export const DEFAULT_WORKER_SLOTS = 0;
+
 export const DEFAULT_CONFIG = {
 	PLAYER_MAX_SLOTS: 20,
 	PLAYER_MAX_WEIGHT: 100,

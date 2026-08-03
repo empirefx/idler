@@ -17,7 +17,7 @@ export class CraftingService {
     const inventory = await this.inventoryState.load(sessionId, "player");
     if (!inventory) return { error: INVENTORY_ERRORS.SESSION_NOT_FOUND };
 
-    this.broadcaster.broadcast("DIFF", { path: "inventory.player", data: inventory });
+    this.broadcaster.broadcast(sessionId, "DIFF", { path: "inventory.player", data: inventory });
     return { success: true };
   }
 }

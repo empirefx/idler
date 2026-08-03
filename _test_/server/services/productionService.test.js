@@ -50,7 +50,7 @@ describe("ProductionService", () => {
     expect(result).toHaveProperty("item");
     expect(result.item.template_id).toBe("wood");
     expect(inventoryState.save).toHaveBeenCalled();
-    expect(broadcaster.broadcast).toHaveBeenCalledWith("PRODUCTION_TICK", expect.any(Object));
+    expect(broadcaster.broadcast).toHaveBeenCalledWith("s1", "PRODUCTION_TICK", expect.any(Object));
     expect(queue.add).toHaveBeenCalledTimes(1);
   });
 

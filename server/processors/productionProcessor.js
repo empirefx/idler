@@ -1,14 +1,18 @@
 // server/processors/productionProcessor.js
 import { Worker } from "bullmq";
+import { loadConfig } from "../config.js";
 
-export function createProductionWorker(productionService) {
+export function createProductionWorker(productionService, redisConfig = loadConfig().redis) {
   const worker = new Worker(
     "production",
     async (job) => {
       const { sessionId, placeId, socketIndex, worker, building } = job.data;
       await productionService.produce(sessionId, placeId, socketIndex, worker, building);
     },
-    { connection: { host: "127.0.0.1", port: 6379 } }
+    { connection: { host: redisConfig.host, port: redisConfig.port } }
   );
+  worker.on("error", (err) => {
+    console.error(`[worker:production] error:`, err?.message || err);
+  });
   return worker;
 }

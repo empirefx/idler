@@ -10,7 +10,7 @@ export class QuestService {
   async accept(sessionId, questId) {
     const progress = { questId, startedAt: Date.now(), objectives: {} };
     await this.questState.saveActive(sessionId, questId, progress);
-    this.broadcaster.broadcast("QUEST_UPDATE", { questId, progress });
+    this.broadcaster.broadcast(sessionId, "QUEST_UPDATE", { questId, progress });
     return { success: true };
   }
 
@@ -19,7 +19,7 @@ export class QuestService {
     if (!progress) return { error: "Quest not active" };
     await this.questState.deleteActive(sessionId, questId);
     await this.questState.saveCompleted(sessionId, questId, { completedAt: Date.now() });
-    this.broadcaster.broadcast("QUEST_UPDATE", { questId, completed: true });
+    this.broadcaster.broadcast(sessionId, "QUEST_UPDATE", { questId, completed: true });
     return { success: true };
   }
 }

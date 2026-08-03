@@ -15,7 +15,7 @@ describe("QuestService", () => {
     const result = await qs.accept("s1", "quest_1");
     expect(result.success).toBe(true);
     expect(questState.saveActive).toHaveBeenCalledWith("s1", "quest_1", expect.objectContaining({ questId: "quest_1" }));
-    expect(broadcaster.broadcast).toHaveBeenCalledWith("QUEST_UPDATE", expect.any(Object));
+    expect(broadcaster.broadcast).toHaveBeenCalledWith("s1", "QUEST_UPDATE", expect.any(Object));
   });
 
   it("complete returns error if quest not active", async () => {
