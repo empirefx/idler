@@ -1,11 +1,12 @@
-const ControlDisplay = ({ isInCombat, onToggleCombat }) => (
+const ControlDisplay = ({ autoCombat, disabled, onToggleCombat }) => (
 	<div className="combat">
 		<button
 			type="button"
 			onClick={onToggleCombat}
-			className={`combat-btn ${isInCombat ? "stop" : "engage"}`}
+			disabled={disabled}
+			className={`combat-btn ${autoCombat ? "stop" : "engage"}`}
 		>
-			{isInCombat ? "Stop Combat" : "Engage Combat"}
+			{autoCombat ? "Stop Auto-Combat" : "Start Auto-Combat"}
 		</button>
 	</div>
 );

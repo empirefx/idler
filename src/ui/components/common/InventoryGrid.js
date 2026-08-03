@@ -1,41 +1,14 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { TYPE_TO_SLOT } from "../../../store/slices/inventory/inventoryTypes.js";
-import { equipItem } from "../../../store/slices/inventorySlice";
-import { removeItemFromInventory } from "../../../store/slices/inventoryThunks.js";
-import { healPlayer } from "../../../store/slices/playerSlice";
 import Item from "./Item";
 
 const InventoryGrid = ({
 	inventory,
 	otherInventory: _otherInventory,
 	onContextMenu,
+	onItemClick,
 	columns = 10,
 	showBuyPrice = false,
 }) => {
-	const dispatch = useDispatch();
-
-	const handleItemClick = React.useCallback(
-		(item) => {
-			if (TYPE_TO_SLOT[item.type]) {
-				dispatch(
-					equipItem({
-						inventoryId: inventory.id,
-						itemId: item.id,
-						typeToSlot: TYPE_TO_SLOT,
-					}),
-				);
-			} else if (item.type === "consumable") {
-				const healAmount = item.consumable?.heal;
-				if (healAmount > 0) {
-					dispatch(healPlayer({ amount: healAmount }));
-					dispatch(removeItemFromInventory(inventory.id, item.id, 1));
-				}
-			}
-		},
-		[dispatch, inventory.id],
-	);
-
 	return (
 		<div className="inventory-grid" style={{ "--grid-columns": columns }}>
 			{Array.from({ length: inventory.maxSlots }, (_, i) => {
@@ -51,7 +24,7 @@ const InventoryGrid = ({
 								item={item}
 								showQuantity
 								showBuyPrice={showBuyPrice}
-								onClick={handleItemClick}
+								onClick={onItemClick}
 								onContextMenu={onContextMenu}
 							/>
 						)}

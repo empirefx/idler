@@ -1,178 +1,85 @@
-import React, { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { PLAYER_INTENT_LEARN_RECIPE } from "../../../game/events";
-import { globalEventBus } from "../../../game/services/EventBusService";
-import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils";
-import {
-	selectInventoryById,
-	selectInventoryByPlaceId,
-} from "../../../store/slices/inventorySlice";
-import { moveItemBetweenInventories } from "../../../store/slices/inventoryThunks.js";
-import { selectKnownRecipes } from "../../../store/slices/playerSlice.js";
+import React, { useState, useCallback } from "react";
+import { useSelector } from "react-redux";
 import InventoryGrid from "../common/InventoryGrid";
-import KeyBind from "../common/KeyBind";
 import MoveItemDialog from "../common/MoveItemDialog";
+import KeyBind from "../common/KeyBind";
+import { moveItem, equipItem, useItem } from "../../../store/ws";
 
-const generateId = () =>
-	`${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+function calcTotalWeight(inv) {
+	if (!inv?.items) return 0;
+	return inv.items.reduce(
+		(sum, item) => sum + (item.weight || 0) * (item.quantity || 1),
+		0,
+	);
+}
 
 const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
-	const [dialogOpen, setDialogOpen] = useState(false);
-	const [selectedItem, setSelectedItem] = useState(null);
-	const dispatch = useDispatch();
-	const knownRecipes = useSelector(selectKnownRecipes);
-
-	// Determine which selector to use based on inventory type
-	const inventory = useSelector((state) => {
-		if (inventoryId === "player") {
-			return selectInventoryById(state, inventoryId);
-		} else {
-			// Try place inventory first, then fallback to player inventory selector
-			const placeInventory = selectInventoryByPlaceId(state, inventoryId);
-			if (placeInventory) return placeInventory;
-			return selectInventoryById(state, inventoryId);
-		}
-	});
-
-	const otherInventory = useSelector((state) => {
-		if (otherInventoryId === "player") {
-			return selectInventoryById(state, otherInventoryId);
-		} else {
-			const placeInventory = selectInventoryByPlaceId(state, otherInventoryId);
-			if (placeInventory) return placeInventory;
-			return selectInventoryById(state, otherInventoryId);
-		}
-	});
-
-	// Handle right-click context menu for moving items between inventories
-	const handleContextMenu = useCallback(
-		(e, item) => {
-			e.preventDefault();
-
-			// Handle recipe items - learn the recipe
-			if (item.type === "recipe" && item.recipeId) {
-				// Check if already known
-				if (knownRecipes.includes(item.recipeId)) {
-					dispatch({
-						type: "notifications/addNotification",
-						payload: {
-							id: generateId(),
-							message: `You already know the "${item.name}" recipe!`,
-							type: "info",
-						},
-					});
-					return;
-				}
-
-				// Emit event to learn the recipe (service handles removal and state update)
-				globalEventBus.emit(PLAYER_INTENT_LEARN_RECIPE, {
-					recipeId: item.recipeId,
-					itemId: item.id,
-				});
-				return;
-			}
-
-			// Original move item logic
-			if (!otherInventoryId || !otherInventory) return; // Do nothing if no target inventory
-
-			const quantity = item.quantity || 1;
-
-			// Skip dialog for single items, move directly
-			if (quantity === 1) {
-				const itemWeight = item.weight || 0;
-
-				// Check weight limit for player inventories
-				if (otherInventory.type === "player" && itemWeight > 0) {
-					const currentWeight = calculateTotalPlayerWeight(otherInventory);
-					const maxWeight = otherInventory.maxWeight || 0;
-
-					if (currentWeight + itemWeight > maxWeight) {
-						// Show notification instead of dialog
-						dispatch({
-							type: "notifications/addNotification",
-							payload: {
-								id: generateId(),
-								message: `Cannot move "${item.name}" - not enough carry capacity! (Need ${currentWeight + itemWeight - maxWeight} more capacity)`,
-								type: "warning",
-							},
-						});
-						return;
-					}
-				}
-
-				// Direct move for single item
-				const _success = dispatch(
-					moveItemBetweenInventories(
-						inventory.id,
-						otherInventoryId,
-						item.id,
-						1,
-					),
-				);
-			} else {
-				// Show dialog for multiple items
-				setSelectedItem(item);
-				setDialogOpen(true);
-			}
-		},
-		[otherInventory, otherInventoryId, inventory.id, dispatch, knownRecipes],
+	const inventory = useSelector((state) => state.inventory[inventoryId]);
+	const otherInventory = useSelector((state) =>
+		otherInventoryId ? state.inventory[otherInventoryId] : null,
 	);
+	const [dialogItem, setDialogItem] = useState(null);
 
-	// Handle confirm button for moving items between inventories
-	const handleConfirmMove = useCallback(
-		(quantity = null) => {
-			if (!otherInventoryId || !selectedItem) return; // Do nothing if no target inventory or no item selected
+	if (!inventory) return null;
 
-			const moveQuantity = quantity || selectedItem.quantity || 1;
-			const success = dispatch(
-				moveItemBetweenInventories(
-					inventory.id,
-					otherInventoryId,
-					selectedItem.id,
-					moveQuantity,
-				),
-			);
-
-			if (success) {
-				setDialogOpen(false);
-				setSelectedItem(null);
-			}
-		},
-		[dispatch, inventory.id, otherInventoryId, selectedItem],
-	);
-
-	// Handle cancel button for moving items between inventories
-	const handleCancel = useCallback(() => {
-		setDialogOpen(false);
-		setSelectedItem(null);
-	}, []);
-
-	if (!inventory) return null; // If inventory is not found, render nothing
-
+	const currentWeight = calcTotalWeight(inventory);
 	const hasWeightLimit = typeof inventory.maxWeight !== "undefined";
-	let currentWeight = 0;
-
-	// Calculate current weight
-	// If player, use calculateTotalPlayerWeight
-	// Otherwise, calculate manually
-	if (inventory.type === "player") {
-		currentWeight = calculateTotalPlayerWeight(inventory);
-	} else {
-		currentWeight = inventory.items.reduce(
-			(sum, item) => sum + (item.weight || 0) * (item.quantity || 1),
-			0,
-		);
-	}
-	const maxWeight = inventory.maxWeight; // If undefined, no weight limit
-
-	// Calculate total items and max slots
+	const maxWeight = inventory.maxWeight;
 	const totalItems = inventory.items.length;
 	const maxSlots = inventory.maxSlots;
+
+	const handleContextMenu = useCallback(
+		(e, item) => {
+			if (!otherInventory) return;
+			e.preventDefault();
+			if ((item.quantity || 1) <= 1) {
+				moveItem(inventory.id || inventoryId, otherInventoryId, item.id, 1);
+			} else {
+				setDialogItem(item);
+			}
+		},
+		[otherInventory, inventoryId, otherInventoryId, inventory],
+	);
+
+	const canEquip = (item) =>
+		["head", "body", "pants", "boots", "hands", "main-weapon", "second-weapon"].includes(item.type);
+
+	const handleItemClick = useCallback(
+		(item) => {
+			if (inventory.type !== "player") return;
+			if (item.type === "consumable" && item.consumable?.heal) {
+				useItem(item.id);
+			} else if (canEquip(item)) {
+				equipItem(inventory.id || inventoryId, item.id);
+			}
+		},
+		[inventory, inventoryId],
+	);
+
+	const handleConfirmMove = useCallback(
+		(quantity) => {
+			if (!dialogItem || !otherInventoryId) return;
+			moveItem(
+				inventory.id || inventoryId,
+				otherInventoryId,
+				dialogItem.id,
+				quantity,
+			);
+			setDialogItem(null);
+		},
+		[dialogItem, otherInventoryId, inventory, inventoryId],
+	);
+
+	const handleCancelMove = useCallback(() => {
+		setDialogItem(null);
+	}, []);
 
 	return (
 		<>
 			<div className="inventory-info">
-				<KeyBind value="RClick" info="Move items between inventories" />
+				{otherInventory && (
+					<KeyBind value="RClick" info="Move items" />
+				)}
 				{inventory.type === "player" && (
 					<KeyBind value="LClick" info="Equip item" />
 				)}
@@ -190,20 +97,17 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 			</div>
 			<InventoryGrid
 				inventory={inventory}
-				otherInventory={otherInventory}
-				onContextMenu={handleContextMenu}
-				columns={10}
+				onContextMenu={otherInventory ? handleContextMenu : undefined}
+				onItemClick={inventory.type === "player" ? handleItemClick : undefined}
 			/>
-			{dialogOpen &&
-				selectedItem && ( // Open dialog if an item is selected
-					<MoveItemDialog
-						item={selectedItem}
-						onConfirm={handleConfirmMove}
-						onCancel={handleCancel}
-						sourceInventory={inventory}
-						targetInventory={otherInventory}
-					/>
-				)}
+			{dialogItem && (
+				<MoveItemDialog
+					item={dialogItem}
+					onConfirm={handleConfirmMove}
+					onCancel={handleCancelMove}
+					targetInventory={otherInventory}
+				/>
+			)}
 		</>
 	);
 };

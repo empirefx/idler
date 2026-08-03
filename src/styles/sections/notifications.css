@@ -35,7 +35,7 @@
 		0 0,
 		0 0;
 	background-image:
-		radial-gradient(75% 119% at 50% 14%, #fff0 66%, #000f 67%),
+		radial-gradient(75% 119% at 50% 14%, #fff0 66%, transparent 67%),
 		linear-gradient(0deg, #fff0 0%, #d40000ff 100%);
 }
 

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { DAMAGE_TYPES, SKILL_TYPES } from "../../../../shared/data/combatTypes";
-import { getSkillById, SKILL_COLUMNS } from "../../../../shared/data/skillsData";
+import { SKILL_TYPES } from "../../../../shared/data/combatTypes";
+import {
+	getSkillById,
+	SKILL_COLUMNS,
+} from "../../../../shared/data/skillsData";
+import { getWeaponDamageType } from "../../../../shared/combat/skillResolver";
 import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import { selectPlayerSkills } from "../../../store/slices/playerSlice";
 import { useSkillCooldownState } from "../../hooks/useSkillCooldownState";
@@ -16,7 +20,7 @@ const SkillBar = () => {
 	const { activeCooldowns, pausedCooldowns, isCooldownPaused } =
 		useSkillCooldownState();
 	const equippedWeapon = useSelector(
-		(state) => state.inventory.player?.equipment?.["main-weapon"],
+		(state) => state.inventory["player"]?.equipment?.["main-weapon"],
 	);
 
 	const [currentTime, setCurrentTime] = useState(Date.now());
@@ -30,12 +34,7 @@ const SkillBar = () => {
 
 	if (!currentPlace.spawn) return null;
 
-	const getCurrentColumn = () => {
-		if (!equippedWeapon) return null;
-		return equippedWeapon.damageType || DAMAGE_TYPES.PHYSICAL;
-	};
-
-	const currentColumn = getCurrentColumn();
+	const currentColumn = equippedWeapon ? getWeaponDamageType(equippedWeapon) : null;
 	const allSkillIds = currentColumn ? SKILL_COLUMNS[currentColumn] || [] : [];
 	const activeSkillIds = allSkillIds.filter((skillId) => {
 		const skill = getSkillById(skillId);

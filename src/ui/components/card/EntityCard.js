@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setTarget } from "../../../store/slices/combatSlice";
 import CircularProgressTimer from "../common/CircularProgressTimer";
 import ProgressBar from "../common/ProgressBar";
 
@@ -11,10 +12,11 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 
 	// Memoize timer props to prevent unnecessary re-renders
 	const timerProps = useMemo(() => {
-		if (!entity || typeof entity !== "object" || entity.health === undefined) {
+		if (!entity || typeof entity !== "object") {
 			return null;
 		}
 		const { countdown, isCountdownActive, maxCountdown } = entity;
+		if (countdown === undefined && isCountdownActive === undefined) return null;
 		return {
 			time: countdown,
 			maxTime: maxCountdown || countdown,
@@ -27,8 +29,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 		};
 	}, [entity]);
 
-	// Handle case where entity is null/undefined (still loading)
-	if (!entity || typeof entity !== "object" || entity.health === undefined) {
+	if (!entity || typeof entity !== "object") {
 		return (
 			<div className="entity-card error">
 				<div className="block-gradient"></div>
@@ -39,21 +40,21 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 
 	const handleClick = () => {
 		if (isDead || entity.id === playerId) return;
-		dispatch({ type: "combat/setTarget", payload: entity.id });
+		dispatch(setTarget(entity.id));
 	};
 
+	const hp = entity.hp ?? entity.health ?? 0;
+	const maxHp = entity.maxHp ?? entity.maxHealth ?? 100;
 	const {
 		name,
-		health = 0,
-		maxHealth = 100,
-		avatar = "default.png",
+		avatar = "1.png",
 		attackPattern,
 	} = entity;
 
 	const isStaggered = attackPattern === "staggered";
 	const canAttack =
 		isStaggered && entity.isCountdownActive && entity.countdown <= 0;
-	const isDead = health <= 0 || entity.isDead;
+	const isDead = hp <= 0 || entity.isDead;
 
 	return (
 		<div
@@ -76,7 +77,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 			/>
 			<h3>{name}</h3>
 
-			{!isDead && <ProgressBar value={health} max={maxHealth} />}
+			{!isDead && <ProgressBar value={hp} max={maxHp} />}
 			{!isDead && isStaggered && timerProps && (
 				<CircularProgressTimer {...timerProps} />
 			)}

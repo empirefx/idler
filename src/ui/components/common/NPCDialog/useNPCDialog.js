@@ -1,23 +1,16 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { itemCatalog } from "../../../../../shared/data/itemCatalog";
 import { questCatalog } from "../../../../../shared/data/questCatalog";
 import {
-	playerIntentAcceptQuest,
-	playerIntentCompleteQuest,
-} from "../../../../game/events";
-import {
-	addItem as addPlayerItem,
-	removeItem as removePlayerItem,
 	selectInventoryById,
 	selectInventoryByNpcId,
 } from "../../../../store/slices/inventorySlice";
 import { selectNPCById } from "../../../../store/slices/npcSlice";
 import {
-	addGold,
 	selectPlayer,
-	spendGold,
 } from "../../../../store/slices/playerSlice";
+import { getWs } from "../../../../store/ws";
 import useDialog from "../useDialog";
 
 const useNPCDialog = ({
@@ -41,14 +34,43 @@ const useNPCDialog = ({
 
 	const [questConversationState, setQuestConversationState] = useState(null);
 	const [tradeMessage, setTradeMessage] = useState(null);
+	const [tradePending, setTradePending] = useState(false);
+
+	const [prevDialogState, setPrevDialogState] = useState({ isOpen, npcId });
+	if (prevDialogState.isOpen !== isOpen || prevDialogState.npcId !== npcId) {
+		setPrevDialogState({ isOpen, npcId });
+		if (isOpen) {
+			setQuestConversationState(null);
+			setTradeMessage(null);
+			setTradePending(false);
+		}
+	}
 
 	const { dialogRef, handleBackdropClick } = useDialog({ isOpen, onClose });
 
 	// Get player gold amount
-	const playerGold = useMemo(() => {
-		const goldResource = player.resources?.find((r) => r.name === "gold");
-		return goldResource?.amount || 0;
-	}, [player.resources]);
+	const playerGold = player.gold || 0;
+
+	// Listen for trade results from server
+	useEffect(() => {
+		if (!isOpen) return;
+		const ws = getWs();
+		if (!ws) return;
+
+		const handler = (event) => {
+			const data = JSON.parse(event.data);
+			if (data.type === "TRADE_RESULT") {
+				setTradePending(false);
+				setTradeMessage({ type: data.data?.success ? "success" : "error", message: data.data?.message || "Trade completed" });
+			} else if (data.type === "ERROR" && tradePending) {
+				setTradePending(false);
+				setTradeMessage({ type: "error", message: data.data?.message || data.message || "Trade failed" });
+			}
+		};
+
+		ws.addEventListener("message", handler);
+		return () => ws.removeEventListener("message", handler);
+	}, [isOpen, tradePending]);
 
 	// Visible dialogue options (filter completed quests)
 	const visibleDialogueOptions = useMemo(
@@ -139,17 +161,23 @@ const useNPCDialog = ({
 
 	const handleAcceptQuestClick = useCallback(() => {
 		if (!currentQuest || !npc) return;
-		dispatch(playerIntentAcceptQuest(currentQuest.id, npc.id));
+		const ws = getWs();
+		if (ws) {
+			ws.send(JSON.stringify({ type: "ACCEPT_QUEST", questId: currentQuest.id }));
+		}
 		resetQuestConversation();
 		if (onClose) onClose();
-	}, [currentQuest, npc, dispatch, resetQuestConversation, onClose]);
+	}, [currentQuest, npc, resetQuestConversation, onClose]);
 
 	const handleCompleteQuestClick = useCallback(() => {
 		if (!currentQuest || !npc) return;
-		dispatch(playerIntentCompleteQuest(currentQuest.id, npc.id));
+		const ws = getWs();
+		if (ws) {
+			ws.send(JSON.stringify({ type: "COMPLETE_QUEST", questId: currentQuest.id }));
+		}
 		resetQuestConversation();
 		if (onClose) onClose();
-	}, [currentQuest, npc, dispatch, resetQuestConversation, onClose]);
+	}, [currentQuest, npc, resetQuestConversation, onClose]);
 
 	const handleDeclineQuestClick = useCallback(() => {
 		resetQuestConversation();
@@ -215,38 +243,25 @@ const useNPCDialog = ({
 	// Trade handlers
 	const handlePlayerItemSell = useCallback(
 		(_event, item) => {
-			if (!item.sellable?.gold) {
-				setTradeMessage({
-					type: "error",
-					message: "This item cannot be sold.",
-				});
-				return;
-			}
-			const sellPrice = item.sellable.gold;
-			dispatch(
-				removePlayerItem({
-					inventoryId: "player",
+			const ws = getWs();
+			if (ws) {
+				setTradePending(true);
+				ws.send(JSON.stringify({
+					type: "SELL_ITEM",
 					itemId: item.id,
 					quantity: 1,
-				}),
-			);
-			dispatch(addGold(sellPrice));
-			setTradeMessage({
-				type: "success",
-				message: `Sold ${item.name} for ${sellPrice} gold.`,
-			});
+				}));
+			}
 		},
-		[dispatch],
+		[],
 	);
 
 	const handleNpcItemBuy = useCallback(
 		(_event, item) => {
-			// Try direct item.buy first
 			let buyPrice = null;
 			if (item?.buy && typeof item.buy.gold === "number") {
 				buyPrice = item.buy.gold;
 			}
-			// Fallback to itemCatalog
 			else if (
 				item?.icon &&
 				itemCatalog[item.icon] &&
@@ -264,30 +279,18 @@ const useNPCDialog = ({
 				return;
 			}
 
-			if (playerGold < buyPrice) {
-				setTradeMessage({ type: "error", message: "Not enough gold!" });
-				return;
+			const ws = getWs();
+			if (ws) {
+				setTradePending(true);
+				ws.send(JSON.stringify({
+					type: "BUY_ITEM",
+					itemId: item.id,
+					quantity: 1,
+					npcId: npc?.id,
+				}));
 			}
-
-			if (playerInventory.items.length >= playerInventory.maxSlots) {
-				setTradeMessage({ type: "error", message: "Inventory is full!" });
-				return;
-			}
-
-			dispatch(spendGold(buyPrice));
-
-			// Create new item from catalog for proper structure
-			const catalogItem = itemCatalog[item.icon] || item;
-			const isStackable =
-				catalogItem.type === "consumable" || catalogItem.type === "material";
-			const newItem = {
-				...catalogItem,
-				icon: item.icon,
-				quantity: isStackable ? 1 : undefined,
-			};
-			dispatch(addPlayerItem({ inventoryId: "player", item: newItem }));
 		},
-		[dispatch, playerGold, playerInventory],
+		[playerGold, npc],
 	);
 
 	const getConversationStep = useCallback(() => {
@@ -343,6 +346,7 @@ const useNPCDialog = ({
 		questConversationState,
 		tradeMessage,
 		setTradeMessage,
+		tradePending,
 		// Handlers
 		handleAcceptQuestClick,
 		handleCompleteQuestClick,

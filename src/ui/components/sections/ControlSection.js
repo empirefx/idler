@@ -1,22 +1,20 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import "../../../styles/sections/control-section.css";
-import {
-	selectIsInCombat,
-	startCombat,
-	stopCombat,
-} from "../../../store/slices/combatSlice";
 import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 import {
-	selectResources,
+	selectGold,
 	selectWorkers,
+	selectAutoCombat,
+	selectIsDead,
 } from "../../../store/slices/playerSlice";
+import { toggleAutoCombat } from "../../../store/ws";
 import KeyBind from "../common/KeyBind";
 import ControlDisplay from "../display/ControlDisplay";
 
 // selectors
-const selectMaxWorkers = (state) => state.player.MAX_WORKERS || 0;
+const selectMaxWorkers = (state) => state.player.workerSlots || 0;
 
 // Memoized selector
 const selectWorkerCount = createSelector(
@@ -25,23 +23,21 @@ const selectWorkerCount = createSelector(
 );
 
 const ControlSection = ({ clearCache }) => {
-	const resources = useSelector(selectResources);
+	const gold = useSelector(selectGold);
 	const workerCount = useSelector(selectWorkerCount);
 	const maxWorkers = useSelector(selectMaxWorkers);
-	const gold = resources.find((r) => r.name === "gold").amount;
 	const currentPlace = useSelector(selectCurrentPlace);
-	const isInCombat = useSelector(selectIsInCombat);
-	const dispatch = useDispatch();
+	const autoCombat = useSelector(selectAutoCombat);
+	const isDead = useSelector(selectIsDead);
 
 	return (
 		<section className="control-section">
 			<div className="control-top">
-				{currentPlace.spawn && (
+				{currentPlace?.spawn && (
 					<ControlDisplay
-						isInCombat={isInCombat}
-						onToggleCombat={() =>
-							dispatch(isInCombat ? stopCombat() : startCombat())
-						}
+						autoCombat={autoCombat}
+						disabled={isDead}
+						onToggleCombat={toggleAutoCombat}
 					/>
 				)}
 

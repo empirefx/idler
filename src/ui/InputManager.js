@@ -20,7 +20,6 @@ const InputManager = () => {
 
 	// Ref always holds the latest value — no stale closure issue
 	const npcDialogRef = useRef(npcDialog);
-	console.log("InputManager render, npcDialog:", npcDialog); // add outside useEffect
 	useEffect(() => {
 		npcDialogRef.current = npcDialog;
 	}, [npcDialog]);

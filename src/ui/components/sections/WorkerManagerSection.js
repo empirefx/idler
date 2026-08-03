@@ -1,103 +1,53 @@
-import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback } from "react";
+import { useSelector } from "react-redux";
 
 import "../../../styles/sections/worker-manager-section.css";
 import {
-	PLAYER_INTENT_BUY_WORKER_SLOT,
-	PLAYER_INTENT_HIRE_WORKER,
-	PLAYER_INTENT_REROLL_WORKERS,
-	WORKER_HIRE_FAILED,
-	WORKER_HIRED,
-	WORKER_REROLL_FAILED,
-	WORKER_REROLLED,
-	WORKER_SLOT_FAILED,
-	WORKER_SLOT_PURCHASED,
-} from "../../../game/events";
-import { globalEventBus } from "../../../game/services/EventBusService";
-import { addNotification } from "../../../store/slices/notificationSlice";
-import {
-	selectAvailableWorkers,
 	selectGold,
 	selectWorkerSlots,
 	selectWorkers,
 } from "../../../store/slices/playerSlice";
+import {
+	WORKER_BASE_COST,
+	WORKER_COST_MULTIPLIER,
+	WORKER_REROLL_COST,
+	WORKER_SLOT_COST,
+	MAX_WORKER_SLOTS,
+} from "../../../../shared/constants.js";
+import { getWs } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import DraggableWindow from "../common/DraggableWindow";
 
-const REROLL_COST = 25;
-const BASE_WORKER_COST = 50;
-const WORKER_COST_MULTIPLIER = 25;
-const SLOT_COST = 200;
-
 const WorkerManagerSection = () => {
-	const dispatch = useDispatch();
 	const { workerManagerWindow, closeWorkerManagerWindow } = useUIVisibility();
 	const workers = useSelector(selectWorkers);
 	const workerSlots = useSelector(selectWorkerSlots);
 	const gold = useSelector(selectGold);
-	const availableWorkers = useSelector(selectAvailableWorkers);
+	const availablePool = useSelector((state) => state.player.availablePool || []);
 
 	const workerCount = workers.length;
-	const canHireMore = workerCount < workerSlots;
-	const workerCost = BASE_WORKER_COST + workerCount * WORKER_COST_MULTIPLIER;
-
-	useEffect(() => {
-		const handleWorkerHired = ({ worker }) => {
-			dispatch(addNotification(`Hired ${worker.name}!`, "success"));
-		};
-
-		const handleWorkerRerolled = () => {
-			dispatch(addNotification("Workers refreshed!", "info"));
-		};
-
-		const handleSlotPurchased = ({ newSlotCount }) => {
-			dispatch(
-				addNotification(
-					`Worker slot purchased! Total: ${newSlotCount}`,
-					"success",
-				),
-			);
-		};
-
-		const handleHireFailed = ({ error }) => {
-			dispatch(addNotification(error, "error"));
-		};
-
-		const handleRerollFailed = ({ error }) => {
-			dispatch(addNotification(error, "error"));
-		};
-
-		const handleSlotFailed = ({ error }) => {
-			dispatch(addNotification(error, "error"));
-		};
-
-		globalEventBus.on(WORKER_HIRED, handleWorkerHired);
-		globalEventBus.on(WORKER_REROLLED, handleWorkerRerolled);
-		globalEventBus.on(WORKER_SLOT_PURCHASED, handleSlotPurchased);
-		globalEventBus.on(WORKER_HIRE_FAILED, handleHireFailed);
-		globalEventBus.on(WORKER_REROLL_FAILED, handleRerollFailed);
-		globalEventBus.on(WORKER_SLOT_FAILED, handleSlotFailed);
-
-		return () => {
-			globalEventBus.off(WORKER_HIRED, handleWorkerHired);
-			globalEventBus.off(WORKER_REROLLED, handleWorkerRerolled);
-			globalEventBus.off(WORKER_SLOT_PURCHASED, handleSlotPurchased);
-			globalEventBus.off(WORKER_HIRE_FAILED, handleHireFailed);
-			globalEventBus.off(WORKER_REROLL_FAILED, handleRerollFailed);
-			globalEventBus.off(WORKER_SLOT_FAILED, handleSlotFailed);
-		};
-	}, [dispatch]);
+	const canHireMore = workerCount < workerSlots && availablePool.length > 0;
+	const workerCost = WORKER_BASE_COST + workerCount * WORKER_COST_MULTIPLIER;
 
 	const handleHire = useCallback((workerId) => {
-		globalEventBus.emit(PLAYER_INTENT_HIRE_WORKER, { workerId });
+		const ws = getWs();
+		if (ws) {
+			ws.send(JSON.stringify({ type: "HIRE_WORKER", workerId }));
+		}
 	}, []);
 
 	const handleReroll = useCallback(() => {
-		globalEventBus.emit(PLAYER_INTENT_REROLL_WORKERS, {});
+		const ws = getWs();
+		if (ws) {
+			ws.send(JSON.stringify({ type: "REROLL_WORKERS" }));
+		}
 	}, []);
 
 	const handleBuySlot = useCallback(() => {
-		globalEventBus.emit(PLAYER_INTENT_BUY_WORKER_SLOT, {});
+		const ws = getWs();
+		if (ws) {
+			ws.send(JSON.stringify({ type: "BUY_WORKER_SLOT" }));
+		}
 	}, []);
 
 	return (
@@ -119,13 +69,13 @@ const WorkerManagerSection = () => {
 			<div className="worker-manager-content">
 				<div className="available-workers">
 					<h4>Available Workers</h4>
-					{availableWorkers.length === 0 ? (
+					{availablePool.length === 0 ? (
 						<div className="no-workers">
 							No workers available. Try rerolling!
 						</div>
 					) : (
 						<div className="worker-list">
-							{availableWorkers.map((worker) => (
+							{availablePool.map((worker) => (
 								<div key={worker.id} className="worker-item">
 									<div className="worker-avatar">
 										<img
@@ -156,20 +106,20 @@ const WorkerManagerSection = () => {
 			<div className="worker-manager-actions">
 				<button
 					type="button"
-					className={`panel-action-btn reroll-btn ${gold < REROLL_COST ? "disabled" : ""}`}
-					disabled={gold < REROLL_COST}
+					className={`panel-action-btn reroll-btn ${gold < WORKER_REROLL_COST ? "disabled" : ""}`}
+					disabled={gold < WORKER_REROLL_COST}
 					onClick={handleReroll}
 				>
-					Reroll Workers ({REROLL_COST}g)
+					Reroll Workers ({WORKER_REROLL_COST}g)
 				</button>
 
 				<button
 					type="button"
-					className={`panel-action-btn buy-slot-btn ${gold < SLOT_COST ? "disabled" : ""}`}
-					disabled={gold < SLOT_COST}
+					className={`panel-action-btn buy-slot-btn ${gold < WORKER_SLOT_COST || workerSlots >= MAX_WORKER_SLOTS ? "disabled" : ""}`}
+					disabled={gold < WORKER_SLOT_COST || workerSlots >= MAX_WORKER_SLOTS}
 					onClick={handleBuySlot}
 				>
-					Buy Worker Slot ({SLOT_COST}g)
+					Buy Worker Slot ({WORKER_SLOT_COST}g)
 				</button>
 			</div>
 		</DraggableWindow>

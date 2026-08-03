@@ -3,6 +3,7 @@ import { selectCurrentPlace } from "../../../store/slices/placesSlice";
 
 const CurrentPlaceDisplay = () => {
 	const currentPlace = useSelector(selectCurrentPlace);
+	if (!currentPlace) return null;
 	return (
 		<div className="current-place">
 			<div className="place-info">

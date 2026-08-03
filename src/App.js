@@ -4,6 +4,7 @@ import { useGameState } from "./ui/hooks/useGameState";
 import { GameClient } from "./game/GameClient";
 import InputManager from "./ui/InputManager";
 import GameLayout from "./ui/layouts/GameLayout";
+import ReviveDialog from "./ui/components/common/ReviveDialog.jsx";
 import { UIVisibilityProvider } from "./ui/UIVisibilityContext";
 import { WindowManagerProvider } from "./ui/WindowManagerContext";
 
@@ -34,6 +35,7 @@ const App = ({ sessionId, ws }) => {
 				<InputManager />
 				<div className="App">
 					<GameLayout clearCache={clearCache} />
+					<ReviveDialog />
 				</div>
 			</UIVisibilityProvider>
 		</WindowManagerProvider>

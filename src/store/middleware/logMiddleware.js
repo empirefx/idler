@@ -1,129 +1,48 @@
-import {
-	ENEMY_ATTACKED,
-	LOCATION_CHANGED,
-	PLAYER_DAMAGED,
-	WORKER_ASSIGNED,
-	WORKER_CREATED_ITEM,
-	WORKER_UNASSIGNED,
-} from "../../game/events";
-import { getEnemyDisplayName } from "../../utils/enemyUtils";
 import { addLog } from "../slices/logSlice";
 
 const logMiddleware = (store) => (next) => (action) => {
-	// Don't process log actions to prevent recursion
 	if (action.type?.startsWith("logs/")) {
 		return next(action);
 	}
 
 	const result = next(action);
 
-	switch (action.type) {
-		case WORKER_CREATED_ITEM:
-			store.dispatch(
-				addLog({
-					message: `Worker ${action.payload.workerName} made a ${action.payload.itemName}`,
-					category: "worker",
-				}),
-			);
-			break;
-
-		case ENEMY_ATTACKED: {
-			const state = store.getState();
-			const {
-				attackerId,
-				targetId,
-				damage: enemyDamage,
-				attackerName,
-				targetName: enemyTargetName,
-			} = action.payload;
-
-			// Use pre-captured names or fallback to state lookup
-			const finalAttackerName =
-				attackerName || getEnemyDisplayName(state, attackerId);
-			const finalTargetName =
-				enemyTargetName || getEnemyDisplayName(state, targetId);
-
-			store.dispatch(
-				addLog({
-					message: `${finalAttackerName} hit ${finalTargetName} for ${enemyDamage} damage`,
-					category: "combat",
-				}),
-			);
-			break;
+	if (action.type === "COMBAT_DIFF" && action.payload) {
+		const p = action.payload;
+		if (p.hit) {
+			store.dispatch(addLog({ message: `Hit enemy for ${p.damageDealt} damage${p.crit ? " (crit)" : ""}`, category: "combat" }));
 		}
-
-		case WORKER_ASSIGNED:
-			if (action.payload.buildingName) {
-				store.dispatch(
-					addLog({
-						message: `Worker ${action.payload.workerName} assigned to ${action.payload.buildingName}`,
-						category: "worker",
-					}),
-				);
-			}
-			break;
-
-		case WORKER_UNASSIGNED:
-			if (action.payload.buildingName) {
-				store.dispatch(
-					addLog({
-						message: `Worker ${action.payload.workerName} unassigned from ${action.payload.buildingName}`,
-						category: "worker",
-					}),
-				);
-			}
-			break;
-
-		case LOCATION_CHANGED:
-			store.dispatch(
-				addLog({
-					message: `Moved from ${action.payload.fromPlaceName} to ${action.payload.toPlaceName}`,
-					category: "movement",
-				}),
-			);
-			break;
-
-		case PLAYER_DAMAGED: {
-			const {
-				attackerId: playerAttackerId,
-				targetId: playerTargetId,
-				damage,
-				damageType,
-				targetName: playerTargetName,
-			} = action.payload;
-			const currentState = store.getState();
-
-			if (damageType === "dealt") {
-				// Use pre-captured name or fallback to state lookup
-				const finalTargetName =
-					playerTargetName || getEnemyDisplayName(currentState, playerTargetId);
-				store.dispatch(
-					addLog({
-						message: `Player dealt ${damage} damage to ${finalTargetName}`,
-						category: "combat",
-					}),
-				);
-			} else if (damageType === "missed") {
-				const finalTargetName =
-					playerTargetName || getEnemyDisplayName(currentState, playerTargetId);
-				store.dispatch(
-					addLog({
-						message: `Player missed ${finalTargetName}`,
-						category: "combat",
-					}),
-				);
-			} else if (damageType === "received") {
-				const _attackerName = getEnemyDisplayName(
-					currentState,
-					playerAttackerId,
-				);
-				// do nothing for now...
-			}
-			break;
+		if (p.enemyDead) {
+			store.dispatch(addLog({ message: `Enemy defeated! +${p.expGained} exp, +${p.goldGained} gold`, category: "combat" }));
 		}
+	}
 
-		default:
-			break;
+	if (action.type === "APPLY_DIFF" && action.payload) {
+		const { path, data, value } = action.payload;
+		const val = data !== undefined ? data : value;
+		if (path === "player.currentPlaceId") {
+			const places = store.getState().places;
+			const name = places[val]?.name || val;
+			store.dispatch(addLog({ message: `Moved to ${name}`, category: "movement" }));
+		}
+		if (path === "player.gold" && typeof val === "number") {
+			const prev = store.getState().player.gold;
+			const diff = val - prev;
+			if (diff > 0) store.dispatch(addLog({ message: `Gained ${diff} gold`, category: "economy" }));
+		}
+		if (path === "player.exp" && typeof val === "number") {
+			const prev = store.getState().player.exp;
+			const diff = val - prev;
+			if (diff > 0) store.dispatch(addLog({ message: `Gained ${diff} exp`, category: "combat" }));
+		}
+	}
+
+	if (action.type === "ENEMY_SPAWN" && action.payload) {
+		store.dispatch(addLog({ message: `Enemies appeared!`, category: "combat" }));
+	}
+
+	if (action.type === "PRODUCTION_TICK" && action.payload) {
+		store.dispatch(addLog({ message: `Produced ${action.payload.item?.name || "an item"}`, category: "worker" }));
 	}
 
 	return result;

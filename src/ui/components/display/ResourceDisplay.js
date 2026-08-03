@@ -2,12 +2,12 @@ import { createSelector } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
 import {
-	selectResources,
+	selectGold,
 	selectWorkers,
 } from "../../../store/slices/playerSlice";
 
 // selectors
-const selectMaxWorkers = (state) => state.player.MAX_WORKERS || 0;
+const selectMaxWorkers = (state) => state.player.workerSlots || 0;
 
 // Memoized selector
 const selectWorkerCount = createSelector(
@@ -17,11 +17,9 @@ const selectWorkerCount = createSelector(
 
 const ResourceDisplay = () => {
 	// Use selectors to get data directly from Redux store
-	const resources = useSelector(selectResources);
+	const gold = useSelector(selectGold);
 	const workerCount = useSelector(selectWorkerCount);
 	const maxWorkers = useSelector(selectMaxWorkers);
-
-	const gold = resources.find((r) => r.name === "gold").amount;
 
 	return (
 		<div className="resource-display">

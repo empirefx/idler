@@ -9,7 +9,7 @@ export class GameClient {
 
   connect(nickname) {
     this.nickname = nickname;
-    this.ws = new WebSocket(`ws://${location.hostname}:3001`);
+    this.ws = new WebSocket(`ws://${location.hostname}:${process.env.WS_PORT || 3001}`);
 
     this.ws.onopen = () => {
       this.send("JOIN", { nickname });

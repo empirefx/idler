@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {};
 
@@ -20,3 +20,6 @@ const buildingsSlice = createSlice({
 
 export const { setBuildings, updateBuilding } = buildingsSlice.actions;
 export default buildingsSlice.reducer;
+
+const selectBuildingsState = (state) => state.buildings;
+export const selectAllBuildings = createSelector(selectBuildingsState, (buildings) => Object.values(buildings));

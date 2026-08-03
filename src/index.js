@@ -2,6 +2,16 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import App from "./App";
 import store from "./store";
+import { setPlayerState, setPlayerHp, setPlayerExp, addGold } from "./store/slices/playerSlice";
+import { setInventory, addItem } from "./store/slices/inventorySlice";
+import { setBuildings } from "./store/slices/buildingsSlice";
+import { setPlaces, setCurrentPlaceId } from "./store/slices/placesSlice";
+import { setQuests, questAccepted, questCompleted } from "./store/slices/questSlice";
+import { addNotification } from "./store/slices/notificationSlice";
+import { setCombatState } from "./store/slices/combatSlice";
+import { setEnemies, addEnemy, removeEnemy } from "./store/slices/enemiesSlice";
+import { setWs } from "./store/ws";
+import { placesData } from "../shared/data/places";
 import "./styles/components.css";
 import "./styles/global.css";
 import "./styles/icons-set.css";
@@ -31,6 +41,93 @@ const mountGame = (sessionId) => {
 			<App sessionId={sessionId} ws={ws} />
 		</Provider>,
 	);
+
+	ws.onmessage = (event) => {
+		const data = JSON.parse(event.data);
+		switch (data.type) {
+			case "DIFF":
+				store.dispatch({ type: "APPLY_DIFF", payload: data.data });
+				break;
+			case "COMBAT_DIFF": {
+				const d = data.data;
+				if (d.damageDealt > 0 && d.enemyId) {
+					store.dispatch({ type: "enemies/damageEnemy", payload: { id: d.enemyId, amount: d.damageDealt } });
+				}
+				if (d.enemyDead) {
+					store.dispatch(removeEnemy({ id: d.enemyId }));
+					if (d.expGained !== undefined) store.dispatch(setPlayerExp(d.expGained));
+					if (d.goldGained !== undefined) store.dispatch(addGold(d.goldGained));
+				}
+				if (d.playerStats) {
+					store.dispatch(setPlayerState({ exp: d.playerStats.exp, gold: d.playerStats.gold }));
+				}
+				break;
+			}
+			case "QUEST_UPDATE": {
+				const d = data.data;
+				if (d.completed) {
+					store.dispatch(questCompleted(d));
+				} else if (d.questId) {
+					store.dispatch(questAccepted(d));
+				}
+				break;
+			}
+			case "STATE_SYNC": {
+				const { player, inventory, buildings, workers, quests, enemies } = data.data;
+				if (player) store.dispatch(setPlayerState(player));
+				if (data.data.skills) store.dispatch(setPlayerState({ skills: data.data.skills }));
+				if (inventory) store.dispatch(setInventory(inventory));
+				if (buildings) store.dispatch(setBuildings(buildings));
+				if (workers) store.dispatch(setPlayerState({ workers: workers?.hired || [], workerSlots: workers?.workerSlots || 0, availablePool: workers?.available || [] }));
+				if (quests) store.dispatch(setQuests(quests));
+				if (enemies) {
+					const byId = typeof enemies.byId !== "undefined" ? enemies : Object.keys(enemies).reduce((acc, id) => { acc[id] = enemies[id]; return acc; }, {});
+					store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
+				}
+				store.dispatch(setPlaces(placesData));
+				if (player?.currentPlaceId) store.dispatch(setCurrentPlaceId(player.currentPlaceId));
+				break;
+			}
+			case "ENEMY_ATTACK": {
+				const { enemyId, damageDealt, playerHp, playerDead } = data.data;
+				if (playerHp !== undefined) store.dispatch(setPlayerHp(playerHp));
+				if (playerDead) {
+					store.dispatch(setPlayerState({ isDead: true, autoCombat: false }));
+				}
+				break;
+			}
+			case "ENEMY_SPAWN": {
+				const { enemies } = data.data;
+				if (enemies) {
+					const byId = Object.fromEntries(enemies.map((e) => [e.id, e]));
+					store.dispatch(setEnemies({ byId, allIds: enemies.map((e) => e.id) }));
+				}
+				break;
+			}
+			case "INVENTORY_UPDATE": {
+				const { inventories } = data.data;
+				if (inventories) {
+					store.dispatch(setInventory({
+						...store.getState().inventory,
+						...inventories,
+					}));
+				}
+				break;
+			}
+			case "PRODUCTION_TICK": {
+				const { item } = data.data;
+				if (item) store.dispatch(addItem({ inventoryId: "player", item }));
+				break;
+			}
+			case "ERROR":
+				store.dispatch(addNotification(data.message || "Server error", "error"));
+				break;
+		}
+	};
+
+	ws.onclose = () => {
+		store.dispatch(addNotification("Disconnected from server", "error"));
+	};
 };
 
 const showLogin = () => {
@@ -52,7 +149,8 @@ const joinGame = () => {
 	JOIN_BUTTON.disabled = true;
 	JOIN_BUTTON.textContent = "Connecting...";
 
-	ws = new WebSocket(`ws://${location.hostname}:3001`);
+	ws = new WebSocket(`ws://${location.hostname}:${process.env.WS_PORT || 3001}`);
+	setWs(ws);
 
 	ws.onopen = () => {
 		ws.send(JSON.stringify({ type: "JOIN", nickname }));
@@ -60,10 +158,23 @@ const joinGame = () => {
 
 	ws.onmessage = (event) => {
 		const data = JSON.parse(event.data);
-		if (data.type === "ACCEPTED") {
-			sessionStorage.setItem("sessionId", data.sessionId);
+		if (data.type === "STATE_SYNC") {
+			const { sessionId, player, inventory, buildings, workers, quests, enemies } = data.data;
+			sessionStorage.setItem("sessionId", sessionId);
 			sessionStorage.setItem("nickname", nickname);
-			mountGame(data.sessionId);
+			if (player) store.dispatch(setPlayerState({ ...player, name: nickname }));
+			if (data.data.skills) store.dispatch(setPlayerState({ skills: data.data.skills }));
+			if (inventory) store.dispatch(setInventory(inventory));
+			if (buildings) store.dispatch(setBuildings(buildings));
+			if (workers) store.dispatch(setPlayerState({ workers: workers?.hired || [], workerSlots: workers?.workerSlots || 0, availablePool: workers?.available || [] }));
+			if (quests) store.dispatch(setQuests(quests));
+			if (enemies) {
+				const byId = Object.keys(enemies).reduce((acc, id) => { acc[id] = enemies[id]; return acc; }, {});
+				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
+			}
+			store.dispatch(setPlaces(placesData));
+			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
+			mountGame(sessionId);
 		} else if (data.type === "ERROR") {
 			LOGIN_ERROR.textContent = data.message;
 			JOIN_BUTTON.disabled = false;
@@ -89,14 +200,28 @@ const joinGame = () => {
 const cachedSessionId = sessionStorage.getItem("sessionId");
 const cachedNickname = sessionStorage.getItem("nickname");
 if (cachedSessionId && cachedNickname) {
-	ws = new WebSocket(`ws://${location.hostname}:3001`);
+	ws = new WebSocket(`ws://${location.hostname}:${process.env.WS_PORT || 3001}`);
+	setWs(ws);
 	ws.onopen = () => {
 		ws.send(JSON.stringify({ type: "RESUME", sessionId: cachedSessionId, nickname: cachedNickname }));
 	};
 	ws.onmessage = (event) => {
 		const data = JSON.parse(event.data);
-		if (data.type === "ACCEPTED") {
-			mountGame(data.sessionId);
+		if (data.type === "STATE_SYNC") {
+			const { sessionId, player, inventory, buildings, workers, quests, enemies } = data.data;
+			if (player) store.dispatch(setPlayerState({ ...player, name: cachedNickname || player.name }));
+			if (data.data.skills) store.dispatch(setPlayerState({ skills: data.data.skills }));
+			if (inventory) store.dispatch(setInventory(inventory));
+			if (buildings) store.dispatch(setBuildings(buildings));
+			if (workers) store.dispatch(setPlayerState({ workers: workers?.hired || [], workerSlots: workers?.workerSlots || 0, availablePool: workers?.available || [] }));
+			if (quests) store.dispatch(setQuests(quests));
+			if (enemies) {
+				const byId = Object.keys(enemies).reduce((acc, id) => { acc[id] = enemies[id]; return acc; }, {});
+				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
+			}
+			store.dispatch(setPlaces(placesData));
+			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
+			mountGame(sessionId);
 		} else {
 			showLogin();
 		}

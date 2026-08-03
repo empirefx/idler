@@ -23,3 +23,5 @@ const combatSlice = createSlice({
 
 export const { setCombatState, startCombat, stopCombat, setTarget } = combatSlice.actions;
 export default combatSlice.reducer;
+
+export const selectIsInCombat = (state) => state.combat.isInCombat;

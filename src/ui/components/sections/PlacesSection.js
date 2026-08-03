@@ -12,19 +12,18 @@ import InventoryDisplay from "../display/InventoryDisplay";
 const PlacesSection = () => {
 	const currentPlace = useSelector(selectCurrentPlace);
 	const vault = useSelector((state) =>
-		selectInventoryByPlaceId(state, currentPlace.id),
+		currentPlace ? selectInventoryByPlaceId(state, currentPlace.id) : null,
 	);
 	const availableConnections = useSelector(selectAvailableConnections);
 
 	return (
 		<section className="places-section">
-			{currentPlace && vault && (
+			{currentPlace && vault && currentPlace.id && (
 				<div className="place-vault">
 					<h3>Vault</h3>
 					<InventoryDisplay
-						inventoryId={currentPlace.id}
+						inventoryId={vault?.id}
 						otherInventoryId="player"
-						isVault={true}
 					/>
 				</div>
 			)}

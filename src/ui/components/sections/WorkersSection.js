@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 import "../../../styles/sections/workers-section.css";
 import { buildingsData } from "../../../../shared/data/buildings";
 import { itemCatalog } from "../../../../shared/data/itemCatalog";
-import { PLAYER_INTENT_FIRE_WORKER } from "../../../game/events";
-import { globalEventBus } from "../../../game/services/EventBusService";
 import {
 	selectCurrentPlaceId,
 	selectCurrentPlaceSockets,
@@ -22,7 +20,7 @@ const WorkersSection = () => {
 	if (!workerCard) return null;
 
 	const occupiedSocketIndexes =
-		socketData.sockets
+		(socketData || [])
 			?.map((socket, idx) => (socket.status === "occupied" ? idx : -1))
 			.filter((idx) => idx !== -1) || [];
 
@@ -36,7 +34,7 @@ const WorkersSection = () => {
 	);
 
 	const getSocketMaterials = (socketIndex) => {
-		const socket = socketData.sockets?.[socketIndex];
+		const socket = socketData?.[socketIndex];
 		if (!socket?.buildingId) return [];
 
 		const building = buildingsData[socket.buildingId];
@@ -61,10 +59,6 @@ const WorkersSection = () => {
 		return worker.assignments && Object.keys(worker.assignments).length > 0;
 	};
 
-	const handleFireWorker = (workerId) => {
-		globalEventBus.emit(PLAYER_INTENT_FIRE_WORKER, { workerId });
-	};
-
 	const assigned = workers.filter((w) => hasAnyAssignment(w));
 	const unassigned = workers.filter((w) => !hasAnyAssignment(w));
 
@@ -83,7 +77,6 @@ const WorkersSection = () => {
 								occupiedSocketIndexes={occupiedSocketIndexes}
 								socketData={socketData}
 								getSocketMaterials={getSocketMaterials}
-								onFire={handleFireWorker}
 							/>
 						))
 					) : (

@@ -5,6 +5,7 @@ import {
 	assignWorkerToSocketWithEvent,
 	unassignWorkerFromSocketWithEvent,
 } from "../../../store/slices/playerSlice";
+import { getWs } from "../../../store/ws";
 import ConfirmAlert from "../common/ConfirmAlert";
 import Item from "../common/Item";
 
@@ -34,7 +35,7 @@ const WorkerCard = ({
 	placeId,
 	availableSocketIndexes,
 	occupiedSocketIndexes: _occupiedSocketIndexes,
-	socketData: _socketData,
+	socketData,
 	getSocketMaterials,
 	isAssigned = false,
 	onFire,
@@ -44,10 +45,20 @@ const WorkerCard = ({
 
 	const handleMaterialClick = useCallback(
 		(socketIndex, material, assignmentPlaceId) => {
+			const ws = getWs();
 			if (isAssigned) {
 				dispatch(
 					unassignWorkerFromSocketWithEvent(worker.id, assignmentPlaceId),
 				);
+				if (ws) {
+					ws.send(
+						JSON.stringify({
+							type: "UNASSIGN_WORKER",
+							placeId: assignmentPlaceId,
+							socketIndex,
+						}),
+					);
+				}
 			} else {
 				dispatch(
 					assignWorkerToSocketWithEvent(
@@ -57,9 +68,21 @@ const WorkerCard = ({
 						material,
 					),
 				);
+				const socket = socketData?.sockets?.[socketIndex];
+				if (ws) {
+					ws.send(
+						JSON.stringify({
+							type: "ASSIGN_WORKER",
+							placeId,
+							socketIndex,
+							worker: { id: worker.id },
+							building: { id: socket?.buildingId },
+						}),
+					);
+				}
 			}
 		},
-		[dispatch, worker, isAssigned, placeId],
+		[dispatch, worker, isAssigned, placeId, socketData],
 	);
 
 	const handleFireClick = () => {

@@ -1,21 +1,29 @@
 import { useEffect, useMemo, useState } from "react";
-import { calculateTotalPlayerWeight } from "../../../store/slices/inventory/inventoryUtils.js";
 import QuantitySlider from "./QuantitySlider.js";
+
+function calcInvWeight(inv) {
+	if (!inv) return 0;
+	let total = 0;
+	for (const item of inv.items || []) {
+		total += (item.weight || 0) * (item.quantity || 1);
+	}
+	if (inv.equipment) {
+		for (const slotItem of Object.values(inv.equipment)) {
+			if (slotItem) total += slotItem.weight || 0;
+		}
+	}
+	return total;
+}
 
 function calculateMaxMovableItems(item, targetInventory, currentQuantity) {
 	if (!item || !targetInventory) return currentQuantity;
-
 	if (targetInventory.type !== "player") return currentQuantity;
-
 	const itemWeight = item.weight || 0;
 	if (itemWeight <= 0) return currentQuantity;
-
-	const currentTotalWeight = calculateTotalPlayerWeight(targetInventory);
+	const currentTotalWeight = calcInvWeight(targetInventory);
 	const maxWeight = targetInventory.maxWeight || 0;
 	const remainingWeight = maxWeight - currentTotalWeight;
-
 	const maxByWeight = Math.floor(remainingWeight / itemWeight);
-
 	return Math.max(0, Math.min(currentQuantity, maxByWeight));
 }
 
@@ -30,7 +38,7 @@ function MoveItemDialog({ item, onConfirm, onCancel, targetInventory }) {
 			return null;
 		}
 
-		const currentWeight = calculateTotalPlayerWeight(targetInventory);
+		const currentWeight = calcInvWeight(targetInventory);
 		const maxWeight = targetInventory.maxWeight || 0;
 		const itemWeight = item?.weight || 0;
 		const maxMovable = calculateMaxMovableItems(

@@ -2,18 +2,13 @@ import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/building-panel.css";
-import {
-	PLAYER_INTENT_BUILD,
-	PLAYER_INTENT_BUY_SOCKET,
-	PLAYER_INTENT_UPGRADE,
-} from "../../../game/events";
-import { globalEventBus } from "../../../game/services/EventBusService";
 import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
 import {
 	selectCurrentPlace,
 	selectCurrentPlaceSockets,
 } from "../../../store/slices/placesSlice";
 import { selectGold } from "../../../store/slices/playerSlice";
+import { getWs } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import BuildingCard from "../card/BuildingCard";
 import BuildingSelector from "../card/BuildingSelector";
@@ -28,15 +23,7 @@ const BuildingPanel = ({ onClose }) => {
 	const [showBuildingSelector, setShowBuildingSelector] = useState(false);
 	const [selectedSocketIndex, setSelectedSocketIndex] = useState(null);
 
-	const placeId = currentPlace?.id;
-	const sockets = socketData.sockets || [];
-
-	const handleBuySocket = useCallback(
-		(socketIndex) => {
-			globalEventBus.emit(PLAYER_INTENT_BUY_SOCKET, { placeId, socketIndex });
-		},
-		[placeId],
-	);
+	const sockets = socketData || [];
 
 	const handleBuildClick = useCallback((socketIndex) => {
 		setSelectedSocketIndex(socketIndex);
@@ -45,23 +32,39 @@ const BuildingPanel = ({ onClose }) => {
 
 	const handleSelectBuilding = useCallback(
 		(buildingId) => {
-			globalEventBus.emit(PLAYER_INTENT_BUILD, {
-				placeId,
-				socketIndex: selectedSocketIndex,
-				buildingId,
-			});
 			setShowBuildingSelector(false);
+			if (selectedSocketIndex !== null && currentPlace?.id) {
+				const ws = getWs();
+				if (ws) {
+					ws.send(
+						JSON.stringify({
+							type: "BUILD",
+							placeId: currentPlace.id,
+							socketIndex: selectedSocketIndex,
+							buildingId,
+						}),
+					);
+				}
+			}
 			setSelectedSocketIndex(null);
 		},
-		[placeId, selectedSocketIndex],
+		[selectedSocketIndex, currentPlace],
 	);
 
-	const handleUpgrade = useCallback(
-		(socketIndex) => {
-			globalEventBus.emit(PLAYER_INTENT_UPGRADE, { placeId, socketIndex });
-		},
-		[placeId],
-	);
+	const handleUpgrade = useCallback((socketIndex) => {
+		if (currentPlace?.id) {
+			const ws = getWs();
+			if (ws) {
+				ws.send(
+					JSON.stringify({
+						type: "UPGRADE_BUILDING",
+						placeId: currentPlace.id,
+						socketIndex,
+					}),
+				);
+			}
+		}
+	}, [currentPlace]);
 
 	const lockedCount = sockets.filter((s) => s.status === "locked").length;
 	const showPurchaseMsg = lockedCount > 0;
@@ -90,7 +93,6 @@ const BuildingPanel = ({ onClose }) => {
 					level={level}
 					isLocked={isLocked}
 					isEmpty={isEmpty}
-					onBuySocket={handleBuySocket}
 					onBuild={() => handleBuildClick(i)}
 					onUpgrade={() => handleUpgrade(i)}
 					canAffordUpgrade={canAffordUpgrade}
@@ -123,7 +125,7 @@ const BuildingPanel = ({ onClose }) => {
 					<div className="socket-grid">{renderSockets()}</div>
 					{showPurchaseMsg && (
 						<div className="socket-purchase-msg">
-							<span>Click slot to unlock ({socketData.cost}g)</span>
+							<span>Click slot to unlock ({currentPlace?.socketCost || 100}g)</span>
 						</div>
 					)}
 				</div>

@@ -2,16 +2,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/crafting-section.css";
-import { craftingGroups, craftingRecipes } from "../../../../shared/data/craftingRecipes";
-import { itemCatalog } from "../../../../shared/data/itemCatalog";
 import {
-	CRAFT_FAILED,
-	CRAFT_SUCCESS,
-	PLAYER_INTENT_CRAFT,
-} from "../../../game/events";
-import { globalEventBus } from "../../../game/services/EventBusService";
+	craftingGroups,
+	craftingRecipes,
+} from "../../../../shared/data/craftingRecipes";
+import { itemCatalog } from "../../../../shared/data/itemCatalog";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import { selectKnownRecipes } from "../../../store/slices/playerSlice";
+import { getWs } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import DraggableWindow from "../common/DraggableWindow";
 import Item from "../common/Item";
@@ -74,20 +72,6 @@ const CraftingSection = () => {
 		setSelectedOutputItem(null);
 	}, [selectedRecipe]);
 
-	useEffect(() => {
-		const handleCraftSuccess = ({ outputItemName: _outputItemName }) => {};
-
-		const handleCraftFailed = ({ error: _error }) => {};
-
-		globalEventBus.on(CRAFT_SUCCESS.type, handleCraftSuccess);
-		globalEventBus.on(CRAFT_FAILED.type, handleCraftFailed);
-
-		return () => {
-			globalEventBus.off(CRAFT_SUCCESS.type, handleCraftSuccess);
-			globalEventBus.off(CRAFT_FAILED.type, handleCraftFailed);
-		};
-	}, []);
-
 	const recipesByGroup = useMemo(() => {
 		const grouped = {};
 		Object.values(craftingRecipes).forEach((recipe) => {
@@ -145,18 +129,12 @@ const CraftingSection = () => {
 
 			if (!canCraft(recipe)) return;
 
-			const outputItemId =
-				selectedOutputItem ||
-				recipe.output.variants?.[0] ||
-				recipe.output.items?.[0] ||
-				recipe.output.icon;
-
-			globalEventBus.emit(PLAYER_INTENT_CRAFT, {
-				recipeId: recipe.id,
-				outputItemId,
-			});
+			const ws = getWs();
+			if (ws) {
+				ws.send(JSON.stringify({ type: "CRAFT", recipeId: recipe.id }));
+			}
 		},
-		[canCraft, selectedOutputItem, knownRecipes],
+		[canCraft, knownRecipes],
 	);
 
 	return (

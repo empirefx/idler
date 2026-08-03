@@ -1,9 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import {
-	selectInventoryById,
-	unequipItem,
-} from "../../../store/slices/inventorySlice";
+import { useSelector } from "react-redux";
+import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import Item from "../common/Item";
+import { unequipItem } from "../../../store/ws";
 
 const EQUIPMENT_SLOTS_LABELS = [
 	{ key: "head", label: "Head" },
@@ -16,7 +14,6 @@ const EQUIPMENT_SLOTS_LABELS = [
 ];
 
 const EquipmentDisplay = () => {
-	const dispatch = useDispatch();
 	const playerInventory = useSelector((state) =>
 		selectInventoryById(state, "player"),
 	);
@@ -24,7 +21,7 @@ const EquipmentDisplay = () => {
 
 	const handleUnequip = (slot) => {
 		if (equipment[slot]) {
-			dispatch(unequipItem({ inventoryId: "player", slot }));
+			unequipItem("player", slot);
 		}
 	};
 

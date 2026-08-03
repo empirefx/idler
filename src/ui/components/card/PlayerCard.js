@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { levelUp } from "../../../store/slices/playerSlice";
+import { levelUp } from "../../../store/ws";
 import NewLevelDialog from "../common/NewLevelDialog";
 import EquipmentDisplay from "../display/EquipmentDisplay";
 import InventoryDisplay from "../display/InventoryDisplay";
-import BaseStatsList from "../list/BaseStatsList";
-import DerivedStatsList from "../list/DerivedStatsList";
+import BaseStatsList from "../list/BaseStatsList.jsx";
+import DerivedStatsList from "../list/DerivedStatsList.jsx";
 import QuestSection from "../sections/QuestSection";
 import SkillsSection from "../sections/SkillsSection";
 
 const PlayerCard = ({ player, vaultId }) => {
-	const dispatch = useDispatch();
 	const [showLevelUp, setShowLevelUp] = useState(false);
 	const [activeTab, setActiveTab] = useState("character");
 
 	const handleLevelChoice = (bonuses) => {
-		dispatch(levelUp(bonuses));
+		levelUp(bonuses);
 		setShowLevelUp(false);
 	};
 
@@ -97,7 +95,7 @@ const PlayerCard = ({ player, vaultId }) => {
 											)}
 										</div>
 										<div className="stats-column">
-											<DerivedStatsList player={player} />
+											<DerivedStatsList />
 										</div>
 									</div>
 								</div>

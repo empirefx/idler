@@ -1,32 +1,26 @@
-import { useDispatch, useSelector } from "react-redux";
-import { DAMAGE_TYPES } from "../../../../shared/data/combatTypes";
+import { useSelector } from "react-redux";
 import { getSkillById, SKILL_COLUMNS } from "../../../../shared/data/skillsData";
+import { getWeaponDamageType } from "../../../../shared/combat/skillResolver";
 import {
 	selectPlayerSkills,
 	selectSkillPoints,
-	spendSkillPoint,
 } from "../../../store/slices/playerSlice";
+import { spendSkillPoint } from "../../../store/ws";
 
 const SkillsSection = () => {
-	const dispatch = useDispatch();
 	const skillPoints = useSelector(selectSkillPoints);
 	const playerSkills = useSelector(selectPlayerSkills);
 	const equippedWeapon = useSelector(
-		(state) => state.inventory.player?.equipment?.["main-weapon"],
+		(state) => state.inventory["player"]?.equipment?.["main-weapon"],
 	);
 
-	const getCurrentColumn = () => {
-		if (!equippedWeapon) return null;
-		return equippedWeapon.damageType || DAMAGE_TYPES.PHYSICAL;
-	};
-
-	const currentColumn = getCurrentColumn();
+	const currentColumn = equippedWeapon ? getWeaponDamageType(equippedWeapon) : null;
 	const skillIds = currentColumn ? SKILL_COLUMNS[currentColumn] || [] : [];
 
 	const handleUpgradeSkill = (skillId) => {
 		const currentRank = playerSkills[skillId] || 0;
 		if (skillPoints > 0 && currentRank < 3) {
-			dispatch(spendSkillPoint({ skillId, currentRank }));
+			spendSkillPoint(skillId);
 		}
 	};
 
