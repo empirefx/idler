@@ -41,8 +41,3 @@ export const HIT_MAX = 95;
 export const CRIT_MULTIPLIER = 1.5;
 export const DAMAGE_VARIANCE_MIN = 0.9;
 export const DAMAGE_VARIANCE_MAX = 1.1;
-
-export const metadata = {
-	version: "1.0.0",
-	lastUpdated: "2026-03-12",
-};

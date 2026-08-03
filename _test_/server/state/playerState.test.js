@@ -54,9 +54,27 @@ describe("PlayerState", () => {
     expect(result).toEqual([]);
   });
 
-  it("addRecipe adds to set", async () => {
-    await ps.addRecipe("sess1", "recipe_sword");
-    const result = await ps.loadRecipes("sess1");
-    expect(result).toContain("recipe_sword");
-  });
+	it("addRecipe adds to set", async () => {
+		await ps.addRecipe("sess1", "recipe_sword");
+		const result = await ps.loadRecipes("sess1");
+		expect(result).toContain("recipe_sword");
+	});
+
+	it("round-trips nested stats and combat fields", async () => {
+		await ps.save("sess2", {
+			stats: { strength: 10, defense: 0, agility: 10, vitality: 10, intelligence: 5, wisdom: 0 },
+			expToNext: 100,
+			autoCombat: false,
+			isDead: false,
+			activeBuffs: [{ skillId: "warCry", expiresAt: 123456 }],
+			activeCooldowns: { warCry: 123456 },
+			skillJobIds: { warCry: "job-1" },
+		});
+		const result = await ps.load("sess2");
+		expect(result.stats).toEqual({ strength: 10, defense: 0, agility: 10, vitality: 10, intelligence: 5, wisdom: 0 });
+		expect(result.autoCombat).toBe(false);
+		expect(result.activeCooldowns).toEqual({ warCry: 123456 });
+		expect(result.activeBuffs).toEqual([{ skillId: "warCry", expiresAt: 123456 }]);
+		expect(result.skillJobIds).toEqual({ warCry: "job-1" });
+	});
 });
