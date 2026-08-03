@@ -1,4 +1,12 @@
 import { INVENTORY_ERRORS, TYPE_TO_SLOT } from "./constants.js";
+import { itemCatalog } from "./data/itemCatalog.js";
+
+export function materializeItem(item) {
+	if (!item || !item.icon) return item;
+	const catalogItem = itemCatalog[item.icon];
+	if (!catalogItem) return item;
+	return { ...catalogItem, ...item };
+}
 
 export function validateSlotLimit(inventory, newSlots) {
 	const currentSlots = inventory.items.length;
@@ -62,12 +70,14 @@ export function cloneItem(item) {
 	return JSON.parse(JSON.stringify(item));
 }
 
+const STACKABLE_TYPES = ["consumable", "material"];
+
 export function applyAddItem(inventory, item) {
-	const existing = inventory.items.find(
+	const existing = STACKABLE_TYPES.includes(item.type) ? inventory.items.find(
 		(i) =>
 			i.id === item.id ||
 			(i.name === item.name && i.type === item.type && JSON.stringify(i.stats ?? null) === JSON.stringify(item.stats ?? null)),
-	);
+	) : null;
 	if (existing) {
 		existing.quantity += item.quantity;
 	} else {

@@ -1,5 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { SessionManager } from "../../server/session.js";
+import { inventoryData } from "../../shared/data/inventory.js";
+import { materializeItem } from "../../shared/inventory.js";
+
+vi.mock("../../shared/inventory.js", async (importOriginal) => {
+	const actual = await importOriginal();
+	return {
+		...actual,
+		materializeItem: vi.fn((item) => actual.materializeItem(item)),
+	};
+});
 
 describe("SessionManager", () => {
 	let mockRedis;
@@ -78,6 +88,37 @@ describe("SessionManager", () => {
 		expect(mockLogger.log).toHaveBeenCalledWith(
 			expect.stringContaining("Full state initialized"), "SESSION"
 		);
+	});
+
+	it("should include nested stats and combat fields in the initial player save", async () => {
+		const sessionId = "test-session-124";
+		await manager.initializeFullState(sessionId);
+
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:stats`, "stats", expect.any(String)
+		);
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:stats`, "expToNext", expect.any(String)
+		);
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:stats`, "autoCombat", expect.any(String)
+		);
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:stats`, "isDead", expect.any(String)
+		);
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:stats`, "pausedCooldowns", JSON.stringify({})
+		);
+	});
+
+	it("should materialize vault seed items in initializeFullState", async () => {
+		const sessionId = "test-session-vault";
+		await manager.initializeFullState(sessionId);
+
+		const seed = inventoryData.village_center;
+		for (const item of seed.items) {
+			expect(materializeItem).toHaveBeenCalledWith(item);
+		}
 	});
 
 	it("should load full state for an existing session", async () => {

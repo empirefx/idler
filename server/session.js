@@ -1,5 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { NICKNAME_REGEX, INVENTORY_ERRORS } from "../shared/constants.js";
+import { materializeItem } from "../shared/inventory.js";
+import { inventoryData } from "../shared/data/inventory.js";
+import { placesData } from "../shared/data/places.js";
+import { getMaxHealth } from "../shared/combat/combatCalculator.js";
 import { PlayerState } from "./state/PlayerState.js";
 import { InventoryState } from "./state/InventoryState.js";
 import { BuildingsState } from "./state/BuildingsState.js";
@@ -58,13 +62,35 @@ export class SessionManager {
 
 	async initializeFullState(sessionId) {
 		await this.inventoryState.initialize(sessionId);
+		// Initialize place vault inventories with seed items from static data
+		for (const place of Object.values(placesData)) {
+			if (place.hasInventory) {
+				const seed = inventoryData[place.id];
+				await this.inventoryState.save(sessionId, `place-${place.id}`, {
+					id: `place-${place.id}`,
+					placeId: place.id,
+					type: "vault",
+					maxSlots: 30,
+					items: seed?.items ? seed.items.map((it) => materializeItem(JSON.parse(JSON.stringify(it)))) : [],
+				});
+			}
+		}
 		await this.playerState.save(sessionId, {
-			level: 1, gold: 0, exp: 0,
-			hp: 100, maxHp: 100,
-			vitality: 10, agility: 10, strength: 10, intelligence: 10,
+			level: 1, gold: 0, exp: 0, expToNext: 100,
+			hp: getMaxHealth(10), maxHp: getMaxHealth(10),
+			avatar: "1.png",
+			stats: { strength: 10, defense: 0, agility: 10, vitality: 10, intelligence: 10, wisdom: 0 },
 			skillPoints: 0,
-			currentPlaceId: "village",
+			currentPlaceId: "village_center",
 			lastSeenAt: Date.now(),
+			attackCooldown: 2000,
+			lastAttackTime: 0,
+			activeBuffs: [],
+			activeCooldowns: {},
+			pausedCooldowns: {},
+			skillJobIds: {},
+			autoCombat: false,
+			isDead: false,
 		});
 		this.logger.log(`Full state initialized for session ${sessionId}`, "SESSION");
 	}
@@ -78,15 +104,25 @@ export class SessionManager {
 		const completed = await this.questState.loadCompleted(sessionId);
 		const skills = await this.playerState.loadSkills(sessionId);
 		const recipes = await this.playerState.loadRecipes(sessionId);
+		const enemies = await this.enemyState.loadAll(sessionId);
+
+		// Merge static NPC inventories (shared across all players, non-consumable)
+		const staticNpcInventories = {};
+		for (const [key, data] of Object.entries(inventoryData)) {
+			if (data.type === "npc") {
+				staticNpcInventories[key] = { ...data, id: key };
+			}
+		}
 
 		return {
 			player: stats,
-			inventory,
+			inventory: { ...inventory, ...staticNpcInventories },
 			buildings,
 			workers: workers || { hired: [], available: [] },
 			quests: { active, completed },
 			skills,
 			recipes,
+			enemies,
 		};
 	}
 

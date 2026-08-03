@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
-import { readFileSync } from "node:fs";
 import { RedisClient } from "./redis.js";
+import { loadConfig } from "./config.js";
 import { SessionManager } from "./session.js";
 import { startWebSocketServer } from "./ws.js";
 import { createServerLogger } from "./logger.js";
@@ -21,11 +21,13 @@ import { QuestService } from "./services/QuestService.js";
 import { SkillsService } from "./services/SkillsService.js";
 import { SpawnService } from "./services/SpawnService.js";
 import { NavigationService } from "./services/NavigationService.js";
+import { InventoryHandler } from "./inventory.js";
 import { createProductionWorker } from "./processors/productionProcessor.js";
 import { createEnemyAttackWorker } from "./processors/enemyAttackProcessor.js";
+import { createPlayerAttackWorker } from "./processors/playerAttackProcessor.js";
 import { createSpawnWorker } from "./processors/spawnProcessor.js";
 
-const config = JSON.parse(readFileSync(new URL("../server.config.json", import.meta.url), "utf8"));
+const config = loadConfig();
 const logger = createServerLogger({ debug: config.server.debug });
 
 async function main() {
@@ -47,19 +49,21 @@ async function main() {
   const queues = createQueues(config.redis);
   const broadcaster = createBroadcaster();
 
-  const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, broadcaster);
+  const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, queues.playerAttackQueue, queues.spawnQueue, broadcaster);
   const productionService = new ProductionService(redis, inventoryState, queues.productionQueue, broadcaster);
   const craftingService = new CraftingService(redis, playerState, inventoryState, broadcaster);
   const buildingService = new BuildingService(redis, buildingsState, broadcaster);
-  const workerService = new WorkerService(redis, workersState, broadcaster);
+  const workerService = new WorkerService(redis, workersState, playerState, broadcaster);
   const questService = new QuestService(redis, playerState, questState, broadcaster);
-  const skillsService = new SkillsService(redis, playerState, broadcaster);
-  const spawnService = new SpawnService(redis, enemyState, queues.spawnQueue, broadcaster);
+  const skillsService = new SkillsService(redis, playerState, inventoryState, broadcaster);
+  const spawnService = new SpawnService(redis, enemyState, queues.spawnQueue, queues.enemyAttackQueue, queues.playerAttackQueue, playerState, broadcaster);
   const navigationService = new NavigationService(redis);
+  const inventoryHandler = new InventoryHandler(redis, logger);
 
-  createProductionWorker(productionService);
-  createEnemyAttackWorker(combatService, broadcaster);
-  createSpawnWorker(spawnService);
+  createProductionWorker(productionService, config.redis);
+  createEnemyAttackWorker(combatService, broadcaster, queues.enemyAttackQueue, config.redis);
+  createPlayerAttackWorker(combatService, config.redis);
+  createSpawnWorker(spawnService, config.redis);
 
   const httpServer = createServer();
   startWebSocketServer({
@@ -74,6 +78,9 @@ async function main() {
     skillsService,
     spawnService,
     navigationService,
+    inventoryHandler,
+    playerState,
+    inventoryState,
     broadcaster,
     logger,
   });
@@ -93,6 +100,14 @@ async function main() {
   };
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);
+
+  process.on("unhandledRejection", (reason) => {
+    logger.error(`Unhandled rejection: ${reason?.stack || reason}`);
+  });
+
+  process.on("uncaughtException", (err) => {
+    logger.error(`Uncaught exception: ${err?.stack || err}`);
+  });
 }
 
 main().catch((err) => {

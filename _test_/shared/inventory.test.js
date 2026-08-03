@@ -14,6 +14,7 @@ import {
 	applyMoveItem,
 	applyEquipItem,
 	applyUnequipItem,
+	materializeItem,
 } from "../../shared/inventory.js";
 import { INVENTORY_ERRORS, TYPE_TO_SLOT } from "../../shared/constants.js";
 
@@ -162,5 +163,48 @@ describe("shared inventory validators", () => {
 		applyUnequipItem(inv, "head");
 		expect(inv.equipment.head).toBeNull();
 		expect(inv.items).toHaveLength(1);
+	});
+});
+
+describe("materializeItem", () => {
+	it("fills damageType from the catalog for a seed weapon", () => {
+		const seed = {
+			icon: "staff1",
+			id: 90,
+			type: "main-weapon",
+			name: "Wooden Staff",
+			stats: { attack: 2, intelligence: 2 },
+			buy: { gold: 15 },
+		};
+		const item = materializeItem(seed);
+		expect(item.damageType).toBe("magic");
+		expect(item.icon).toBe("staff1");
+	});
+
+	it("preserves seed id, quantity, and buy price", () => {
+		const seed = {
+			icon: "sword1",
+			id: 54,
+			quantity: 3,
+			buy: { gold: 25 },
+			sellable: { gold: 8 },
+			stats: { attack: 3 },
+		};
+		const item = materializeItem(seed);
+		expect(item.id).toBe(54);
+		expect(item.quantity).toBe(3);
+		expect(item.buy).toEqual({ gold: 25 });
+		expect(item.sellable).toEqual({ gold: 8 });
+		expect(item.damageType).toBe("physical");
+	});
+
+	it("returns the item unchanged when it has no icon", () => {
+		const item = { id: "x", type: "consumable", name: "apple" };
+		expect(materializeItem(item)).toBe(item);
+	});
+
+	it("returns the item unchanged when the icon is not in the catalog", () => {
+		const item = { id: "x", icon: "not-a-real-icon", type: "main-weapon" };
+		expect(materializeItem(item)).toBe(item);
 	});
 });

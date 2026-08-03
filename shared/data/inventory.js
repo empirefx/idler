@@ -366,8 +366,3 @@ export const inventoryData = {
 		],
 	},
 };
-
-export const metadata = {
-	version: "1.1.7",
-	lastUpdated: "2026-03-28",
-};

@@ -134,7 +134,7 @@ export class InventoryHandler {
 
 		applyMoveItem(fromInv, toInv, action.item_id, action.quantity);
 		await this._saveAll(invKey, inventories);
-		return { success: true, diff: { action: action.action_type } };
+		return { success: true, inventories: { [action.inventory_id]: fromInv, [action.to_inventory_id]: toInv } };
 	}
 
 	async _handleEquip(inventories, action, invKey) {
@@ -149,12 +149,12 @@ export class InventoryHandler {
 
 		const slot = TYPE_TO_SLOT[item.type];
 		if (inv.equipment[slot]) {
-			return { success: false, error: INVENTORY_ERRORS.EQUIPMENT_SLOT_OCCUPIED };
+			applyUnequipItem(inv, slot);
 		}
 
 		applyEquipItem(inv, action.item_id, TYPE_TO_SLOT);
 		await this._saveAll(invKey, inventories);
-		return { success: true, diff: { action: action.action_type } };
+		return { success: true, inventories: { [action.inventory_id]: inv } };
 	}
 
 	async _handleUnequip(inventories, action, invKey) {
@@ -169,6 +169,6 @@ export class InventoryHandler {
 
 		applyUnequipItem(inv, action.slot);
 		await this._saveAll(invKey, inventories);
-		return { success: true, diff: { action: action.action_type } };
+		return { success: true, inventories: { [action.inventory_id]: inv } };
 	}
 }
