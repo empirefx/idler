@@ -35,6 +35,10 @@ export class ProductionService {
     return `prod-${sessionId}-${placeId}-${socketIndex}`;
   }
 
+  _nextJobId(sessionId, placeId, socketIndex) {
+    return `${this._jobId(sessionId, placeId, socketIndex)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
   async assignWorker(sessionId, placeId, socketIndex, workerId, material) {
     const workersState =
       (await this.workersState.load(sessionId)) || { hired: [], available: [], workerSlots: 0 };
@@ -58,11 +62,12 @@ export class ProductionService {
     }
 
     const assignmentKey = this._jobId(sessionId, placeId, socketIndex);
+    const jobId = this._nextJobId(sessionId, placeId, socketIndex);
     worker.assignment = { placeId, socketIndex, material };
-    const record = { sessionId, placeId, socketIndex, workerId, material };
+    const record = { sessionId, placeId, socketIndex, workerId, material, jobId };
     await this.redis.hset(this._assignmentsKey(sessionId), assignmentKey, JSON.stringify(record));
     await this.workersState.save(sessionId, workersState);
-    await this.productionQueue.add("produce", record, { jobId: this._jobId(sessionId, placeId, socketIndex), delay: PRODUCTION_INTERVAL_MS });
+    await this.productionQueue.add("produce", record, { jobId, delay: PRODUCTION_INTERVAL_MS });
 
     return { workers: workersState, assigned: true };
   }
@@ -83,7 +88,9 @@ export class ProductionService {
     }
 
     await this.redis.hdel(this._assignmentsKey(sessionId), assignmentKey);
-    await this.productionQueue.remove(this._jobId(sessionId, placeId, socketIndex));
+    if (record.jobId) {
+      await this.productionQueue.remove(record.jobId);
+    }
     return { workers: workersState, unassigned: true };
   }
 
@@ -149,7 +156,10 @@ export class ProductionService {
       workerName: worker.name,
     });
 
-    await this.productionQueue.add("produce", record, { jobId: this._jobId(sessionId, placeId, socketIndex), delay: PRODUCTION_INTERVAL_MS });
+    const nextJobId = this._nextJobId(sessionId, placeId, socketIndex);
+    const nextRecord = { ...record, jobId: nextJobId };
+    await this.redis.hset(this._assignmentsKey(sessionId), assignmentKey, JSON.stringify(nextRecord));
+    await this.productionQueue.add("produce", nextRecord, { jobId: nextJobId, delay: PRODUCTION_INTERVAL_MS });
     return { item, targetPlaceId };
   }
 
@@ -161,8 +171,12 @@ export class ProductionService {
 
     const { placeId, socketIndex } = worker.assignment;
     const assignmentKey = this._jobId(sessionId, placeId, socketIndex);
+    const raw = await this.redis.hget(this._assignmentsKey(sessionId), assignmentKey);
+    const record = raw ? JSON.parse(raw) : null;
     await this.redis.hdel(this._assignmentsKey(sessionId), assignmentKey);
-    await this.productionQueue.remove(this._jobId(sessionId, placeId, socketIndex));
+    if (record?.jobId) {
+      await this.productionQueue.remove(record.jobId);
+    }
     worker.assignment = null;
     await this.workersState.save(sessionId, workersState);
     return { cleared: true };
@@ -192,8 +206,8 @@ export class ProductionService {
     const assignments = await this.redis.hgetall(this._assignmentsKey(sessionId));
     for (const raw of Object.values(assignments || {})) {
       const record = typeof raw === "string" ? JSON.parse(raw) : raw;
-      if (record?.placeId != null) {
-        await this.productionQueue.remove(this._jobId(sessionId, record.placeId, record.socketIndex));
+      if (record?.jobId) {
+        await this.productionQueue.remove(record.jobId);
       }
     }
   }
@@ -203,7 +217,10 @@ export class ProductionService {
     const assignments = await this.redis.hgetall(this._assignmentsKey(sessionId));
     for (const [assignmentKey, raw] of Object.entries(assignments || {})) {
       const record = typeof raw === "string" ? JSON.parse(raw) : raw;
-      await this.productionQueue.add("produce", record, { jobId: this._jobId(sessionId, record.placeId, record.socketIndex), delay: PRODUCTION_INTERVAL_MS });
+      const jobId = this._nextJobId(sessionId, record.placeId, record.socketIndex);
+      const freshRecord = { ...record, jobId };
+      await this.redis.hset(this._assignmentsKey(sessionId), assignmentKey, JSON.stringify(freshRecord));
+      await this.productionQueue.add("produce", freshRecord, { jobId, delay: PRODUCTION_INTERVAL_MS });
     }
   }
 

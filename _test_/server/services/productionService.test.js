@@ -102,12 +102,13 @@ describe("ProductionService", () => {
         socketIndex: 0,
         workerId: "w1",
         material: "wheat",
+        jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/),
       });
       expect(workersState.save).toHaveBeenCalled();
       expect(queue.add).toHaveBeenCalledWith(
         "produce",
-        expect.objectContaining({ sessionId: "s1", material: "wheat" }),
-        { jobId: "prod-s1-village_center-0", delay: PRODUCTION_INTERVAL_MS },
+        expect.objectContaining({ sessionId: "s1", material: "wheat", jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/) }),
+        { jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/), delay: PRODUCTION_INTERVAL_MS },
       );
     });
 
@@ -115,7 +116,7 @@ describe("ProductionService", () => {
       const hired = [{ ...worker, assignment: { placeId: "river_crossing", socketIndex: 0, material: "stone" } }];
       workersState.load.mockResolvedValue({ hired, available: [], workerSlots: 1 });
       redis.hget.mockResolvedValue(
-        JSON.stringify({ sessionId: "s1", placeId: "river_crossing", socketIndex: 0, workerId: "w1", material: "stone" }),
+        JSON.stringify({ sessionId: "s1", placeId: "river_crossing", socketIndex: 0, workerId: "w1", material: "stone", jobId: "prod-s1-river_crossing-0-old" }),
       );
 
       const result = await ps.assignWorker("s1", "village_center", 0, "w1", "wheat");
@@ -123,11 +124,11 @@ describe("ProductionService", () => {
       expect(result.assigned).toBe(true);
       expect(hired[0].assignment).toEqual({ placeId: "village_center", socketIndex: 0, material: "wheat" });
       expect(redis.hdel).toHaveBeenCalledWith("player:s1:production:assignments", "prod-s1-river_crossing-0");
-      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0-old");
       expect(queue.add).toHaveBeenCalledWith(
         "produce",
         expect.objectContaining({ placeId: "village_center" }),
-        { jobId: "prod-s1-village_center-0", delay: PRODUCTION_INTERVAL_MS },
+        { jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/), delay: PRODUCTION_INTERVAL_MS },
       );
     });
   });
@@ -135,7 +136,7 @@ describe("ProductionService", () => {
   describe("unassignWorker", () => {
     it("clears the assignment record, job and worker state", async () => {
       redis.hget.mockResolvedValue(
-        JSON.stringify({ sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat" }),
+        JSON.stringify({ sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat", jobId: "prod-s1-village_center-0-old" }),
       );
       const hired = [{ ...worker, assignment: { placeId: "village_center", socketIndex: 0, material: "wheat" } }];
       workersState.load.mockResolvedValue({ hired, available: [], workerSlots: 1 });
@@ -145,7 +146,7 @@ describe("ProductionService", () => {
       expect(result.unassigned).toBe(true);
       expect(hired[0].assignment).toBeNull();
       expect(redis.hdel).toHaveBeenCalledWith("player:s1:production:assignments", "prod-s1-village_center-0");
-      expect(queue.remove).toHaveBeenCalledWith("prod-s1-village_center-0");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-village_center-0-old");
       expect(workersState.save).toHaveBeenCalled();
     });
 
@@ -164,7 +165,7 @@ describe("ProductionService", () => {
   });
 
   describe("produce", () => {
-    const record = { sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat" };
+    const record = { sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat", jobId: "prod-s1-village_center-0-old" };
 
     function seedProduceMocks(overrides = {}) {
       redis.hget.mockResolvedValue(JSON.stringify(record));
@@ -217,9 +218,25 @@ describe("ProductionService", () => {
       );
       expect(queue.add).toHaveBeenCalledWith(
         "produce",
-        expect.objectContaining({ material: "wheat" }),
-        { jobId: "prod-s1-village_center-0", delay: PRODUCTION_INTERVAL_MS },
+        expect.objectContaining({ material: "wheat", jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/) }),
+        { jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/), delay: PRODUCTION_INTERVAL_MS },
       );
+    });
+
+    it("reschedules under a fresh jobId every cycle so the recurring loop survives (regression)", async () => {
+      seedProduceMocks();
+
+      await ps.produce("s1", "village_center", 0, "wheat");
+      await ps.produce("s1", "village_center", 0, "wheat");
+      await ps.produce("s1", "village_center", 0, "wheat");
+
+      const jobIds = queue.add.mock.calls.map((c) => c[2].jobId);
+      expect(jobIds).toHaveLength(3);
+      expect(new Set(jobIds).size).toBe(3);
+
+      const lastHset = redis.hset.mock.calls.filter((c) => c[0] === "player:s1:production:assignments").at(-1);
+      const lastRecord = JSON.parse(lastHset[2]);
+      expect(lastRecord.jobId).toBe(jobIds[2]);
     });
 
     it("routes the produced item to the closest place with a vault via BFS", async () => {
@@ -278,7 +295,7 @@ describe("ProductionService", () => {
       expect(result.autoUnassigned).toBe(true);
       expect(hired[0].assignment).toBeNull();
       expect(redis.hdel).toHaveBeenCalledWith("player:s1:production:assignments", "prod-s1-village_center-0");
-      expect(queue.remove).toHaveBeenCalledWith("prod-s1-village_center-0");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-village_center-0-old");
       expect(workersState.save).toHaveBeenCalled();
       expect(broadcaster.broadcast).toHaveBeenCalledWith("s1", "NOTIFICATION", expect.objectContaining({ type: "warning" }));
       expect(queue.add).not.toHaveBeenCalled();
@@ -301,20 +318,20 @@ describe("ProductionService", () => {
 
   describe("pauseAll / resumeAll", () => {
     it("pauseAll marks the session offline and removes every tracked job", async () => {
-      const record = { sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat" };
+      const record = { sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat", jobId: "prod-s1-village_center-0-j1" };
       redis.hgetall.mockResolvedValue({
         "prod-s1-village_center-0": JSON.stringify(record),
-        "prod-s1-river_crossing-0": JSON.stringify({ ...record, placeId: "river_crossing" }),
+        "prod-s1-river_crossing-0": JSON.stringify({ ...record, placeId: "river_crossing", jobId: "prod-s1-river_crossing-0-j2" }),
       });
 
       await ps.pauseAll("s1");
 
       expect(redis.set).toHaveBeenCalledWith("player:s1:connected", "0");
-      expect(queue.remove).toHaveBeenCalledWith("prod-s1-village_center-0");
-      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-village_center-0-j1");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0-j2");
     });
 
-    it("resumeAll marks the session online and re-adds every job", async () => {
+    it("resumeAll marks the session online and re-adds every job under a fresh jobId", async () => {
       const record = { sessionId: "s1", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat" };
       const mineRecord = { sessionId: "s1", placeId: "river_crossing", socketIndex: 0, workerId: "w1", material: "stone" };
       redis.hgetall.mockResolvedValue({
@@ -327,14 +344,20 @@ describe("ProductionService", () => {
       expect(redis.set).toHaveBeenCalledWith("player:s1:connected", "1");
       expect(queue.add).toHaveBeenCalledWith(
         "produce",
-        expect.objectContaining({ material: "wheat" }),
-        { jobId: "prod-s1-village_center-0", delay: PRODUCTION_INTERVAL_MS },
+        expect.objectContaining({ material: "wheat", jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/) }),
+        { jobId: expect.stringMatching(/^prod-s1-village_center-0-\d+-/), delay: PRODUCTION_INTERVAL_MS },
       );
       expect(queue.add).toHaveBeenCalledWith(
         "produce",
-        expect.objectContaining({ material: "stone" }),
-        { jobId: "prod-s1-river_crossing-0", delay: PRODUCTION_INTERVAL_MS },
+        expect.objectContaining({ material: "stone", jobId: expect.stringMatching(/^prod-s1-river_crossing-0-\d+-/) }),
+        { jobId: expect.stringMatching(/^prod-s1-river_crossing-0-\d+-/), delay: PRODUCTION_INTERVAL_MS },
       );
+      const villageRecord = JSON.parse(
+        redis.hset.mock.calls.find(
+          (c) => c[0] === "player:s1:production:assignments" && c[1] === "prod-s1-village_center-0",
+        )[2],
+      );
+      expect(villageRecord.jobId).toMatch(/^prod-s1-village_center-0-\d+-/);
     });
   });
 
@@ -343,7 +366,7 @@ describe("ProductionService", () => {
       const hired = [{ ...worker, assignment: { placeId: "river_crossing", socketIndex: 0, material: "stone" } }];
       workersState.load.mockResolvedValue({ hired, available: [], workerSlots: 1 });
       redis.hget.mockResolvedValue(
-        JSON.stringify({ sessionId: "s1", placeId: "river_crossing", socketIndex: 0, workerId: "w1", material: "stone" }),
+        JSON.stringify({ sessionId: "s1", placeId: "river_crossing", socketIndex: 0, workerId: "w1", material: "stone", jobId: "prod-s1-river_crossing-0-j2" }),
       );
 
       const result = await ps.cleanupWorkerAssignment("s1", "w1");
@@ -351,7 +374,7 @@ describe("ProductionService", () => {
       expect(result.cleared).toBe(true);
       expect(hired[0].assignment).toBeNull();
       expect(redis.hdel).toHaveBeenCalledWith("player:s1:production:assignments", "prod-s1-river_crossing-0");
-      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0-j2");
       expect(workersState.save).toHaveBeenCalled();
     });
 
