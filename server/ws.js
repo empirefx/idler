@@ -160,6 +160,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
                 await spawnService.resumeEnemyAttacks(currentSessionId, player.currentPlaceId);
               }
               await combatService.computeAndBroadcastDerivedStats(currentSessionId);
+              await productionService.resumeAll(currentSessionId);
             } else {
               send(ws, { type: "ERROR", message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
             }
@@ -184,6 +185,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
                 await combatService.resumePlayerAttackLoop(currentSessionId);
               }
               await combatService.computeAndBroadcastDerivedStats(currentSessionId);
+              await productionService.resumeAll(currentSessionId);
               logger.log(`RESUME: ${msg.nickname} session restored`, "WS");
             } else {
               send(ws, { type: "ERROR", message: "Session expired" });
@@ -241,13 +243,31 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
             break;
           }
           case "ASSIGN_WORKER": {
-            const result = await productionService.assignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.worker, msg.building);
-            send(ws, { type: "DIFF", data: result });
+            const result = await productionService.assignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.workerId, msg.material);
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
+            }
             break;
           }
           case "UNASSIGN_WORKER": {
-            const result = await productionService.unassignWorker(currentSessionId, msg.placeId, msg.socketIndex);
-            send(ws, { type: "DIFF", data: result });
+            const result = await productionService.unassignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.workerId);
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
+            }
+            break;
+          }
+          case "FIRE_WORKER": {
+            const result = await workerService.fire(currentSessionId, msg.workerId);
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
+            }
             break;
           }
           case "CRAFT": {
@@ -368,6 +388,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
       if (currentNickname) {
         clients.delete(currentNickname);
         await sessionManager.disconnectSession(currentNickname);
+        await productionService.pauseAll(currentSessionId);
         logger.log(`DISCONNECT: ${currentNickname}`, "WS");
       }
     });

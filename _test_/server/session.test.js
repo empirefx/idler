@@ -121,6 +121,32 @@ describe("SessionManager", () => {
 		}
 	});
 
+	it("should seed pre-existing occupied buildings in initializeFullState", async () => {
+		const sessionId = "test-session-buildings";
+		await manager.initializeFullState(sessionId);
+
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:buildings`,
+			"village_center:0",
+			JSON.stringify({
+				id: "farm",
+				level: 1,
+				placeId: "village_center",
+				socketIndex: 0,
+			}),
+		);
+		expect(mockRedis.hset).toHaveBeenCalledWith(
+			`player:${sessionId}:buildings`,
+			"river_crossing:0",
+			JSON.stringify({
+				id: "mine",
+				level: 1,
+				placeId: "river_crossing",
+				socketIndex: 0,
+			}),
+		);
+	});
+
 	it("should load full state for an existing session", async () => {
 		const sessionId = "test-session-456";
 

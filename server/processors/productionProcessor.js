@@ -6,8 +6,8 @@ export function createProductionWorker(productionService, redisConfig = loadConf
   const worker = new Worker(
     "production",
     async (job) => {
-      const { sessionId, placeId, socketIndex, worker, building } = job.data;
-      await productionService.produce(sessionId, placeId, socketIndex, worker, building);
+      const { sessionId, placeId, socketIndex, material } = job.data;
+      await productionService.produce(sessionId, placeId, socketIndex, material);
     },
     { connection: { host: redisConfig.host, port: redisConfig.port } }
   );

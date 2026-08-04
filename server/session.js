@@ -62,6 +62,19 @@ export class SessionManager {
 
 	async initializeFullState(sessionId) {
 		await this.inventoryState.initialize(sessionId);
+		// Seed pre-existing buildings (occupied sockets) from static data
+		for (const [placeId, place] of Object.entries(placesData)) {
+			for (const [index, socket] of (place.sockets || []).entries()) {
+				if (socket.status === "occupied" && socket.buildingId) {
+					await this.buildingsState.save(sessionId, `${placeId}:${index}`, {
+						id: socket.buildingId,
+						level: socket.level || 1,
+						placeId,
+						socketIndex: index,
+					});
+				}
+			}
+		}
 		// Initialize place vault inventories with seed items from static data
 		for (const place of Object.values(placesData)) {
 			if (place.hasInventory) {

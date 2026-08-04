@@ -3,6 +3,7 @@ import {
   WORKER_COST_MULTIPLIER,
   WORKER_REROLL_COST,
   WORKER_SLOT_COST,
+  WORKER_FIRE_COST,
   MAX_WORKER_SLOTS,
   DEFAULT_WORKER_SLOTS,
 } from "../../shared/constants.js";
@@ -17,20 +18,22 @@ function generateWorkers(count) {
     result.push({
       id: `worker-${Date.now()}-${i}`,
       firstName: name,
+      name,
       gender,
       avatar: gender === "male" ? "worker_m.jpg" : "worker_f.jpg",
-      assigned: false,
+      assignment: null,
     });
   }
   return result;
 }
 
 export class WorkerService {
-  constructor(redis, workersState, playerState, broadcaster) {
+  constructor(redis, workersState, playerState, broadcaster, productionService) {
     this.redis = redis;
     this.workersState = workersState;
     this.playerState = playerState;
     this.broadcaster = broadcaster;
+    this.productionService = productionService;
   }
 
   async hire(sessionId, workerId) {
@@ -48,8 +51,28 @@ export class WorkerService {
     const idx = workers.available.findIndex((w) => w.id === workerId);
     if (idx === -1) return { error: "Worker not available" };
     const [worker] = workers.available.splice(idx, 1);
-    workers.hired.push({ ...worker, assigned: false });
+    workers.hired.push({ ...worker, assignment: null });
     playerData.gold -= cost;
+    await this.workersState.save(sessionId, workers);
+    await this.playerState.save(sessionId, { gold: playerData.gold });
+    return { workers, gold: playerData.gold };
+  }
+
+  async fire(sessionId, workerId) {
+    const playerData = await this.playerState.load(sessionId);
+    if (!playerData) return { error: "Player not found" };
+    if (playerData.gold < WORKER_FIRE_COST) {
+      return { error: "Not enough gold" };
+    }
+    const raw = await this.workersState.load(sessionId);
+    const workers = raw || { hired: [], available: [], workerSlots: DEFAULT_WORKER_SLOTS };
+    const idx = workers.hired.findIndex((w) => w.id === workerId);
+    if (idx === -1) return { error: "Worker not found" };
+    const [worker] = workers.hired.splice(idx, 1);
+    if (worker.assignment) {
+      await this.productionService.cleanupWorkerAssignment(sessionId, workerId);
+    }
+    playerData.gold -= WORKER_FIRE_COST;
     await this.workersState.save(sessionId, workers);
     await this.playerState.save(sessionId, { gold: playerData.gold });
     return { workers, gold: playerData.gold };

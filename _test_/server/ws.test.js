@@ -22,10 +22,10 @@ describe("WebSocket handler", () => {
 		WebSocketServer.prototype.on.mockClear();
 		mockServices = {
 			combatService: { startAutoCombat: vi.fn(), stopAutoCombat: vi.fn(), revive: vi.fn(), levelUp: vi.fn(), recomputeDerivedStats: vi.fn(), computeAndBroadcastDerivedStats: vi.fn(), resumePlayerAttackLoop: vi.fn() },
-			productionService: { assignWorker: vi.fn(), unassignWorker: vi.fn() },
+			productionService: { assignWorker: vi.fn(), unassignWorker: vi.fn(), resumeAll: vi.fn().mockResolvedValue(), pauseAll: vi.fn().mockResolvedValue() },
 			craftingService: { craft: vi.fn() },
 			buildingService: { build: vi.fn() },
-			workerService: { hire: vi.fn() },
+			workerService: { hire: vi.fn(), fire: vi.fn() },
 			questService: { accept: vi.fn(), complete: vi.fn() },
 			skillsService: { spendSkillPoint: vi.fn() },
 			spawnService: { triggerSpawn: vi.fn(), resumeEnemyAttacks: vi.fn(), cleanupPlace: vi.fn() },
@@ -156,6 +156,118 @@ describe("WebSocket handler", () => {
 		expect(mockServices.skillsService.spendSkillPoint).toHaveBeenCalledWith("s1", "warCry");
 		expect(mockServices.combatService.recomputeDerivedStats).not.toHaveBeenCalled();
 		expect(mockServices.combatService.computeAndBroadcastDerivedStats.mock.calls.length).toBe(before + 1);
+	});
+
+	it("JOIN resumes production for the session", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+
+		expect(mockServices.productionService.resumeAll).toHaveBeenCalledWith("s1");
+	});
+
+	it("RESUME resumes production for the session", async () => {
+		mockSessionManager.getSession.mockResolvedValue({ sessionId: "s1" });
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		const conn = connect();
+
+		await conn.send({ type: "RESUME", nickname: "tester", sessionId: "s1" });
+
+		expect(mockServices.productionService.resumeAll).toHaveBeenCalledWith("s1");
+	});
+
+	it("ASSIGN_WORKER validates server-side and broadcasts the updated workers", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockServices.productionService.assignWorker.mockResolvedValue({ workers: { hired: [], available: [], workerSlots: 1 }, assigned: true });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "ASSIGN_WORKER", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "wheat" });
+
+		expect(mockServices.productionService.assignWorker).toHaveBeenCalledWith("s1", "village_center", 0, "w1", "wheat");
+		expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "players.workers", data: expect.objectContaining({ workerSlots: 1 }) });
+	});
+
+	it("ASSIGN_WORKER sends an error when validation fails", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockServices.productionService.assignWorker.mockResolvedValue({ error: "Invalid material for this building level" });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "ASSIGN_WORKER", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "stone" });
+
+		expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+		expect(mockBroadcaster.broadcast).not.toHaveBeenCalledWith("s1", "DIFF", { path: "players.workers", data: expect.anything() });
+	});
+
+	it("UNASSIGN_WORKER broadcasts the updated workers", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockServices.productionService.unassignWorker.mockResolvedValue({ workers: { hired: [], available: [], workerSlots: 1 }, unassigned: true });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "UNASSIGN_WORKER", placeId: "village_center", socketIndex: 0, workerId: "w1" });
+
+		expect(mockServices.productionService.unassignWorker).toHaveBeenCalledWith("s1", "village_center", 0, "w1");
+		expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "players.workers", data: expect.objectContaining({ workerSlots: 1 }) });
+	});
+
+	it("FIRE_WORKER broadcasts updated workers and gold", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockServices.workerService.fire.mockResolvedValue({ workers: { hired: [], available: [], workerSlots: 1 }, gold: 75 });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "FIRE_WORKER", workerId: "w1" });
+
+		expect(mockServices.workerService.fire).toHaveBeenCalledWith("s1", "w1");
+		expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "players.workers", data: expect.objectContaining({ workerSlots: 1 }) });
+		expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "player.gold", data: 75 });
+	});
+
+	it("FIRE_WORKER sends an error when the worker cannot be fired", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockServices.workerService.fire.mockResolvedValue({ error: "Not enough gold" });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "FIRE_WORKER", workerId: "w1" });
+
+		expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+	});
+
+	it("closing the connection pauses production for the session", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		const closeHandler = conn.fakeWs.on.mock.calls.find(([evt]) => evt === "close")?.[1];
+		await closeHandler();
+
+		expect(mockServices.productionService.pauseAll).toHaveBeenCalledWith("s1");
 	});
 
 	it("BUY_ITEM materializes the bought item with catalog fields", async () => {

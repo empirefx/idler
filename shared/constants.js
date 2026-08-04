@@ -48,6 +48,8 @@ export const WORKER_COST_MULTIPLIER = 25;
 export const WORKER_SLOT_COST = 200;
 export const MAX_WORKER_SLOTS = 5;
 export const DEFAULT_WORKER_SLOTS = 0;
+export const WORKER_FIRE_COST = 25;
+export const PRODUCTION_INTERVAL_MS = 5000;
 
 export const DEFAULT_CONFIG = {
 	PLAYER_MAX_SLOTS: 20,
