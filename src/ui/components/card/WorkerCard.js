@@ -1,10 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 import { itemCatalog } from "../../../../shared/data/itemCatalog";
-import {
-	assignWorkerToSocketWithEvent,
-	unassignWorkerFromSocketWithEvent,
-} from "../../../store/slices/playerSlice";
 import { getWs } from "../../../store/ws";
 import ConfirmAlert from "../common/ConfirmAlert";
 import Item from "../common/Item";
@@ -40,49 +35,37 @@ const WorkerCard = ({
 	isAssigned = false,
 	onFire,
 }) => {
-	const dispatch = useDispatch();
 	const [showFireConfirm, setShowFireConfirm] = useState(false);
 
 	const handleMaterialClick = useCallback(
 		(socketIndex, material, assignmentPlaceId) => {
 			const ws = getWs();
 			if (isAssigned) {
-				dispatch(
-					unassignWorkerFromSocketWithEvent(worker.id, assignmentPlaceId),
-				);
 				if (ws) {
 					ws.send(
 						JSON.stringify({
 							type: "UNASSIGN_WORKER",
 							placeId: assignmentPlaceId,
 							socketIndex,
+							workerId: worker.id,
 						}),
 					);
 				}
 			} else {
-				dispatch(
-					assignWorkerToSocketWithEvent(
-						worker.id,
-						placeId,
-						socketIndex,
-						material,
-					),
-				);
-				const socket = socketData?.sockets?.[socketIndex];
 				if (ws) {
 					ws.send(
 						JSON.stringify({
 							type: "ASSIGN_WORKER",
 							placeId,
 							socketIndex,
-							worker: { id: worker.id },
-							building: { id: socket?.buildingId },
+							workerId: worker.id,
+							material,
 						}),
 					);
 				}
 			}
 		},
-		[dispatch, worker, isAssigned, placeId, socketData],
+		[worker, isAssigned, placeId],
 	);
 
 	const handleFireClick = () => {
@@ -101,22 +84,19 @@ const WorkerCard = ({
 	};
 
 	const materials = useMemo(() => {
-		if (isAssigned && worker.assignments) {
-			const assignments = Object.entries(worker.assignments);
-			if (assignments.length > 0) {
-				const [assignmentPlaceId, assignment] = assignments[0];
-				const item = itemCatalog[assignment.material];
-				return [
-					{
-						socketIndex: assignment.socketIndex,
-						mat: {
-							material: assignment.material,
-							icon: item?.icon || assignment.material,
-						},
-						assignmentPlaceId,
+		if (isAssigned && worker.assignment) {
+			const assignment = worker.assignment;
+			const item = itemCatalog[assignment.material];
+			return [
+				{
+					socketIndex: assignment.socketIndex,
+					mat: {
+						material: assignment.material,
+						icon: item?.icon || assignment.material,
 					},
-				];
-			}
+					assignmentPlaceId: assignment.placeId,
+				},
+			];
 		}
 
 		if (!availableSocketIndexes || availableSocketIndexes.length === 0) {

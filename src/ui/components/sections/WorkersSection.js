@@ -8,6 +8,7 @@ import {
 	selectCurrentPlaceSockets,
 } from "../../../store/slices/placesSlice";
 import { selectWorkers } from "../../../store/slices/playerSlice";
+import { getWs } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import WorkerCard from "../card/WorkerCard";
 
@@ -25,8 +26,8 @@ const WorkersSection = () => {
 			.filter((idx) => idx !== -1) || [];
 
 	const assignedSocketIndexesForPlace = workers
-		.filter((w) => w.assignments?.[currentPlaceId])
-		.map((w) => w.assignments[currentPlaceId].socketIndex)
+		.filter((w) => w.assignment?.placeId === currentPlaceId)
+		.map((w) => w.assignment.socketIndex)
 		.filter((idx) => idx !== null && idx !== undefined);
 
 	const availableSocketIndexes = occupiedSocketIndexes.filter(
@@ -56,7 +57,14 @@ const WorkersSection = () => {
 	};
 
 	const hasAnyAssignment = (worker) => {
-		return worker.assignments && Object.keys(worker.assignments).length > 0;
+		return Boolean(worker.assignment);
+	};
+
+	const handleFire = (workerId) => {
+		const ws = getWs();
+		if (ws) {
+			ws.send(JSON.stringify({ type: "FIRE_WORKER", workerId }));
+		}
 	};
 
 	const assigned = workers.filter((w) => hasAnyAssignment(w));
@@ -77,6 +85,7 @@ const WorkersSection = () => {
 								occupiedSocketIndexes={occupiedSocketIndexes}
 								socketData={socketData}
 								getSocketMaterials={getSocketMaterials}
+								onFire={handleFire}
 							/>
 						))
 					) : (

@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import App from "./App";
 import store from "./store";
 import { setPlayerState, setPlayerHp, setPlayerExp, addGold } from "./store/slices/playerSlice";
-import { setInventory, addItem } from "./store/slices/inventorySlice";
+import { setInventory } from "./store/slices/inventorySlice";
 import { setBuildings } from "./store/slices/buildingsSlice";
 import { setPlaces, setCurrentPlaceId } from "./store/slices/placesSlice";
 import { setQuests, questAccepted, questCompleted } from "./store/slices/questSlice";
@@ -114,11 +114,12 @@ const mountGame = (sessionId) => {
 				}
 				break;
 			}
-			case "PRODUCTION_TICK": {
-				const { item } = data.data;
-				if (item) store.dispatch(addItem({ inventoryId: "player", item }));
+			case "PRODUCTION_TICK":
+				store.dispatch({ type: "PRODUCTION_TICK", payload: data.data });
 				break;
-			}
+			case "NOTIFICATION":
+				store.dispatch(addNotification(data.data?.message || "Notification", data.data?.type || "info"));
+				break;
 			case "ERROR":
 				store.dispatch(addNotification(data.message || "Server error", "error"));
 				break;
