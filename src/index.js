@@ -11,6 +11,7 @@ import { setQuests, questAccepted, questCompleted } from "./store/slices/questSl
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
 import { setEnemies, addEnemy, removeEnemy } from "./store/slices/enemiesSlice";
+import { addLog } from "./store/slices/logSlice";
 import { setWs } from "./store/ws";
 import { placesData } from "../shared/data/places";
 import "./styles/components.css";
@@ -65,6 +66,7 @@ const mountGame = (sessionId) => {
 				break;
 			case "COMBAT_DIFF": {
 				const d = data.data;
+				store.dispatch({ type: "COMBAT_DIFF", payload: d });
 				if (d.damageDealt > 0 && d.enemyId) {
 					store.dispatch({ type: "enemies/damageEnemy", payload: { id: d.enemyId, amount: d.damageDealt } });
 				}
@@ -107,6 +109,7 @@ const mountGame = (sessionId) => {
 			}
 			case "ENEMY_ATTACK": {
 				const { enemyId, damageDealt, playerHp, playerDead } = data.data;
+				store.dispatch({ type: "ENEMY_ATTACK", payload: data.data });
 				if (playerHp !== undefined) store.dispatch(setPlayerHp(playerHp));
 				if (playerDead) {
 					store.dispatch(setPlayerState({ isDead: true, autoCombat: false }));
@@ -115,6 +118,7 @@ const mountGame = (sessionId) => {
 			}
 			case "ENEMY_SPAWN": {
 				const { enemies } = data.data;
+				store.dispatch({ type: "ENEMY_SPAWN", payload: data.data });
 				if (enemies) {
 					const byId = Object.fromEntries(enemies.map((e) => [e.id, e]));
 					store.dispatch(setEnemies({ byId, allIds: enemies.map((e) => e.id) }));
@@ -134,6 +138,20 @@ const mountGame = (sessionId) => {
 			case "PRODUCTION_TICK":
 				store.dispatch({ type: "PRODUCTION_TICK", payload: data.data });
 				break;
+			case "TRADE_RESULT": {
+				const d = data.data;
+				if (d?.success && d.message) {
+					store.dispatch(addLog({ message: d.message, category: "default" }));
+				}
+				break;
+			}
+			case "USE_RESULT": {
+				const d = data.data;
+				if (d?.success && d.message) {
+					store.dispatch(addLog({ message: d.message, category: "default" }));
+				}
+				break;
+			}
 			case "NOTIFICATION":
 				store.dispatch(addNotification(data.data?.message || "Notification", data.data?.type || "info"));
 				break;

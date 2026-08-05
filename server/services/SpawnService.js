@@ -20,6 +20,8 @@ export class SpawnService {
     if (!player || player.currentPlaceId !== placeId) return false;
 
     const enemies = this._createEnemyWave(placeId);
+    if (enemies.length === 0) return false;
+
     for (const enemy of enemies) {
       await this.enemyState.save(sessionId, enemy.id, enemy);
       const [minDelay, maxDelay] = enemy.attackDelayRange || [1000, 3000];

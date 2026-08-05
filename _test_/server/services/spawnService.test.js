@@ -71,6 +71,22 @@ describe("SpawnService", () => {
     expect(broadcaster.broadcast).not.toHaveBeenCalled();
   });
 
+  it("triggerSpawn does not broadcast or start the chain for places without spawn", async () => {
+    enemyState.save.mockResolvedValue();
+    enemyState.clearAll.mockResolvedValue();
+    playerState.load = vi.fn().mockResolvedValue({
+      currentPlaceId: "village_center",
+      isDead: false,
+      autoCombat: true,
+    });
+    const result = await ss.triggerSpawn("s1", "village_center");
+    expect(result).toBe(false);
+    expect(enemyState.save).not.toHaveBeenCalled();
+    expect(queue.add).not.toHaveBeenCalled();
+    expect(playerAttackQueue.add).not.toHaveBeenCalled();
+    expect(broadcaster.broadcast).not.toHaveBeenCalled();
+  });
+
   it("triggerSpawn does not start the player chain when auto-combat is off", async () => {
     enemyState.save.mockResolvedValue();
     enemyState.clearAll.mockResolvedValue();
