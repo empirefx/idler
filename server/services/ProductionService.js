@@ -123,7 +123,7 @@ export class ProductionService {
       icon: material,
       id: catalogItem?.id ?? material,
       template_id: material,
-      type: "material",
+      type: catalogItem?.type ?? "material",
       quantity: buildingData?.baseProductionRate || 1,
     });
 

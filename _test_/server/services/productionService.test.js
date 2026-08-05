@@ -223,6 +223,16 @@ describe("ProductionService", () => {
       );
     });
 
+    it("materializes produced consumables with their catalog type so they can be consumed from the player inventory", async () => {
+      seedProduceMocks({ record: { ...record, material: "apple" } });
+
+      const result = await ps.produce("s1", "village_center", 0, "apple");
+
+      expect(result.item.type).toBe("consumable");
+      expect(result.item.template_id).toBe("apple");
+      expect(result.item.consumable).toEqual({ heal: 10 });
+    });
+
     it("reschedules under a fresh jobId every cycle so the recurring loop survives (regression)", async () => {
       seedProduceMocks();
 
