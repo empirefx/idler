@@ -3,6 +3,7 @@ import questReducer, {
 	setQuests,
 	questAccepted,
 	questCompleted,
+	updateQuest,
 } from "../src/store/slices/questSlice";
 
 describe("questSlice", () => {
@@ -45,5 +46,18 @@ describe("questSlice", () => {
 		state = questReducer(state, questCompleted({ questId: "q1" }));
 		expect(state.activeById).toEqual({});
 		expect(state.completedQuests.q1.completedAt).toBeTypeOf("number");
+	});
+
+	it("updateQuest merges progress into an active quest entry", () => {
+		let state = questReducer(undefined, { type: "" });
+		state = questReducer(
+			state,
+			questAccepted({ questId: "q1", progress: { questId: "q1", progress: {} } }),
+		);
+		state = questReducer(
+			state,
+			updateQuest({ questId: "q1", data: { progress: { monstersKilled: 3 } } }),
+		);
+		expect(state.activeById.q1.progress).toEqual({ monstersKilled: 3 });
 	});
 });

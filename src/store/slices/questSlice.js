@@ -23,7 +23,7 @@ const questSlice = createSlice({
     questAccepted(state, action) {
       const { questId, progress } = action.payload;
       if (questId && !state.activeById[questId]) {
-        state.activeById[questId] = progress || { questId, startedAt: Date.now(), objectives: {} };
+        state.activeById[questId] = progress || { questId, startedAt: Date.now(), progress: {} };
       }
     },
     questCompleted(state, action) {

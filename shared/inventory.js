@@ -104,6 +104,21 @@ export function applyMoveItem(fromInventory, toInventory, itemId, quantity) {
 	applyAddItem(toInventory, movedItem);
 }
 
+export function canAddItems(inventory, newItems) {
+	const candidate = cloneItem(inventory);
+	for (const newItem of newItems) {
+		const slotsBefore = candidate.items.length;
+		applyAddItem(candidate, newItem);
+		const slotDelta = candidate.items.length - slotsBefore;
+		if (slotDelta > 0 && candidate.items.length > candidate.maxSlots) {
+			return { isValid: false, error: INVENTORY_ERRORS.INVENTORY_FULL };
+		}
+		const weightCheck = validateWeightLimit(candidate, 0);
+		if (!weightCheck.isValid) return weightCheck;
+	}
+	return { isValid: true };
+}
+
 export function applyEquipItem(inventory, itemId, typeToSlot) {
 	const idx = inventory.items.findIndex((i) => i.id === itemId);
 	if (idx === -1) return;

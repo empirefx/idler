@@ -51,12 +51,12 @@ async function main() {
   const queues = createQueues(config.redis);
   const broadcaster = createBroadcaster();
 
-  const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, queues.playerAttackQueue, queues.spawnQueue, broadcaster);
+  const questService = new QuestService(redis, playerState, questState, broadcaster, inventoryState);
+  const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, queues.playerAttackQueue, queues.spawnQueue, broadcaster, questService);
   const productionService = new ProductionService(redis, workersState, inventoryState, queues.productionQueue, broadcaster);
   const craftingService = new CraftingService(redis, playerState, inventoryState, broadcaster);
   const buildingService = new BuildingService(playerState, buildingsState, socketsState, productionService, broadcaster);
   const workerService = new WorkerService(redis, workersState, playerState, broadcaster, productionService);
-  const questService = new QuestService(redis, playerState, questState, broadcaster);
   const skillsService = new SkillsService(redis, playerState, inventoryState, broadcaster);
   const spawnService = new SpawnService(redis, enemyState, queues.spawnQueue, queues.enemyAttackQueue, queues.playerAttackQueue, playerState, broadcaster);
   const navigationService = new NavigationService(redis);

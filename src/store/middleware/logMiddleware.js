@@ -202,8 +202,8 @@ const logMiddleware = (store) => (next) => (action) => {
 		}
 
 		case "quests/questAccepted": {
-			const questId = action.payload?.questId;
-			if (questId) {
+			const { questId, accepted } = action.payload || {};
+			if (questId && accepted) {
 				store.dispatch(
 					addLog({
 						message: `Quest accepted: ${questCatalog[questId]?.title || questId}`,

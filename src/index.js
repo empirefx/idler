@@ -7,7 +7,7 @@ import { setInventory } from "./store/slices/inventorySlice";
 import { setBuildings } from "./store/slices/buildingsSlice";
 import { setPlaces, setCurrentPlaceId, updateSocket } from "./store/slices/placesSlice";
 import { buildingsToSocketUpdates } from "./store/buildingsToSocketUpdates";
-import { setQuests, questAccepted, questCompleted } from "./store/slices/questSlice";
+import { setQuests, questAccepted, questCompleted, updateQuest } from "./store/slices/questSlice";
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
 import { setEnemies, addEnemy, removeEnemy } from "./store/slices/enemiesSlice";
@@ -85,7 +85,12 @@ const mountGame = (sessionId) => {
 				if (d.completed) {
 					store.dispatch(questCompleted(d));
 				} else if (d.questId) {
-					store.dispatch(questAccepted(d));
+					if (!store.getState().quests.activeById?.[d.questId]) {
+						store.dispatch(questAccepted(d));
+					}
+					if (d.progress?.progress) {
+						store.dispatch(updateQuest({ questId: d.questId, data: { progress: d.progress.progress } }));
+					}
 				}
 				break;
 			}

@@ -295,7 +295,7 @@ describe("logMiddleware other messages", () => {
 		const { store, logs } = makeStore(baseState());
 		store.dispatch({
 			type: "quests/questAccepted",
-			payload: { questId: "help_village_kill_monsters", progress: {} },
+			payload: { questId: "help_village_kill_monsters", progress: {}, accepted: true },
 		});
 		const title = questCatalog.help_village_kill_monsters.title;
 		store.dispatch({
@@ -306,6 +306,15 @@ describe("logMiddleware other messages", () => {
 			{ message: `Quest accepted: ${title}`, category: "default" },
 			{ message: `Quest completed: ${title}`, category: "default" },
 		]);
+	});
+
+	it("does not log 'Quest accepted' without the accepted flag", () => {
+		const { store, logs } = makeStore(baseState());
+		store.dispatch({
+			type: "quests/questAccepted",
+			payload: { questId: "help_village_kill_monsters", progress: {} },
+		});
+		expect(logs).toEqual([]);
 	});
 
 	it("logs notifications under default", () => {

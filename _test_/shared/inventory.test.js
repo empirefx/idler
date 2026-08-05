@@ -15,19 +15,21 @@ import {
 	applyEquipItem,
 	applyUnequipItem,
 	materializeItem,
+	canAddItems,
 } from "../../shared/inventory.js";
 import { INVENTORY_ERRORS, TYPE_TO_SLOT } from "../../shared/constants.js";
 
+const mockInventory = (overrides = {}) => ({
+	id: "player",
+	type: "player",
+	maxSlots: 20,
+	maxWeight: 100,
+	items: [{ id: "item_1", name: "apple", type: "consumable", quantity: 5, weight: 0.5 }],
+	equipment: {},
+	...overrides,
+});
+
 describe("shared inventory validators", () => {
-	const mockInventory = (overrides = {}) => ({
-		id: "player",
-		type: "player",
-		maxSlots: 20,
-		maxWeight: 100,
-		items: [{ id: "item_1", name: "apple", type: "consumable", quantity: 5, weight: 0.5 }],
-		equipment: {},
-		...overrides,
-	});
 
 	it("validateSlotLimit: passes when under limit", () => {
 		const inv = mockInventory({ items: [] });
@@ -206,5 +208,52 @@ describe("materializeItem", () => {
 	it("returns the item unchanged when the icon is not in the catalog", () => {
 		const item = { id: "x", icon: "not-a-real-icon", type: "main-weapon" };
 		expect(materializeItem(item)).toBe(item);
+	});
+});
+
+describe("canAddItems", () => {
+	it("returns isValid true when there is room", () => {
+		const inv = mockInventory({ items: [] });
+		const res = canAddItems(inv, [
+			{ id: "a", type: "consumable", name: "apple", quantity: 1, weight: 0.5 },
+		]);
+		expect(res.isValid).toBe(true);
+	});
+
+	it("allows stacking into an existing entry without using a slot", () => {
+		const inv = mockInventory({});
+		const res = canAddItems(inv, [
+			{ id: "item_1", name: "apple", type: "consumable", quantity: 3, weight: 0.5 },
+		]);
+		expect(res.isValid).toBe(true);
+	});
+
+	it("rejects when adding would exceed max slots", () => {
+		const inv = mockInventory({ maxSlots: 1, items: [] });
+		const res = canAddItems(inv, [
+			{ id: "a", type: "consumable", name: "apple", quantity: 1, weight: 0.5 },
+			{ id: "b", type: "consumable", name: "bread", quantity: 1, weight: 0.5 },
+		]);
+		expect(res.isValid).toBe(false);
+		expect(res.error).toBe(INVENTORY_ERRORS.INVENTORY_FULL);
+	});
+
+	it("rejects when adding would exceed max weight", () => {
+		const inv = mockInventory({ maxSlots: 20, maxWeight: 1, items: [] });
+		const res = canAddItems(inv, [
+			{ id: "a", type: "consumable", name: "apple", quantity: 3, weight: 0.5 },
+		]);
+		expect(res.isValid).toBe(false);
+		expect(res.error).toBe(INVENTORY_ERRORS.WEIGHT_LIMIT_EXCEEDED);
+	});
+
+	it("does not mutate the input inventory", () => {
+		const inv = mockInventory({});
+		canAddItems(inv, [
+			{ id: "a", type: "consumable", name: "apple", quantity: 3, weight: 0.5 },
+		]);
+		expect(inv.items).toEqual([
+			{ id: "item_1", name: "apple", type: "consumable", quantity: 5, weight: 0.5 },
+		]);
 	});
 });

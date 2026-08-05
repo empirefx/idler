@@ -19,7 +19,7 @@ import {
 } from "../../shared/combat/skillResolver.js";
 
 export class CombatService {
-  constructor(redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster) {
+  constructor(redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, questService) {
     this.redis = redis;
     this.playerState = playerState || new PlayerState(redis);
     this.inventoryState = inventoryState;
@@ -28,6 +28,7 @@ export class CombatService {
     this.playerAttackQueue = playerAttackQueue;
     this.spawnQueue = spawnQueue;
     this.broadcaster = broadcaster;
+    this.questService = questService;
   }
 
   async getEquippedLoadout(sessionId) {
@@ -315,6 +316,7 @@ export class CombatService {
       freshPlayer.gold = (freshPlayer.gold || 0) + goldGained;
       await this.playerState.save(sessionId, { exp: freshPlayer.exp, gold: freshPlayer.gold });
       await this.enemyState.delete(sessionId, target.id);
+      if (this.questService) await this.questService.handleEvent(sessionId, { kind: "kill", data: { enemy: target } });
 
       result.enemyDead = true;
       result.expGained = expGained;
@@ -420,6 +422,7 @@ export class CombatService {
         freshPlayer.gold = (freshPlayer.gold || 0) + goldGained;
         await this.playerState.save(sessionId, { exp: freshPlayer.exp, gold: freshPlayer.gold });
         await this.enemyState.delete(sessionId, target.id);
+        if (this.questService) await this.questService.handleEvent(sessionId, { kind: "kill", data: { enemy: target } });
 
         result.enemyDead = true;
         result.expGained = expGained;
