@@ -6,6 +6,7 @@ import { setPlayerState, setPlayerHp, setPlayerExp, addGold } from "./store/slic
 import { setInventory } from "./store/slices/inventorySlice";
 import { setBuildings } from "./store/slices/buildingsSlice";
 import { setPlaces, setCurrentPlaceId, updateSocket } from "./store/slices/placesSlice";
+import { buildingsToSocketUpdates } from "./store/buildingsToSocketUpdates";
 import { setQuests, questAccepted, questCompleted } from "./store/slices/questSlice";
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
@@ -37,6 +38,12 @@ const applySockets = (sockets) => {
 	for (const [field, socket] of Object.entries(sockets)) {
 		const [placeId, socketIndex] = field.split(":");
 		store.dispatch(updateSocket({ placeId, socketIndex: Number(socketIndex), data: socket }));
+	}
+};
+
+const applyBuildings = (buildings) => {
+	for (const update of buildingsToSocketUpdates(buildings)) {
+		store.dispatch(updateSocket(update));
 	}
 };
 
@@ -93,7 +100,8 @@ const mountGame = (sessionId) => {
 					store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
 				}
 				store.dispatch(setPlaces(placesData));
-				applySockets(data.data.sockets);
+					applySockets(data.data.sockets);
+				applyBuildings(data.data.buildings);
 				if (player?.currentPlaceId) store.dispatch(setCurrentPlaceId(player.currentPlaceId));
 				break;
 			}
@@ -183,7 +191,8 @@ const joinGame = () => {
 				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
 			}
 			store.dispatch(setPlaces(placesData));
-			applySockets(data.data.sockets);
+				applySockets(data.data.sockets);
+				applyBuildings(data.data.buildings);
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
 		} else if (data.type === "ERROR") {
@@ -231,7 +240,8 @@ if (cachedSessionId && cachedNickname) {
 				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
 			}
 			store.dispatch(setPlaces(placesData));
-			applySockets(data.data.sockets);
+				applySockets(data.data.sockets);
+				applyBuildings(data.data.buildings);
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
 		} else {
