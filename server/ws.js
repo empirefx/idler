@@ -351,12 +351,20 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           }
           case "ACCEPT_QUEST": {
             const result = await questService.accept(currentSessionId, msg.questId);
-            send(ws, { type: "QUEST_UPDATE", data: result });
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              send(ws, { type: "QUEST_UPDATE", data: result });
+            }
             break;
           }
           case "COMPLETE_QUEST": {
             const result = await questService.complete(currentSessionId, msg.questId);
-            send(ws, { type: "QUEST_UPDATE", data: result });
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              send(ws, { type: "QUEST_UPDATE", data: result });
+            }
             break;
           }
           case "MOVE_ITEM": {

@@ -7,7 +7,12 @@ const questSlice = createSlice({
   initialState,
   reducers: {
     setQuests(state, action) {
-      return { ...state, ...action.payload };
+      const { active, completed, activeById, completedQuests } = action.payload || {};
+      return {
+        ...state,
+        activeById: activeById || active || {},
+        completedQuests: completedQuests || completed || {},
+      };
     },
     updateQuest(state, action) {
       const { questId, data } = action.payload;
