@@ -182,6 +182,16 @@ export class ProductionService {
     return { cleared: true };
   }
 
+  async cleanupSocket(sessionId, placeId, socketIndex) {
+    const workersState =
+      (await this.workersState.load(sessionId)) || { hired: [], available: [], workerSlots: 0 };
+    const worker = workersState.hired.find(
+      (w) => w.assignment?.placeId === placeId && w.assignment?.socketIndex === socketIndex,
+    );
+    if (!worker) return { cleared: false };
+    return this.cleanupWorkerAssignment(sessionId, worker.id);
+  }
+
   findClosestPlaceWithInventory(currentPlaceId) {
     if (placesData[currentPlaceId]?.hasInventory) return currentPlaceId;
     const queue = [currentPlaceId];
@@ -235,8 +245,16 @@ export class ProductionService {
   }
 
   _allowedMaterials(buildingData, level) {
-    const material = buildingData.upgrades?.[`level${level}`]?.material;
-    if (!material) return [];
-    return Array.isArray(material) ? material : [material];
+    const materials = [];
+    for (let l = 1; l <= level; l += 1) {
+      const material = buildingData.upgrades?.[`level${l}`]?.material;
+      if (!material) continue;
+      if (Array.isArray(material)) {
+        materials.push(...material);
+      } else {
+        materials.push(material);
+      }
+    }
+    return materials;
   }
 }

@@ -237,9 +237,43 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
             await spawnService.triggerSpawn(currentSessionId, msg.placeId);
             break;
           }
+          case "BUY_SOCKET": {
+            const result = await buildingService.buySocket(currentSessionId, msg.placeId, msg.socketIndex);
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
+            }
+            break;
+          }
           case "BUILD": {
             const result = await buildingService.build(currentSessionId, msg.placeId, msg.socketIndex, msg.buildingId);
-            send(ws, { type: "DIFF", data: result });
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
+            }
+            break;
+          }
+          case "UPGRADE_BUILDING": {
+            const result = await buildingService.upgrade(currentSessionId, msg.placeId, msg.socketIndex);
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
+            }
+            break;
+          }
+          case "DEMOLISH": {
+            const result = await buildingService.demolish(currentSessionId, msg.placeId, msg.socketIndex);
+            if (result.error) {
+              send(ws, { type: "ERROR", message: result.error });
+            } else {
+              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
+            }
             break;
           }
           case "ASSIGN_WORKER": {

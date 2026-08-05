@@ -5,7 +5,7 @@ import store from "./store";
 import { setPlayerState, setPlayerHp, setPlayerExp, addGold } from "./store/slices/playerSlice";
 import { setInventory } from "./store/slices/inventorySlice";
 import { setBuildings } from "./store/slices/buildingsSlice";
-import { setPlaces, setCurrentPlaceId } from "./store/slices/placesSlice";
+import { setPlaces, setCurrentPlaceId, updateSocket } from "./store/slices/placesSlice";
 import { setQuests, questAccepted, questCompleted } from "./store/slices/questSlice";
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
@@ -31,6 +31,14 @@ const LOGIN_ERROR = document.getElementById("login-error");
 
 let ws = null;
 let root = null;
+
+const applySockets = (sockets) => {
+	if (!sockets) return;
+	for (const [field, socket] of Object.entries(sockets)) {
+		const [placeId, socketIndex] = field.split(":");
+		store.dispatch(updateSocket({ placeId, socketIndex: Number(socketIndex), data: socket }));
+	}
+};
 
 const mountGame = (sessionId) => {
 	LOGIN_SCREEN.style.display = "none";
@@ -85,6 +93,7 @@ const mountGame = (sessionId) => {
 					store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
 				}
 				store.dispatch(setPlaces(placesData));
+				applySockets(data.data.sockets);
 				if (player?.currentPlaceId) store.dispatch(setCurrentPlaceId(player.currentPlaceId));
 				break;
 			}
@@ -174,6 +183,7 @@ const joinGame = () => {
 				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
 			}
 			store.dispatch(setPlaces(placesData));
+			applySockets(data.data.sockets);
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
 		} else if (data.type === "ERROR") {
@@ -221,6 +231,7 @@ if (cachedSessionId && cachedNickname) {
 				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
 			}
 			store.dispatch(setPlaces(placesData));
+			applySockets(data.data.sockets);
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
 		} else {

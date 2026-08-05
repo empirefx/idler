@@ -160,6 +160,9 @@ describe("SessionManager", () => {
 			if (key.includes("buildings")) {
 				return {};
 			}
+			if (key.includes("sockets")) {
+				return { "farmlands:0": JSON.stringify({ status: "empty" }) };
+			}
 			if (key.includes("quests:active")) {
 				return { quest_1: JSON.stringify({ progress: 0 }) };
 			}
@@ -179,12 +182,14 @@ describe("SessionManager", () => {
 		expect(state).toHaveProperty("player");
 		expect(state).toHaveProperty("inventory");
 		expect(state).toHaveProperty("buildings");
+		expect(state).toHaveProperty("sockets");
 		expect(state).toHaveProperty("workers");
 		expect(state).toHaveProperty("quests");
 		expect(state).toHaveProperty("skills");
 		expect(state).toHaveProperty("recipes");
 
 		expect(state.player.level).toBe(1);
+		expect(state.sockets).toEqual({ "farmlands:0": { status: "empty" } });
 		expect(state.workers).toEqual({ hired: [], available: [] });
 		expect(state.quests.active).toHaveProperty("quest_1");
 		expect(state.recipes).toEqual(["recipe_wood_sword"]);

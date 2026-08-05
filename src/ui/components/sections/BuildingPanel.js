@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "../../../styles/sections/building-panel.css";
-import { selectAllBuildings } from "../../../store/slices/buildingsSlice";
+import { buildingsData } from "../../../../shared/data/buildings";
 import {
 	selectCurrentPlace,
 	selectCurrentPlaceSockets,
@@ -17,7 +17,6 @@ const BuildingPanel = ({ onClose }) => {
 	const { buildingPanel } = useUIVisibility();
 	const currentPlace = useSelector(selectCurrentPlace);
 	const socketData = useSelector(selectCurrentPlaceSockets);
-	const allBuildings = useSelector(selectAllBuildings);
 	const gold = useSelector(selectGold);
 
 	const [showBuildingSelector, setShowBuildingSelector] = useState(false);
@@ -66,6 +65,21 @@ const BuildingPanel = ({ onClose }) => {
 		}
 	}, [currentPlace]);
 
+	const handleBuySocket = useCallback((socketIndex) => {
+		if (currentPlace?.id) {
+			const ws = getWs();
+			if (ws) {
+				ws.send(
+					JSON.stringify({
+						type: "BUY_SOCKET",
+						placeId: currentPlace.id,
+						socketIndex,
+					}),
+				);
+			}
+		}
+	}, [currentPlace]);
+
 	const lockedCount = sockets.filter((s) => s.status === "locked").length;
 	const showPurchaseMsg = lockedCount > 0;
 
@@ -75,7 +89,7 @@ const BuildingPanel = ({ onClose }) => {
 			const isEmpty = socket.status === "empty";
 			const isOccupied = socket.status === "occupied";
 
-			const building = isOccupied ? allBuildings[socket.buildingId] : null;
+			const building = isOccupied ? buildingsData[socket.buildingId] : null;
 			const level = socket.level || 1;
 
 			const upgradeKey = `level${level + 1}`;
@@ -93,6 +107,7 @@ const BuildingPanel = ({ onClose }) => {
 					level={level}
 					isLocked={isLocked}
 					isEmpty={isEmpty}
+					onBuySocket={handleBuySocket}
 					onBuild={() => handleBuildClick(i)}
 					onUpgrade={() => handleUpgrade(i)}
 					canAffordUpgrade={canAffordUpgrade}
@@ -132,7 +147,7 @@ const BuildingPanel = ({ onClose }) => {
 			</div>
 			{showBuildingSelector && (
 				<BuildingSelector
-					buildings={allBuildings}
+					buildings={buildingsData}
 					onSelect={handleSelectBuilding}
 					onClose={() => {
 						setShowBuildingSelector(false);

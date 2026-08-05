@@ -12,8 +12,7 @@ import playerReducer from "./slices/playerSlice";
 import questsReducer from "./slices/questSlice";
 import { setPlayerGold, setPlayerHp, setPlayerExp, setPlayerLevel, setCurrentPlace, setPlayerState } from "./slices/playerSlice";
 import { setEnemies } from "./slices/enemiesSlice";
-import { setPlaces, setCurrentPlaceId } from "./slices/placesSlice";
-import { setBuildings } from "./slices/buildingsSlice";
+import { setPlaces, setCurrentPlaceId, updateSocket } from "./slices/placesSlice";
 import { setQuests, questAccepted, questCompleted } from "./slices/questSlice";
 import { setCombatState } from "./slices/combatSlice";
 import { addNotification } from "./slices/notificationSlice";
@@ -45,7 +44,7 @@ export const diffMiddleware = (store) => (next) => (action) => {
     else if (path === "player") store.dispatch(setPlayerState(val));
     else if (path === "players.workers") store.dispatch(setPlayerState({ workers: val?.hired || [], workerSlots: val?.workerSlots || 0, availablePool: val?.available || [] }));
     else if (path.startsWith("enemies")) store.dispatch(setEnemies(val));
-    else if (path.startsWith("buildings")) store.dispatch(setBuildings(val));
+    else if (path === "sockets") store.dispatch(updateSocket({ placeId: val.placeId, socketIndex: val.socketIndex, data: val }));
     else if (path.startsWith("places")) store.dispatch(setPlaces(val));
     else if (path.startsWith("quests")) store.dispatch(setQuests(val));
     else if (path.startsWith("combat")) store.dispatch(setCombatState(val));

@@ -7,6 +7,7 @@ import { getMaxHealth } from "../shared/combat/combatCalculator.js";
 import { PlayerState } from "./state/PlayerState.js";
 import { InventoryState } from "./state/InventoryState.js";
 import { BuildingsState } from "./state/BuildingsState.js";
+import { SocketsState } from "./state/SocketsState.js";
 import { WorkersState } from "./state/WorkersState.js";
 import { QuestState } from "./state/QuestState.js";
 import { EnemyState } from "./state/EnemyState.js";
@@ -19,6 +20,7 @@ export class SessionManager {
 		this.playerState = new PlayerState(redis);
 		this.inventoryState = new InventoryState(redis);
 		this.buildingsState = new BuildingsState(redis);
+		this.socketsState = new SocketsState(redis);
 		this.workersState = new WorkersState(redis);
 		this.questState = new QuestState(redis);
 		this.enemyState = new EnemyState(redis);
@@ -112,6 +114,7 @@ export class SessionManager {
 		const stats = await this.playerState.load(sessionId);
 		const inventory = await this.inventoryState.loadAll(sessionId);
 		const buildings = await this.buildingsState.loadAll(sessionId);
+		const sockets = await this.socketsState.loadAll(sessionId);
 		const workers = await this.workersState.load(sessionId);
 		const active = await this.questState.loadActive(sessionId);
 		const completed = await this.questState.loadCompleted(sessionId);
@@ -131,6 +134,7 @@ export class SessionManager {
 			player: stats,
 			inventory: { ...inventory, ...staticNpcInventories },
 			buildings,
+			sockets,
 			workers: workers || { hired: [], available: [] },
 			quests: { active, completed },
 			skills,

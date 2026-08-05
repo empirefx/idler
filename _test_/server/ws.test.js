@@ -24,7 +24,7 @@ describe("WebSocket handler", () => {
 			combatService: { startAutoCombat: vi.fn(), stopAutoCombat: vi.fn(), revive: vi.fn(), levelUp: vi.fn(), recomputeDerivedStats: vi.fn(), computeAndBroadcastDerivedStats: vi.fn(), resumePlayerAttackLoop: vi.fn() },
 			productionService: { assignWorker: vi.fn(), unassignWorker: vi.fn(), resumeAll: vi.fn().mockResolvedValue(), pauseAll: vi.fn().mockResolvedValue() },
 			craftingService: { craft: vi.fn() },
-			buildingService: { build: vi.fn() },
+			buildingService: { build: vi.fn(), buySocket: vi.fn(), upgrade: vi.fn(), demolish: vi.fn() },
 			workerService: { hire: vi.fn(), fire: vi.fn() },
 			questService: { accept: vi.fn(), complete: vi.fn() },
 			skillsService: { spendSkillPoint: vi.fn() },
@@ -270,7 +270,126 @@ describe("WebSocket handler", () => {
 		expect(mockServices.productionService.pauseAll).toHaveBeenCalledWith("s1");
 	});
 
-	it("BUY_ITEM materializes the bought item with catalog fields", async () => {
+  it("BUY_SOCKET broadcasts gold and sockets DIFFs", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.buySocket.mockResolvedValue({ gold: 900, socket: { placeId: "farmlands", socketIndex: 0, status: "empty" } });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "BUY_SOCKET", placeId: "farmlands", socketIndex: 0 });
+
+    expect(mockServices.buildingService.buySocket).toHaveBeenCalledWith("s1", "farmlands", 0);
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "player.gold", data: 900 });
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "sockets", data: { placeId: "farmlands", socketIndex: 0, status: "empty" } });
+  });
+
+  it("BUY_SOCKET sends an error when validation fails", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.buySocket.mockResolvedValue({ error: "Socket is not locked" });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "BUY_SOCKET", placeId: "farmlands", socketIndex: 0 });
+
+    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+  });
+
+  it("BUILD broadcasts gold and sockets DIFFs", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.build.mockResolvedValue({ gold: 850, socket: { placeId: "farmlands", socketIndex: 0, status: "occupied", buildingId: "farm", level: 1 } });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "BUILD", placeId: "farmlands", socketIndex: 0, buildingId: "farm" });
+
+    expect(mockServices.buildingService.build).toHaveBeenCalledWith("s1", "farmlands", 0, "farm");
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "player.gold", data: 850 });
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "sockets", data: expect.objectContaining({ status: "occupied" }) });
+  });
+
+  it("BUILD sends an error when validation fails", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.build.mockResolvedValue({ error: "Socket is not empty" });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "BUILD", placeId: "farmlands", socketIndex: 0, buildingId: "farm" });
+
+    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+  });
+
+  it("UPGRADE_BUILDING broadcasts gold and sockets DIFFs", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.upgrade.mockResolvedValue({ gold: 800, socket: { placeId: "river_crossing", socketIndex: 0, status: "occupied", buildingId: "mine", level: 2 } });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "UPGRADE_BUILDING", placeId: "river_crossing", socketIndex: 0 });
+
+    expect(mockServices.buildingService.upgrade).toHaveBeenCalledWith("s1", "river_crossing", 0);
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "player.gold", data: 800 });
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "sockets", data: expect.objectContaining({ level: 2 }) });
+  });
+
+  it("UPGRADE_BUILDING sends an error when validation fails", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.upgrade.mockResolvedValue({ error: "No more upgrades available" });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "UPGRADE_BUILDING", placeId: "river_crossing", socketIndex: 0 });
+
+    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+  });
+
+  it("DEMOLISH broadcasts the sockets DIFF", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.demolish.mockResolvedValue({ socket: { placeId: "river_crossing", socketIndex: 0, status: "empty" } });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "DEMOLISH", placeId: "river_crossing", socketIndex: 0 });
+
+    expect(mockServices.buildingService.demolish).toHaveBeenCalledWith("s1", "river_crossing", 0);
+    expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "sockets", data: expect.objectContaining({ status: "empty" }) });
+  });
+
+  it("DEMOLISH sends an error when validation fails", async () => {
+    mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+    mockSessionManager.initializeFullState.mockResolvedValue();
+    mockSessionManager.loadFullState.mockResolvedValue({});
+    mockPlayerState.load.mockResolvedValue({});
+    mockServices.buildingService.demolish.mockResolvedValue({ error: "Socket is not occupied" });
+    const conn = connect();
+
+    await conn.send({ type: "JOIN", nickname: "tester" });
+    await conn.send({ type: "DEMOLISH", placeId: "river_crossing", socketIndex: 0 });
+
+    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+  });
+
+  it("BUY_ITEM materializes the bought item with catalog fields", async () => {
 		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
 		mockSessionManager.initializeFullState.mockResolvedValue();
 		mockSessionManager.loadFullState.mockResolvedValue({});

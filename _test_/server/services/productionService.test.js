@@ -384,4 +384,43 @@ describe("ProductionService", () => {
       expect(result.cleared).toBe(false);
     });
   });
+
+  describe("cleanupSocket", () => {
+    it("cleans up the worker assigned to the socket", async () => {
+      const hired = [{ ...worker, assignment: { placeId: "river_crossing", socketIndex: 0, material: "stone" } }];
+      workersState.load.mockResolvedValue({ hired, available: [], workerSlots: 1 });
+      redis.hget.mockResolvedValue(
+        JSON.stringify({ sessionId: "s1", placeId: "river_crossing", socketIndex: 0, workerId: "w1", material: "stone", jobId: "prod-s1-river_crossing-0-j2" }),
+      );
+
+      const result = await ps.cleanupSocket("s1", "river_crossing", 0);
+
+      expect(result.cleared).toBe(true);
+      expect(hired[0].assignment).toBeNull();
+      expect(redis.hdel).toHaveBeenCalledWith("player:s1:production:assignments", "prod-s1-river_crossing-0");
+      expect(queue.remove).toHaveBeenCalledWith("prod-s1-river_crossing-0-j2");
+      expect(workersState.save).toHaveBeenCalled();
+    });
+
+    it("is a no-op when no worker is assigned to the socket", async () => {
+      workersState.load.mockResolvedValue({ hired: [{ ...worker }], available: [], workerSlots: 1 });
+      const result = await ps.cleanupSocket("s1", "river_crossing", 0);
+      expect(result.cleared).toBe(false);
+      expect(redis.hdel).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("_allowedMaterials", () => {
+    it("returns cumulative materials from level 1 through the current level", () => {
+      const farmData = { upgrades: { level1: { material: "wheat" }, level2: { material: "apple" }, level3: { material: "golden-apple" } } };
+      expect(ps._allowedMaterials(farmData, 1)).toEqual(["wheat"]);
+      expect(ps._allowedMaterials(farmData, 2)).toEqual(["wheat", "apple"]);
+      expect(ps._allowedMaterials(farmData, 3)).toEqual(["wheat", "apple", "golden-apple"]);
+    });
+
+    it("supports array materials at a level", () => {
+      const data = { upgrades: { level1: { material: ["wood", "stone"] }, level2: { material: "plank" } } };
+      expect(ps._allowedMaterials(data, 2)).toEqual(["wood", "stone", "plank"]);
+    });
+  });
 });

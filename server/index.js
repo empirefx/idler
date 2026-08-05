@@ -7,6 +7,7 @@ import { createServerLogger } from "./logger.js";
 import { PlayerState } from "./state/PlayerState.js";
 import { InventoryState } from "./state/InventoryState.js";
 import { BuildingsState } from "./state/BuildingsState.js";
+import { SocketsState } from "./state/SocketsState.js";
 import { WorkersState } from "./state/WorkersState.js";
 import { QuestState } from "./state/QuestState.js";
 import { EnemyState } from "./state/EnemyState.js";
@@ -42,6 +43,7 @@ async function main() {
   const playerState = new PlayerState(redis);
   const inventoryState = new InventoryState(redis);
   const buildingsState = new BuildingsState(redis);
+  const socketsState = new SocketsState(redis);
   const workersState = new WorkersState(redis);
   const questState = new QuestState(redis);
   const enemyState = new EnemyState(redis);
@@ -52,7 +54,7 @@ async function main() {
   const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, queues.playerAttackQueue, queues.spawnQueue, broadcaster);
   const productionService = new ProductionService(redis, workersState, inventoryState, queues.productionQueue, broadcaster);
   const craftingService = new CraftingService(redis, playerState, inventoryState, broadcaster);
-  const buildingService = new BuildingService(redis, buildingsState, broadcaster);
+  const buildingService = new BuildingService(playerState, buildingsState, socketsState, productionService, broadcaster);
   const workerService = new WorkerService(redis, workersState, playerState, broadcaster, productionService);
   const questService = new QuestService(redis, playerState, questState, broadcaster);
   const skillsService = new SkillsService(redis, playerState, inventoryState, broadcaster);
