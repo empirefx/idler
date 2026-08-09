@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { WebSocketServer } from "ws";
 import { startWebSocketServer } from "../../server/ws.js";
+import { encode, decode, PROTOCOL_VERSION } from "../../shared/protocol.js";
 
 describe("WebSocket handler", () => {
 	let wss;
@@ -47,13 +48,24 @@ describe("WebSocket handler", () => {
 		connectionHandler = WebSocketServer.prototype.on.mock.calls.find(([evt]) => evt === "connection")?.[1];
 	});
 
+	function decodeFrame(fakeWs) {
+		const calls = fakeWs.send.mock.calls;
+		return decode(new Uint8Array(calls.at(-1)[0]));
+	}
+
 	function connect() {
 		const fakeWs = { on: vi.fn(), send: vi.fn(), readyState: 1 };
 		connectionHandler(fakeWs);
 		const messageHandler = fakeWs.on.mock.calls.find(([evt]) => evt === "message")?.[1];
 		return {
 			fakeWs,
-			send: (msg) => messageHandler(Buffer.from(JSON.stringify(msg))),
+			send: (msg) => {
+				const { type, ...data } = msg;
+				if ((type === "JOIN" || type === "RESUME") && data.protocolVersion === undefined) {
+					data.protocolVersion = PROTOCOL_VERSION;
+				}
+				return messageHandler(encode(type, data));
+			},
 		};
 	}
 
@@ -207,7 +219,7 @@ describe("WebSocket handler", () => {
 		await conn.send({ type: "JOIN", nickname: "tester" });
 		await conn.send({ type: "ASSIGN_WORKER", placeId: "village_center", socketIndex: 0, workerId: "w1", material: "stone" });
 
-		expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+		expect(decodeFrame(conn.fakeWs).type).toBe("ERROR");
 		expect(mockBroadcaster.broadcast).not.toHaveBeenCalledWith("s1", "DIFF", { path: "players.workers", data: expect.anything() });
 	});
 
@@ -253,7 +265,7 @@ describe("WebSocket handler", () => {
 		await conn.send({ type: "JOIN", nickname: "tester" });
 		await conn.send({ type: "FIRE_WORKER", workerId: "w1" });
 
-		expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+		expect(decodeFrame(conn.fakeWs).type).toBe("ERROR");
 	});
 
 	it("closing the connection pauses production for the session", async () => {
@@ -297,7 +309,7 @@ describe("WebSocket handler", () => {
     await conn.send({ type: "JOIN", nickname: "tester" });
     await conn.send({ type: "BUY_SOCKET", placeId: "farmlands", socketIndex: 0 });
 
-    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+    expect(decodeFrame(conn.fakeWs).type).toBe("ERROR");
   });
 
   it("BUILD broadcasts gold and sockets DIFFs", async () => {
@@ -327,7 +339,7 @@ describe("WebSocket handler", () => {
     await conn.send({ type: "JOIN", nickname: "tester" });
     await conn.send({ type: "BUILD", placeId: "farmlands", socketIndex: 0, buildingId: "farm" });
 
-    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+    expect(decodeFrame(conn.fakeWs).type).toBe("ERROR");
   });
 
   it("UPGRADE_BUILDING broadcasts gold and sockets DIFFs", async () => {
@@ -357,7 +369,7 @@ describe("WebSocket handler", () => {
     await conn.send({ type: "JOIN", nickname: "tester" });
     await conn.send({ type: "UPGRADE_BUILDING", placeId: "river_crossing", socketIndex: 0 });
 
-    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+    expect(decodeFrame(conn.fakeWs).type).toBe("ERROR");
   });
 
   it("DEMOLISH broadcasts the sockets DIFF", async () => {
@@ -386,7 +398,7 @@ describe("WebSocket handler", () => {
     await conn.send({ type: "JOIN", nickname: "tester" });
     await conn.send({ type: "DEMOLISH", placeId: "river_crossing", socketIndex: 0 });
 
-    expect(conn.fakeWs.send).toHaveBeenCalledWith(expect.stringContaining("ERROR"));
+    expect(decodeFrame(conn.fakeWs).type).toBe("ERROR");
   });
 
   it("BUY_ITEM materializes the bought item with catalog fields", async () => {
@@ -400,7 +412,7 @@ describe("WebSocket handler", () => {
 		const conn = connect();
 
 		await conn.send({ type: "JOIN", nickname: "tester" });
-		await conn.send({ type: "BUY_ITEM", npcId: "weapon_merchant", itemId: 90, quantity: 1 }); // staff1 seed
+		await conn.send({ type: "BUY_ITEM", npcId: "weapon_merchant", itemId: "90", quantity: 1 }); // staff1 seed
 
 		const savedInv = mockInventoryState.save.mock.calls[0][2];
 		const bought = savedInv.items[0];
@@ -408,5 +420,69 @@ describe("WebSocket handler", () => {
 		expect(bought.damageType).toBe("magic");
 		expect(bought.id).toBe(90);
 		expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "player.gold", data: 85 });
+	});
+
+	it("SELL_ITEM succeeds when item ids are numeric and itemId arrives as a string", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({ gold: 100 });
+		mockInventoryState.load.mockResolvedValue({
+			id: "player",
+			type: "player",
+			maxSlots: 20,
+			items: [{ id: 90, name: "Wooden Staff", icon: "staff1", type: "main-weapon", quantity: 1, weight: 3, stats: { attack: 2 }, sellable: { gold: 8 } }],
+			equipment: {},
+		});
+		mockInventoryState.save.mockResolvedValue();
+		mockInventoryState.loadAll.mockResolvedValue({ player: { id: "player", items: [] } });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "SELL_ITEM", itemId: "90", quantity: 1 });
+
+		const frame = decodeFrame(conn.fakeWs);
+		expect(frame.type).toBe("TRADE_RESULT");
+		expect(frame.data.success).toBe(true);
+		expect(mockBroadcaster.broadcast).toHaveBeenCalledWith("s1", "DIFF", { path: "player.gold", data: 108 });
+	});
+
+	it("rejects JOIN with a mismatched protocol version", async () => {
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester", protocolVersion: 999 });
+
+		const frame = decodeFrame(conn.fakeWs);
+		expect(frame.type).toBe("ERROR");
+		expect(frame.data.code).toBe("PROTOCOL_MISMATCH");
+		expect(mockSessionManager.createSession).not.toHaveBeenCalled();
+	});
+
+	it("rejects RESUME with a mismatched protocol version", async () => {
+		const conn = connect();
+
+		await conn.send({ type: "RESUME", nickname: "tester", sessionId: "s1", protocolVersion: 999 });
+
+		const frame = decodeFrame(conn.fakeWs);
+		expect(frame.type).toBe("ERROR");
+		expect(frame.data.code).toBe("PROTOCOL_MISMATCH");
+		expect(mockSessionManager.getSession).not.toHaveBeenCalled();
+	});
+
+	it("USE_ITEM failure sends an ERROR frame without a success flag", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockInventoryState.load.mockResolvedValue({ id: "player", type: "player", maxSlots: 20, items: [], equipment: {} });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "USE_ITEM", itemId: "999" });
+
+		const frame = decodeFrame(conn.fakeWs);
+		expect(frame.type).toBe("ERROR");
+		expect(frame.data.message).toBe("Item not found");
+		expect(frame.data.success).toBeUndefined();
 	});
 });

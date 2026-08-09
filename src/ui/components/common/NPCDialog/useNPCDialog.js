@@ -10,7 +10,8 @@ import { selectNPCById } from "../../../../store/slices/npcSlice";
 import {
 	selectPlayer,
 } from "../../../../store/slices/playerSlice";
-import { getWs } from "../../../../store/ws";
+import { sendWsMessage, getWs } from "../../../../store/ws";
+import { decode } from "../../../../../shared/protocol.js";
 import useDialog from "../useDialog";
 
 const useNPCDialog = ({
@@ -58,13 +59,13 @@ const useNPCDialog = ({
 		if (!ws) return;
 
 		const handler = (event) => {
-			const data = JSON.parse(event.data);
-			if (data.type === "TRADE_RESULT") {
+			const { type, data } = decode(event.data);
+			if (type === "TRADE_RESULT") {
 				setTradePending(false);
-				setTradeMessage({ type: data.data?.success ? "success" : "error", message: data.data?.message || "Trade completed" });
-			} else if (data.type === "ERROR" && tradePending) {
+				setTradeMessage({ type: data?.success ? "success" : "error", message: data?.message || "Trade completed" });
+			} else if (type === "ERROR" && tradePending) {
 				setTradePending(false);
-				setTradeMessage({ type: "error", message: data.data?.message || data.message || "Trade failed" });
+				setTradeMessage({ type: "error", message: data?.message || "Trade failed" });
 			}
 		};
 
@@ -161,20 +162,14 @@ const useNPCDialog = ({
 
 	const handleAcceptQuestClick = useCallback(() => {
 		if (!currentQuest || !npc) return;
-		const ws = getWs();
-		if (ws) {
-			ws.send(JSON.stringify({ type: "ACCEPT_QUEST", questId: currentQuest.id }));
-		}
+		sendWsMessage({ type: "ACCEPT_QUEST", questId: currentQuest.id });
 		resetQuestConversation();
 		if (onClose) onClose();
 	}, [currentQuest, npc, resetQuestConversation, onClose]);
 
 	const handleCompleteQuestClick = useCallback(() => {
 		if (!currentQuest || !npc) return;
-		const ws = getWs();
-		if (ws) {
-			ws.send(JSON.stringify({ type: "COMPLETE_QUEST", questId: currentQuest.id }));
-		}
+		sendWsMessage({ type: "COMPLETE_QUEST", questId: currentQuest.id });
 		resetQuestConversation();
 		if (onClose) onClose();
 	}, [currentQuest, npc, resetQuestConversation, onClose]);
@@ -243,15 +238,12 @@ const useNPCDialog = ({
 	// Trade handlers
 	const handlePlayerItemSell = useCallback(
 		(_event, item) => {
-			const ws = getWs();
-			if (ws) {
-				setTradePending(true);
-				ws.send(JSON.stringify({
-					type: "SELL_ITEM",
-					itemId: item.id,
-					quantity: 1,
-				}));
-			}
+			setTradePending(true);
+			sendWsMessage({
+				type: "SELL_ITEM",
+				itemId: item.id,
+				quantity: 1,
+			});
 		},
 		[],
 	);
@@ -279,16 +271,13 @@ const useNPCDialog = ({
 				return;
 			}
 
-			const ws = getWs();
-			if (ws) {
-				setTradePending(true);
-				ws.send(JSON.stringify({
-					type: "BUY_ITEM",
-					itemId: item.id,
-					quantity: 1,
-					npcId: npc?.id,
-				}));
-			}
+			setTradePending(true);
+			sendWsMessage({
+				type: "BUY_ITEM",
+				itemId: item.id,
+				quantity: 1,
+				npcId: npc?.id,
+			});
 		},
 		[playerGold, npc],
 	);

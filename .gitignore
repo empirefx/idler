@@ -17,6 +17,11 @@ build/
 # Build output
 public/
 
+# Generated protobuf artifacts (source: proto/game.proto)
+proto/game.js
+proto/game.mjs
+proto/game.d.ts
+
 # Environment variables
 .env
 .env.local

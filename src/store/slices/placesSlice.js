@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { getWs } from "../ws";
+import { sendWsMessage } from "../ws";
 
 const initialState = {
   currentPlaceId: "village_center",
@@ -56,8 +56,5 @@ export const selectBackgroundImage = (state) => {
 };
 
 export const navigateToPlace = (placeId) => (dispatch) => {
-  const ws = getWs();
-  if (ws?.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify({ type: "NAVIGATE", placeId }));
-  }
+  sendWsMessage({ type: "NAVIGATE", placeId });
 };

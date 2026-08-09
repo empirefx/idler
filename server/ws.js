@@ -4,6 +4,7 @@ import { inventoryData } from "../shared/data/inventory.js";
 import { applyAddItem, applyRemoveItem, materializeItem, validateSlotLimit } from "../shared/inventory.js";
 import { INVENTORY_ERRORS } from "../shared/constants.js";
 import { InventoryState } from "./state/InventoryState.js";
+import { encode, decode, PROTOCOL_VERSION } from "../shared/protocol.js";
 
 export function startWebSocketServer({ server, sessionManager, combatService, productionService, craftingService, buildingService, workerService, questService, skillsService, spawnService, navigationService, inventoryHandler, playerState, inventoryState, broadcaster, logger }) {
   const wss = new WebSocketServer({ noServer: true });
@@ -22,9 +23,9 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
     });
   });
 
-  function send(ws, payload) {
+  function send(ws, type, payload) {
     if (ws.readyState !== 1) return;
-    ws.send(JSON.stringify(payload));
+    ws.send(encode(type, payload));
   }
 
   async function handleBuyItem(sessionId, msg) {
@@ -80,7 +81,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
 
     const inv = await inventoryState.load(sessionId, "player");
     if (!inv) return { success: false, message: "Inventory not found" };
-    const itemIdx = inv.items.findIndex((i) => i.id === itemId);
+    const itemIdx = inv.items.findIndex((i) => i.id === itemId || i.id === Number(itemId));
     if (itemIdx === -1) return { success: false, message: "Item not found in inventory" };
 
     const sellPrice =
@@ -143,9 +144,15 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
 
     ws.on("message", async (raw) => {
       try {
-        const msg = JSON.parse(raw.toString());
+        const { type, data } = decode(raw);
+        const msg = { ...data, type };
         switch (msg.type) {
           case "JOIN": {
+            if (msg.protocolVersion !== PROTOCOL_VERSION) {
+              send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
+              logger.log(`JOIN: ${msg.nickname} protocol mismatch`, "WS");
+              break;
+            }
             const result = await sessionManager.createSession(msg.nickname);
             if (result.accepted) {
               currentNickname = msg.nickname;
@@ -154,7 +161,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               clients.set(msg.nickname, ws);
               await sessionManager.initializeFullState(currentSessionId);
               const fullState = await sessionManager.loadFullState(currentSessionId);
-              send(ws, { type: "STATE_SYNC", data: { sessionId: currentSessionId, ...fullState } });
+              send(ws, "STATE_SYNC", { sessionId: currentSessionId, ...fullState });
               const player = await playerState.load(currentSessionId);
               if (player?.currentPlaceId) {
                 await spawnService.resumeEnemyAttacks(currentSessionId, player.currentPlaceId);
@@ -162,12 +169,17 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               await combatService.computeAndBroadcastDerivedStats(currentSessionId);
               await productionService.resumeAll(currentSessionId);
             } else {
-              send(ws, { type: "ERROR", message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
+              send(ws, "ERROR", { message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
             }
             logger.log(`JOIN: ${msg.nickname} accepted=${result.accepted}`, "WS");
             break;
           }
           case "RESUME": {
+            if (msg.protocolVersion !== PROTOCOL_VERSION) {
+              send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
+              logger.log(`RESUME: ${msg.nickname} protocol mismatch`, "WS");
+              break;
+            }
             const session = await sessionManager.getSession(msg.nickname);
             if (session && session.sessionId === msg.sessionId) {
               currentNickname = msg.nickname;
@@ -176,7 +188,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               clients.set(msg.nickname, ws);
               await sessionManager.renewSession(msg.nickname);
               const fullState = await sessionManager.loadFullState(currentSessionId);
-              send(ws, { type: "STATE_SYNC", data: { sessionId: currentSessionId, ...fullState } });
+              send(ws, "STATE_SYNC", { sessionId: currentSessionId, ...fullState });
               const player = await playerState.load(currentSessionId);
               if (player?.currentPlaceId) {
                 await spawnService.resumeEnemyAttacks(currentSessionId, player.currentPlaceId);
@@ -188,7 +200,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               await productionService.resumeAll(currentSessionId);
               logger.log(`RESUME: ${msg.nickname} session restored`, "WS");
             } else {
-              send(ws, { type: "ERROR", message: "Session expired" });
+              send(ws, "ERROR", { message: "Session expired" });
               logger.log(`RESUME: ${msg.nickname} session not found`, "WS");
             }
             break;
@@ -199,21 +211,21 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               ? await combatService.stopAutoCombat(currentSessionId)
               : await combatService.startAutoCombat(currentSessionId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             }
             break;
           }
           case "REVIVE": {
             const result = await combatService.revive(currentSessionId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             }
             break;
           }
           case "SPEND_SKILL_POINT": {
             const result = await skillsService.spendSkillPoint(currentSessionId, msg.skillId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               await combatService.computeAndBroadcastDerivedStats(currentSessionId);
             }
@@ -222,7 +234,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "LEVEL_UP": {
             const result = await combatService.levelUp(currentSessionId, msg.bonuses || {});
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             }
             break;
           }
@@ -233,14 +245,14 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
             }
             const result = await navigationService.navigate(currentSessionId, msg.placeId);
             await spawnService.cleanupPlace(currentSessionId, result.previousPlaceId);
-            send(ws, { type: "DIFF", data: { path: "player.currentPlaceId", value: msg.placeId } });
+            send(ws, "DIFF", { path: "player.currentPlaceId", value: msg.placeId });
             await spawnService.triggerSpawn(currentSessionId, msg.placeId);
             break;
           }
           case "BUY_SOCKET": {
             const result = await buildingService.buySocket(currentSessionId, msg.placeId, msg.socketIndex);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
@@ -250,7 +262,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "BUILD": {
             const result = await buildingService.build(currentSessionId, msg.placeId, msg.socketIndex, msg.buildingId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
@@ -260,7 +272,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "UPGRADE_BUILDING": {
             const result = await buildingService.upgrade(currentSessionId, msg.placeId, msg.socketIndex);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
@@ -270,7 +282,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "DEMOLISH": {
             const result = await buildingService.demolish(currentSessionId, msg.placeId, msg.socketIndex);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
             }
@@ -279,7 +291,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "ASSIGN_WORKER": {
             const result = await productionService.assignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.workerId, msg.material);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
             }
@@ -288,7 +300,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "UNASSIGN_WORKER": {
             const result = await productionService.unassignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.workerId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
             }
@@ -297,7 +309,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "FIRE_WORKER": {
             const result = await workerService.fire(currentSessionId, msg.workerId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
@@ -306,13 +318,13 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           }
           case "CRAFT": {
             const result = await craftingService.craft(currentSessionId, msg.recipeId);
-            send(ws, { type: "DIFF", data: result });
+            send(ws, "DIFF", result);
             break;
           }
           case "HIRE_WORKER": {
             const result = await workerService.hire(currentSessionId, msg.workerId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
@@ -322,7 +334,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "REROLL_WORKERS": {
             const rerollResult = await workerService.reroll(currentSessionId);
             if (rerollResult.error) {
-              send(ws, { type: "ERROR", message: rerollResult.error });
+              send(ws, "ERROR", { message: rerollResult.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: rerollResult.workers });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: rerollResult.gold });
@@ -332,7 +344,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           case "BUY_WORKER_SLOT": {
             const slotResult = await workerService.buySlot(currentSessionId);
             if (slotResult.error) {
-              send(ws, { type: "ERROR", message: slotResult.error });
+              send(ws, "ERROR", { message: slotResult.error });
             } else {
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: slotResult.workers });
               broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: slotResult.gold });
@@ -341,29 +353,29 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
           }
           case "BUY_ITEM": {
             const buyData = await handleBuyItem(currentSessionId, msg);
-            send(ws, { type: "TRADE_RESULT", data: buyData });
+            send(ws, "TRADE_RESULT", buyData);
             break;
           }
           case "SELL_ITEM": {
             const sellData = await handleSellItem(currentSessionId, msg);
-            send(ws, { type: "TRADE_RESULT", data: sellData });
+            send(ws, "TRADE_RESULT", sellData);
             break;
           }
           case "ACCEPT_QUEST": {
             const result = await questService.accept(currentSessionId, msg.questId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
-              send(ws, { type: "QUEST_UPDATE", data: result });
+              send(ws, "QUEST_UPDATE", result);
             }
             break;
           }
           case "COMPLETE_QUEST": {
             const result = await questService.complete(currentSessionId, msg.questId);
             if (result.error) {
-              send(ws, { type: "ERROR", message: result.error });
+              send(ws, "ERROR", { message: result.error });
             } else {
-              send(ws, { type: "QUEST_UPDATE", data: result });
+              send(ws, "QUEST_UPDATE", result);
             }
             break;
           }
@@ -376,9 +388,9 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               quantity: msg.quantity,
             });
             if (result.success) {
-              send(ws, { type: "INVENTORY_UPDATE", data: { inventories: result.inventories } });
+              send(ws, "INVENTORY_UPDATE", { inventories: result.inventories });
             } else {
-              send(ws, { type: "ERROR", message: "Failed to move item" });
+              send(ws, "ERROR", { message: "Failed to move item" });
             }
             break;
           }
@@ -389,11 +401,11 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               item_id: msg.itemId,
             });
             if (result.success) {
-              send(ws, { type: "INVENTORY_UPDATE", data: { inventories: result.inventories } });
+              send(ws, "INVENTORY_UPDATE", { inventories: result.inventories });
               await combatService.recomputeDerivedStats(currentSessionId);
               await combatService.computeAndBroadcastDerivedStats(currentSessionId);
             } else {
-              send(ws, { type: "ERROR", message: "Failed to equip item" });
+              send(ws, "ERROR", { message: "Failed to equip item" });
             }
             break;
           }
@@ -404,17 +416,21 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
               slot: msg.slot,
             });
             if (result.success) {
-              send(ws, { type: "INVENTORY_UPDATE", data: { inventories: result.inventories } });
+              send(ws, "INVENTORY_UPDATE", { inventories: result.inventories });
               await combatService.recomputeDerivedStats(currentSessionId);
               await combatService.computeAndBroadcastDerivedStats(currentSessionId);
             } else {
-              send(ws, { type: "ERROR", message: "Failed to unequip item" });
+              send(ws, "ERROR", { message: "Failed to unequip item" });
             }
             break;
           }
           case "USE_ITEM": {
             const useData = await handleUseItem(currentSessionId, msg);
-            send(ws, { type: useData.success ? "USE_RESULT" : "ERROR", data: useData });
+            if (useData.success) {
+              send(ws, "USE_RESULT", { success: true, message: useData.message });
+            } else {
+              send(ws, "ERROR", { message: useData.message });
+            }
             break;
           }
           default:
@@ -422,7 +438,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
         }
       } catch (err) {
         logger.error(`Message handling error: ${err.message}`);
-        send(ws, { type: "ERROR", message: err.message });
+        send(ws, "ERROR", { message: err.message });
       }
     });
 

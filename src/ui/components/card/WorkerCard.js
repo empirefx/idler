@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { itemCatalog } from "../../../../shared/data/itemCatalog";
-import { getWs } from "../../../store/ws";
+import { sendWsMessage } from "../../../store/ws";
 import ConfirmAlert from "../common/ConfirmAlert";
 import Item from "../common/Item";
 
@@ -39,30 +39,21 @@ const WorkerCard = ({
 
 	const handleMaterialClick = useCallback(
 		(socketIndex, material, assignmentPlaceId) => {
-			const ws = getWs();
 			if (isAssigned) {
-				if (ws) {
-					ws.send(
-						JSON.stringify({
-							type: "UNASSIGN_WORKER",
-							placeId: assignmentPlaceId,
-							socketIndex,
-							workerId: worker.id,
-						}),
-					);
-				}
+				sendWsMessage({
+					type: "UNASSIGN_WORKER",
+					placeId: assignmentPlaceId,
+					socketIndex,
+					workerId: worker.id,
+				});
 			} else {
-				if (ws) {
-					ws.send(
-						JSON.stringify({
-							type: "ASSIGN_WORKER",
-							placeId,
-							socketIndex,
-							workerId: worker.id,
-							material,
-						}),
-					);
-				}
+				sendWsMessage({
+					type: "ASSIGN_WORKER",
+					placeId,
+					socketIndex,
+					workerId: worker.id,
+					material,
+				});
 			}
 		},
 		[worker, isAssigned, placeId],

@@ -1,3 +1,5 @@
+import { encode, decode, PROTOCOL_VERSION } from "../../shared/protocol.js";
+
 export class GameClient {
   constructor(dispatch, getState) {
     this.dispatch = dispatch;
@@ -10,13 +12,14 @@ export class GameClient {
   connect(nickname) {
     this.nickname = nickname;
     this.ws = new WebSocket(`ws://${location.hostname}:${process.env.WS_PORT || 3001}`);
+    this.ws.binaryType = "arraybuffer";
 
     this.ws.onopen = () => {
-      this.send("JOIN", { nickname });
+      this.send("JOIN", { nickname, protocolVersion: PROTOCOL_VERSION });
     };
 
     this.ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
+      const msg = decode(event.data);
       this._handleMessage(msg);
     };
 
@@ -27,7 +30,7 @@ export class GameClient {
 
   send(type, payload) {
     if (this.ws?.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({ type, ...payload }));
+      this.ws.send(encode(type, payload));
     }
   }
 

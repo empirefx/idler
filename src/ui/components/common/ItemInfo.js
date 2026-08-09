@@ -24,7 +24,7 @@ const ItemInfo = ({ item, showBuyPrice = false, children }) => {
 					)}
 					<hr></hr>
 					<p>weight: {item.weight}</p>
-					{item.stats && (
+					{item.stats && Object.keys(item.stats).length > 0 && (
 						<div className="item-info-stats">
 							{Object.entries(item.stats).map(([stat, value]) => (
 								<p key={stat}>

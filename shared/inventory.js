@@ -8,6 +8,11 @@ export function materializeItem(item) {
 	return { ...catalogItem, ...item };
 }
 
+export function idsEqual(a, b) {
+	if (a == null || b == null) return false;
+	return a === b || String(a) === String(b);
+}
+
 export function validateSlotLimit(inventory, newSlots) {
 	const currentSlots = inventory.items.length;
 	if (currentSlots + newSlots > inventory.maxSlots) {
@@ -35,7 +40,7 @@ export function validateMoveQuantity(item, requestedQty) {
 }
 
 export function validateItemExists(inventory, itemId) {
-	const index = inventory.items.findIndex((i) => i.id === itemId);
+	const index = inventory.items.findIndex((i) => idsEqual(i.id, itemId));
 	if (index === -1) {
 		return { isValid: false, error: INVENTORY_ERRORS.ITEM_NOT_FOUND };
 	}
@@ -86,7 +91,7 @@ export function applyAddItem(inventory, item) {
 }
 
 export function applyRemoveItem(inventory, itemId, quantity) {
-	const idx = inventory.items.findIndex((i) => i.id === itemId);
+	const idx = inventory.items.findIndex((i) => idsEqual(i.id, itemId));
 	if (idx === -1) return;
 	const item = inventory.items[idx];
 	item.quantity -= quantity;
@@ -96,7 +101,7 @@ export function applyRemoveItem(inventory, itemId, quantity) {
 }
 
 export function applyMoveItem(fromInventory, toInventory, itemId, quantity) {
-	const idx = fromInventory.items.findIndex((i) => i.id === itemId);
+	const idx = fromInventory.items.findIndex((i) => idsEqual(i.id, itemId));
 	if (idx === -1) return;
 	const fromItem = fromInventory.items[idx];
 	const movedItem = cloneItem({ ...fromItem, quantity });
@@ -120,7 +125,7 @@ export function canAddItems(inventory, newItems) {
 }
 
 export function applyEquipItem(inventory, itemId, typeToSlot) {
-	const idx = inventory.items.findIndex((i) => i.id === itemId);
+	const idx = inventory.items.findIndex((i) => idsEqual(i.id, itemId));
 	if (idx === -1) return;
 	const item = inventory.items[idx];
 	const slot = typeToSlot[item.type];

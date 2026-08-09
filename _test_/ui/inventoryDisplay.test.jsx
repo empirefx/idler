@@ -18,6 +18,7 @@ function makeStore() {
 	const vault = {
 		type: "vault",
 		maxSlots: 30,
+		maxWeight: 0,
 		items: [
 			{ id: "single", name: "Potion", icon: "potion", quantity: 1, weight: 1 },
 			{ id: "stack", name: "Arrows", icon: "arrows", quantity: 5, weight: 0.1 },
@@ -63,5 +64,21 @@ describe("InventoryDisplay move behavior", () => {
 
 		expect(moveItem).not.toHaveBeenCalled();
 		expect(screen.getByRole("dialog")).toBeTruthy();
+	});
+
+	it("does not show a weight indicator for non-player inventories", () => {
+		const { container } = renderDisplay(makeStore());
+		expect(screen.queryByText(/lt/)).toBeNull();
+		expect(container.querySelector(".weight-warning")).toBeNull();
+	});
+
+	it("shows the weight indicator for the player inventory", () => {
+		const store = makeStore();
+		render(
+			<Provider store={store}>
+				<InventoryDisplay inventoryId="player" otherInventoryId="vault" />
+			</Provider>
+		);
+		expect(screen.getByText("100 lt")).toBeTruthy();
 	});
 });

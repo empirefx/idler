@@ -95,6 +95,31 @@ describe("InventoryHandler", () => {
 		expect(from.items[0].quantity).toBe(2);
 	});
 
+	it("should handle MOVE when item ids are numeric and item_id arrives as a string", async () => {
+		const from = {
+			...playerInventory(),
+			items: [{ id: 90, name: "Wooden Staff", type: "main-weapon", quantity: 1, weight: 3, stats: { attack: 2 }, consumable: null }],
+		};
+		const to = { id: "vault_1", type: "place", maxSlots: 30, items: [], equipment: {} };
+		mockRedis.hget.mockImplementation((key, field) => {
+			if (field === "player") return Promise.resolve(from);
+			if (field === "vault_1") return Promise.resolve(to);
+			return Promise.resolve(null);
+		});
+
+		const result = await handler.handleAction("session:abc", {
+			action_type: "MOVE",
+			inventory_id: "player",
+			to_inventory_id: "vault_1",
+			item_id: "90",
+			quantity: 1,
+		});
+		expect(result.success).toBe(true);
+		expect(from.items).toHaveLength(0);
+		expect(to.items).toHaveLength(1);
+		expect(to.items[0].id).toBe(90);
+	});
+
 	it("should handle EQUIP action", async () => {
 		const inv = playerInventory();
 		inv.items.push({ id: "helm_1", type: "head", name: "Helm", weight: 2, quantity: 1, stats: { defense: 2 }, consumable: null });
@@ -104,6 +129,20 @@ describe("InventoryHandler", () => {
 			action_type: "EQUIP",
 			inventory_id: "player",
 			item_id: "helm_1",
+		});
+		expect(result.success).toBe(true);
+		expect(inv.equipment.head).toBeTruthy();
+	});
+
+	it("should handle EQUIP when item id is numeric and item_id arrives as a string", async () => {
+		const inv = playerInventory();
+		inv.items.push({ id: 54, type: "head", name: "Helm", weight: 2, quantity: 1, stats: { defense: 2 }, consumable: null });
+		mockRedis.hget.mockResolvedValue(inv);
+
+		const result = await handler.handleAction("session:abc", {
+			action_type: "EQUIP",
+			inventory_id: "player",
+			item_id: "54",
 		});
 		expect(result.success).toBe(true);
 		expect(inv.equipment.head).toBeTruthy();

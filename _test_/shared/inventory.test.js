@@ -5,6 +5,7 @@ import {
 	validateMoveQuantity,
 	validateItemExists,
 	validateEquipmentSlot,
+	idsEqual,
 	canItemsStack,
 	calculateWeight,
 	countSlots,
@@ -74,6 +75,28 @@ describe("shared inventory validators", () => {
 		expect(result.itemIndex).toBe(0);
 	});
 
+	it("validateItemExists: matches numeric ids passed as strings", () => {
+		const inv = mockInventory({
+			items: [{ id: 90, name: "Wooden Staff", type: "main-weapon", quantity: 1, weight: 3 }],
+		});
+		const result = validateItemExists(inv, "90");
+		expect(result.isValid).toBe(true);
+		expect(result.itemIndex).toBe(0);
+	});
+
+	it("idsEqual: treats numeric and string forms of the same id as equal", () => {
+		expect(idsEqual(90, "90")).toBe(true);
+		expect(idsEqual("90", 90)).toBe(true);
+		expect(idsEqual(90, 90)).toBe(true);
+		expect(idsEqual("90", "90")).toBe(true);
+	});
+
+	it("idsEqual: distinguishes different ids and null values", () => {
+		expect(idsEqual(90, "91")).toBe(false);
+		expect(idsEqual(90, null)).toBe(false);
+		expect(idsEqual(null, null)).toBe(false);
+	});
+
 	it("validateEquipmentSlot: fails for non-equipable type", () => {
 		const item = { id: "x", type: "consumable" };
 		expect(validateEquipmentSlot(item, "head").isValid).toBe(false);
@@ -139,6 +162,14 @@ describe("shared inventory validators", () => {
 		expect(inv.items).toHaveLength(0);
 	});
 
+	it("applyRemoveItem: removes numeric-id item when passed a string id", () => {
+		const inv = mockInventory({
+			items: [{ id: 90, name: "Wooden Staff", type: "main-weapon", quantity: 1, weight: 3 }],
+		});
+		applyRemoveItem(inv, "90", 1);
+		expect(inv.items).toHaveLength(0);
+	});
+
 	it("applyMoveItem: moves item between inventories", () => {
 		const from = mockInventory();
 		const to = mockInventory({ id: "vault_1", type: "place", items: [] });
@@ -148,11 +179,31 @@ describe("shared inventory validators", () => {
 		expect(to.items[0].quantity).toBe(3);
 	});
 
+	it("applyMoveItem: moves numeric-id item when passed a string id", () => {
+		const from = mockInventory({
+			items: [{ id: 90, name: "Wooden Staff", type: "main-weapon", quantity: 1, weight: 3 }],
+		});
+		const to = mockInventory({ id: "vault_1", type: "place", items: [] });
+		applyMoveItem(from, to, "90", 1);
+		expect(from.items).toHaveLength(0);
+		expect(to.items).toHaveLength(1);
+		expect(to.items[0].id).toBe(90);
+	});
+
 	it("applyEquipItem: equips item to slot", () => {
 		const inv = mockInventory({
 			items: [{ id: "helm_1", type: "head", name: "Helm", weight: 2, quantity: 1, stats: { defense: 2 }, consumable: null }],
 		});
 		applyEquipItem(inv, "helm_1", TYPE_TO_SLOT);
+		expect(inv.equipment.head).toBeTruthy();
+		expect(inv.items).toHaveLength(0);
+	});
+
+	it("applyEquipItem: equips numeric-id item when passed a string id", () => {
+		const inv = mockInventory({
+			items: [{ id: 54, type: "head", name: "Helm", weight: 2, quantity: 1, stats: { defense: 2 }, consumable: null }],
+		});
+		applyEquipItem(inv, "54", TYPE_TO_SLOT);
 		expect(inv.equipment.head).toBeTruthy();
 		expect(inv.items).toHaveLength(0);
 	});

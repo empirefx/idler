@@ -9,7 +9,7 @@ import {
 import { itemCatalog } from "../../../../shared/data/itemCatalog";
 import { selectInventoryById } from "../../../store/slices/inventorySlice";
 import { selectKnownRecipes } from "../../../store/slices/playerSlice";
-import { getWs } from "../../../store/ws";
+import { sendWsMessage } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import DraggableWindow from "../common/DraggableWindow";
 import Item from "../common/Item";
@@ -129,10 +129,7 @@ const CraftingSection = () => {
 
 			if (!canCraft(recipe)) return;
 
-			const ws = getWs();
-			if (ws) {
-				ws.send(JSON.stringify({ type: "CRAFT", recipeId: recipe.id }));
-			}
+			sendWsMessage({ type: "CRAFT", recipeId: recipe.id });
 		},
 		[canCraft, knownRecipes],
 	);

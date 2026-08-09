@@ -12,7 +12,8 @@ import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
 import { setEnemies, addEnemy, removeEnemy } from "./store/slices/enemiesSlice";
 import { addLog } from "./store/slices/logSlice";
-import { setWs } from "./store/ws";
+import { setWs, sendWsMessage } from "./store/ws";
+import { decode, PROTOCOL_VERSION } from "../shared/protocol.js";
 import { placesData } from "../shared/data/places";
 import "./styles/components.css";
 import "./styles/global.css";
@@ -59,7 +60,7 @@ const mountGame = (sessionId) => {
 	);
 
 	ws.onmessage = (event) => {
-		const data = JSON.parse(event.data);
+		const data = decode(event.data);
 		switch (data.type) {
 			case "DIFF":
 				store.dispatch({ type: "APPLY_DIFF", payload: data.data });
@@ -161,7 +162,7 @@ const mountGame = (sessionId) => {
 				store.dispatch(addNotification(data.data?.message || "Notification", data.data?.type || "info"));
 				break;
 			case "ERROR":
-				store.dispatch(addNotification(data.message || "Server error", "error"));
+				store.dispatch(addNotification(data.data?.message || data.message || "Server error", "error"));
 				break;
 		}
 	};
@@ -191,14 +192,15 @@ const joinGame = () => {
 	JOIN_BUTTON.textContent = "Connecting...";
 
 	ws = new WebSocket(`ws://${location.hostname}:${process.env.WS_PORT || 3001}`);
+	ws.binaryType = "arraybuffer";
 	setWs(ws);
 
 	ws.onopen = () => {
-		ws.send(JSON.stringify({ type: "JOIN", nickname }));
+		sendWsMessage({ type: "JOIN", nickname, protocolVersion: PROTOCOL_VERSION });
 	};
 
 	ws.onmessage = (event) => {
-		const data = JSON.parse(event.data);
+		const data = decode(event.data);
 		if (data.type === "STATE_SYNC") {
 			const { sessionId, player, inventory, buildings, workers, quests, enemies } = data.data;
 			sessionStorage.setItem("sessionId", sessionId);
@@ -219,7 +221,7 @@ const joinGame = () => {
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
 		} else if (data.type === "ERROR") {
-			LOGIN_ERROR.textContent = data.message;
+			LOGIN_ERROR.textContent = data.data?.message || data.message || "Server error";
 			JOIN_BUTTON.disabled = false;
 			JOIN_BUTTON.textContent = "Enter";
 		}
@@ -244,12 +246,13 @@ const cachedSessionId = sessionStorage.getItem("sessionId");
 const cachedNickname = sessionStorage.getItem("nickname");
 if (cachedSessionId && cachedNickname) {
 	ws = new WebSocket(`ws://${location.hostname}:${process.env.WS_PORT || 3001}`);
+	ws.binaryType = "arraybuffer";
 	setWs(ws);
 	ws.onopen = () => {
-		ws.send(JSON.stringify({ type: "RESUME", sessionId: cachedSessionId, nickname: cachedNickname }));
+		sendWsMessage({ type: "RESUME", sessionId: cachedSessionId, nickname: cachedNickname, protocolVersion: PROTOCOL_VERSION });
 	};
 	ws.onmessage = (event) => {
-		const data = JSON.parse(event.data);
+		const data = decode(event.data);
 		if (data.type === "STATE_SYNC") {
 			const { sessionId, player, inventory, buildings, workers, quests, enemies } = data.data;
 			if (player) store.dispatch(setPlayerState({ ...player, name: cachedNickname || player.name }));

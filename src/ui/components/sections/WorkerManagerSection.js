@@ -14,7 +14,7 @@ import {
 	WORKER_SLOT_COST,
 	MAX_WORKER_SLOTS,
 } from "../../../../shared/constants.js";
-import { getWs } from "../../../store/ws";
+import { sendWsMessage } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import DraggableWindow from "../common/DraggableWindow";
 
@@ -30,24 +30,15 @@ const WorkerManagerSection = () => {
 	const workerCost = WORKER_BASE_COST + workerCount * WORKER_COST_MULTIPLIER;
 
 	const handleHire = useCallback((workerId) => {
-		const ws = getWs();
-		if (ws) {
-			ws.send(JSON.stringify({ type: "HIRE_WORKER", workerId }));
-		}
+		sendWsMessage({ type: "HIRE_WORKER", workerId });
 	}, []);
 
 	const handleReroll = useCallback(() => {
-		const ws = getWs();
-		if (ws) {
-			ws.send(JSON.stringify({ type: "REROLL_WORKERS" }));
-		}
+		sendWsMessage({ type: "REROLL_WORKERS" });
 	}, []);
 
 	const handleBuySlot = useCallback(() => {
-		const ws = getWs();
-		if (ws) {
-			ws.send(JSON.stringify({ type: "BUY_WORKER_SLOT" }));
-		}
+		sendWsMessage({ type: "BUY_WORKER_SLOT" });
 	}, []);
 
 	return (

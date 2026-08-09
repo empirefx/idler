@@ -8,7 +8,7 @@ import {
 	selectCurrentPlaceSockets,
 } from "../../../store/slices/placesSlice";
 import { selectGold } from "../../../store/slices/playerSlice";
-import { getWs } from "../../../store/ws";
+import { sendWsMessage } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import BuildingCard from "../card/BuildingCard";
 import BuildingSelector from "../card/BuildingSelector";
@@ -33,17 +33,12 @@ const BuildingPanel = ({ onClose }) => {
 		(buildingId) => {
 			setShowBuildingSelector(false);
 			if (selectedSocketIndex !== null && currentPlace?.id) {
-				const ws = getWs();
-				if (ws) {
-					ws.send(
-						JSON.stringify({
-							type: "BUILD",
-							placeId: currentPlace.id,
-							socketIndex: selectedSocketIndex,
-							buildingId,
-						}),
-					);
-				}
+				sendWsMessage({
+					type: "BUILD",
+					placeId: currentPlace.id,
+					socketIndex: selectedSocketIndex,
+					buildingId,
+				});
 			}
 			setSelectedSocketIndex(null);
 		},
@@ -52,31 +47,21 @@ const BuildingPanel = ({ onClose }) => {
 
 	const handleUpgrade = useCallback((socketIndex) => {
 		if (currentPlace?.id) {
-			const ws = getWs();
-			if (ws) {
-				ws.send(
-					JSON.stringify({
-						type: "UPGRADE_BUILDING",
-						placeId: currentPlace.id,
-						socketIndex,
-					}),
-				);
-			}
+			sendWsMessage({
+				type: "UPGRADE_BUILDING",
+				placeId: currentPlace.id,
+				socketIndex,
+			});
 		}
 	}, [currentPlace]);
 
 	const handleBuySocket = useCallback((socketIndex) => {
 		if (currentPlace?.id) {
-			const ws = getWs();
-			if (ws) {
-				ws.send(
-					JSON.stringify({
-						type: "BUY_SOCKET",
-						placeId: currentPlace.id,
-						socketIndex,
-					}),
-				);
-			}
+			sendWsMessage({
+				type: "BUY_SOCKET",
+				placeId: currentPlace.id,
+				socketIndex,
+			});
 		}
 	}, [currentPlace]);
 

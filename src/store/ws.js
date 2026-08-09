@@ -1,10 +1,13 @@
+import { encode } from "../../shared/protocol.js";
+
 let ws = null;
 export function setWs(newWs) { ws = newWs; }
 export function getWs() { return ws; }
 
 export function sendWsMessage(msg) {
 	if (ws && ws.readyState === WebSocket.OPEN) {
-		ws.send(JSON.stringify(msg));
+		const { type, ...payload } = msg;
+		ws.send(encode(type, payload));
 	}
 }
 

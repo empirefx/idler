@@ -23,7 +23,7 @@ const InventoryDisplay = ({ inventoryId, otherInventoryId }) => {
 	if (!inventory) return null;
 
 	const currentWeight = calcTotalWeight(inventory);
-	const hasWeightLimit = typeof inventory.maxWeight !== "undefined";
+	const hasWeightLimit = inventory.type === "player";
 	const maxWeight = inventory.maxWeight;
 	const totalItems = inventory.items.length;
 	const maxSlots = inventory.maxSlots;

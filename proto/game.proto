@@ -1,66 +1,314 @@
 syntax = "proto3";
 package game;
 
-message JoinRequest {
-  string nickname = 1;
-}
+// ===== Shared =====
 
-message JoinResponse {
-  string session_id = 1;
-  bool accepted = 2;
-  string error = 3;
-}
-
-message LeaveNotification {
-  string reason = 1;
-}
-
-message InventoryAction {
-  string action_type = 1;
-  string item_id = 2;
-  string template_id = 3;
-  int32 quantity = 4;
-  string from_inventory = 5;
-  string to_inventory = 6;
-  string slot = 7;
-}
-
-message InventorySnapshot {
-  string inventory_id = 1;
-  repeated Item items = 2;
-  int32 max_slots = 3;
-  float max_weight = 4;
-  float current_weight = 5;
-  map<string, Item> equipment = 6;
-}
-
-message InventoryDiff {
-  string inventory_id = 1;
-  string action = 2;
-  Item item = 3;
-}
-
-message Item {
-  string id = 1;
-  string template_id = 2;
-  string name = 3;
-  string type = 4;
-  string icon = 5;
-  string description = 6;
-  int32 quantity = 7;
-  float weight = 8;
-  map<string, int32> stats = 9;
-  map<string, int32> consumable = 10;
-  string damage_type = 11;
+message GameMessage {
+  string type = 1;
+  bytes payload = 2;
 }
 
 message ErrorResponse {
   string code = 1;
   string message = 2;
-  string original_action = 3;
 }
 
-message GameMessage {
-  string type = 1;
-  bytes data = 2;
+message Stats {
+  int32 strength = 1;
+  int32 defense = 2;
+  int32 agility = 3;
+  int32 vitality = 4;
+  int32 intelligence = 5;
+  int32 wisdom = 6;
+}
+
+message DerivedStats {
+  double defense = 1;
+  string damageType = 2;
+  double damage = 3;
+  double hitChance = 4;
+  double critChance = 5;
+  map<string, double> equipmentBonus = 6;
+}
+
+message Buff {
+  string skillId = 1;
+  string stat = 2;
+  double value = 3;
+  int64 duration = 4;
+  int64 expiresAt = 5;
+}
+
+message Buffs { repeated Buff buffs = 1; }
+message Cooldowns { map<string, int64> cooldowns = 1; }
+message SkillsRanks { map<string, int32> ranks = 1; }
+
+message Player {
+  int32 level = 1;
+  int64 gold = 2;
+  int64 exp = 3;
+  int64 expToNext = 4;
+  int64 hp = 5;
+  int64 maxHp = 6;
+  string avatar = 7;
+  Stats stats = 8;
+  int32 skillPoints = 9;
+  string currentPlaceId = 10;
+  int64 lastSeenAt = 11;
+  int64 attackCooldown = 12;
+  int64 lastAttackTime = 13;
+  repeated Buff activeBuffs = 14;
+  map<string, int64> activeCooldowns = 15;
+  map<string, int64> pausedCooldowns = 16;
+  map<string, string> skillJobIds = 17;
+  bool autoCombat = 18;
+  bool isDead = 19;
+  DerivedStats derivedStats = 20;
+  map<string, int32> skills = 21;
+}
+
+message Item {
+  int64 id = 1;
+  string templateId = 2;
+  string name = 3;
+  string icon = 4;
+  string description = 5;
+  string type = 6;
+  int32 quantity = 7;
+  double weight = 8;
+  map<string, double> stats = 9;
+  map<string, int64> consumable = 10;
+  string damageType = 11;
+  string primaryStat = 12;
+  string recipeId = 13;
+  map<string, int64> buy = 14;
+  map<string, int64> sellable = 15;
+}
+
+message Inventory {
+  string id = 1;
+  string type = 2;
+  string placeId = 3;
+  string npcId = 4;
+  int32 maxSlots = 5;
+  double maxWeight = 6;
+  repeated Item items = 7;
+  map<string, Item> equipment = 8;
+}
+
+message Building {
+  string id = 1;
+  int32 level = 2;
+  string placeId = 3;
+  int32 socketIndex = 4;
+}
+
+message Socket {
+  string placeId = 1;
+  int32 socketIndex = 2;
+  string status = 3;
+  string buildingId = 4;
+  int32 level = 5;
+}
+
+message Enemy {
+  string id = 1;
+  string placeId = 2;
+  string type = 3;
+  string name = 4;
+  string avatar = 5;
+  int64 hp = 6;
+  int64 maxHp = 7;
+  int32 strength = 8;
+  int32 defense = 9;
+  int32 agility = 10;
+  int32 wisdom = 11;
+  int32 intelligence = 12;
+  string damageType = 13;
+  double attack = 14;
+  double speed = 15;
+  string attackPattern = 16;
+  repeated int32 attackDelayRange = 17;
+  int64 exp = 18;
+  int64 gold = 19;
+  bool isDead = 20;
+}
+
+message Assignment {
+  string placeId = 1;
+  int32 socketIndex = 2;
+  string material = 3;
+}
+
+message Worker {
+  string id = 1;
+  string firstName = 2;
+  string name = 3;
+  string gender = 4;
+  string avatar = 5;
+  Assignment assignment = 6;
+}
+
+message Workers {
+  repeated Worker hired = 1;
+  repeated Worker available = 2;
+  int32 workerSlots = 3;
+}
+
+message QuestEntry {
+  string questId = 1;
+  int64 startedAt = 2;
+  map<string, int64> progress = 3;
+}
+
+message CompletedQuest { int64 completedAt = 1; }
+
+message Quests {
+  map<string, QuestEntry> active = 1;
+  map<string, CompletedQuest> completed = 2;
+}
+
+message Rewards {
+  int64 gold = 1;
+  int64 exp = 2;
+  repeated Item items = 3;
+}
+
+// ===== Client -> Server =====
+
+message JoinRequest {
+  string nickname = 1;
+  uint32 protocolVersion = 2;
+}
+message ResumeRequest {
+  string sessionId = 1;
+  string nickname = 2;
+  uint32 protocolVersion = 3;
+}
+message ToggleAutoCombat {}
+message ReviveRequest {}
+message SpendSkillPoint { string skillId = 1; }
+message LevelUpRequest { Stats bonuses = 1; }
+message NavigateRequest { string placeId = 1; }
+message BuySocket { string placeId = 1; int32 socketIndex = 2; }
+message BuildRequest { string placeId = 1; int32 socketIndex = 2; string buildingId = 3; }
+message UpgradeBuilding { string placeId = 1; int32 socketIndex = 2; }
+message Demolish { string placeId = 1; int32 socketIndex = 2; }
+message AssignWorker { string placeId = 1; int32 socketIndex = 2; string workerId = 3; string material = 4; }
+message UnassignWorker { string placeId = 1; int32 socketIndex = 2; string workerId = 3; }
+message FireWorker { string workerId = 1; }
+message CraftRequest { string recipeId = 1; }
+message HireWorker { string workerId = 1; }
+message RerollWorkers {}
+message BuyWorkerSlot {}
+message BuyItem { string itemId = 1; int32 quantity = 2; string npcId = 3; }
+message SellItem { string itemId = 1; int32 quantity = 2; }
+message AcceptQuest { string questId = 1; }
+message CompleteQuest { string questId = 1; }
+message MoveItem { string fromInventoryId = 1; string toInventoryId = 2; string itemId = 3; int32 quantity = 4; }
+message EquipItem { string inventoryId = 1; string itemId = 2; }
+message UnequipItem { string inventoryId = 1; string slot = 2; }
+message UseItemRequest { string itemId = 1; }
+
+// ===== Server -> Client =====
+
+message StateSync {
+  string sessionId = 1;
+  Player player = 2;
+  map<string, Inventory> inventory = 3;
+  map<string, Building> buildings = 4;
+  map<string, Socket> sockets = 5;
+  Workers workers = 6;
+  Quests quests = 7;
+  map<string, int32> skills = 8;
+  repeated string recipes = 9;
+  map<string, Enemy> enemies = 10;
+}
+
+message Diff {
+  string path = 1;
+  oneof value {
+    int64 intValue = 2;
+    double doubleValue = 3;
+    bool boolValue = 4;
+    string stringValue = 5;
+    Stats stats = 6;
+    DerivedStats derivedStats = 7;
+    SkillsRanks skills = 8;
+    Buffs activeBuffs = 9;
+    Cooldowns activeCooldowns = 10;
+    Cooldowns pausedCooldowns = 11;
+    Inventory inventory = 12;
+    Workers workers = 13;
+    Socket socket = 14;
+    QuestEntry questEntry = 15;
+  }
+}
+
+message PlayerStats { int64 exp = 1; int64 gold = 2; }
+
+message CombatDiff {
+  string enemyId = 1;
+  bool hit = 2;
+  double damageDealt = 3;
+  bool crit = 4;
+  string damageType = 5;
+  string skillId = 6;
+  string skillType = 7;
+  int64 enemyHp = 8;
+  bool enemyDead = 9;
+  int64 expGained = 10;
+  int64 goldGained = 11;
+  PlayerStats playerStats = 12;
+  Buff buff = 13;
+}
+
+message EnemyAttack {
+  string enemyId = 1;
+  double damageDealt = 2;
+  bool hit = 3;
+  bool crit = 4;
+  string damageType = 5;
+  int64 playerHp = 6;
+  bool playerDead = 7;
+}
+
+message EnemySpawn {
+  repeated Enemy enemies = 1;
+  string placeId = 2;
+}
+
+message ProductionTick {
+  Item item = 1;
+  string placeId = 2;
+  int32 socketIndex = 3;
+  string targetPlaceId = 4;
+  string workerId = 5;
+  string workerName = 6;
+}
+
+message QuestUpdate {
+  string questId = 1;
+  bool accepted = 2;
+  bool completed = 3;
+  QuestEntry progress = 4;
+  bool success = 5;
+  Rewards rewards = 6;
+}
+
+message InventoryUpdate { map<string, Inventory> inventories = 1; }
+
+message Notification {
+  string message = 1;
+  string type = 2;
+}
+
+message TradeResult {
+  bool success = 1;
+  string message = 2;
+}
+
+message UseResult {
+  bool success = 1;
+  string message = 2;
 }

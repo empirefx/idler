@@ -8,7 +8,7 @@ import {
 	selectCurrentPlaceSockets,
 } from "../../../store/slices/placesSlice";
 import { selectWorkers } from "../../../store/slices/playerSlice";
-import { getWs } from "../../../store/ws";
+import { sendWsMessage } from "../../../store/ws";
 import { useUIVisibility } from "../../UIVisibilityContext";
 import WorkerCard from "../card/WorkerCard";
 
@@ -61,10 +61,7 @@ const WorkersSection = () => {
 	};
 
 	const handleFire = (workerId) => {
-		const ws = getWs();
-		if (ws) {
-			ws.send(JSON.stringify({ type: "FIRE_WORKER", workerId }));
-		}
+		sendWsMessage({ type: "FIRE_WORKER", workerId });
 	};
 
 	const assigned = workers.filter((w) => hasAnyAssignment(w));
