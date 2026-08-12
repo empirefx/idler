@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CombatService } from "../../../server/services/CombatService.js";
+import { createCombatEventBus } from "../../../server/game/combat/combatEvents.js";
 
 function mockRedis() {
   const store = {};
@@ -97,9 +98,9 @@ function setup() {
   const playerAttackQueue = { add: vi.fn().mockResolvedValue({ id: "pa-1" }), remove: vi.fn() };
   const spawnQueue = { add: vi.fn(), remove: vi.fn() };
   const broadcaster = { broadcast: vi.fn() };
-  const questService = { handleEvent: vi.fn().mockResolvedValue() };
-  const cs = new CombatService(redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, questService);
-  return { redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, questService, cs };
+  const combatEvents = createCombatEventBus();
+  const cs = new CombatService(redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, combatEvents);
+  return { redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, combatEvents, cs };
 }
 
 describe("CombatService", () => {
@@ -230,12 +231,16 @@ describe("CombatService", () => {
     expect(player.gold).toBe(5);
   });
 
-  it("handlePlayerAttackJob records the kill for active quests", async () => {
+  it("handlePlayerAttackJob emits an enemy-killed event for the dead enemy", async () => {
     seedPlayer(ctx.redis, SID, { autoCombat: true });
     seedEnemy(ctx.redis, SID, "e1", { hp: 5 });
+    const killed = [];
+    ctx.combatEvents.on("enemy-killed", (payload) => killed.push(payload));
 
     await ctx.cs.handlePlayerAttackJob(SID);
-    expect(ctx.questService.handleEvent).toHaveBeenCalledWith(SID, { kind: "kill", data: { enemy: expect.objectContaining({ id: "e1", hp: 0 }) } });
+    expect(killed).toEqual([
+      { sessionId: SID, placeId: "forest_edge", enemy: expect.objectContaining({ id: "e1", hp: 0 }), result: expect.objectContaining({ enemyDead: true }) },
+    ]);
   });
 
   it("schedules respawn when the last alive enemy is killed", async () => {
@@ -303,15 +308,18 @@ describe("CombatService", () => {
     expect(enemy.hp).toBeLessThan(100);
   });
 
-  it("handleSkillActivationJob records the kill for active quests", async () => {
+  it("handleSkillActivationJob emits an enemy-killed event when the skill kills the enemy", async () => {
     seedPlayer(ctx.redis, SID, { autoCombat: true });
     seedEnemy(ctx.redis, SID, "e1", { hp: 5 });
     seedWeapon(ctx.redis, SID);
     ctx.playerState.loadSkills = () => Promise.resolve({ shieldBash: 1 });
+    const killed = [];
+    ctx.combatEvents.on("enemy-killed", (payload) => killed.push(payload));
 
     const result = await ctx.cs.handleSkillActivationJob(SID, "shieldBash");
     expect(result.enemyDead).toBe(true);
-    expect(ctx.questService.handleEvent).toHaveBeenCalledWith(SID, { kind: "kill", data: { enemy: expect.objectContaining({ id: "e1", hp: 0 }) } });
+    expect(killed).toHaveLength(1);
+    expect(killed[0].enemy).toMatchObject({ id: "e1", hp: 0 });
   });
 
   it("handleSkillActivationJob skips but re-enqueues when no enemies are present", async () => {

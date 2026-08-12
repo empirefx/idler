@@ -12,6 +12,7 @@ import {
 	resolveStats,
 } from "../../shared/combat/combatCalculator.js";
 import { createBuff, pruneExpiredBuffs } from "../../shared/combat/combatResolvers.js";
+import { createCombatEventBus } from "../game/combat/combatEvents.js";
 import {
 	getRankData,
 	getRankedActiveSkills,
@@ -19,7 +20,7 @@ import {
 } from "../../shared/combat/skillResolver.js";
 
 export class CombatService {
-  constructor(redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, questService) {
+  constructor(redis, playerState, inventoryState, enemyState, enemyAttackQueue, playerAttackQueue, spawnQueue, broadcaster, combatEvents) {
     this.redis = redis;
     this.playerState = playerState || new PlayerState(redis);
     this.inventoryState = inventoryState;
@@ -28,7 +29,7 @@ export class CombatService {
     this.playerAttackQueue = playerAttackQueue;
     this.spawnQueue = spawnQueue;
     this.broadcaster = broadcaster;
-    this.questService = questService;
+    this.combatEvents = combatEvents || createCombatEventBus();
   }
 
   async getEquippedLoadout(sessionId) {
@@ -210,6 +211,26 @@ export class CombatService {
     return Object.values(all).filter((e) => e && e.placeId === placeId && e.hp > 0);
   }
 
+  async _handleKill(sessionId, target, placeId, result) {
+    const expGained = target.exp || 10;
+    const goldGained = target.gold || 0;
+    const freshPlayer = await this.playerState.load(sessionId);
+    freshPlayer.exp = (freshPlayer.exp || 0) + expGained;
+    freshPlayer.gold = (freshPlayer.gold || 0) + goldGained;
+    await this.playerState.save(sessionId, { exp: freshPlayer.exp, gold: freshPlayer.gold });
+    await this.enemyState.delete(sessionId, target.id);
+
+    result.enemyDead = true;
+    result.expGained = expGained;
+    result.goldGained = goldGained;
+    result.playerStats = { exp: freshPlayer.exp, gold: freshPlayer.gold };
+
+    await this.combatEvents.emit("enemy-killed", { sessionId, enemy: target, placeId, result });
+
+    const remaining = await this.getAliveEnemiesAtPlace(sessionId, placeId);
+    return { remaining };
+  }
+
   async revive(sessionId) {
     const player = await this.playerState.load(sessionId);
     if (!player) return { error: "Player not found" };
@@ -309,21 +330,7 @@ export class CombatService {
 
     // Kill handling
     if (target.hp <= 0) {
-      const expGained = target.exp || 10;
-      const goldGained = target.gold || 0;
-      const freshPlayer = await this.playerState.load(sessionId);
-      freshPlayer.exp = (freshPlayer.exp || 0) + expGained;
-      freshPlayer.gold = (freshPlayer.gold || 0) + goldGained;
-      await this.playerState.save(sessionId, { exp: freshPlayer.exp, gold: freshPlayer.gold });
-      await this.enemyState.delete(sessionId, target.id);
-      if (this.questService) await this.questService.handleEvent(sessionId, { kind: "kill", data: { enemy: target } });
-
-      result.enemyDead = true;
-      result.expGained = expGained;
-      result.goldGained = goldGained;
-      result.playerStats = { exp: freshPlayer.exp, gold: freshPlayer.gold };
-
-      const remaining = await this.getAliveEnemiesAtPlace(sessionId, placeId);
+      const { remaining } = await this._handleKill(sessionId, target, placeId, result);
       if (remaining.length === 0) {
         this.broadcaster.broadcast(sessionId, "COMBAT_DIFF", result);
         const respawnDelay = placesData[placeId]?.spawn?.respawnDelay || 5;
@@ -415,21 +422,7 @@ export class CombatService {
     if (result.damageDealt > 0 && result.enemyId) {
       const target = await this.enemyState.load(sessionId, result.enemyId);
       if (target && target.hp <= 0) {
-        const expGained = target.exp || 10;
-        const goldGained = target.gold || 0;
-        const freshPlayer = await this.playerState.load(sessionId);
-        freshPlayer.exp = (freshPlayer.exp || 0) + expGained;
-        freshPlayer.gold = (freshPlayer.gold || 0) + goldGained;
-        await this.playerState.save(sessionId, { exp: freshPlayer.exp, gold: freshPlayer.gold });
-        await this.enemyState.delete(sessionId, target.id);
-        if (this.questService) await this.questService.handleEvent(sessionId, { kind: "kill", data: { enemy: target } });
-
-        result.enemyDead = true;
-        result.expGained = expGained;
-        result.goldGained = goldGained;
-        result.playerStats = { exp: freshPlayer.exp, gold: freshPlayer.gold };
-
-        const remaining = await this.getAliveEnemiesAtPlace(sessionId, placeId);
+        const { remaining } = await this._handleKill(sessionId, target, placeId, result);
         if (remaining.length === 0) {
           this.broadcaster.broadcast(sessionId, "COMBAT_DIFF", result);
           const respawnDelay = placesData[placeId]?.spawn?.respawnDelay || 5;

@@ -22,6 +22,7 @@ import { QuestService } from "./services/QuestService.js";
 import { SkillsService } from "./services/SkillsService.js";
 import { SpawnService } from "./services/SpawnService.js";
 import { NavigationService } from "./services/NavigationService.js";
+import { createCombatEventBus } from "./game/combat/combatEvents.js";
 import { InventoryHandler } from "./inventory.js";
 import { createProductionWorker } from "./processors/productionProcessor.js";
 import { createEnemyAttackWorker } from "./processors/enemyAttackProcessor.js";
@@ -52,7 +53,9 @@ async function main() {
   const broadcaster = createBroadcaster();
 
   const questService = new QuestService(redis, playerState, questState, broadcaster, inventoryState);
-  const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, queues.playerAttackQueue, queues.spawnQueue, broadcaster, questService);
+  const combatEvents = createCombatEventBus();
+  const combatService = new CombatService(redis, playerState, inventoryState, enemyState, queues.enemyAttackQueue, queues.playerAttackQueue, queues.spawnQueue, broadcaster, combatEvents);
+  combatEvents.on("enemy-killed", ({ sessionId, enemy }) => questService.handleEvent(sessionId, { kind: "kill", data: { enemy } }));
   const productionService = new ProductionService(redis, workersState, inventoryState, queues.productionQueue, broadcaster);
   const craftingService = new CraftingService(redis, playerState, inventoryState, broadcaster);
   const buildingService = new BuildingService(playerState, buildingsState, socketsState, productionService, broadcaster);

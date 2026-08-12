@@ -1,10 +1,7 @@
+// server/ws.js
 import { WebSocketServer } from "ws";
-import { itemCatalog } from "../shared/data/itemCatalog.js";
-import { inventoryData } from "../shared/data/inventory.js";
-import { applyAddItem, applyRemoveItem, materializeItem, validateSlotLimit } from "../shared/inventory.js";
-import { INVENTORY_ERRORS } from "../shared/constants.js";
-import { InventoryState } from "./state/InventoryState.js";
-import { encode, decode, PROTOCOL_VERSION } from "../shared/protocol.js";
+import { encode, decode } from "../shared/protocol.js";
+import { messageRegistry } from "./messages/registry.js";
 
 export function startWebSocketServer({ server, sessionManager, combatService, productionService, craftingService, buildingService, workerService, questService, skillsService, spawnService, navigationService, inventoryHandler, playerState, inventoryState, broadcaster, logger }) {
   const wss = new WebSocketServer({ noServer: true });
@@ -28,414 +25,43 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
     ws.send(encode(type, payload));
   }
 
-  async function handleBuyItem(sessionId, msg) {
-    const { itemId, quantity = 1, npcId } = msg;
-    const playerData = await playerState.load(sessionId);
-    if (!playerData) return { success: false, message: "Player not found" };
-
-    const npcInv = inventoryData[npcId];
-    if (!npcInv || npcInv.type !== "npc") return { success: false, message: "NPC not found" };
-
-    const stockItem = npcInv.items?.find((i) => i.id === itemId || i.id === Number(itemId));
-    if (!stockItem) return { success: false, message: "Item not available" };
-
-    const buyPrice =
-      stockItem.buy?.gold ??
-      (stockItem.icon ? itemCatalog[stockItem.icon]?.buy?.gold : null);
-
-    if (buyPrice == null) {
-      return { success: false, message: "This item cannot be bought" };
-    }
-
-    const totalCost = buyPrice * quantity;
-    if (playerData.gold < totalCost) {
-      return { success: false, message: "Not enough gold" };
-    }
-
-    const inv = await inventoryState.load(sessionId, "player");
-    if (!inv) return { success: false, message: "Inventory not found" };
-
-    const item = materializeItem({ ...stockItem, quantity });
-    const slotCheck = validateSlotLimit(inv, 1);
-    if (!slotCheck.isValid) {
-      return { success: false, message: INVENTORY_ERRORS.INVENTORY_FULL };
-    }
-
-    applyAddItem(inv, item);
-    playerData.gold -= totalCost;
-
-    await inventoryState.save(sessionId, "player", inv);
-    await playerState.save(sessionId, { gold: playerData.gold });
-
-    const allInv = await inventoryState.loadAll(sessionId);
-    broadcaster.broadcast(sessionId, "INVENTORY_UPDATE", { inventories: allInv });
-    broadcaster.broadcast(sessionId, "DIFF", { path: "player.gold", data: playerData.gold });
-
-    return { success: true, message: `Purchased ${stockItem.name || itemId} for ${totalCost} gold` };
-  }
-
-  async function handleSellItem(sessionId, msg) {
-    const { itemId, quantity = 1 } = msg;
-    const playerData = await playerState.load(sessionId);
-    if (!playerData) return { success: false, message: "Player not found" };
-
-    const inv = await inventoryState.load(sessionId, "player");
-    if (!inv) return { success: false, message: "Inventory not found" };
-    const itemIdx = inv.items.findIndex((i) => i.id === itemId || i.id === Number(itemId));
-    if (itemIdx === -1) return { success: false, message: "Item not found in inventory" };
-
-    const sellPrice =
-      inv.items[itemIdx].sellable?.gold ??
-      (inv.items[itemIdx].icon ? itemCatalog[inv.items[itemIdx].icon]?.sellable?.gold : null);
-
-    if (sellPrice == null) {
-      return { success: false, message: "This item cannot be sold" };
-    }
-
-    const itemName = inv.items[itemIdx]?.name || itemId;
-    const totalValue = sellPrice * quantity;
-    applyRemoveItem(inv, itemId, quantity);
-    playerData.gold += totalValue;
-
-    await inventoryState.save(sessionId, "player", inv);
-    await playerState.save(sessionId, { gold: playerData.gold });
-
-    const allInv = await inventoryState.loadAll(sessionId);
-    broadcaster.broadcast(sessionId, "INVENTORY_UPDATE", { inventories: allInv });
-    broadcaster.broadcast(sessionId, "DIFF", { path: "player.gold", data: playerData.gold });
-
-    return { success: true, message: `Sold ${itemName} for ${totalValue} gold` };
-  }
-
-  async function handleUseItem(sessionId, msg) {
-    const { itemId } = msg;
-    const inv = await inventoryState.load(sessionId, "player");
-    if (!inv) return { success: false, message: "Inventory not found" };
-
-    const itemIdx = inv.items.findIndex((i) => i.id === itemId || i.id === Number(itemId));
-    if (itemIdx === -1) return { success: false, message: "Item not found" };
-
-    const item = inv.items[itemIdx];
-    if (item.type !== "consumable" || !item.consumable?.heal) {
-      return { success: false, message: "This item cannot be used" };
-    }
-
-    const playerData = await playerState.load(sessionId);
-    if (!playerData) return { success: false, message: "Player not found" };
-
-    const healAmount = item.consumable.heal;
-    const newHp = Math.min(playerData.maxHp, playerData.hp + healAmount);
-
-    applyRemoveItem(inv, item.id, 1);
-    await inventoryState.save(sessionId, "player", inv);
-    await playerState.save(sessionId, { hp: newHp });
-
-    const allInv = await inventoryState.loadAll(sessionId);
-    broadcaster.broadcast(sessionId, "INVENTORY_UPDATE", { inventories: allInv });
-    broadcaster.broadcast(sessionId, "DIFF", { path: "player.hp", data: newHp });
-
-    const itemName = item.name || itemId;
-    return { success: true, message: `Used ${itemName}, restored ${healAmount} HP` };
-  }
-
   wss.on("connection", (ws) => {
-    let currentNickname = null;
-    let currentSessionId = null;
+    const connection = { nickname: null, sessionId: null };
+    const ctx = {
+      ws,
+      connection,
+      send,
+      clients,
+      logger,
+      broadcaster,
+      sessionManager,
+      playerState,
+      inventoryState,
+      combatService,
+      productionService,
+      craftingService,
+      buildingService,
+      workerService,
+      questService,
+      skillsService,
+      spawnService,
+      navigationService,
+      inventoryHandler,
+      get sessionId() {
+        return connection.sessionId;
+      },
+    };
 
     ws.on("message", async (raw) => {
       try {
         const { type, data } = decode(raw);
         const msg = { ...data, type };
-        switch (msg.type) {
-          case "JOIN": {
-            if (msg.protocolVersion !== PROTOCOL_VERSION) {
-              send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
-              logger.log(`JOIN: ${msg.nickname} protocol mismatch`, "WS");
-              break;
-            }
-            const result = await sessionManager.createSession(msg.nickname);
-            if (result.accepted) {
-              currentNickname = msg.nickname;
-              currentSessionId = result.session_id;
-              ws.sessionId = currentSessionId;
-              clients.set(msg.nickname, ws);
-              await sessionManager.initializeFullState(currentSessionId);
-              const fullState = await sessionManager.loadFullState(currentSessionId);
-              send(ws, "STATE_SYNC", { sessionId: currentSessionId, ...fullState });
-              const player = await playerState.load(currentSessionId);
-              if (player?.currentPlaceId) {
-                await spawnService.resumeEnemyAttacks(currentSessionId, player.currentPlaceId);
-              }
-              await combatService.computeAndBroadcastDerivedStats(currentSessionId);
-              await productionService.resumeAll(currentSessionId);
-            } else {
-              send(ws, "ERROR", { message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
-            }
-            logger.log(`JOIN: ${msg.nickname} accepted=${result.accepted}`, "WS");
-            break;
-          }
-          case "RESUME": {
-            if (msg.protocolVersion !== PROTOCOL_VERSION) {
-              send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
-              logger.log(`RESUME: ${msg.nickname} protocol mismatch`, "WS");
-              break;
-            }
-            const session = await sessionManager.getSession(msg.nickname);
-            if (session && session.sessionId === msg.sessionId) {
-              currentNickname = msg.nickname;
-              currentSessionId = msg.sessionId;
-              ws.sessionId = currentSessionId;
-              clients.set(msg.nickname, ws);
-              await sessionManager.renewSession(msg.nickname);
-              const fullState = await sessionManager.loadFullState(currentSessionId);
-              send(ws, "STATE_SYNC", { sessionId: currentSessionId, ...fullState });
-              const player = await playerState.load(currentSessionId);
-              if (player?.currentPlaceId) {
-                await spawnService.resumeEnemyAttacks(currentSessionId, player.currentPlaceId);
-              }
-              if (player?.autoCombat) {
-                await combatService.resumePlayerAttackLoop(currentSessionId);
-              }
-              await combatService.computeAndBroadcastDerivedStats(currentSessionId);
-              await productionService.resumeAll(currentSessionId);
-              logger.log(`RESUME: ${msg.nickname} session restored`, "WS");
-            } else {
-              send(ws, "ERROR", { message: "Session expired" });
-              logger.log(`RESUME: ${msg.nickname} session not found`, "WS");
-            }
-            break;
-          }
-          case "TOGGLE_AUTO_COMBAT": {
-            const player = await playerState.load(currentSessionId);
-            const result = player?.autoCombat
-              ? await combatService.stopAutoCombat(currentSessionId)
-              : await combatService.startAutoCombat(currentSessionId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            }
-            break;
-          }
-          case "REVIVE": {
-            const result = await combatService.revive(currentSessionId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            }
-            break;
-          }
-          case "SPEND_SKILL_POINT": {
-            const result = await skillsService.spendSkillPoint(currentSessionId, msg.skillId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              await combatService.computeAndBroadcastDerivedStats(currentSessionId);
-            }
-            break;
-          }
-          case "LEVEL_UP": {
-            const result = await combatService.levelUp(currentSessionId, msg.bonuses || {});
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            }
-            break;
-          }
-          case "NAVIGATE": {
-            const player = await playerState.load(currentSessionId);
-            if (player?.autoCombat) {
-              await combatService.stopAutoCombat(currentSessionId);
-            }
-            const result = await navigationService.navigate(currentSessionId, msg.placeId);
-            await spawnService.cleanupPlace(currentSessionId, result.previousPlaceId);
-            send(ws, "DIFF", { path: "player.currentPlaceId", value: msg.placeId });
-            await spawnService.triggerSpawn(currentSessionId, msg.placeId);
-            break;
-          }
-          case "BUY_SOCKET": {
-            const result = await buildingService.buySocket(currentSessionId, msg.placeId, msg.socketIndex);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
-            }
-            break;
-          }
-          case "BUILD": {
-            const result = await buildingService.build(currentSessionId, msg.placeId, msg.socketIndex, msg.buildingId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
-            }
-            break;
-          }
-          case "UPGRADE_BUILDING": {
-            const result = await buildingService.upgrade(currentSessionId, msg.placeId, msg.socketIndex);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
-            }
-            break;
-          }
-          case "DEMOLISH": {
-            const result = await buildingService.demolish(currentSessionId, msg.placeId, msg.socketIndex);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "sockets", data: result.socket });
-            }
-            break;
-          }
-          case "ASSIGN_WORKER": {
-            const result = await productionService.assignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.workerId, msg.material);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
-            }
-            break;
-          }
-          case "UNASSIGN_WORKER": {
-            const result = await productionService.unassignWorker(currentSessionId, msg.placeId, msg.socketIndex, msg.workerId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
-            }
-            break;
-          }
-          case "FIRE_WORKER": {
-            const result = await workerService.fire(currentSessionId, msg.workerId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
-            }
-            break;
-          }
-          case "CRAFT": {
-            const result = await craftingService.craft(currentSessionId, msg.recipeId);
-            send(ws, "DIFF", result);
-            break;
-          }
-          case "HIRE_WORKER": {
-            const result = await workerService.hire(currentSessionId, msg.workerId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: result.workers });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: result.gold });
-            }
-            break;
-          }
-          case "REROLL_WORKERS": {
-            const rerollResult = await workerService.reroll(currentSessionId);
-            if (rerollResult.error) {
-              send(ws, "ERROR", { message: rerollResult.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: rerollResult.workers });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: rerollResult.gold });
-            }
-            break;
-          }
-          case "BUY_WORKER_SLOT": {
-            const slotResult = await workerService.buySlot(currentSessionId);
-            if (slotResult.error) {
-              send(ws, "ERROR", { message: slotResult.error });
-            } else {
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "players.workers", data: slotResult.workers });
-              broadcaster.broadcast(currentSessionId, "DIFF", { path: "player.gold", data: slotResult.gold });
-            }
-            break;
-          }
-          case "BUY_ITEM": {
-            const buyData = await handleBuyItem(currentSessionId, msg);
-            send(ws, "TRADE_RESULT", buyData);
-            break;
-          }
-          case "SELL_ITEM": {
-            const sellData = await handleSellItem(currentSessionId, msg);
-            send(ws, "TRADE_RESULT", sellData);
-            break;
-          }
-          case "ACCEPT_QUEST": {
-            const result = await questService.accept(currentSessionId, msg.questId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              send(ws, "QUEST_UPDATE", result);
-            }
-            break;
-          }
-          case "COMPLETE_QUEST": {
-            const result = await questService.complete(currentSessionId, msg.questId);
-            if (result.error) {
-              send(ws, "ERROR", { message: result.error });
-            } else {
-              send(ws, "QUEST_UPDATE", result);
-            }
-            break;
-          }
-          case "MOVE_ITEM": {
-            const result = await inventoryHandler.handleAction(currentSessionId, {
-              action_type: "MOVE",
-              inventory_id: msg.fromInventoryId,
-              to_inventory_id: msg.toInventoryId,
-              item_id: msg.itemId,
-              quantity: msg.quantity,
-            });
-            if (result.success) {
-              send(ws, "INVENTORY_UPDATE", { inventories: result.inventories });
-            } else {
-              send(ws, "ERROR", { message: "Failed to move item" });
-            }
-            break;
-          }
-          case "EQUIP_ITEM": {
-            const result = await inventoryHandler.handleAction(currentSessionId, {
-              action_type: "EQUIP",
-              inventory_id: msg.inventoryId,
-              item_id: msg.itemId,
-            });
-            if (result.success) {
-              send(ws, "INVENTORY_UPDATE", { inventories: result.inventories });
-              await combatService.recomputeDerivedStats(currentSessionId);
-              await combatService.computeAndBroadcastDerivedStats(currentSessionId);
-            } else {
-              send(ws, "ERROR", { message: "Failed to equip item" });
-            }
-            break;
-          }
-          case "UNEQUIP_ITEM": {
-            const result = await inventoryHandler.handleAction(currentSessionId, {
-              action_type: "UNEQUIP",
-              inventory_id: msg.inventoryId,
-              slot: msg.slot,
-            });
-            if (result.success) {
-              send(ws, "INVENTORY_UPDATE", { inventories: result.inventories });
-              await combatService.recomputeDerivedStats(currentSessionId);
-              await combatService.computeAndBroadcastDerivedStats(currentSessionId);
-            } else {
-              send(ws, "ERROR", { message: "Failed to unequip item" });
-            }
-            break;
-          }
-          case "USE_ITEM": {
-            const useData = await handleUseItem(currentSessionId, msg);
-            if (useData.success) {
-              send(ws, "USE_RESULT", { success: true, message: useData.message });
-            } else {
-              send(ws, "ERROR", { message: useData.message });
-            }
-            break;
-          }
-          default:
-            logger.warn(`Unknown message type: ${msg.type}`);
+        const handler = messageRegistry.get(msg.type);
+        if (!handler) {
+          logger.warn(`Unknown message type: ${msg.type}`);
+          return;
         }
+        await handler(ctx, msg);
       } catch (err) {
         logger.error(`Message handling error: ${err.message}`);
         send(ws, "ERROR", { message: err.message });
@@ -443,11 +69,11 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
     });
 
     ws.on("close", async () => {
-      if (currentNickname) {
-        clients.delete(currentNickname);
-        await sessionManager.disconnectSession(currentNickname);
-        await productionService.pauseAll(currentSessionId);
-        logger.log(`DISCONNECT: ${currentNickname}`, "WS");
+      if (connection.nickname) {
+        clients.delete(connection.nickname);
+        await sessionManager.disconnectSession(connection.nickname);
+        await productionService.pauseAll(connection.sessionId);
+        logger.log(`DISCONNECT: ${connection.nickname}`, "WS");
       }
     });
   });
