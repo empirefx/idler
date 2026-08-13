@@ -38,6 +38,7 @@ export const diffMiddleware = (store) => (next) => (action) => {
     else if (path === "player.stats") store.dispatch(setPlayerState({ stats: val }));
     else if (path === "player.lastAttackTime") store.dispatch(setPlayerState({ lastAttackTime: val }));
     else if (path === "player.autoCombat") store.dispatch(setPlayerState({ autoCombat: val }));
+    else if (path === "player.targetEnemyId") store.dispatch(setPlayerState({ targetEnemyId: val ?? null }));
     else if (path === "player.isDead") store.dispatch(setPlayerState({ isDead: val }));
     else if (path === "player.maxHp") store.dispatch(setPlayerState({ maxHp: val }));
     else if (path === "player.expToNext") store.dispatch(setPlayerState({ expToNext: val }));

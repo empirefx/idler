@@ -1,33 +1,30 @@
 import React, { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setTarget } from "../../../store/slices/combatSlice";
+import { useSelector } from "react-redux";
+import { setTarget } from "../../../store/ws";
 import CircularProgressTimer from "../common/CircularProgressTimer";
 import ProgressBar from "../common/ProgressBar";
+import useEnemyCountdown from "../../hooks/useEnemyCountdown";
 
 const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
-	const dispatch = useDispatch();
-	const targetId = useSelector((s) => s.combat?.targetEnemyId);
+	const targetId = useSelector((s) => s.player?.targetEnemyId);
 	const playerId = useSelector((s) => s.player?.id);
 	const isTargeted = entity?.id === targetId;
 
-	// Memoize timer props to prevent unnecessary re-renders
+	const { remaining, nextAttackAt, nextAttackDelay } = useEnemyCountdown(entity);
+
 	const timerProps = useMemo(() => {
-		if (!entity || typeof entity !== "object") {
-			return null;
-		}
-		const { countdown, isCountdownActive, maxCountdown } = entity;
-		if (countdown === undefined && isCountdownActive === undefined) return null;
+		if (!nextAttackAt) return null;
 		return {
-			time: countdown,
-			maxTime: maxCountdown || countdown,
-			isRunning: Boolean(isCountdownActive && countdown > 0),
+			time: remaining,
+			maxTime: nextAttackDelay || remaining,
+			isRunning: remaining > 0,
 			size: 20,
 			displayText: false,
 			onComplete: () => {
-				// Enemy will perform an attack - could trigger attack event here if needed
+				// Attack fires server-side; the countdown resets on ENEMY_ATTACK.
 			},
 		};
-	}, [entity]);
+	}, [remaining, nextAttackAt, nextAttackDelay]);
 
 	if (!entity || typeof entity !== "object") {
 		return (
@@ -38,11 +35,6 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 		);
 	}
 
-	const handleClick = () => {
-		if (isDead || entity.id === playerId) return;
-		dispatch(setTarget(entity.id));
-	};
-
 	const hp = entity.hp ?? entity.health ?? 0;
 	const maxHp = entity.maxHp ?? entity.maxHealth ?? 100;
 	const {
@@ -52,9 +44,12 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	} = entity;
 
 	const isStaggered = attackPattern === "staggered";
-	const canAttack =
-		isStaggered && entity.isCountdownActive && entity.countdown <= 0;
 	const isDead = hp <= 0 || entity.isDead;
+
+	const handleClick = () => {
+		if (isDead || entity.id === playerId) return;
+		setTarget(entity.id);
+	};
 
 	return (
 		<div
@@ -66,7 +61,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 					handleClick();
 				}
 			}}
-			className={`entity-card ${canAttack ? "ready-to-attack" : ""} ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
+			className={`entity-card ${isDead ? "dead" : ""} ${isTargeted ? "targeted" : ""}`}
 			data-enemy-id={entity.id}
 		>
 			<div className="block-gradient"></div>

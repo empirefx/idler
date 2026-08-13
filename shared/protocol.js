@@ -2,7 +2,7 @@ import {
 	GameMessage, ErrorResponse, Stats, DerivedStats, Buff, Buffs, Cooldowns, SkillsRanks,
 	Player, Item, Inventory, Building, Socket, Enemy, Assignment, Worker, Workers,
 	QuestEntry, CompletedQuest, Quests, Rewards,
-	JoinRequest, ResumeRequest, ToggleAutoCombat, ReviveRequest, SpendSkillPoint,
+	JoinRequest, ResumeRequest, ToggleAutoCombat, ReviveRequest, SpendSkillPoint, SetTargetRequest,
 	LevelUpRequest, NavigateRequest, BuySocket, BuildRequest, UpgradeBuilding, Demolish,
 	AssignWorker, UnassignWorker, FireWorker, CraftRequest, HireWorker, RerollWorkers,
 	BuyWorkerSlot, BuyItem, SellItem, AcceptQuest, CompleteQuest, MoveItem, EquipItem,
@@ -118,6 +118,7 @@ const codecs = {
 	JOIN: simple(JoinRequest),
 	RESUME: simple(ResumeRequest),
 	TOGGLE_AUTO_COMBAT: simple(ToggleAutoCombat),
+	SET_TARGET: simple(SetTargetRequest),
 	REVIVE: simple(ReviveRequest),
 	SPEND_SKILL_POINT: simple(SpendSkillPoint),
 	LEVEL_UP: simple(LevelUpRequest),
@@ -157,7 +158,7 @@ const codecs = {
 };
 
 export const CLIENT_MESSAGES = Object.freeze([
-	"JOIN", "RESUME", "TOGGLE_AUTO_COMBAT", "REVIVE", "SPEND_SKILL_POINT", "LEVEL_UP", "NAVIGATE",
+	"JOIN", "RESUME", "TOGGLE_AUTO_COMBAT", "SET_TARGET", "REVIVE", "SPEND_SKILL_POINT", "LEVEL_UP", "NAVIGATE",
 	"BUY_SOCKET", "BUILD", "UPGRADE_BUILDING", "DEMOLISH", "ASSIGN_WORKER", "UNASSIGN_WORKER",
 	"FIRE_WORKER", "CRAFT", "HIRE_WORKER", "REROLL_WORKERS", "BUY_WORKER_SLOT", "BUY_ITEM",
 	"SELL_ITEM", "ACCEPT_QUEST", "COMPLETE_QUEST", "MOVE_ITEM", "EQUIP_ITEM", "UNEQUIP_ITEM", "USE_ITEM",

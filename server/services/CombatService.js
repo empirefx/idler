@@ -13,6 +13,7 @@ import {
 } from "../../shared/combat/combatCalculator.js";
 import { createBuff, pruneExpiredBuffs } from "../../shared/combat/combatResolvers.js";
 import { createCombatEventBus } from "../game/combat/combatEvents.js";
+import { scheduleEnemyAttack } from "../game/combat/attackScheduler.js";
 import {
 	getRankData,
 	getRankedActiveSkills,
@@ -211,6 +212,30 @@ export class CombatService {
     return Object.values(all).filter((e) => e && e.placeId === placeId && e.hp > 0);
   }
 
+  async resolveAttackTarget(sessionId, placeId) {
+    const player = await this.playerState.load(sessionId);
+    if (!player) return null;
+    const aliveEnemies = await this.getAliveEnemiesAtPlace(sessionId, placeId);
+    if (aliveEnemies.length === 0) return null;
+
+    const lockedId = player.targetEnemyId;
+    const locked = lockedId ? aliveEnemies.find((e) => e.id === lockedId) : null;
+    if (locked) return locked;
+
+    const target = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
+    if (target.id !== lockedId) {
+      await this.playerState.save(sessionId, { targetEnemyId: target.id });
+      this.broadcaster.broadcast(sessionId, "DIFF", { path: "player.targetEnemyId", data: target.id });
+    }
+    return target;
+  }
+
+  async scheduleEnemyAttack(sessionId, enemyId) {
+    const enemy = await this.enemyState.load(sessionId, enemyId);
+    if (!enemy || enemy.hp <= 0) return null;
+    return scheduleEnemyAttack({ enemyState: this.enemyState, enemyAttackQueue: this.enemyAttackQueue }, sessionId, enemy);
+  }
+
   async _handleKill(sessionId, target, placeId, result) {
     const expGained = target.exp || 10;
     const goldGained = target.gold || 0;
@@ -243,9 +268,9 @@ export class CombatService {
     // Enemies always attack: re-seed one job per alive enemy at the current place.
     const aliveEnemies = await this.getAliveEnemiesAtPlace(sessionId, player.currentPlaceId);
     for (const enemy of aliveEnemies) {
-      const delay = (enemy.attackDelayRange?.[0] || 500) + Math.random() * ((enemy.attackDelayRange?.[1] || 1500) - (enemy.attackDelayRange?.[0] || 500));
-      await this.enemyAttackQueue.add("enemy-attack", { sessionId, enemyId: enemy.id }, { delay: Math.round(delay) });
+      await scheduleEnemyAttack({ enemyState: this.enemyState, enemyAttackQueue: this.enemyAttackQueue }, sessionId, enemy);
     }
+    this.broadcaster.broadcast(sessionId, "ENEMY_SPAWN", { enemies: aliveEnemies, placeId: player.currentPlaceId });
 
     const fresh = await this.playerState.load(sessionId);
     if (fresh.autoCombat) {
@@ -300,10 +325,8 @@ export class CombatService {
     if (!player || player.isDead || !player.autoCombat) return { skipped: true };
 
     const placeId = player.currentPlaceId;
-    const aliveEnemies = await this.getAliveEnemiesAtPlace(sessionId, placeId);
-    if (aliveEnemies.length === 0) return { skipped: true }; // respawn job restarts the chain
-
-    const target = aliveEnemies[0];
+    const target = await this.resolveAttackTarget(sessionId, placeId);
+    if (!target) return { skipped: true }; // respawn job restarts the chain
     const { weapon, armor } = await this.getEquippedLoadout(sessionId);
     const playerSkills = (await this.playerState.loadSkills(sessionId)) || {};
     const activeBuffs = pruneExpiredBuffs(Array.isArray(player.activeBuffs) ? player.activeBuffs : []);
@@ -398,7 +421,7 @@ export class CombatService {
       await this.playerState.save(sessionId, { activeBuffs });
       this.broadcaster.broadcast(sessionId, "DIFF", { path: "player.activeBuffs", data: activeBuffs });
     } else if (skill.type === SKILL_TYPES.ACTIVE_DAMAGE) {
-      const target = aliveEnemies[0];
+      const target = await this.resolveAttackTarget(sessionId, placeId);
       const multiplier = rankData.damageMultiplier || 1;
       const atk = resolveAttack(player, target, weapon, armor, activeBuffs, playerSkills, multiplier);
       result.hit = atk.hit;

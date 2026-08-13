@@ -31,6 +31,10 @@ export function toggleAutoCombat() {
 	sendWsMessage({ type: "TOGGLE_AUTO_COMBAT" });
 }
 
+export function setTarget(enemyId) {
+	sendWsMessage({ type: "SET_TARGET", enemyId });
+}
+
 export function revive() {
 	sendWsMessage({ type: "REVIVE" });
 }

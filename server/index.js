@@ -86,6 +86,7 @@ async function main() {
     inventoryHandler,
     playerState,
     inventoryState,
+    enemyState,
     broadcaster,
     logger,
   });

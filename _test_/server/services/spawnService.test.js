@@ -99,6 +99,20 @@ describe("SpawnService", () => {
     expect(playerAttackQueue.add).not.toHaveBeenCalled();
   });
 
+  it("triggerSpawn broadcasts enemies carrying nextAttackAt/nextAttackDelay", async () => {
+    enemyState.save.mockResolvedValue();
+    enemyState.clearAll.mockResolvedValue();
+    await ss.triggerSpawn("s1", "forest_edge");
+    const spawnCall = broadcaster.broadcast.mock.calls.find(([, type]) => type === "ENEMY_SPAWN");
+    expect(spawnCall).toBeDefined();
+    const payload = spawnCall[2];
+    expect(payload.enemies.length).toBeGreaterThan(0);
+    for (const e of payload.enemies) {
+      expect(e.nextAttackDelay).toBeGreaterThan(0);
+      expect(e.nextAttackAt).toBeGreaterThan(Date.now());
+    }
+  });
+
   it("_createEnemyWave uses spawn config from places", () => {
     const enemies = ss._createEnemyWave("forest_edge");
     expect(enemies.length).toBeGreaterThanOrEqual(1);

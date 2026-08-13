@@ -50,6 +50,14 @@ describe("diffMiddleware combat paths", () => {
     expect(action.payload).toEqual({ placeId: "farmlands", socketIndex: 0, data: { placeId: "farmlands", socketIndex: 0, status: "empty" } });
   });
 
+  it("routes player.targetEnemyId DIFF to setPlayerState", () => {
+    const { store, dispatches } = makeStore();
+    store.dispatch({ type: "APPLY_DIFF", payload: { path: "player.targetEnemyId", data: "e1" } });
+    const action = dispatches.find((a) => a.type === "player/setPlayerState");
+    expect(action).toBeDefined();
+    expect(action.payload.targetEnemyId).toBe("e1");
+  });
+
   it("no longer wipes the buildings map on a buildings.* DIFF", () => {
     const { store, dispatches } = makeStore();
     store.dispatch({

@@ -36,6 +36,12 @@ describe("client -> server round trips", () => {
 			material: "wheat",
 		});
 	});
+	it("SET_TARGET", () => {
+		expect(roundTrip("SET_TARGET", { enemyId: "e1" })).toMatchObject({ enemyId: "e1" });
+	});
+	it("SET_TARGET is a registered client message", () => {
+		expect(decode(encode("SET_TARGET", { enemyId: "e1" })).type).toBe("SET_TARGET");
+	});
 	it("LEVEL_UP with bonuses", () => {
 		const data = roundTrip("LEVEL_UP", { bonuses: { strength: 1, defense: 0, agility: 2, vitality: 0, intelligence: 0, wisdom: 0 } });
 		expect(data.bonuses).toMatchObject({ strength: 1, agility: 2, defense: 0 });
@@ -85,12 +91,24 @@ describe("server -> client round trips", () => {
 		expect(roundTrip("USE_RESULT", { success: true, message: "used" })).toMatchObject({ success: true });
 	});
 	it("ENEMY_ATTACK", () => {
-		expect(roundTrip("ENEMY_ATTACK", { enemyId: "e1", damageDealt: 5, hit: true, crit: false, damageType: "physical", playerHp: 50, playerDead: false })).toMatchObject({
-			enemyId: "e1",
-			damageDealt: 5,
-			hit: true,
-			playerHp: 50,
-		});
+		expect(
+			roundTrip("ENEMY_ATTACK", {
+				enemyId: "e1",
+				damageDealt: 5,
+				hit: true,
+				crit: false,
+				damageType: "physical",
+				playerHp: 50,
+				playerDead: false,
+				nextAttackAt: 1234,
+				nextAttackDelay: 900,
+			}),
+		).toMatchObject({ enemyId: "e1", damageDealt: 5, hit: true, playerHp: 50, nextAttackAt: 1234, nextAttackDelay: 900 });
+	});
+	it("ENEMY_ATTACK decode without countdown fields defaults to 0", () => {
+		const out = roundTrip("ENEMY_ATTACK", { enemyId: "e1", damageDealt: 1, playerHp: 50 });
+		expect(out.nextAttackAt).toBe(0);
+		expect(out.nextAttackDelay).toBe(0);
 	});
 	it("COMBAT_DIFF basic", () => {
 		expect(
@@ -125,9 +143,18 @@ describe("server -> client round trips", () => {
 	it("ENEMY_SPAWN", () => {
 		const data = roundTrip("ENEMY_SPAWN", {
 			placeId: "forest",
-			enemies: [{ id: "e1", name: "Beast", hp: 50, maxHp: 50, exp: 10, gold: 5, attackDelayRange: [100, 200] }],
+			enemies: [
+				{ id: "e1", name: "Beast", hp: 50, maxHp: 50, exp: 10, gold: 5, attackDelayRange: [100, 200], nextAttackAt: 1234, nextAttackDelay: 150 },
+			],
 		});
-		expect(data.enemies[0]).toMatchObject({ id: "e1", name: "Beast", hp: 50, attackDelayRange: [100, 200] });
+		expect(data.enemies[0]).toMatchObject({
+			id: "e1",
+			name: "Beast",
+			hp: 50,
+			attackDelayRange: [100, 200],
+			nextAttackAt: 1234,
+			nextAttackDelay: 150,
+		});
 	});
 	it("PRODUCTION_TICK", () => {
 		expect(
@@ -188,6 +215,7 @@ describe("server -> client round trips", () => {
 				skillJobIds: {},
 				autoCombat: false,
 				isDead: false,
+				targetEnemyId: "e1",
 			},
 			workers: {
 				hired: [{ id: "w1", firstName: "Bob", name: "Bob", gender: "male", avatar: "worker_m.jpg", assignment: { placeId: "farmlands", socketIndex: 0, material: "wheat" } }],
@@ -203,6 +231,7 @@ describe("server -> client round trips", () => {
 		expect(data.player).toMatchObject({ level: 1, gold: 10, exp: 5, expToNext: 100 });
 		expect(data.player.autoCombat).toBe(false);
 		expect(data.player.isDead).toBe(false);
+		expect(data.player.targetEnemyId).toBe("e1");
 		expect(data.player.stats).toMatchObject({ strength: 10, agility: 10 });
 		expect(data.workers.hired[0]).toMatchObject({ id: "w1", assignment: { placeId: "farmlands", socketIndex: 0, material: "wheat" } });
 		expect(data.skills.warCry).toBe(1);
@@ -229,6 +258,7 @@ describe("DIFF round trips", () => {
 		["player.skillPoints", 3],
 		["player.maxHp", 60],
 		["player.lastAttackTime", 12345],
+		["player.targetEnemyId", "e1"],
 		["player.stats", { strength: 11, defense: 1, agility: 10, vitality: 10, intelligence: 10, wisdom: 0 }],
 		["player.derivedStats", { defense: 2, damageType: "physical", damage: 9, hitChance: 0.8, critChance: 0.1, equipmentBonus: { attack: 2 } }],
 		["player.skills", { warCry: 1, fireball: 0 }],

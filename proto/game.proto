@@ -65,6 +65,7 @@ message Player {
   bool isDead = 19;
   DerivedStats derivedStats = 20;
   map<string, int32> skills = 21;
+  string targetEnemyId = 22;
 }
 
 message Item {
@@ -132,6 +133,8 @@ message Enemy {
   int64 exp = 18;
   int64 gold = 19;
   bool isDead = 20;
+  int64 nextAttackAt = 21;
+  int64 nextAttackDelay = 22;
 }
 
 message Assignment {
@@ -209,6 +212,7 @@ message MoveItem { string fromInventoryId = 1; string toInventoryId = 2; string 
 message EquipItem { string inventoryId = 1; string itemId = 2; }
 message UnequipItem { string inventoryId = 1; string slot = 2; }
 message UseItemRequest { string itemId = 1; }
+message SetTargetRequest { string enemyId = 1; }
 
 // ===== Server -> Client =====
 
@@ -271,6 +275,8 @@ message EnemyAttack {
   string damageType = 5;
   int64 playerHp = 6;
   bool playerDead = 7;
+  int64 nextAttackAt = 8;
+  int64 nextAttackDelay = 9;
 }
 
 message EnemySpawn {

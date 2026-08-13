@@ -9,11 +9,13 @@ export function createEnemyAttackWorker(combatService, broadcaster, enemyAttackQ
       const { sessionId, enemyId } = job.data;
       const result = await combatService.handleEnemyAttack(sessionId, enemyId);
       if (result && !result.error && !result.skipped && !result.playerDead) {
-        broadcaster.broadcast(sessionId, "ENEMY_ATTACK", result);
-        const enemy = await combatService.enemyState.load(sessionId, enemyId);
-        if (enemy && enemy.hp > 0) {
-          const delay = (enemy.attackDelayRange?.[0] || 1000) + Math.random() * (enemy.attackDelayRange?.[1] || 2000);
-          await enemyAttackQueue.add("enemy-attack", { sessionId, enemyId }, { delay: Math.round(delay) });
+        const enemy = await combatService.scheduleEnemyAttack(sessionId, enemyId);
+        if (enemy) {
+          broadcaster.broadcast(sessionId, "ENEMY_ATTACK", {
+            ...result,
+            nextAttackAt: enemy.nextAttackAt,
+            nextAttackDelay: enemy.nextAttackDelay,
+          });
         }
       }
     },

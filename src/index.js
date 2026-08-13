@@ -10,7 +10,7 @@ import { buildingsToSocketUpdates } from "./store/buildingsToSocketUpdates";
 import { setQuests, questAccepted, questCompleted, updateQuest } from "./store/slices/questSlice";
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
-import { setEnemies, addEnemy, removeEnemy } from "./store/slices/enemiesSlice";
+import { setEnemies, addEnemy, removeEnemy, updateEnemy } from "./store/slices/enemiesSlice";
 import { addLog } from "./store/slices/logSlice";
 import { setWs, sendWsMessage } from "./store/ws";
 import { decode, PROTOCOL_VERSION } from "../shared/protocol.js";
@@ -114,11 +114,14 @@ const mountGame = (sessionId) => {
 				break;
 			}
 			case "ENEMY_ATTACK": {
-				const { enemyId, damageDealt, playerHp, playerDead } = data.data;
+				const { enemyId, damageDealt, playerHp, playerDead, nextAttackAt, nextAttackDelay } = data.data;
 				store.dispatch({ type: "ENEMY_ATTACK", payload: data.data });
 				if (playerHp !== undefined) store.dispatch(setPlayerHp(playerHp));
 				if (playerDead) {
 					store.dispatch(setPlayerState({ isDead: true, autoCombat: false }));
+				}
+				if (nextAttackAt > 0) {
+					store.dispatch(updateEnemy({ id: enemyId, nextAttackAt, nextAttackDelay }));
 				}
 				break;
 			}

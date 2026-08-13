@@ -2789,6 +2789,7 @@ export const game = $root.game = (() => {
          * @property {boolean|null} [isDead] Player isDead
          * @property {game.DerivedStats.$Properties|null} [derivedStats] Player derivedStats
          * @property {Object.<string,number>|null} [skills] Player skills
+         * @property {string|null} [targetEnemyId] Player targetEnemyId
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -2994,6 +2995,14 @@ export const game = $root.game = (() => {
         Player.prototype.skills = $util.emptyObject;
 
         /**
+         * Player targetEnemyId.
+         * @member {string} targetEnemyId
+         * @memberof game.Player
+         * @instance
+         */
+        Player.prototype.targetEnemyId = "";
+
+        /**
          * Creates a new Player instance using the specified properties.
          * @function create
          * @memberof game.Player
@@ -3072,6 +3081,8 @@ export const game = $root.game = (() => {
             if (message.skills != null && $Object.hasOwnProperty.call(message, "skills"))
                 for (let keys = $Object.keys(message.skills), i = 0; i < keys.length; ++i)
                     writer.uint32(/* id 21, wireType 2 =*/170).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int32(message.skills[keys[i]]).ldelim();
+            if (message.targetEnemyId != null && $Object.hasOwnProperty.call(message, "targetEnemyId") && message.targetEnemyId !== "")
+                writer.uint32(/* id 22, wireType 2 =*/178).string(message.targetEnemyId);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -3385,6 +3396,15 @@ export const game = $root.game = (() => {
                         message.skills[key] = value;
                         continue;
                     }
+                case 22: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.targetEnemyId = value;
+                        else
+                            delete message.targetEnemyId;
+                        continue;
+                    }
                 }
                 reader.skipType(wireType, _depth, tag);
                 if (!reader.discardUnknown) {
@@ -3521,6 +3541,9 @@ export const game = $root.game = (() => {
                     if (!$util.isInteger(message.skills[key[i]]))
                         return "skills: integer{k:string} expected";
             }
+            if (message.targetEnemyId != null && $Object.hasOwnProperty.call(message, "targetEnemyId"))
+                if (!$util.isString(message.targetEnemyId))
+                    return "targetEnemyId: string expected";
             return null;
         };
 
@@ -3714,6 +3737,9 @@ export const game = $root.game = (() => {
                     message.skills[keys[i]] = object.skills[keys[i]] | 0;
                 }
             }
+            if (object.targetEnemyId != null)
+                if (typeof object.targetEnemyId !== "string" || object.targetEnemyId.length)
+                    message.targetEnemyId = $String(object.targetEnemyId);
             return message;
         };
 
@@ -3791,6 +3817,7 @@ export const game = $root.game = (() => {
                 object.autoCombat = false;
                 object.isDead = false;
                 object.derivedStats = null;
+                object.targetEnemyId = "";
             }
             if (message.level != null && $Object.hasOwnProperty.call(message, "level"))
                 object.level = message.level;
@@ -3912,6 +3939,8 @@ export const game = $root.game = (() => {
                     object.skills[keys2[j]] = message.skills[keys2[j]];
                 }
             }
+            if (message.targetEnemyId != null && $Object.hasOwnProperty.call(message, "targetEnemyId"))
+                object.targetEnemyId = message.targetEnemyId;
             return object;
         };
 
@@ -6110,6 +6139,8 @@ export const game = $root.game = (() => {
          * @property {number|Long|null} [exp] Enemy exp
          * @property {number|Long|null} [gold] Enemy gold
          * @property {boolean|null} [isDead] Enemy isDead
+         * @property {number|Long|null} [nextAttackAt] Enemy nextAttackAt
+         * @property {number|Long|null} [nextAttackDelay] Enemy nextAttackDelay
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -6303,6 +6334,22 @@ export const game = $root.game = (() => {
         Enemy.prototype.isDead = false;
 
         /**
+         * Enemy nextAttackAt.
+         * @member {number|Long} nextAttackAt
+         * @memberof game.Enemy
+         * @instance
+         */
+        Enemy.prototype.nextAttackAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Enemy nextAttackDelay.
+         * @member {number|Long} nextAttackDelay
+         * @memberof game.Enemy
+         * @instance
+         */
+        Enemy.prototype.nextAttackDelay = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
          * Creates a new Enemy instance using the specified properties.
          * @function create
          * @memberof game.Enemy
@@ -6374,6 +6421,10 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 19, wireType 0 =*/152).int64(message.gold);
             if (message.isDead != null && $Object.hasOwnProperty.call(message, "isDead") && message.isDead !== false)
                 writer.uint32(/* id 20, wireType 0 =*/160).bool(message.isDead);
+            if (message.nextAttackAt != null && $Object.hasOwnProperty.call(message, "nextAttackAt") && (typeof message.nextAttackAt === "object" ? message.nextAttackAt.low || message.nextAttackAt.high : message.nextAttackAt !== 0))
+                writer.uint32(/* id 21, wireType 0 =*/168).int64(message.nextAttackAt);
+            if (message.nextAttackDelay != null && $Object.hasOwnProperty.call(message, "nextAttackDelay") && (typeof message.nextAttackDelay === "object" ? message.nextAttackDelay.low || message.nextAttackDelay.high : message.nextAttackDelay !== 0))
+                writer.uint32(/* id 22, wireType 0 =*/176).int64(message.nextAttackDelay);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -6606,6 +6657,24 @@ export const game = $root.game = (() => {
                             delete message.isDead;
                         continue;
                     }
+                case 21: {
+                        if (wireType !== 0)
+                            break;
+                        if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                            message.nextAttackAt = value;
+                        else
+                            delete message.nextAttackAt;
+                        continue;
+                    }
+                case 22: {
+                        if (wireType !== 0)
+                            break;
+                        if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                            message.nextAttackDelay = value;
+                        else
+                            delete message.nextAttackDelay;
+                        continue;
+                    }
                 }
                 reader.skipType(wireType, _depth, tag);
                 if (!reader.discardUnknown) {
@@ -6713,6 +6782,12 @@ export const game = $root.game = (() => {
             if (message.isDead != null && $Object.hasOwnProperty.call(message, "isDead"))
                 if (typeof message.isDead !== "boolean")
                     return "isDead: boolean expected";
+            if (message.nextAttackAt != null && $Object.hasOwnProperty.call(message, "nextAttackAt"))
+                if (!$util.isInteger(message.nextAttackAt) && !(message.nextAttackAt && $util.isInteger(message.nextAttackAt.low) && $util.isInteger(message.nextAttackAt.high)))
+                    return "nextAttackAt: integer|Long expected";
+            if (message.nextAttackDelay != null && $Object.hasOwnProperty.call(message, "nextAttackDelay"))
+                if (!$util.isInteger(message.nextAttackDelay) && !(message.nextAttackDelay && $util.isInteger(message.nextAttackDelay.low) && $util.isInteger(message.nextAttackDelay.high)))
+                    return "nextAttackDelay: integer|Long expected";
             return null;
         };
 
@@ -6826,6 +6901,26 @@ export const game = $root.game = (() => {
             if (object.isDead != null)
                 if (object.isDead)
                     message.isDead = $Boolean(object.isDead);
+            if (object.nextAttackAt != null)
+                if (typeof object.nextAttackAt === "object" ? object.nextAttackAt.low || object.nextAttackAt.high : $Number(object.nextAttackAt) !== 0)
+                    if ($util.Long)
+                        message.nextAttackAt = $util.Long.fromValue(object.nextAttackAt, false);
+                    else if (typeof object.nextAttackAt === "string")
+                        message.nextAttackAt = $parseInt(object.nextAttackAt, 10);
+                    else if (typeof object.nextAttackAt === "number")
+                        message.nextAttackAt = object.nextAttackAt;
+                    else if (typeof object.nextAttackAt === "object")
+                        message.nextAttackAt = new $util.LongBits(object.nextAttackAt.low >>> 0, object.nextAttackAt.high >>> 0).toNumber();
+            if (object.nextAttackDelay != null)
+                if (typeof object.nextAttackDelay === "object" ? object.nextAttackDelay.low || object.nextAttackDelay.high : $Number(object.nextAttackDelay) !== 0)
+                    if ($util.Long)
+                        message.nextAttackDelay = $util.Long.fromValue(object.nextAttackDelay, false);
+                    else if (typeof object.nextAttackDelay === "string")
+                        message.nextAttackDelay = $parseInt(object.nextAttackDelay, 10);
+                    else if (typeof object.nextAttackDelay === "number")
+                        message.nextAttackDelay = object.nextAttackDelay;
+                    else if (typeof object.nextAttackDelay === "object")
+                        message.nextAttackDelay = new $util.LongBits(object.nextAttackDelay.low >>> 0, object.nextAttackDelay.high >>> 0).toNumber();
             return message;
         };
 
@@ -6884,6 +6979,16 @@ export const game = $root.game = (() => {
                 } else
                     object.gold = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
                 object.isDead = false;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.nextAttackAt = options.longs === $String ? long.toString() : options.longs === $Number ? long.toNumber() : typeof $BigInt !== "undefined" && options.longs === $BigInt ? long.toBigInt() : long;
+                } else
+                    object.nextAttackAt = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.nextAttackDelay = options.longs === $String ? long.toString() : options.longs === $Number ? long.toNumber() : typeof $BigInt !== "undefined" && options.longs === $BigInt ? long.toBigInt() : long;
+                } else
+                    object.nextAttackDelay = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
             }
             if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
                 object.id = message.id;
@@ -6948,6 +7053,20 @@ export const game = $root.game = (() => {
                     object.gold = options.longs === $String ? $util.Long.prototype.toString.call(message.gold) : options.longs === $Number ? new $util.LongBits(message.gold.low >>> 0, message.gold.high >>> 0).toNumber() : message.gold;
             if (message.isDead != null && $Object.hasOwnProperty.call(message, "isDead"))
                 object.isDead = message.isDead;
+            if (message.nextAttackAt != null && $Object.hasOwnProperty.call(message, "nextAttackAt"))
+                if (typeof $BigInt !== "undefined" && options.longs === $BigInt)
+                    object.nextAttackAt = typeof message.nextAttackAt === "number" ? $BigInt(message.nextAttackAt) : $util.Long.fromBits(message.nextAttackAt.low >>> 0, message.nextAttackAt.high >>> 0, false).toBigInt();
+                else if (typeof message.nextAttackAt === "number")
+                    object.nextAttackAt = options.longs === $String ? $String(message.nextAttackAt) : message.nextAttackAt;
+                else
+                    object.nextAttackAt = options.longs === $String ? $util.Long.prototype.toString.call(message.nextAttackAt) : options.longs === $Number ? new $util.LongBits(message.nextAttackAt.low >>> 0, message.nextAttackAt.high >>> 0).toNumber() : message.nextAttackAt;
+            if (message.nextAttackDelay != null && $Object.hasOwnProperty.call(message, "nextAttackDelay"))
+                if (typeof $BigInt !== "undefined" && options.longs === $BigInt)
+                    object.nextAttackDelay = typeof message.nextAttackDelay === "number" ? $BigInt(message.nextAttackDelay) : $util.Long.fromBits(message.nextAttackDelay.low >>> 0, message.nextAttackDelay.high >>> 0, false).toBigInt();
+                else if (typeof message.nextAttackDelay === "number")
+                    object.nextAttackDelay = options.longs === $String ? $String(message.nextAttackDelay) : message.nextAttackDelay;
+                else
+                    object.nextAttackDelay = options.longs === $String ? $util.Long.prototype.toString.call(message.nextAttackDelay) : options.longs === $Number ? new $util.LongBits(message.nextAttackDelay.low >>> 0, message.nextAttackDelay.high >>> 0).toNumber() : message.nextAttackDelay;
             return object;
         };
 
@@ -16698,6 +16817,266 @@ export const game = $root.game = (() => {
         return UseItemRequest;
     })();
 
+    game.SetTargetRequest = (function() {
+
+        /**
+         * Properties of a SetTargetRequest.
+         * @typedef {Object} game.SetTargetRequest.$Properties
+         * @property {string|null} [enemyId] SetTargetRequest enemyId
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a SetTargetRequest.
+         * @memberof game
+         * @interface ISetTargetRequest
+         * @augments game.SetTargetRequest.$Properties
+         * @deprecated Use game.SetTargetRequest.$Properties instead.
+         */
+
+        /**
+         * Shape of a SetTargetRequest.
+         * @typedef {game.SetTargetRequest.$Properties} game.SetTargetRequest.$Shape
+         */
+
+        /**
+         * Constructs a new SetTargetRequest.
+         * @memberof game
+         * @classdesc Represents a SetTargetRequest.
+         * @constructor
+         * @param {game.SetTargetRequest.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const SetTargetRequest = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * SetTargetRequest enemyId.
+         * @member {string} enemyId
+         * @memberof game.SetTargetRequest
+         * @instance
+         */
+        SetTargetRequest.prototype.enemyId = "";
+
+        /**
+         * Creates a new SetTargetRequest instance using the specified properties.
+         * @function create
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {game.SetTargetRequest.$Properties=} [properties] Properties to set
+         * @returns {game.SetTargetRequest} SetTargetRequest instance
+         * @type {{
+         *   (properties: game.SetTargetRequest.$Shape): game.SetTargetRequest & game.SetTargetRequest.$Shape;
+         *   (properties?: game.SetTargetRequest.$Properties): game.SetTargetRequest;
+         * }}
+         */
+        SetTargetRequest.create = function(properties) {
+            return new SetTargetRequest(properties);
+        };
+
+        /**
+         * Encodes the specified SetTargetRequest message. Does not implicitly {@link game.SetTargetRequest.verify|verify} messages.
+         * @function encode
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {game.SetTargetRequest.$Properties} message SetTargetRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SetTargetRequest.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.enemyId != null && $Object.hasOwnProperty.call(message, "enemyId") && message.enemyId !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.enemyId);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SetTargetRequest message, length delimited. Does not implicitly {@link game.SetTargetRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {game.SetTargetRequest.$Properties} message SetTargetRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SetTargetRequest.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a SetTargetRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.SetTargetRequest & game.SetTargetRequest.$Shape} SetTargetRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SetTargetRequest.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.SetTargetRequest(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.enemyId = value;
+                        else
+                            delete message.enemyId;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a SetTargetRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.SetTargetRequest & game.SetTargetRequest.$Shape} SetTargetRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SetTargetRequest.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SetTargetRequest message.
+         * @function verify
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SetTargetRequest.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.enemyId != null && $Object.hasOwnProperty.call(message, "enemyId"))
+                if (!$util.isString(message.enemyId))
+                    return "enemyId: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a SetTargetRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.SetTargetRequest} SetTargetRequest
+         */
+        SetTargetRequest.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.SetTargetRequest)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.SetTargetRequest: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.SetTargetRequest();
+            if (object.enemyId != null)
+                if (typeof object.enemyId !== "string" || object.enemyId.length)
+                    message.enemyId = $String(object.enemyId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SetTargetRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {game.SetTargetRequest} message SetTargetRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SetTargetRequest.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults)
+                object.enemyId = "";
+            if (message.enemyId != null && $Object.hasOwnProperty.call(message, "enemyId"))
+                object.enemyId = message.enemyId;
+            return object;
+        };
+
+        /**
+         * Converts this SetTargetRequest to JSON.
+         * @function toJSON
+         * @memberof game.SetTargetRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SetTargetRequest.prototype.toJSON = function() {
+            return SetTargetRequest.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for SetTargetRequest
+         * @function getTypeUrl
+         * @memberof game.SetTargetRequest
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        SetTargetRequest.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.SetTargetRequest";
+        };
+
+        return SetTargetRequest;
+    })();
+
     game.StateSync = (function() {
 
         /**
@@ -19274,6 +19653,8 @@ export const game = $root.game = (() => {
          * @property {string|null} [damageType] EnemyAttack damageType
          * @property {number|Long|null} [playerHp] EnemyAttack playerHp
          * @property {boolean|null} [playerDead] EnemyAttack playerDead
+         * @property {number|Long|null} [nextAttackAt] EnemyAttack nextAttackAt
+         * @property {number|Long|null} [nextAttackDelay] EnemyAttack nextAttackDelay
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -19362,6 +19743,22 @@ export const game = $root.game = (() => {
         EnemyAttack.prototype.playerDead = false;
 
         /**
+         * EnemyAttack nextAttackAt.
+         * @member {number|Long} nextAttackAt
+         * @memberof game.EnemyAttack
+         * @instance
+         */
+        EnemyAttack.prototype.nextAttackAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * EnemyAttack nextAttackDelay.
+         * @member {number|Long} nextAttackDelay
+         * @memberof game.EnemyAttack
+         * @instance
+         */
+        EnemyAttack.prototype.nextAttackDelay = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
          * Creates a new EnemyAttack instance using the specified properties.
          * @function create
          * @memberof game.EnemyAttack
@@ -19407,6 +19804,10 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 6, wireType 0 =*/48).int64(message.playerHp);
             if (message.playerDead != null && $Object.hasOwnProperty.call(message, "playerDead") && message.playerDead !== false)
                 writer.uint32(/* id 7, wireType 0 =*/56).bool(message.playerDead);
+            if (message.nextAttackAt != null && $Object.hasOwnProperty.call(message, "nextAttackAt") && (typeof message.nextAttackAt === "object" ? message.nextAttackAt.low || message.nextAttackAt.high : message.nextAttackAt !== 0))
+                writer.uint32(/* id 8, wireType 0 =*/64).int64(message.nextAttackAt);
+            if (message.nextAttackDelay != null && $Object.hasOwnProperty.call(message, "nextAttackDelay") && (typeof message.nextAttackDelay === "object" ? message.nextAttackDelay.low || message.nextAttackDelay.high : message.nextAttackDelay !== 0))
+                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.nextAttackDelay);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -19517,6 +19918,24 @@ export const game = $root.game = (() => {
                             delete message.playerDead;
                         continue;
                     }
+                case 8: {
+                        if (wireType !== 0)
+                            break;
+                        if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                            message.nextAttackAt = value;
+                        else
+                            delete message.nextAttackAt;
+                        continue;
+                    }
+                case 9: {
+                        if (wireType !== 0)
+                            break;
+                        if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                            message.nextAttackDelay = value;
+                        else
+                            delete message.nextAttackDelay;
+                        continue;
+                    }
                 }
                 reader.skipType(wireType, _depth, tag);
                 if (!reader.discardUnknown) {
@@ -19581,6 +20000,12 @@ export const game = $root.game = (() => {
             if (message.playerDead != null && $Object.hasOwnProperty.call(message, "playerDead"))
                 if (typeof message.playerDead !== "boolean")
                     return "playerDead: boolean expected";
+            if (message.nextAttackAt != null && $Object.hasOwnProperty.call(message, "nextAttackAt"))
+                if (!$util.isInteger(message.nextAttackAt) && !(message.nextAttackAt && $util.isInteger(message.nextAttackAt.low) && $util.isInteger(message.nextAttackAt.high)))
+                    return "nextAttackAt: integer|Long expected";
+            if (message.nextAttackDelay != null && $Object.hasOwnProperty.call(message, "nextAttackDelay"))
+                if (!$util.isInteger(message.nextAttackDelay) && !(message.nextAttackDelay && $util.isInteger(message.nextAttackDelay.low) && $util.isInteger(message.nextAttackDelay.high)))
+                    return "nextAttackDelay: integer|Long expected";
             return null;
         };
 
@@ -19630,6 +20055,26 @@ export const game = $root.game = (() => {
             if (object.playerDead != null)
                 if (object.playerDead)
                     message.playerDead = $Boolean(object.playerDead);
+            if (object.nextAttackAt != null)
+                if (typeof object.nextAttackAt === "object" ? object.nextAttackAt.low || object.nextAttackAt.high : $Number(object.nextAttackAt) !== 0)
+                    if ($util.Long)
+                        message.nextAttackAt = $util.Long.fromValue(object.nextAttackAt, false);
+                    else if (typeof object.nextAttackAt === "string")
+                        message.nextAttackAt = $parseInt(object.nextAttackAt, 10);
+                    else if (typeof object.nextAttackAt === "number")
+                        message.nextAttackAt = object.nextAttackAt;
+                    else if (typeof object.nextAttackAt === "object")
+                        message.nextAttackAt = new $util.LongBits(object.nextAttackAt.low >>> 0, object.nextAttackAt.high >>> 0).toNumber();
+            if (object.nextAttackDelay != null)
+                if (typeof object.nextAttackDelay === "object" ? object.nextAttackDelay.low || object.nextAttackDelay.high : $Number(object.nextAttackDelay) !== 0)
+                    if ($util.Long)
+                        message.nextAttackDelay = $util.Long.fromValue(object.nextAttackDelay, false);
+                    else if (typeof object.nextAttackDelay === "string")
+                        message.nextAttackDelay = $parseInt(object.nextAttackDelay, 10);
+                    else if (typeof object.nextAttackDelay === "number")
+                        message.nextAttackDelay = object.nextAttackDelay;
+                    else if (typeof object.nextAttackDelay === "object")
+                        message.nextAttackDelay = new $util.LongBits(object.nextAttackDelay.low >>> 0, object.nextAttackDelay.high >>> 0).toNumber();
             return message;
         };
 
@@ -19662,6 +20107,16 @@ export const game = $root.game = (() => {
                 } else
                     object.playerHp = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
                 object.playerDead = false;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.nextAttackAt = options.longs === $String ? long.toString() : options.longs === $Number ? long.toNumber() : typeof $BigInt !== "undefined" && options.longs === $BigInt ? long.toBigInt() : long;
+                } else
+                    object.nextAttackAt = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.nextAttackDelay = options.longs === $String ? long.toString() : options.longs === $Number ? long.toNumber() : typeof $BigInt !== "undefined" && options.longs === $BigInt ? long.toBigInt() : long;
+                } else
+                    object.nextAttackDelay = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
             }
             if (message.enemyId != null && $Object.hasOwnProperty.call(message, "enemyId"))
                 object.enemyId = message.enemyId;
@@ -19682,6 +20137,20 @@ export const game = $root.game = (() => {
                     object.playerHp = options.longs === $String ? $util.Long.prototype.toString.call(message.playerHp) : options.longs === $Number ? new $util.LongBits(message.playerHp.low >>> 0, message.playerHp.high >>> 0).toNumber() : message.playerHp;
             if (message.playerDead != null && $Object.hasOwnProperty.call(message, "playerDead"))
                 object.playerDead = message.playerDead;
+            if (message.nextAttackAt != null && $Object.hasOwnProperty.call(message, "nextAttackAt"))
+                if (typeof $BigInt !== "undefined" && options.longs === $BigInt)
+                    object.nextAttackAt = typeof message.nextAttackAt === "number" ? $BigInt(message.nextAttackAt) : $util.Long.fromBits(message.nextAttackAt.low >>> 0, message.nextAttackAt.high >>> 0, false).toBigInt();
+                else if (typeof message.nextAttackAt === "number")
+                    object.nextAttackAt = options.longs === $String ? $String(message.nextAttackAt) : message.nextAttackAt;
+                else
+                    object.nextAttackAt = options.longs === $String ? $util.Long.prototype.toString.call(message.nextAttackAt) : options.longs === $Number ? new $util.LongBits(message.nextAttackAt.low >>> 0, message.nextAttackAt.high >>> 0).toNumber() : message.nextAttackAt;
+            if (message.nextAttackDelay != null && $Object.hasOwnProperty.call(message, "nextAttackDelay"))
+                if (typeof $BigInt !== "undefined" && options.longs === $BigInt)
+                    object.nextAttackDelay = typeof message.nextAttackDelay === "number" ? $BigInt(message.nextAttackDelay) : $util.Long.fromBits(message.nextAttackDelay.low >>> 0, message.nextAttackDelay.high >>> 0, false).toBigInt();
+                else if (typeof message.nextAttackDelay === "number")
+                    object.nextAttackDelay = options.longs === $String ? $String(message.nextAttackDelay) : message.nextAttackDelay;
+                else
+                    object.nextAttackDelay = options.longs === $String ? $util.Long.prototype.toString.call(message.nextAttackDelay) : options.longs === $Number ? new $util.LongBits(message.nextAttackDelay.low >>> 0, message.nextAttackDelay.high >>> 0).toNumber() : message.nextAttackDelay;
             return object;
         };
 

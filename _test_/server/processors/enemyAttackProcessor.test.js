@@ -10,31 +10,32 @@ describe("createEnemyAttackWorker", () => {
     WorkerMock.mockClear();
   });
 
-  it("does not re-enqueue when the player is dead", async () => {
+  it("does not re-schedule or broadcast when the player is dead", async () => {
     const combatService = {
       handleEnemyAttack: vi.fn().mockResolvedValue({ playerDead: true }),
-      enemyState: { load: vi.fn().mockResolvedValue({ id: "e1", hp: 50 }) },
+      scheduleEnemyAttack: vi.fn().mockResolvedValue({ id: "e1", nextAttackAt: 12345, nextAttackDelay: 150 }),
     };
     const broadcaster = { broadcast: vi.fn() };
     const queue = { add: vi.fn() };
     createEnemyAttackWorker(combatService, broadcaster, queue);
     const [, handler] = WorkerMock.mock.calls[0];
     await handler({ data: { sessionId: "s1", enemyId: "e1" } });
+    expect(combatService.scheduleEnemyAttack).not.toHaveBeenCalled();
     expect(broadcaster.broadcast).not.toHaveBeenCalled();
-    expect(queue.add).not.toHaveBeenCalled();
   });
 
-  it("re-enqueues while the enemy lives and the player is alive", async () => {
+  it("re-schedules the attack and broadcasts the fresh countdown while the player lives", async () => {
+    const nextEnemy = { id: "e1", hp: 50, nextAttackAt: 12345, nextAttackDelay: 150 };
     const combatService = {
       handleEnemyAttack: vi.fn().mockResolvedValue({ playerDead: false, damageDealt: 3 }),
-      enemyState: { load: vi.fn().mockResolvedValue({ id: "e1", hp: 50, attackDelayRange: [100, 200] }) },
+      scheduleEnemyAttack: vi.fn().mockResolvedValue(nextEnemy),
     };
     const broadcaster = { broadcast: vi.fn() };
     const queue = { add: vi.fn() };
     createEnemyAttackWorker(combatService, broadcaster, queue);
     const [, handler] = WorkerMock.mock.calls[0];
     await handler({ data: { sessionId: "s1", enemyId: "e1" } });
-    expect(broadcaster.broadcast).toHaveBeenCalledWith("s1", "ENEMY_ATTACK", expect.objectContaining({ damageDealt: 3 }));
-    expect(queue.add).toHaveBeenCalledWith("enemy-attack", { sessionId: "s1", enemyId: "e1" }, expect.objectContaining({ delay: expect.any(Number) }));
+    expect(combatService.scheduleEnemyAttack).toHaveBeenCalledWith("s1", "e1");
+    expect(broadcaster.broadcast).toHaveBeenCalledWith("s1", "ENEMY_ATTACK", expect.objectContaining({ damageDealt: 3, nextAttackAt: 12345, nextAttackDelay: 150 }));
   });
 });

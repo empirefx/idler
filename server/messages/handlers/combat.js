@@ -59,4 +59,24 @@ export const combatHandlers = [
       await spawnService.triggerSpawn(sessionId, msg.placeId);
     },
   },
+  {
+    type: "SET_TARGET",
+    async handler(ctx, msg) {
+      const { ws, sessionId, send, playerState, enemyState, broadcaster, combatService } = ctx;
+      const player = await playerState.load(sessionId);
+      if (!player) { send(ws, "ERROR", { message: "Player not found" }); return; }
+      if (player.isDead) { send(ws, "ERROR", { message: "Player is dead" }); return; }
+      const enemy = await enemyState.load(sessionId, msg.enemyId);
+      if (!enemy || enemy.hp <= 0 || enemy.placeId !== player.currentPlaceId) {
+        send(ws, "ERROR", { message: "Enemy not found" });
+        return;
+      }
+      await playerState.save(sessionId, { targetEnemyId: msg.enemyId });
+      broadcaster.broadcast(sessionId, "DIFF", { path: "player.targetEnemyId", data: msg.enemyId });
+      if (!player.autoCombat) {
+        const result = await combatService.startAutoCombat(sessionId);
+        if (result.error) send(ws, "ERROR", { message: result.error });
+      }
+    },
+  },
 ];

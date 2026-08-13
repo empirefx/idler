@@ -32,10 +32,17 @@ const enemiesSlice = createSlice({
         if (enemy.hp <= 0) enemy.isDead = true;
       }
     },
+    updateEnemy(state, action) {
+      const { id, ...patch } = action.payload;
+      const enemy = state.byId[id];
+      if (enemy) {
+        state.byId[id] = { ...enemy, ...patch };
+      }
+    },
   },
 });
 
-export const { setEnemies, addEnemy, removeEnemy, damageEnemy } = enemiesSlice.actions;
+export const { setEnemies, addEnemy, removeEnemy, damageEnemy, updateEnemy } = enemiesSlice.actions;
 export default enemiesSlice.reducer;
 
 const selectEnemiesById = (state) => state.enemies.byId;

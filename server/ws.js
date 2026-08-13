@@ -3,7 +3,7 @@ import { WebSocketServer } from "ws";
 import { encode, decode } from "../shared/protocol.js";
 import { messageRegistry } from "./messages/registry.js";
 
-export function startWebSocketServer({ server, sessionManager, combatService, productionService, craftingService, buildingService, workerService, questService, skillsService, spawnService, navigationService, inventoryHandler, playerState, inventoryState, broadcaster, logger }) {
+export function startWebSocketServer({ server, sessionManager, combatService, productionService, craftingService, buildingService, workerService, questService, skillsService, spawnService, navigationService, inventoryHandler, playerState, inventoryState, enemyState, broadcaster, logger }) {
   const wss = new WebSocketServer({ noServer: true });
   const clients = new Map();
 
@@ -37,6 +37,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
       sessionManager,
       playerState,
       inventoryState,
+      enemyState,
       combatService,
       productionService,
       craftingService,

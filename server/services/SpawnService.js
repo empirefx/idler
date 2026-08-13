@@ -2,6 +2,7 @@
 import { randomUUID } from "node:crypto";
 import { enemyCatalog } from "../../shared/data/enemyCatalog.js";
 import { placesData } from "../../shared/data/places.js";
+import { scheduleEnemyAttack } from "../game/combat/attackScheduler.js";
 
 export class SpawnService {
   constructor(redis, enemyState, spawnQueue, enemyAttackQueue, playerAttackQueue, playerState, broadcaster) {
@@ -23,14 +24,7 @@ export class SpawnService {
     if (enemies.length === 0) return false;
 
     for (const enemy of enemies) {
-      await this.enemyState.save(sessionId, enemy.id, enemy);
-      const [minDelay, maxDelay] = enemy.attackDelayRange || [1000, 3000];
-      const delay = minDelay + Math.random() * (maxDelay - minDelay);
-      await this.enemyAttackQueue.add(
-        "enemy-attack",
-        { sessionId, enemyId: enemy.id },
-        { delay: Math.round(delay) },
-      );
+      await scheduleEnemyAttack({ enemyState: this.enemyState, enemyAttackQueue: this.enemyAttackQueue }, sessionId, enemy);
     }
     this.broadcaster.broadcast(sessionId, "ENEMY_SPAWN", { enemies, placeId });
 
@@ -49,13 +43,10 @@ export class SpawnService {
     const enemies = Object.values(await this.enemyState.loadAll(sessionId))
       .filter((e) => e && e.placeId === placeId && e.hp > 0);
     for (const enemy of enemies) {
-      const [minDelay, maxDelay] = enemy.attackDelayRange || [1000, 3000];
-      const delay = minDelay + Math.random() * (maxDelay - minDelay);
-      await this.enemyAttackQueue.add(
-        "enemy-attack",
-        { sessionId, enemyId: enemy.id },
-        { delay: Math.round(delay) },
-      );
+      await scheduleEnemyAttack({ enemyState: this.enemyState, enemyAttackQueue: this.enemyAttackQueue }, sessionId, enemy);
+    }
+    if (enemies.length > 0) {
+      this.broadcaster.broadcast(sessionId, "ENEMY_SPAWN", { enemies, placeId });
     }
     return enemies.length;
   }

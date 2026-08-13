@@ -11,7 +11,7 @@ export const enemyCatalog = {
 		wisdom: 0,
 		damageType: "physical",
 		speed: 1.2,
-		attackDelayRange: [100, 200],
+		attackDelayRange: [2000, 5000],
 		attackPattern: "staggered",
 	},
 	woodland_predator: {
@@ -26,7 +26,7 @@ export const enemyCatalog = {
 		wisdom: 0,
 		damageType: "physical",
 		speed: 1.5,
-		attackDelayRange: [100, 600],
+		attackDelayRange: [2000, 5000],
 		attackPattern: "staggered",
 	},
 	trained_hunters: {
@@ -41,7 +41,7 @@ export const enemyCatalog = {
 		wisdom: 0,
 		damageType: "ranged",
 		speed: 1.0,
-		attackDelayRange: [300, 500],
+		attackDelayRange: [2000, 5000],
 		attackPattern: "staggered",
 	},
 	ruins_undead: {
@@ -56,7 +56,7 @@ export const enemyCatalog = {
 		wisdom: 2,
 		damageType: "physical",
 		speed: 0.8,
-		attackDelayRange: [200, 600],
+		attackDelayRange: [2000, 5000],
 		attackPattern: "staggered",
 	},
 };

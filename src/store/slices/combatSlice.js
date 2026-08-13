@@ -15,13 +15,10 @@ const combatSlice = createSlice({
     stopCombat(state) {
       state.isInCombat = false;
     },
-    setTarget(state, action) {
-      state.targetEnemyId = action.payload;
-    },
   },
 });
 
-export const { setCombatState, startCombat, stopCombat, setTarget } = combatSlice.actions;
+export const { setCombatState, startCombat, stopCombat } = combatSlice.actions;
 export default combatSlice.reducer;
 
 export const selectIsInCombat = (state) => state.combat.isInCombat;

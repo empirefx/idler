@@ -485,4 +485,70 @@ describe("CombatService", () => {
     expect(ctx.playerAttackQueue.remove).toHaveBeenCalledWith("atk-1");
     expect(ctx.playerAttackQueue.remove).toHaveBeenCalledWith("sk-1");
   });
+
+  it("resolveAttackTarget returns the locked target while it is alive", async () => {
+    seedPlayer(ctx.redis, SID, { autoCombat: true, targetEnemyId: "e1" });
+    seedEnemy(ctx.redis, SID, "e1", { hp: 30 });
+    seedEnemy(ctx.redis, SID, "e2", { hp: 30 });
+
+    const target = await ctx.cs.resolveAttackTarget(SID, "forest_edge");
+    expect(target.id).toBe("e1");
+    expect(ctx.broadcaster.broadcast).not.toHaveBeenCalledWith(SID, "DIFF", { path: "player.targetEnemyId", data: "e1" });
+  });
+
+  it("resolveAttackTarget falls back to a random enemy when the lock is stale and broadcasts the change", async () => {
+    seedPlayer(ctx.redis, SID, { autoCombat: true, targetEnemyId: "gone" });
+    seedEnemy(ctx.redis, SID, "e1", { hp: 30 });
+
+    const target = await ctx.cs.resolveAttackTarget(SID, "forest_edge");
+    expect(target.id).toBe("e1");
+    const player = await ctx.playerState.load(SID);
+    expect(player.targetEnemyId).toBe("e1");
+    expect(ctx.broadcaster.broadcast).toHaveBeenCalledWith(SID, "DIFF", { path: "player.targetEnemyId", data: "e1" });
+  });
+
+  it("resolveAttackTarget returns null when no alive enemies", async () => {
+    seedPlayer(ctx.redis, SID, { autoCombat: true });
+    expect(await ctx.cs.resolveAttackTarget(SID, "forest_edge")).toBeNull();
+  });
+
+  it("stopAutoCombat keeps the target lock", async () => {
+    seedPlayer(ctx.redis, SID, { autoCombat: true, targetEnemyId: "e1" });
+    await ctx.cs.stopAutoCombat(SID);
+    const player = await ctx.playerState.load(SID);
+    expect(player.autoCombat).toBe(false);
+    expect(player.targetEnemyId).toBe("e1");
+    expect(ctx.broadcaster.broadcast).not.toHaveBeenCalledWith(SID, "DIFF", { path: "player.targetEnemyId", data: null });
+  });
+
+  it("handleEnemyAttack keeps the target lock when the player dies", async () => {
+    seedPlayer(ctx.redis, SID, { hp: 10, targetEnemyId: "e1", attackJobId: "atk-1" });
+    seedEnemy(ctx.redis, SID, "e1", { strength: 50, attack: 50, agility: 10 });
+    await ctx.cs.handleEnemyAttack(SID, "e1");
+    const player = await ctx.playerState.load(SID);
+    expect(player.isDead).toBe(true);
+    expect(player.targetEnemyId).toBe("e1");
+    expect(ctx.broadcaster.broadcast).not.toHaveBeenCalledWith(SID, "DIFF", { path: "player.targetEnemyId", data: null });
+  });
+
+  it("revive keeps the lock and resolveAttackTarget re-locks the surviving enemy", async () => {
+    seedPlayer(ctx.redis, SID, { hp: 0, isDead: true, autoCombat: true, targetEnemyId: "e1" });
+    seedEnemy(ctx.redis, SID, "e1", { hp: 30 });
+    await ctx.cs.revive(SID);
+    const player = await ctx.playerState.load(SID);
+    expect(player.targetEnemyId).toBe("e1");
+    const target = await ctx.cs.resolveAttackTarget(SID, "forest_edge");
+    expect(target.id).toBe("e1");
+  });
+
+  it("revive re-seeds enemy attacks and broadcasts ENEMY_SPAWN with fresh countdowns", async () => {
+    seedPlayer(ctx.redis, SID, { hp: 0, isDead: true, autoCombat: false });
+    seedEnemy(ctx.redis, SID, "e1", { hp: 30 });
+    await ctx.cs.revive(SID);
+    const spawnCall = ctx.broadcaster.broadcast.mock.calls.find(([, type]) => type === "ENEMY_SPAWN");
+    expect(spawnCall).toBeDefined();
+    const payload = spawnCall[2];
+    expect(payload.enemies[0].nextAttackAt).toBeGreaterThan(Date.now());
+    expect(payload.enemies[0].nextAttackDelay).toBeGreaterThan(0);
+  });
 });
