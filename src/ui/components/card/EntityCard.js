@@ -8,7 +8,6 @@ import useEnemyCountdown from "../../hooks/useEnemyCountdown";
 const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	const targetId = useSelector((s) => s.player?.targetEnemyId);
 	const playerId = useSelector((s) => s.player?.id);
-	const isTargeted = entity?.id === targetId;
 
 	const { remaining, nextAttackAt, nextAttackDelay } = useEnemyCountdown(entity);
 
@@ -45,6 +44,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 
 	const isStaggered = attackPattern === "staggered";
 	const isDead = hp <= 0 || entity.isDead;
+	const isTargeted = !isDead && entity?.id === targetId;
 
 	const handleClick = () => {
 		if (isDead || entity.id === playerId) return;

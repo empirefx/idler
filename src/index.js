@@ -10,7 +10,7 @@ import { buildingsToSocketUpdates } from "./store/buildingsToSocketUpdates";
 import { setQuests, questAccepted, questCompleted, updateQuest } from "./store/slices/questSlice";
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
-import { setEnemies, addEnemy, removeEnemy, updateEnemy } from "./store/slices/enemiesSlice";
+import { setEnemies, addEnemy, removeEnemy, updateEnemy, spawnEnemies } from "./store/slices/enemiesSlice";
 import { addLog } from "./store/slices/logSlice";
 import { setWs, sendWsMessage } from "./store/ws";
 import { decode, PROTOCOL_VERSION } from "../shared/protocol.js";
@@ -72,7 +72,8 @@ const mountGame = (sessionId) => {
 					store.dispatch({ type: "enemies/damageEnemy", payload: { id: d.enemyId, amount: d.damageDealt } });
 				}
 				if (d.enemyDead) {
-					store.dispatch(removeEnemy({ id: d.enemyId }));
+					store.dispatch(updateEnemy({ id: d.enemyId, hp: 0, isDead: true }));
+					setTimeout(() => store.dispatch(removeEnemy({ id: d.enemyId })), 1700);
 					if (d.expGained !== undefined) store.dispatch(setPlayerExp(d.expGained));
 					if (d.goldGained !== undefined) store.dispatch(addGold(d.goldGained));
 				}
@@ -105,7 +106,7 @@ const mountGame = (sessionId) => {
 				if (quests) store.dispatch(setQuests(quests));
 				if (enemies) {
 					const byId = typeof enemies.byId !== "undefined" ? enemies : Object.keys(enemies).reduce((acc, id) => { acc[id] = enemies[id]; return acc; }, {});
-					store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
+					store.dispatch(setEnemies({ byId, allIds: Object.keys(byId), placeId: player?.currentPlaceId }));
 				}
 				store.dispatch(setPlaces(placesData));
 					applySockets(data.data.sockets);
@@ -126,11 +127,10 @@ const mountGame = (sessionId) => {
 				break;
 			}
 			case "ENEMY_SPAWN": {
-				const { enemies } = data.data;
+				const { enemies, placeId } = data.data;
 				store.dispatch({ type: "ENEMY_SPAWN", payload: data.data });
 				if (enemies) {
-					const byId = Object.fromEntries(enemies.map((e) => [e.id, e]));
-					store.dispatch(setEnemies({ byId, allIds: enemies.map((e) => e.id) }));
+					store.dispatch(spawnEnemies({ enemies, placeId }));
 				}
 				break;
 			}
@@ -216,7 +216,7 @@ const joinGame = () => {
 			if (quests) store.dispatch(setQuests(quests));
 			if (enemies) {
 				const byId = Object.keys(enemies).reduce((acc, id) => { acc[id] = enemies[id]; return acc; }, {});
-				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
+				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId), placeId: player?.currentPlaceId }));
 			}
 			store.dispatch(setPlaces(placesData));
 				applySockets(data.data.sockets);
@@ -266,7 +266,7 @@ if (cachedSessionId && cachedNickname) {
 			if (quests) store.dispatch(setQuests(quests));
 			if (enemies) {
 				const byId = Object.keys(enemies).reduce((acc, id) => { acc[id] = enemies[id]; return acc; }, {});
-				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId) }));
+				store.dispatch(setEnemies({ byId, allIds: Object.keys(byId), placeId: player?.currentPlaceId }));
 			}
 			store.dispatch(setPlaces(placesData));
 				applySockets(data.data.sockets);
