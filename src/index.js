@@ -11,6 +11,7 @@ import { setQuests, questAccepted, questCompleted, updateQuest } from "./store/s
 import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
 import { setEnemies, addEnemy, removeEnemy, updateEnemy, spawnEnemies } from "./store/slices/enemiesSlice";
+import { setPresent, setPokedBy } from "./store/slices/playersSlice";
 import { addLog } from "./store/slices/logSlice";
 import { setWs, sendWsMessage } from "./store/ws";
 import { decode, PROTOCOL_VERSION } from "../shared/protocol.js";
@@ -164,6 +165,30 @@ const mountGame = (sessionId) => {
 			case "NOTIFICATION":
 				store.dispatch(addNotification(data.data?.message || "Notification", data.data?.type || "info"));
 				break;
+			case "PRESENCE_UPDATE":
+				store.dispatch(setPresent(data.data?.players || []));
+				break;
+			case "POKED": {
+				const d = data.data;
+				store.dispatch(addLog({ message: `${d?.fromNickname || "Someone"} poked you!`, category: "default" }));
+				if (d?.fromNickname) {
+					store.dispatch(setPokedBy(d.fromNickname));
+				}
+				break;
+			}
+			case "POKE_ACK": {
+				const d = data.data;
+				if (d?.ok) {
+					store.dispatch(addLog({ message: `You poked ${d.targetNickname}`, category: "default" }));
+				} else if (d?.reason === "RATE_LIMITED") {
+					store.dispatch(addLog({ message: "You're poking too fast.", category: "default" }));
+				} else if (d?.reason === "NOT_IN_PLACE") {
+					store.dispatch(addLog({ message: `${d.targetNickname || "That player"} is not here anymore.`, category: "default" }));
+				} else {
+					store.dispatch(addLog({ message: "That player is gone.", category: "default" }));
+				}
+				break;
+			}
 			case "ERROR":
 				store.dispatch(addNotification(data.data?.message || data.message || "Server error", "error"));
 				break;

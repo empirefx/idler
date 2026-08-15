@@ -9,9 +9,9 @@ import BuildingSection from "../components/sections/BuildingSection";
 import CraftingSection from "../components/sections/CraftingSection";
 import EnemySection from "../components/sections/EnemySection";
 import LogSection from "../components/sections/LogSection";
-import NPCSection from "../components/sections/NPCSection";
 import PlacesSection from "../components/sections/PlacesSection";
 import PlayerSection from "../components/sections/PlayerSection";
+import SocialColumnSection from "../components/sections/SocialColumnSection";
 import WorkerManagerSection from "../components/sections/WorkerManagerSection";
 import WorkersSection from "../components/sections/WorkersSection";
 import { useUIVisibility } from "../UIVisibilityContext";
@@ -51,7 +51,7 @@ const GameLayout = ({ clearCache }) => {
 				<WorkersSection />
 				<BuildingSection />
 				<EnemySection />
-				<NPCSection />
+				<SocialColumnSection />
 				<PlacesSection />
 				<LogSection />
 			</main>

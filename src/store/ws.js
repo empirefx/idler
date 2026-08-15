@@ -46,3 +46,7 @@ export function spendSkillPoint(skillId) {
 export function levelUp(bonuses) {
 	sendWsMessage({ type: "LEVEL_UP", bonuses });
 }
+
+export function poke(targetNickname) {
+	sendWsMessage({ type: "POKE", targetNickname });
+}

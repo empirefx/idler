@@ -42,6 +42,9 @@ describe("client -> server round trips", () => {
 	it("SET_TARGET is a registered client message", () => {
 		expect(decode(encode("SET_TARGET", { enemyId: "e1" })).type).toBe("SET_TARGET");
 	});
+	it("POKE", () => {
+		expect(roundTrip("POKE", { targetNickname: "Hero" }).targetNickname).toBe("Hero");
+	});
 	it("LEVEL_UP with bonuses", () => {
 		const data = roundTrip("LEVEL_UP", { bonuses: { strength: 1, defense: 0, agility: 2, vitality: 0, intelligence: 0, wisdom: 0 } });
 		expect(data.bonuses).toMatchObject({ strength: 1, agility: 2, defense: 0 });
@@ -89,6 +92,29 @@ describe("server -> client round trips", () => {
 	});
 	it("USE_RESULT", () => {
 		expect(roundTrip("USE_RESULT", { success: true, message: "used" })).toMatchObject({ success: true });
+	});
+	it("PRESENCE_UPDATE", () => {
+		const data = roundTrip("PRESENCE_UPDATE", {
+			placeId: "village_center",
+			players: [{ nickname: "Hero", level: 1, avatar: "1.png", enteredAt: 1234 }],
+		});
+		expect(data.placeId).toBe("village_center");
+		expect(data.players[0]).toMatchObject({ nickname: "Hero", level: 1, avatar: "1.png", enteredAt: 1234 });
+	});
+	it("PRESENCE_UPDATE empty players", () => {
+		expect(roundTrip("PRESENCE_UPDATE", { placeId: "village_center", players: [] }).players).toEqual([]);
+	});
+	it("POKED", () => {
+		expect(roundTrip("POKED", { fromNickname: "Hero", fromAvatar: "1.png" })).toMatchObject({
+			fromNickname: "Hero",
+			fromAvatar: "1.png",
+		});
+	});
+	it("POKE_ACK success", () => {
+		expect(roundTrip("POKE_ACK", { ok: true, targetNickname: "Hero" })).toMatchObject({ ok: true, targetNickname: "Hero" });
+	});
+	it("POKE_ACK failure", () => {
+		expect(roundTrip("POKE_ACK", { ok: false, reason: "RATE_LIMITED" })).toMatchObject({ ok: false, reason: "RATE_LIMITED" });
 	});
 	it("ENEMY_ATTACK", () => {
 		expect(

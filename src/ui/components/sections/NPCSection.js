@@ -22,11 +22,7 @@ const NPCSection = () => {
 	}
 	return (
 		<section className="npc-section">
-			<div className="npc-section-content">
-				<div className="npcs-grid">
-					<NPCList npcs={npcs} onNPCClick={handleNPCClick} />
-				</div>
-			</div>
+			<NPCList npcs={npcs} onNPCClick={handleNPCClick} />
 		</section>
 	);
 };

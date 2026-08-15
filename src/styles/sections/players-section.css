@@ -1,0 +1,144 @@
+.players-section {
+	border: 1px var(--color-gray-dark) solid;
+	margin: 20px auto;
+	border-radius: 6px;
+	background-color: var(--color-dark);
+}
+
+.player-presence-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.player-presence-card {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: transform 0.2s;
+}
+
+.player-presence-card::after {
+	content: "";
+	position: absolute;
+	top: 0px;
+	bottom: -30px;
+	right: 100%;
+	width: 15px;
+	height: 48px;
+}
+
+.player-presence-card:hover {
+	transform: translateY(-2px);
+}
+
+.player-presence-avatar {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 2px solid rgb(255 255 255 / 30%);
+	transform: scale(0.8);
+}
+
+.player-presence-card.poked .player-presence-avatar {
+	animation: player-presence-poke 1s ease;
+}
+@keyframes player-presence-poke {
+	0% {
+		box-shadow: 0 0 0 0 rgb(255 255 255 / 60%);
+	}
+	40% {
+		box-shadow: 0 0 12px 6px rgb(255 255 255 / 45%);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
+	}
+}
+
+.player-presence-info {
+	position: absolute;
+	right: 60px;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: black;
+	padding: var(--spacing-sm);
+	border-radius: var(--border-radius-sm);
+	box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+	width: 200px;
+	z-index: 10;
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.2s,
+		visibility 0.2s;
+	pointer-events: none;
+}
+
+.player-presence-info::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: -12px;
+	transform: translateY(-50%);
+	width: 0;
+	height: 0;
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-left: 20px solid black; /* matches .player-presence-info background */
+}
+
+.player-presence-card:hover .player-presence-info {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.player-presence-info-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: 8px 12px;
+}
+
+.player-presence-nickname {
+	font-family: var(--font-family-secondary);
+	font-size: 1rem;
+	font-weight: bold;
+	color: white;
+}
+
+.player-presence-level {
+	font-size: 0.8rem;
+	color: var(--color-secondary);
+}
+
+.poke-button {
+	display: block;
+	width: 100%;
+	padding: 6px;
+	background: #4a4943;
+	color: white;
+	border: 1px solid rgb(255 255 255 / 20%);
+	border-radius: var(--border-radius-sm);
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.poke-button:hover {
+	background: #5a594f;
+}
+
+.no-players-message {
+	color: var(--color-gray-dark);
+	font-size: 0.8rem;
+	margin: 4px 0;
+	text-align: center;
+}
+
+.players-icon-placeholder {
+	border-radius: 6px;
+	margin: 10px auto;
+	color: var(--color-gray-dark);
+}

@@ -5,7 +5,7 @@ export const sessionHandlers = [
   {
     type: "JOIN",
     async handler(ctx, msg) {
-      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService } = ctx;
+      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService, presenceService, broadcaster } = ctx;
       if (msg.protocolVersion !== PROTOCOL_VERSION) {
         send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
         logger.log(`JOIN: ${msg.nickname} protocol mismatch`, "WS");
@@ -21,6 +21,10 @@ export const sessionHandlers = [
         const fullState = await sessionManager.loadFullState(connection.sessionId);
         send(ws, "STATE_SYNC", { sessionId: connection.sessionId, ...fullState });
         const player = await playerState.load(connection.sessionId);
+        if (connection.closed) return;
+        const placeId = player?.currentPlaceId || "village_center";
+        presenceService.register(connection.sessionId, connection.nickname, placeId);
+        await presenceService.broadcastPlace(placeId, broadcaster, playerState);
         if (player?.currentPlaceId) {
           await spawnService.resumeEnemyAttacks(connection.sessionId, player.currentPlaceId);
         }
@@ -35,7 +39,7 @@ export const sessionHandlers = [
   {
     type: "RESUME",
     async handler(ctx, msg) {
-      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService } = ctx;
+      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService, presenceService, broadcaster } = ctx;
       if (msg.protocolVersion !== PROTOCOL_VERSION) {
         send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
         logger.log(`RESUME: ${msg.nickname} protocol mismatch`, "WS");
@@ -51,6 +55,10 @@ export const sessionHandlers = [
         const fullState = await sessionManager.loadFullState(connection.sessionId);
         send(ws, "STATE_SYNC", { sessionId: connection.sessionId, ...fullState });
         const player = await playerState.load(connection.sessionId);
+        if (connection.closed) return;
+        const placeId = player?.currentPlaceId || "village_center";
+        presenceService.register(connection.sessionId, connection.nickname, placeId, { refresh: true });
+        await presenceService.broadcastPlace(placeId, broadcaster, playerState);
         if (player?.currentPlaceId) {
           await spawnService.resumeEnemyAttacks(connection.sessionId, player.currentPlaceId);
         }

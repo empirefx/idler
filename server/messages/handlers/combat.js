@@ -48,13 +48,18 @@ export const combatHandlers = [
   {
     type: "NAVIGATE",
     async handler(ctx, msg) {
-      const { ws, sessionId, send, playerState, combatService, navigationService, spawnService } = ctx;
+      const { ws, sessionId, send, playerState, combatService, navigationService, spawnService, presenceService, broadcaster } = ctx;
       const player = await playerState.load(sessionId);
       if (player?.autoCombat) {
         await combatService.stopAutoCombat(sessionId);
       }
       const result = await navigationService.navigate(sessionId, msg.placeId);
       await spawnService.cleanupPlace(sessionId, result.previousPlaceId);
+      const moved = presenceService.move(sessionId, msg.placeId);
+      if (moved && moved.from !== moved.to) {
+        await presenceService.broadcastPlace(moved.from, broadcaster, playerState);
+        await presenceService.broadcastPlace(moved.to, broadcaster, playerState);
+      }
       send(ws, "DIFF", { path: "player.currentPlaceId", value: msg.placeId });
       await spawnService.triggerSpawn(sessionId, msg.placeId);
     },

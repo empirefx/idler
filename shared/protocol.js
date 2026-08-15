@@ -8,6 +8,7 @@ import {
 	BuyWorkerSlot, BuyItem, SellItem, AcceptQuest, CompleteQuest, MoveItem, EquipItem,
 	UnequipItem, UseItemRequest, StateSync, Diff, PlayerStats, CombatDiff, EnemyAttack,
 	EnemySpawn, ProductionTick, QuestUpdate, InventoryUpdate, Notification, TradeResult, UseResult,
+	PresenceUpdate, PokeRequest, Poked, PokeAck,
 } from "../proto/game.mjs";
 
 export const PROTOCOL_VERSION = 1;
@@ -142,6 +143,7 @@ const codecs = {
 	EQUIP_ITEM: simple(EquipItem, { encode: encodeWithStringItemId(EquipItem) }),
 	UNEQUIP_ITEM: simple(UnequipItem),
 	USE_ITEM: simple(UseItemRequest, { encode: encodeWithStringItemId(UseItemRequest) }),
+	POKE: simple(PokeRequest),
 	// server -> client
 	STATE_SYNC: { encode: encodeStateSync, decode: decodeStateSync },
 	DIFF: { encode: encodeDiff, decode: decodeDiff },
@@ -154,6 +156,9 @@ const codecs = {
 	NOTIFICATION: simple(Notification),
 	TRADE_RESULT: simple(TradeResult),
 	USE_RESULT: simple(UseResult),
+	PRESENCE_UPDATE: simple(PresenceUpdate),
+	POKED: simple(Poked),
+	POKE_ACK: simple(PokeAck),
 	ERROR: simple(ErrorResponse),
 };
 
@@ -162,11 +167,13 @@ export const CLIENT_MESSAGES = Object.freeze([
 	"BUY_SOCKET", "BUILD", "UPGRADE_BUILDING", "DEMOLISH", "ASSIGN_WORKER", "UNASSIGN_WORKER",
 	"FIRE_WORKER", "CRAFT", "HIRE_WORKER", "REROLL_WORKERS", "BUY_WORKER_SLOT", "BUY_ITEM",
 	"SELL_ITEM", "ACCEPT_QUEST", "COMPLETE_QUEST", "MOVE_ITEM", "EQUIP_ITEM", "UNEQUIP_ITEM", "USE_ITEM",
+	"POKE",
 ]);
 
 export const SERVER_MESSAGES = Object.freeze([
 	"STATE_SYNC", "DIFF", "COMBAT_DIFF", "ENEMY_ATTACK", "ENEMY_SPAWN", "INVENTORY_UPDATE",
 	"PRODUCTION_TICK", "QUEST_UPDATE", "NOTIFICATION", "TRADE_RESULT", "USE_RESULT", "ERROR",
+	"PRESENCE_UPDATE", "POKED", "POKE_ACK",
 ]);
 
 export function encode(type, payload = {}) {

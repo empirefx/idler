@@ -31,6 +31,7 @@ describe("WebSocket handler", () => {
 			skillsService: { spendSkillPoint: vi.fn() },
 			spawnService: { triggerSpawn: vi.fn(), resumeEnemyAttacks: vi.fn(), cleanupPlace: vi.fn() },
 			navigationService: { navigate: vi.fn() },
+			presenceService: { register: vi.fn(), unregister: vi.fn(), move: vi.fn(), get: vi.fn(), getByNickname: vi.fn(), canPoke: vi.fn(), recordPoke: vi.fn(), broadcastPlace: vi.fn() },
 		};
 		mockBroadcaster = { setSendFn: vi.fn(), broadcast: vi.fn() };
 		mockInventoryState = { load: vi.fn(), save: vi.fn(), loadAll: vi.fn() };
@@ -280,6 +281,67 @@ describe("WebSocket handler", () => {
 		await closeHandler();
 
 		expect(mockServices.productionService.pauseAll).toHaveBeenCalledWith("s1");
+	});
+
+	it("JOIN registers presence in the player's place and broadcasts the place list", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({ currentPlaceId: "village_center", level: 1 });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+
+		expect(mockServices.presenceService.register).toHaveBeenCalledWith("s1", "tester", "village_center");
+		expect(mockServices.presenceService.broadcastPlace).toHaveBeenCalledWith("village_center", mockBroadcaster, mockPlayerState);
+	});
+
+	it("NAVIGATE moves presence and broadcasts the old and new place lists", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({ autoCombat: false, currentPlaceId: "place-1" });
+		mockServices.navigationService.navigate.mockResolvedValue({ currentPlaceId: "place-2", previousPlaceId: "place-1" });
+		mockServices.presenceService.move.mockReturnValue({ from: "place-1", to: "place-2" });
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		await conn.send({ type: "NAVIGATE", placeId: "place-2" });
+
+		expect(mockServices.presenceService.move).toHaveBeenCalledWith("s1", "place-2");
+		expect(mockServices.presenceService.broadcastPlace).toHaveBeenCalledWith("place-1", mockBroadcaster, mockPlayerState);
+		expect(mockServices.presenceService.broadcastPlace).toHaveBeenCalledWith("place-2", mockBroadcaster, mockPlayerState);
+	});
+
+	it("closing the connection unregisters presence and broadcasts the remaining place list", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		mockServices.presenceService.unregister.mockReturnValue("village_center");
+		const conn = connect();
+
+		await conn.send({ type: "JOIN", nickname: "tester" });
+		const closeHandler = conn.fakeWs.on.mock.calls.find(([evt]) => evt === "close")?.[1];
+		await closeHandler();
+
+		expect(mockServices.presenceService.unregister).toHaveBeenCalledWith("s1");
+		expect(mockServices.presenceService.broadcastPlace).toHaveBeenCalledWith("village_center", mockBroadcaster, mockPlayerState);
+	});
+
+	it("does not register presence when the socket closes mid-JOIN", async () => {
+		mockSessionManager.createSession.mockResolvedValue({ accepted: true, session_id: "s1" });
+		mockSessionManager.initializeFullState.mockResolvedValue();
+		mockSessionManager.loadFullState.mockResolvedValue({});
+		mockPlayerState.load.mockResolvedValue({});
+		const conn = connect();
+
+		const joinPromise = conn.send({ type: "JOIN", nickname: "tester" });
+		const closeHandler = conn.fakeWs.on.mock.calls.find(([evt]) => evt === "close")?.[1];
+		await closeHandler();
+		await joinPromise;
+
+		expect(mockServices.presenceService.register).not.toHaveBeenCalled();
 	});
 
   it("BUY_SOCKET broadcasts gold and sockets DIFFs", async () => {

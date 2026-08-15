@@ -7,6 +7,7 @@ import { craftingHandlers } from "./handlers/crafting.js";
 import { tradeHandlers } from "./handlers/trade.js";
 import { questHandlers } from "./handlers/quests.js";
 import { inventoryHandlers } from "./handlers/inventory.js";
+import { presenceHandlers } from "./handlers/presence.js";
 
 export function createMessageRegistry() {
   const handlers = new Map();
@@ -35,6 +36,7 @@ for (const { type, handler } of [
   ...tradeHandlers,
   ...questHandlers,
   ...inventoryHandlers,
+  ...presenceHandlers,
 ]) {
   messageRegistry.register(type, handler);
 }

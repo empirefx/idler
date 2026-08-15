@@ -213,6 +213,7 @@ message EquipItem { string inventoryId = 1; string itemId = 2; }
 message UnequipItem { string inventoryId = 1; string slot = 2; }
 message UseItemRequest { string itemId = 1; }
 message SetTargetRequest { string enemyId = 1; }
+message PokeRequest { string targetNickname = 1; }
 
 // ===== Server -> Client =====
 
@@ -317,4 +318,27 @@ message TradeResult {
 message UseResult {
   bool success = 1;
   string message = 2;
+}
+
+message PresencePlayer {
+  string nickname = 1;
+  int32 level = 2;
+  string avatar = 3;
+  int64 enteredAt = 4;
+}
+
+message PresenceUpdate {
+  string placeId = 1;
+  repeated PresencePlayer players = 2;
+}
+
+message Poked {
+  string fromNickname = 1;
+  string fromAvatar = 2;
+}
+
+message PokeAck {
+  bool ok = 1;
+  string targetNickname = 2;
+  string reason = 3;
 }

@@ -22,6 +22,7 @@ import { QuestService } from "./services/QuestService.js";
 import { SkillsService } from "./services/SkillsService.js";
 import { SpawnService } from "./services/SpawnService.js";
 import { NavigationService } from "./services/NavigationService.js";
+import { PresenceService } from "./services/PresenceService.js";
 import { createCombatEventBus } from "./game/combat/combatEvents.js";
 import { InventoryHandler } from "./inventory.js";
 import { createProductionWorker } from "./processors/productionProcessor.js";
@@ -63,6 +64,7 @@ async function main() {
   const skillsService = new SkillsService(redis, playerState, inventoryState, broadcaster);
   const spawnService = new SpawnService(redis, enemyState, queues.spawnQueue, queues.enemyAttackQueue, queues.playerAttackQueue, playerState, broadcaster);
   const navigationService = new NavigationService(redis);
+  const presenceService = new PresenceService();
   const inventoryHandler = new InventoryHandler(redis, logger);
 
   createProductionWorker(productionService, config.redis);
@@ -87,6 +89,7 @@ async function main() {
     playerState,
     inventoryState,
     enemyState,
+    presenceService,
     broadcaster,
     logger,
   });

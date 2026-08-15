@@ -8,6 +8,7 @@ import logReducer from "./slices/logSlice";
 import notificationReducer from "./slices/notificationSlice";
 import npcReducer from "./slices/npcSlice";
 import placesReducer from "./slices/placesSlice";
+import playersReducer from "./slices/playersSlice";
 import playerReducer from "./slices/playerSlice";
 import questsReducer from "./slices/questSlice";
 import { setPlayerGold, setPlayerHp, setPlayerExp, setPlayerLevel, setCurrentPlace, setPlayerState } from "./slices/playerSlice";
@@ -70,6 +71,7 @@ export const store = configureStore({
     places: placesReducer,
     inventory: inventoryReducer,
     npcs: npcReducer,
+    players: playersReducer,
     enemies: enemiesReducer,
     combat: combatReducer,
     logs: logReducer,

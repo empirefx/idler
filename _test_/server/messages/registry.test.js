@@ -16,7 +16,7 @@ describe("messageRegistry", () => {
     expect(reg.has("NOPE")).toBe(false);
   });
 
-  it("registers all 27 client message types", () => {
+  it("registers all 28 client message types", () => {
     const expected = [
       "JOIN", "RESUME",
       "TOGGLE_AUTO_COMBAT", "SET_TARGET", "REVIVE", "SPEND_SKILL_POINT", "LEVEL_UP", "NAVIGATE",
@@ -26,8 +26,9 @@ describe("messageRegistry", () => {
       "BUY_ITEM", "SELL_ITEM", "USE_ITEM",
       "ACCEPT_QUEST", "COMPLETE_QUEST",
       "MOVE_ITEM", "EQUIP_ITEM", "UNEQUIP_ITEM",
+      "POKE",
     ];
-    expect(expected).toHaveLength(27);
+    expect(expected).toHaveLength(28);
     for (const type of expected) {
       expect(messageRegistry.has(type), type).toBe(true);
     }

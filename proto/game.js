@@ -17077,6 +17077,266 @@ export const game = $root.game = (() => {
         return SetTargetRequest;
     })();
 
+    game.PokeRequest = (function() {
+
+        /**
+         * Properties of a PokeRequest.
+         * @typedef {Object} game.PokeRequest.$Properties
+         * @property {string|null} [targetNickname] PokeRequest targetNickname
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PokeRequest.
+         * @memberof game
+         * @interface IPokeRequest
+         * @augments game.PokeRequest.$Properties
+         * @deprecated Use game.PokeRequest.$Properties instead.
+         */
+
+        /**
+         * Shape of a PokeRequest.
+         * @typedef {game.PokeRequest.$Properties} game.PokeRequest.$Shape
+         */
+
+        /**
+         * Constructs a new PokeRequest.
+         * @memberof game
+         * @classdesc Represents a PokeRequest.
+         * @constructor
+         * @param {game.PokeRequest.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PokeRequest = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PokeRequest targetNickname.
+         * @member {string} targetNickname
+         * @memberof game.PokeRequest
+         * @instance
+         */
+        PokeRequest.prototype.targetNickname = "";
+
+        /**
+         * Creates a new PokeRequest instance using the specified properties.
+         * @function create
+         * @memberof game.PokeRequest
+         * @static
+         * @param {game.PokeRequest.$Properties=} [properties] Properties to set
+         * @returns {game.PokeRequest} PokeRequest instance
+         * @type {{
+         *   (properties: game.PokeRequest.$Shape): game.PokeRequest & game.PokeRequest.$Shape;
+         *   (properties?: game.PokeRequest.$Properties): game.PokeRequest;
+         * }}
+         */
+        PokeRequest.create = function(properties) {
+            return new PokeRequest(properties);
+        };
+
+        /**
+         * Encodes the specified PokeRequest message. Does not implicitly {@link game.PokeRequest.verify|verify} messages.
+         * @function encode
+         * @memberof game.PokeRequest
+         * @static
+         * @param {game.PokeRequest.$Properties} message PokeRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PokeRequest.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.targetNickname != null && $Object.hasOwnProperty.call(message, "targetNickname") && message.targetNickname !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.targetNickname);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PokeRequest message, length delimited. Does not implicitly {@link game.PokeRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PokeRequest
+         * @static
+         * @param {game.PokeRequest.$Properties} message PokeRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PokeRequest.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PokeRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PokeRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PokeRequest & game.PokeRequest.$Shape} PokeRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PokeRequest.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PokeRequest(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.targetNickname = value;
+                        else
+                            delete message.targetNickname;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PokeRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PokeRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PokeRequest & game.PokeRequest.$Shape} PokeRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PokeRequest.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PokeRequest message.
+         * @function verify
+         * @memberof game.PokeRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PokeRequest.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.targetNickname != null && $Object.hasOwnProperty.call(message, "targetNickname"))
+                if (!$util.isString(message.targetNickname))
+                    return "targetNickname: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a PokeRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PokeRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PokeRequest} PokeRequest
+         */
+        PokeRequest.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PokeRequest)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PokeRequest: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PokeRequest();
+            if (object.targetNickname != null)
+                if (typeof object.targetNickname !== "string" || object.targetNickname.length)
+                    message.targetNickname = $String(object.targetNickname);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PokeRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PokeRequest
+         * @static
+         * @param {game.PokeRequest} message PokeRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PokeRequest.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults)
+                object.targetNickname = "";
+            if (message.targetNickname != null && $Object.hasOwnProperty.call(message, "targetNickname"))
+                object.targetNickname = message.targetNickname;
+            return object;
+        };
+
+        /**
+         * Converts this PokeRequest to JSON.
+         * @function toJSON
+         * @memberof game.PokeRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PokeRequest.prototype.toJSON = function() {
+            return PokeRequest.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PokeRequest
+         * @function getTypeUrl
+         * @memberof game.PokeRequest
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PokeRequest.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PokeRequest";
+        };
+
+        return PokeRequest;
+    })();
+
     game.StateSync = (function() {
 
         /**
@@ -22480,6 +22740,1286 @@ export const game = $root.game = (() => {
         };
 
         return UseResult;
+    })();
+
+    game.PresencePlayer = (function() {
+
+        /**
+         * Properties of a PresencePlayer.
+         * @typedef {Object} game.PresencePlayer.$Properties
+         * @property {string|null} [nickname] PresencePlayer nickname
+         * @property {number|null} [level] PresencePlayer level
+         * @property {string|null} [avatar] PresencePlayer avatar
+         * @property {number|Long|null} [enteredAt] PresencePlayer enteredAt
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PresencePlayer.
+         * @memberof game
+         * @interface IPresencePlayer
+         * @augments game.PresencePlayer.$Properties
+         * @deprecated Use game.PresencePlayer.$Properties instead.
+         */
+
+        /**
+         * Shape of a PresencePlayer.
+         * @typedef {game.PresencePlayer.$Properties} game.PresencePlayer.$Shape
+         */
+
+        /**
+         * Constructs a new PresencePlayer.
+         * @memberof game
+         * @classdesc Represents a PresencePlayer.
+         * @constructor
+         * @param {game.PresencePlayer.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PresencePlayer = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PresencePlayer nickname.
+         * @member {string} nickname
+         * @memberof game.PresencePlayer
+         * @instance
+         */
+        PresencePlayer.prototype.nickname = "";
+
+        /**
+         * PresencePlayer level.
+         * @member {number} level
+         * @memberof game.PresencePlayer
+         * @instance
+         */
+        PresencePlayer.prototype.level = 0;
+
+        /**
+         * PresencePlayer avatar.
+         * @member {string} avatar
+         * @memberof game.PresencePlayer
+         * @instance
+         */
+        PresencePlayer.prototype.avatar = "";
+
+        /**
+         * PresencePlayer enteredAt.
+         * @member {number|Long} enteredAt
+         * @memberof game.PresencePlayer
+         * @instance
+         */
+        PresencePlayer.prototype.enteredAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new PresencePlayer instance using the specified properties.
+         * @function create
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {game.PresencePlayer.$Properties=} [properties] Properties to set
+         * @returns {game.PresencePlayer} PresencePlayer instance
+         * @type {{
+         *   (properties: game.PresencePlayer.$Shape): game.PresencePlayer & game.PresencePlayer.$Shape;
+         *   (properties?: game.PresencePlayer.$Properties): game.PresencePlayer;
+         * }}
+         */
+        PresencePlayer.create = function(properties) {
+            return new PresencePlayer(properties);
+        };
+
+        /**
+         * Encodes the specified PresencePlayer message. Does not implicitly {@link game.PresencePlayer.verify|verify} messages.
+         * @function encode
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {game.PresencePlayer.$Properties} message PresencePlayer message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PresencePlayer.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.nickname != null && $Object.hasOwnProperty.call(message, "nickname") && message.nickname !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.nickname);
+            if (message.level != null && $Object.hasOwnProperty.call(message, "level") && message.level !== 0)
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.level);
+            if (message.avatar != null && $Object.hasOwnProperty.call(message, "avatar") && message.avatar !== "")
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.avatar);
+            if (message.enteredAt != null && $Object.hasOwnProperty.call(message, "enteredAt") && (typeof message.enteredAt === "object" ? message.enteredAt.low || message.enteredAt.high : message.enteredAt !== 0))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.enteredAt);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PresencePlayer message, length delimited. Does not implicitly {@link game.PresencePlayer.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {game.PresencePlayer.$Properties} message PresencePlayer message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PresencePlayer.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PresencePlayer message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PresencePlayer & game.PresencePlayer.$Shape} PresencePlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PresencePlayer.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PresencePlayer(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.nickname = value;
+                        else
+                            delete message.nickname;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.level = value;
+                        else
+                            delete message.level;
+                        continue;
+                    }
+                case 3: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.avatar = value;
+                        else
+                            delete message.avatar;
+                        continue;
+                    }
+                case 4: {
+                        if (wireType !== 0)
+                            break;
+                        if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                            message.enteredAt = value;
+                        else
+                            delete message.enteredAt;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PresencePlayer message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PresencePlayer & game.PresencePlayer.$Shape} PresencePlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PresencePlayer.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PresencePlayer message.
+         * @function verify
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PresencePlayer.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.nickname != null && $Object.hasOwnProperty.call(message, "nickname"))
+                if (!$util.isString(message.nickname))
+                    return "nickname: string expected";
+            if (message.level != null && $Object.hasOwnProperty.call(message, "level"))
+                if (!$util.isInteger(message.level))
+                    return "level: integer expected";
+            if (message.avatar != null && $Object.hasOwnProperty.call(message, "avatar"))
+                if (!$util.isString(message.avatar))
+                    return "avatar: string expected";
+            if (message.enteredAt != null && $Object.hasOwnProperty.call(message, "enteredAt"))
+                if (!$util.isInteger(message.enteredAt) && !(message.enteredAt && $util.isInteger(message.enteredAt.low) && $util.isInteger(message.enteredAt.high)))
+                    return "enteredAt: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a PresencePlayer message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PresencePlayer} PresencePlayer
+         */
+        PresencePlayer.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PresencePlayer)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PresencePlayer: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PresencePlayer();
+            if (object.nickname != null)
+                if (typeof object.nickname !== "string" || object.nickname.length)
+                    message.nickname = $String(object.nickname);
+            if (object.level != null)
+                if ($Number(object.level) !== 0)
+                    message.level = object.level | 0;
+            if (object.avatar != null)
+                if (typeof object.avatar !== "string" || object.avatar.length)
+                    message.avatar = $String(object.avatar);
+            if (object.enteredAt != null)
+                if (typeof object.enteredAt === "object" ? object.enteredAt.low || object.enteredAt.high : $Number(object.enteredAt) !== 0)
+                    if ($util.Long)
+                        message.enteredAt = $util.Long.fromValue(object.enteredAt, false);
+                    else if (typeof object.enteredAt === "string")
+                        message.enteredAt = $parseInt(object.enteredAt, 10);
+                    else if (typeof object.enteredAt === "number")
+                        message.enteredAt = object.enteredAt;
+                    else if (typeof object.enteredAt === "object")
+                        message.enteredAt = new $util.LongBits(object.enteredAt.low >>> 0, object.enteredAt.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PresencePlayer message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {game.PresencePlayer} message PresencePlayer
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PresencePlayer.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.nickname = "";
+                object.level = 0;
+                object.avatar = "";
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.enteredAt = options.longs === $String ? long.toString() : options.longs === $Number ? long.toNumber() : typeof $BigInt !== "undefined" && options.longs === $BigInt ? long.toBigInt() : long;
+                } else
+                    object.enteredAt = options.longs === $String ? "0" : typeof $BigInt !== "undefined" && options.longs === $BigInt ? $BigInt("0") : 0;
+            }
+            if (message.nickname != null && $Object.hasOwnProperty.call(message, "nickname"))
+                object.nickname = message.nickname;
+            if (message.level != null && $Object.hasOwnProperty.call(message, "level"))
+                object.level = message.level;
+            if (message.avatar != null && $Object.hasOwnProperty.call(message, "avatar"))
+                object.avatar = message.avatar;
+            if (message.enteredAt != null && $Object.hasOwnProperty.call(message, "enteredAt"))
+                if (typeof $BigInt !== "undefined" && options.longs === $BigInt)
+                    object.enteredAt = typeof message.enteredAt === "number" ? $BigInt(message.enteredAt) : $util.Long.fromBits(message.enteredAt.low >>> 0, message.enteredAt.high >>> 0, false).toBigInt();
+                else if (typeof message.enteredAt === "number")
+                    object.enteredAt = options.longs === $String ? $String(message.enteredAt) : message.enteredAt;
+                else
+                    object.enteredAt = options.longs === $String ? $util.Long.prototype.toString.call(message.enteredAt) : options.longs === $Number ? new $util.LongBits(message.enteredAt.low >>> 0, message.enteredAt.high >>> 0).toNumber() : message.enteredAt;
+            return object;
+        };
+
+        /**
+         * Converts this PresencePlayer to JSON.
+         * @function toJSON
+         * @memberof game.PresencePlayer
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PresencePlayer.prototype.toJSON = function() {
+            return PresencePlayer.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PresencePlayer
+         * @function getTypeUrl
+         * @memberof game.PresencePlayer
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PresencePlayer.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PresencePlayer";
+        };
+
+        return PresencePlayer;
+    })();
+
+    game.PresenceUpdate = (function() {
+
+        /**
+         * Properties of a PresenceUpdate.
+         * @typedef {Object} game.PresenceUpdate.$Properties
+         * @property {string|null} [placeId] PresenceUpdate placeId
+         * @property {Array.<game.PresencePlayer.$Properties>|null} [players] PresenceUpdate players
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PresenceUpdate.
+         * @memberof game
+         * @interface IPresenceUpdate
+         * @augments game.PresenceUpdate.$Properties
+         * @deprecated Use game.PresenceUpdate.$Properties instead.
+         */
+
+        /**
+         * Shape of a PresenceUpdate.
+         * @typedef {game.PresenceUpdate.$Properties} game.PresenceUpdate.$Shape
+         */
+
+        /**
+         * Constructs a new PresenceUpdate.
+         * @memberof game
+         * @classdesc Represents a PresenceUpdate.
+         * @constructor
+         * @param {game.PresenceUpdate.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PresenceUpdate = function (properties) {
+            this.players = [];
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PresenceUpdate placeId.
+         * @member {string} placeId
+         * @memberof game.PresenceUpdate
+         * @instance
+         */
+        PresenceUpdate.prototype.placeId = "";
+
+        /**
+         * PresenceUpdate players.
+         * @member {Array.<game.PresencePlayer.$Properties>} players
+         * @memberof game.PresenceUpdate
+         * @instance
+         */
+        PresenceUpdate.prototype.players = $util.emptyArray;
+
+        /**
+         * Creates a new PresenceUpdate instance using the specified properties.
+         * @function create
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {game.PresenceUpdate.$Properties=} [properties] Properties to set
+         * @returns {game.PresenceUpdate} PresenceUpdate instance
+         * @type {{
+         *   (properties: game.PresenceUpdate.$Shape): game.PresenceUpdate & game.PresenceUpdate.$Shape;
+         *   (properties?: game.PresenceUpdate.$Properties): game.PresenceUpdate;
+         * }}
+         */
+        PresenceUpdate.create = function(properties) {
+            return new PresenceUpdate(properties);
+        };
+
+        /**
+         * Encodes the specified PresenceUpdate message. Does not implicitly {@link game.PresenceUpdate.verify|verify} messages.
+         * @function encode
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {game.PresenceUpdate.$Properties} message PresenceUpdate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PresenceUpdate.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.placeId != null && $Object.hasOwnProperty.call(message, "placeId") && message.placeId !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.placeId);
+            if (message.players != null && message.players.length)
+                for (let i = 0; i < message.players.length; ++i)
+                    $root.game.PresencePlayer.encode(message.players[i], writer.uint32(/* id 2, wireType 2 =*/18).fork(), _depth + 1).ldelim();
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PresenceUpdate message, length delimited. Does not implicitly {@link game.PresenceUpdate.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {game.PresenceUpdate.$Properties} message PresenceUpdate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PresenceUpdate.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PresenceUpdate message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PresenceUpdate & game.PresenceUpdate.$Shape} PresenceUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PresenceUpdate.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PresenceUpdate(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.placeId = value;
+                        else
+                            delete message.placeId;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if (!(message.players && message.players.length))
+                            message.players = [];
+                        message.players.push($root.game.PresencePlayer.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PresenceUpdate message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PresenceUpdate & game.PresenceUpdate.$Shape} PresenceUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PresenceUpdate.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PresenceUpdate message.
+         * @function verify
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PresenceUpdate.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.placeId != null && $Object.hasOwnProperty.call(message, "placeId"))
+                if (!$util.isString(message.placeId))
+                    return "placeId: string expected";
+            if (message.players != null && $Object.hasOwnProperty.call(message, "players")) {
+                if (!$Array.isArray(message.players))
+                    return "players: array expected";
+                for (let i = 0; i < message.players.length; ++i) {
+                    let error = $root.game.PresencePlayer.verify(message.players[i], _depth + 1);
+                    if (error)
+                        return "players." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a PresenceUpdate message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PresenceUpdate} PresenceUpdate
+         */
+        PresenceUpdate.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PresenceUpdate)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PresenceUpdate: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PresenceUpdate();
+            if (object.placeId != null)
+                if (typeof object.placeId !== "string" || object.placeId.length)
+                    message.placeId = $String(object.placeId);
+            if (object.players) {
+                if (!$Array.isArray(object.players))
+                    throw $TypeError(".game.PresenceUpdate.players: array expected");
+                message.players = $Array(object.players.length);
+                for (let i = 0; i < object.players.length; ++i) {
+                    if (!$util.isObject(object.players[i]))
+                        throw $TypeError(".game.PresenceUpdate.players: object expected");
+                    message.players[i] = $root.game.PresencePlayer.fromObject(object.players[i], _depth + 1);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PresenceUpdate message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {game.PresenceUpdate} message PresenceUpdate
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PresenceUpdate.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.players = [];
+            if (options.defaults)
+                object.placeId = "";
+            if (message.placeId != null && $Object.hasOwnProperty.call(message, "placeId"))
+                object.placeId = message.placeId;
+            if (message.players && message.players.length) {
+                object.players = $Array(message.players.length);
+                for (let j = 0; j < message.players.length; ++j)
+                    object.players[j] = $root.game.PresencePlayer.toObject(message.players[j], options, _depth + 1);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this PresenceUpdate to JSON.
+         * @function toJSON
+         * @memberof game.PresenceUpdate
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PresenceUpdate.prototype.toJSON = function() {
+            return PresenceUpdate.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PresenceUpdate
+         * @function getTypeUrl
+         * @memberof game.PresenceUpdate
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PresenceUpdate.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PresenceUpdate";
+        };
+
+        return PresenceUpdate;
+    })();
+
+    game.Poked = (function() {
+
+        /**
+         * Properties of a Poked.
+         * @typedef {Object} game.Poked.$Properties
+         * @property {string|null} [fromNickname] Poked fromNickname
+         * @property {string|null} [fromAvatar] Poked fromAvatar
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a Poked.
+         * @memberof game
+         * @interface IPoked
+         * @augments game.Poked.$Properties
+         * @deprecated Use game.Poked.$Properties instead.
+         */
+
+        /**
+         * Shape of a Poked.
+         * @typedef {game.Poked.$Properties} game.Poked.$Shape
+         */
+
+        /**
+         * Constructs a new Poked.
+         * @memberof game
+         * @classdesc Represents a Poked.
+         * @constructor
+         * @param {game.Poked.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const Poked = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * Poked fromNickname.
+         * @member {string} fromNickname
+         * @memberof game.Poked
+         * @instance
+         */
+        Poked.prototype.fromNickname = "";
+
+        /**
+         * Poked fromAvatar.
+         * @member {string} fromAvatar
+         * @memberof game.Poked
+         * @instance
+         */
+        Poked.prototype.fromAvatar = "";
+
+        /**
+         * Creates a new Poked instance using the specified properties.
+         * @function create
+         * @memberof game.Poked
+         * @static
+         * @param {game.Poked.$Properties=} [properties] Properties to set
+         * @returns {game.Poked} Poked instance
+         * @type {{
+         *   (properties: game.Poked.$Shape): game.Poked & game.Poked.$Shape;
+         *   (properties?: game.Poked.$Properties): game.Poked;
+         * }}
+         */
+        Poked.create = function(properties) {
+            return new Poked(properties);
+        };
+
+        /**
+         * Encodes the specified Poked message. Does not implicitly {@link game.Poked.verify|verify} messages.
+         * @function encode
+         * @memberof game.Poked
+         * @static
+         * @param {game.Poked.$Properties} message Poked message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Poked.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.fromNickname != null && $Object.hasOwnProperty.call(message, "fromNickname") && message.fromNickname !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.fromNickname);
+            if (message.fromAvatar != null && $Object.hasOwnProperty.call(message, "fromAvatar") && message.fromAvatar !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.fromAvatar);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Poked message, length delimited. Does not implicitly {@link game.Poked.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.Poked
+         * @static
+         * @param {game.Poked.$Properties} message Poked message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Poked.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a Poked message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.Poked
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.Poked & game.Poked.$Shape} Poked
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Poked.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.Poked(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.fromNickname = value;
+                        else
+                            delete message.fromNickname;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.fromAvatar = value;
+                        else
+                            delete message.fromAvatar;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a Poked message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.Poked
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.Poked & game.Poked.$Shape} Poked
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Poked.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Poked message.
+         * @function verify
+         * @memberof game.Poked
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Poked.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.fromNickname != null && $Object.hasOwnProperty.call(message, "fromNickname"))
+                if (!$util.isString(message.fromNickname))
+                    return "fromNickname: string expected";
+            if (message.fromAvatar != null && $Object.hasOwnProperty.call(message, "fromAvatar"))
+                if (!$util.isString(message.fromAvatar))
+                    return "fromAvatar: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a Poked message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.Poked
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.Poked} Poked
+         */
+        Poked.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.Poked)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.Poked: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.Poked();
+            if (object.fromNickname != null)
+                if (typeof object.fromNickname !== "string" || object.fromNickname.length)
+                    message.fromNickname = $String(object.fromNickname);
+            if (object.fromAvatar != null)
+                if (typeof object.fromAvatar !== "string" || object.fromAvatar.length)
+                    message.fromAvatar = $String(object.fromAvatar);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Poked message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.Poked
+         * @static
+         * @param {game.Poked} message Poked
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Poked.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.fromNickname = "";
+                object.fromAvatar = "";
+            }
+            if (message.fromNickname != null && $Object.hasOwnProperty.call(message, "fromNickname"))
+                object.fromNickname = message.fromNickname;
+            if (message.fromAvatar != null && $Object.hasOwnProperty.call(message, "fromAvatar"))
+                object.fromAvatar = message.fromAvatar;
+            return object;
+        };
+
+        /**
+         * Converts this Poked to JSON.
+         * @function toJSON
+         * @memberof game.Poked
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Poked.prototype.toJSON = function() {
+            return Poked.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for Poked
+         * @function getTypeUrl
+         * @memberof game.Poked
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        Poked.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.Poked";
+        };
+
+        return Poked;
+    })();
+
+    game.PokeAck = (function() {
+
+        /**
+         * Properties of a PokeAck.
+         * @typedef {Object} game.PokeAck.$Properties
+         * @property {boolean|null} [ok] PokeAck ok
+         * @property {string|null} [targetNickname] PokeAck targetNickname
+         * @property {string|null} [reason] PokeAck reason
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PokeAck.
+         * @memberof game
+         * @interface IPokeAck
+         * @augments game.PokeAck.$Properties
+         * @deprecated Use game.PokeAck.$Properties instead.
+         */
+
+        /**
+         * Shape of a PokeAck.
+         * @typedef {game.PokeAck.$Properties} game.PokeAck.$Shape
+         */
+
+        /**
+         * Constructs a new PokeAck.
+         * @memberof game
+         * @classdesc Represents a PokeAck.
+         * @constructor
+         * @param {game.PokeAck.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PokeAck = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PokeAck ok.
+         * @member {boolean} ok
+         * @memberof game.PokeAck
+         * @instance
+         */
+        PokeAck.prototype.ok = false;
+
+        /**
+         * PokeAck targetNickname.
+         * @member {string} targetNickname
+         * @memberof game.PokeAck
+         * @instance
+         */
+        PokeAck.prototype.targetNickname = "";
+
+        /**
+         * PokeAck reason.
+         * @member {string} reason
+         * @memberof game.PokeAck
+         * @instance
+         */
+        PokeAck.prototype.reason = "";
+
+        /**
+         * Creates a new PokeAck instance using the specified properties.
+         * @function create
+         * @memberof game.PokeAck
+         * @static
+         * @param {game.PokeAck.$Properties=} [properties] Properties to set
+         * @returns {game.PokeAck} PokeAck instance
+         * @type {{
+         *   (properties: game.PokeAck.$Shape): game.PokeAck & game.PokeAck.$Shape;
+         *   (properties?: game.PokeAck.$Properties): game.PokeAck;
+         * }}
+         */
+        PokeAck.create = function(properties) {
+            return new PokeAck(properties);
+        };
+
+        /**
+         * Encodes the specified PokeAck message. Does not implicitly {@link game.PokeAck.verify|verify} messages.
+         * @function encode
+         * @memberof game.PokeAck
+         * @static
+         * @param {game.PokeAck.$Properties} message PokeAck message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PokeAck.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.ok != null && $Object.hasOwnProperty.call(message, "ok") && message.ok !== false)
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.ok);
+            if (message.targetNickname != null && $Object.hasOwnProperty.call(message, "targetNickname") && message.targetNickname !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.targetNickname);
+            if (message.reason != null && $Object.hasOwnProperty.call(message, "reason") && message.reason !== "")
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.reason);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PokeAck message, length delimited. Does not implicitly {@link game.PokeAck.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PokeAck
+         * @static
+         * @param {game.PokeAck.$Properties} message PokeAck message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PokeAck.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PokeAck message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PokeAck
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PokeAck & game.PokeAck.$Shape} PokeAck
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PokeAck.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PokeAck(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.bool())
+                            message.ok = value;
+                        else
+                            delete message.ok;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.targetNickname = value;
+                        else
+                            delete message.targetNickname;
+                        continue;
+                    }
+                case 3: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.reason = value;
+                        else
+                            delete message.reason;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PokeAck message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PokeAck
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PokeAck & game.PokeAck.$Shape} PokeAck
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PokeAck.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PokeAck message.
+         * @function verify
+         * @memberof game.PokeAck
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PokeAck.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.ok != null && $Object.hasOwnProperty.call(message, "ok"))
+                if (typeof message.ok !== "boolean")
+                    return "ok: boolean expected";
+            if (message.targetNickname != null && $Object.hasOwnProperty.call(message, "targetNickname"))
+                if (!$util.isString(message.targetNickname))
+                    return "targetNickname: string expected";
+            if (message.reason != null && $Object.hasOwnProperty.call(message, "reason"))
+                if (!$util.isString(message.reason))
+                    return "reason: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a PokeAck message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PokeAck
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PokeAck} PokeAck
+         */
+        PokeAck.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PokeAck)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PokeAck: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PokeAck();
+            if (object.ok != null)
+                if (object.ok)
+                    message.ok = $Boolean(object.ok);
+            if (object.targetNickname != null)
+                if (typeof object.targetNickname !== "string" || object.targetNickname.length)
+                    message.targetNickname = $String(object.targetNickname);
+            if (object.reason != null)
+                if (typeof object.reason !== "string" || object.reason.length)
+                    message.reason = $String(object.reason);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PokeAck message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PokeAck
+         * @static
+         * @param {game.PokeAck} message PokeAck
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PokeAck.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.ok = false;
+                object.targetNickname = "";
+                object.reason = "";
+            }
+            if (message.ok != null && $Object.hasOwnProperty.call(message, "ok"))
+                object.ok = message.ok;
+            if (message.targetNickname != null && $Object.hasOwnProperty.call(message, "targetNickname"))
+                object.targetNickname = message.targetNickname;
+            if (message.reason != null && $Object.hasOwnProperty.call(message, "reason"))
+                object.reason = message.reason;
+            return object;
+        };
+
+        /**
+         * Converts this PokeAck to JSON.
+         * @function toJSON
+         * @memberof game.PokeAck
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PokeAck.prototype.toJSON = function() {
+            return PokeAck.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PokeAck
+         * @function getTypeUrl
+         * @memberof game.PokeAck
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PokeAck.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PokeAck";
+        };
+
+        return PokeAck;
     })();
 
     return game;

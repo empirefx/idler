@@ -1,7 +1,9 @@
-import { describe, it, expect, vi, beforeAll } from "vitest";
+import { describe, it, expect, vi, beforeAll, beforeEach } from "vitest";
 import { SessionManager } from "../../server/session.js";
 import { InventoryHandler } from "../../server/inventory.js";
 import { createServerLogger } from "../../server/logger.js";
+import { PresenceService } from "../../server/services/PresenceService.js";
+import { presenceHandlers } from "../../server/messages/handlers/presence.js";
 
 const mockRedis = () => {
 	const store = {};
@@ -79,5 +81,72 @@ describe("Multiplayer Integration: Session + Inventory", () => {
 		expect(data2.items[0].quantity).toBe(2);
 
 		await sessionManager.disconnectSession("Hero");
+	});
+});
+
+describe("Multiplayer Integration: Presence + Poke", () => {
+	let presenceService;
+	let sent;
+	const broadcaster = {
+		broadcast: (sessionId, type, payload) => {
+			if (!sent[sessionId]) sent[sessionId] = [];
+			sent[sessionId].push({ type, payload });
+		},
+	};
+	const playerState = {
+		load: vi.fn(async () => ({ avatar: "1.png" })),
+	};
+	const pokeHandler = presenceHandlers.find((h) => h.type === "POKE").handler;
+
+	beforeEach(() => {
+		sent = {};
+		presenceService = new PresenceService();
+	});
+
+	it("pokes deliver a POKED to the target and a POKE_ACK to the sender", async () => {
+		presenceService.register("s1", "Hero", "village_center");
+		presenceService.register("s2", "Mage", "village_center");
+
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+
+		expect(sent.s2).toEqual([{ type: "POKED", payload: { fromNickname: "Hero", fromAvatar: "1.png" } }]);
+		expect(sent.s1).toEqual([{ type: "POKE_ACK", payload: { ok: true, targetNickname: "Mage" } }]);
+	});
+
+	it("rejects the fourth poke within the rate limit window", async () => {
+		presenceService.register("s1", "Hero", "village_center");
+		presenceService.register("s2", "Mage", "village_center");
+
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+
+		expect(sent.s1).toHaveLength(4);
+		expect(sent.s1[3]).toEqual({ type: "POKE_ACK", payload: { ok: false, reason: "RATE_LIMITED" } });
+	});
+
+	it("rejects pokes to a player in a different place", async () => {
+		presenceService.register("s1", "Hero", "village_center");
+		presenceService.register("s2", "Mage", "forest_edge");
+
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+
+		expect(sent.s1).toEqual([{ type: "POKE_ACK", payload: { ok: false, reason: "NOT_IN_PLACE" } }]);
+		expect(sent.s2).toBeUndefined();
+	});
+
+	it("rejects pokes to a player that is gone", async () => {
+		presenceService.register("s1", "Hero", "village_center");
+
+		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+
+		expect(sent.s1).toEqual([{ type: "POKE_ACK", payload: { ok: false, reason: "NOT_IN_PLACE" } }]);
+	});
+
+	it("rejects pokes from a session that is not present", async () => {
+		await pokeHandler({ sessionId: "ghost", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
+
+		expect(sent.ghost).toEqual([{ type: "POKE_ACK", payload: { ok: false, reason: "TARGET_GONE" } }]);
 	});
 });

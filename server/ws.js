@@ -3,7 +3,7 @@ import { WebSocketServer } from "ws";
 import { encode, decode } from "../shared/protocol.js";
 import { messageRegistry } from "./messages/registry.js";
 
-export function startWebSocketServer({ server, sessionManager, combatService, productionService, craftingService, buildingService, workerService, questService, skillsService, spawnService, navigationService, inventoryHandler, playerState, inventoryState, enemyState, broadcaster, logger }) {
+export function startWebSocketServer({ server, sessionManager, combatService, productionService, craftingService, buildingService, workerService, questService, skillsService, spawnService, navigationService, inventoryHandler, playerState, inventoryState, enemyState, presenceService, broadcaster, logger }) {
   const wss = new WebSocketServer({ noServer: true });
   const clients = new Map();
 
@@ -48,6 +48,7 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
       spawnService,
       navigationService,
       inventoryHandler,
+      presenceService,
       get sessionId() {
         return connection.sessionId;
       },
@@ -70,10 +71,15 @@ export function startWebSocketServer({ server, sessionManager, combatService, pr
     });
 
     ws.on("close", async () => {
+      connection.closed = true;
       if (connection.nickname) {
         clients.delete(connection.nickname);
         await sessionManager.disconnectSession(connection.nickname);
         await productionService.pauseAll(connection.sessionId);
+        const placeId = presenceService.unregister(connection.sessionId);
+        if (placeId) {
+          await presenceService.broadcastPlace(placeId, broadcaster, playerState);
+        }
         logger.log(`DISCONNECT: ${connection.nickname}`, "WS");
       }
     });

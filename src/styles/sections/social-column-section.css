@@ -1,0 +1,12 @@
+.social-column {
+  position: absolute;
+  margin-right: 20px;
+  padding-bottom: 20px;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: auto;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+}

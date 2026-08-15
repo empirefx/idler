@@ -1,29 +1,14 @@
 .npc-section {
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 100vh;
-	width: auto;
-	z-index: 11;
-}
-
-.npc-section-content {
-	padding: var(--spacing-lg);
-}
-
-.npcs-grid {
-	display: grid;
-}
-
-.npcs-grid h3 {
-	color: var(--color-secondary);
-	text-transform: uppercase;
+	flex: 0 0 auto;
+	flex-grow:1;
+	margin-top: 30px;
 }
 
 .npc-list {
 	display: flex;
 	flex-direction: column;
 }
+
 .npc-card {
 	position: relative;
 	display: flex;
