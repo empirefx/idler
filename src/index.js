@@ -12,6 +12,7 @@ import { addNotification } from "./store/slices/notificationSlice";
 import { setCombatState } from "./store/slices/combatSlice";
 import { setEnemies, addEnemy, removeEnemy, updateEnemy, spawnEnemies } from "./store/slices/enemiesSlice";
 import { setPresent, setPokedBy } from "./store/slices/playersSlice";
+import { setPartyList, setCurrentParty, clearCurrentParty } from "./store/slices/partiesSlice";
 import { addLog } from "./store/slices/logSlice";
 import { setWs, sendWsMessage } from "./store/ws";
 import { decode, PROTOCOL_VERSION } from "../shared/protocol.js";
@@ -189,6 +190,23 @@ const mountGame = (sessionId) => {
 				}
 				break;
 			}
+			case "PARTY_STATE":
+				store.dispatch(setCurrentParty(data.data));
+				break;
+			case "PARTY_LIST_UPDATE":
+				store.dispatch(setPartyList(data.data?.parties || []));
+				break;
+			case "PARTY_DISSOLVED": {
+				const d = data.data;
+				store.dispatch(clearCurrentParty());
+				store.dispatch(addNotification(d?.reason || "Party dissolved.", "info"));
+				break;
+			}
+			case "PARTY_ERROR": {
+				const d = data.data;
+				store.dispatch(addNotification(d?.message || "Party error.", "error"));
+				break;
+			}
 			case "ERROR":
 				store.dispatch(addNotification(data.data?.message || data.message || "Server error", "error"));
 				break;
@@ -248,6 +266,12 @@ const joinGame = () => {
 				applyBuildings(data.data.buildings);
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
+		} else if (data.type === "PARTY_LIST_UPDATE") {
+			store.dispatch(setPartyList(data.data?.parties || []));
+		} else if (data.type === "PARTY_STATE") {
+			store.dispatch(setCurrentParty(data.data));
+		} else if (data.type === "PARTY_DISSOLVED") {
+			store.dispatch(clearCurrentParty());
 		} else if (data.type === "ERROR") {
 			LOGIN_ERROR.textContent = data.data?.message || data.message || "Server error";
 			JOIN_BUTTON.disabled = false;
@@ -298,6 +322,12 @@ if (cachedSessionId && cachedNickname) {
 				applyBuildings(data.data.buildings);
 			store.dispatch(setCurrentPlaceId(player?.currentPlaceId || "village_center"));
 			mountGame(sessionId);
+		} else if (data.type === "PARTY_LIST_UPDATE") {
+			store.dispatch(setPartyList(data.data?.parties || []));
+		} else if (data.type === "PARTY_STATE") {
+			store.dispatch(setCurrentParty(data.data));
+		} else if (data.type === "PARTY_DISSOLVED") {
+			store.dispatch(clearCurrentParty());
 		} else {
 			showLogin();
 		}
