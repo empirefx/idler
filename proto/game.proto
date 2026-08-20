@@ -214,7 +214,7 @@ message UnequipItem { string inventoryId = 1; string slot = 2; }
 message UseItemRequest { string itemId = 1; }
 message SetTargetRequest { string enemyId = 1; }
 message PokeRequest { string targetNickname = 1; }
-message CreatePartyRequest { string name = 1; }
+message CreatePartyRequest { string name = 1; string location = 2; }
 message JoinPartyRequest { string partyId = 1; }
 message LeavePartyRequest {}
 
@@ -355,18 +355,20 @@ message PartyMember {
 message PartyInfo {
   string id = 1;
   string name = 2;
-  string leaderId = 3;
+  string leaderName = 3;
   int32 memberCount = 4;
   int32 maxPlayers = 5;
+  string location = 6;
 }
 
 message PartyStateMsg {
   string id = 1;
   string name = 2;
-  string leaderId = 3;
+  string leaderName = 3;
   repeated PartyMember members = 4;
   int32 memberCount = 5;
   int32 maxPlayers = 6;
+  string location = 7;
 }
 
 message PartyListUpdate {

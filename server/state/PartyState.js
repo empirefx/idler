@@ -13,9 +13,9 @@ export class PartyState {
     return `party:${partyId}`;
   }
 
-  async create({ name, leaderId, leaderNickname }) {
+  async create({ name, leaderId, leaderNickname, location }) {
     const trimmed = name.trim();
-    if (!trimmed || trimmed.length > 30) {
+    if (!trimmed || trimmed.length > 50) {
       throw new Error("INVALID_PARTY_NAME");
     }
 
@@ -28,6 +28,7 @@ export class PartyState {
     await this.redis.hset(this._partyKey(partyId), "id", partyId);
     await this.redis.hset(this._partyKey(partyId), "name", trimmed);
     await this.redis.hset(this._partyKey(partyId), "leaderId", leaderId);
+    await this.redis.hset(this._partyKey(partyId), "location", location || "");
     await this.redis.hset(this._partyKey(partyId), "memberIds", memberIds);
     await this.redis.hset(this._partyKey(partyId), "members", members);
     await this.redis.hset(this._partyKey(partyId), "createdAt", String(Date.now()));
@@ -37,6 +38,7 @@ export class PartyState {
       id: partyId,
       name: trimmed,
       leaderId,
+      location: location || "",
       members: [{ sessionId: leaderId, nickname: leaderNickname, isLeader: true }],
       memberCount: 1,
       maxPlayers: MAX_PLAYERS,
@@ -50,6 +52,7 @@ export class PartyState {
       id: raw.id,
       name: raw.name,
       leaderId: raw.leaderId,
+      location: raw.location || "",
       members: JSON.parse(raw.members || "[]"),
       memberCount: JSON.parse(raw.memberIds || "[]").length,
       maxPlayers: MAX_PLAYERS,
@@ -76,6 +79,7 @@ export class PartyState {
       id: raw.id,
       name: raw.name,
       leaderId: raw.leaderId,
+      location: raw.location || "",
       members,
       memberCount: memberIds.length,
       maxPlayers: MAX_PLAYERS,
@@ -102,6 +106,7 @@ export class PartyState {
       id: raw.id,
       name: raw.name,
       leaderId: raw.leaderId,
+      location: raw.location || "",
       members,
       memberCount: memberIds.length,
       maxPlayers: MAX_PLAYERS,
@@ -111,6 +116,14 @@ export class PartyState {
   async delete(partyId) {
     await this.redis.srem(ALL_PARTIES_KEY, partyId);
     await this.redis.del(this._partyKey(partyId));
+  }
+
+  async flushAll() {
+    const ids = await this.redis.smembers(ALL_PARTIES_KEY);
+    for (const id of ids) {
+      await this.redis.del(this._partyKey(id));
+    }
+    await this.redis.del(ALL_PARTIES_KEY);
   }
 
   async listAll() {
@@ -123,6 +136,7 @@ export class PartyState {
           id: party.id,
           name: party.name,
           leaderId: party.leaderId,
+          location: party.location,
           memberCount: party.memberCount,
           maxPlayers: party.maxPlayers,
         });

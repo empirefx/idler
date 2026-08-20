@@ -19,12 +19,20 @@ export class PartyService {
     this.broadcaster.broadcast(sessionId, "PARTY_ERROR", { code, message });
   }
 
+  _enrichLeader(party) {
+    const entry = this.presenceService.get(party.leaderId);
+    return entry?.nickname || "Unknown";
+  }
+
   _sendPartyState(party) {
+    const leaderName = this._enrichLeader(party);
     for (const member of party.members) {
       this.broadcaster.broadcast(member.sessionId, "PARTY_STATE", {
         id: party.id,
         name: party.name,
         leaderId: party.leaderId,
+        leaderName,
+        location: party.location,
         members: party.members,
         memberCount: party.memberCount,
         maxPlayers: party.maxPlayers,
@@ -34,20 +42,21 @@ export class PartyService {
 
   async broadcastPartyList() {
     const parties = await this.partyState.listAll();
-    // Resolve leader nicknames
-    const enriched = parties.map((p) => {
-      const entry = this.presenceService.get(p.leaderId);
-      return { ...p, leaderNickname: entry?.nickname || "Unknown" };
-    });
+    const enriched = parties.map((p) => ({
+      id: p.id,
+      name: p.name,
+      leaderName: this._enrichLeader(p),
+      location: p.location,
+      memberCount: p.memberCount,
+      maxPlayers: p.maxPlayers,
+    }));
     const allSessionIds = this._getAllSessionIds();
-    console.log(`[PARTY_DEBUG] broadcasting ${enriched.length} parties to ${allSessionIds.size} sessions`);
     for (const sessionId of allSessionIds) {
       this.broadcaster.broadcast(sessionId, "PARTY_LIST_UPDATE", { parties: enriched });
     }
   }
 
   _getAllSessionIds() {
-    // Gather all session IDs from presence service
     const ids = new Set();
     for (const [sessionId] of this.presenceService.players) {
       ids.add(sessionId);
@@ -55,13 +64,13 @@ export class PartyService {
     return ids;
   }
 
-  async createParty(sessionId, name, nickname) {
+  async createParty(sessionId, name, nickname, location) {
     if (!name || !name.trim()) {
       this._error(sessionId, PARTY_ERRORS.NAME_EMPTY, "Party name cannot be empty.");
       return;
     }
-    if (name.trim().length > 30) {
-      this._error(sessionId, PARTY_ERRORS.NAME_TOO_LONG, "Party name must be 30 characters or less.");
+    if (name.trim().length > 50) {
+      this._error(sessionId, PARTY_ERRORS.NAME_TOO_LONG, "Party name must be 50 characters or less.");
       return;
     }
     const existing = await this.partyState.isMemberOfAny(sessionId);
@@ -74,6 +83,7 @@ export class PartyService {
       name: name.trim(),
       leaderId: sessionId,
       leaderNickname: nickname,
+      location: location || "",
     });
 
     this._sendPartyState(party);
@@ -124,20 +134,17 @@ export class PartyService {
       const updated = await this.partyState.removeMember(party.id, sessionId);
       if (!updated) return;
 
-      // Notify the leaving player
       this.broadcaster.broadcast(sessionId, "PARTY_DISSOLVED", {
         partyId: party.id,
         reason: "You left the party.",
       });
 
-      // Send updated state to remaining members
       this._sendPartyState(updated);
       await this.broadcastPartyList();
     }
   }
 
   async dissolveParty(party) {
-    // Notify all members
     for (const member of party.members) {
       this.broadcaster.broadcast(member.sessionId, "PARTY_DISSOLVED", {
         partyId: party.id,
@@ -150,7 +157,6 @@ export class PartyService {
   }
 
   async handleDisconnect(sessionId) {
-    // Auto-leave party on disconnect
     const party = await this.partyState.findByMember(sessionId);
     if (!party) return;
 

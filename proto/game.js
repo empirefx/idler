@@ -17343,6 +17343,7 @@ export const game = $root.game = (() => {
          * Properties of a CreatePartyRequest.
          * @typedef {Object} game.CreatePartyRequest.$Properties
          * @property {string|null} [name] CreatePartyRequest name
+         * @property {string|null} [location] CreatePartyRequest location
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -17383,6 +17384,14 @@ export const game = $root.game = (() => {
         CreatePartyRequest.prototype.name = "";
 
         /**
+         * CreatePartyRequest location.
+         * @member {string} location
+         * @memberof game.CreatePartyRequest
+         * @instance
+         */
+        CreatePartyRequest.prototype.location = "";
+
+        /**
          * Creates a new CreatePartyRequest instance using the specified properties.
          * @function create
          * @memberof game.CreatePartyRequest
@@ -17416,6 +17425,8 @@ export const game = $root.game = (() => {
                 throw $Error("max depth exceeded");
             if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location") && message.location !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.location);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -17472,6 +17483,15 @@ export const game = $root.game = (() => {
                             delete message.name;
                         continue;
                     }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.location = value;
+                        else
+                            delete message.location;
+                        continue;
+                    }
                 }
                 reader.skipType(wireType, _depth, tag);
                 if (!reader.discardUnknown) {
@@ -17518,6 +17538,9 @@ export const game = $root.game = (() => {
             if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
                 if (!$util.isString(message.name))
                     return "name: string expected";
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                if (!$util.isString(message.location))
+                    return "location: string expected";
             return null;
         };
 
@@ -17542,6 +17565,9 @@ export const game = $root.game = (() => {
             if (object.name != null)
                 if (typeof object.name !== "string" || object.name.length)
                     message.name = $String(object.name);
+            if (object.location != null)
+                if (typeof object.location !== "string" || object.location.length)
+                    message.location = $String(object.location);
             return message;
         };
 
@@ -17562,10 +17588,14 @@ export const game = $root.game = (() => {
             if (_depth > $util.recursionLimit)
                 throw $Error("max depth exceeded");
             let object = {};
-            if (options.defaults)
+            if (options.defaults) {
                 object.name = "";
+                object.location = "";
+            }
             if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
                 object.name = message.name;
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                object.location = message.location;
             return object;
         };
 
@@ -25087,9 +25117,10 @@ export const game = $root.game = (() => {
          * @typedef {Object} game.PartyInfo.$Properties
          * @property {string|null} [id] PartyInfo id
          * @property {string|null} [name] PartyInfo name
-         * @property {string|null} [leaderId] PartyInfo leaderId
+         * @property {string|null} [leaderName] PartyInfo leaderName
          * @property {number|null} [memberCount] PartyInfo memberCount
          * @property {number|null} [maxPlayers] PartyInfo maxPlayers
+         * @property {string|null} [location] PartyInfo location
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -25138,12 +25169,12 @@ export const game = $root.game = (() => {
         PartyInfo.prototype.name = "";
 
         /**
-         * PartyInfo leaderId.
-         * @member {string} leaderId
+         * PartyInfo leaderName.
+         * @member {string} leaderName
          * @memberof game.PartyInfo
          * @instance
          */
-        PartyInfo.prototype.leaderId = "";
+        PartyInfo.prototype.leaderName = "";
 
         /**
          * PartyInfo memberCount.
@@ -25160,6 +25191,14 @@ export const game = $root.game = (() => {
          * @instance
          */
         PartyInfo.prototype.maxPlayers = 0;
+
+        /**
+         * PartyInfo location.
+         * @member {string} location
+         * @memberof game.PartyInfo
+         * @instance
+         */
+        PartyInfo.prototype.location = "";
 
         /**
          * Creates a new PartyInfo instance using the specified properties.
@@ -25197,12 +25236,14 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId") && message.leaderId !== "")
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.leaderId);
+            if (message.leaderName != null && $Object.hasOwnProperty.call(message, "leaderName") && message.leaderName !== "")
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.leaderName);
             if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount") && message.memberCount !== 0)
                 writer.uint32(/* id 4, wireType 0 =*/32).int32(message.memberCount);
             if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers") && message.maxPlayers !== 0)
                 writer.uint32(/* id 5, wireType 0 =*/40).int32(message.maxPlayers);
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location") && message.location !== "")
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.location);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -25272,9 +25313,9 @@ export const game = $root.game = (() => {
                         if (wireType !== 2)
                             break;
                         if ((value = reader.stringVerify()).length)
-                            message.leaderId = value;
+                            message.leaderName = value;
                         else
-                            delete message.leaderId;
+                            delete message.leaderName;
                         continue;
                     }
                 case 4: {
@@ -25293,6 +25334,15 @@ export const game = $root.game = (() => {
                             message.maxPlayers = value;
                         else
                             delete message.maxPlayers;
+                        continue;
+                    }
+                case 6: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.location = value;
+                        else
+                            delete message.location;
                         continue;
                     }
                 }
@@ -25344,15 +25394,18 @@ export const game = $root.game = (() => {
             if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
                 if (!$util.isString(message.name))
                     return "name: string expected";
-            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
-                if (!$util.isString(message.leaderId))
-                    return "leaderId: string expected";
+            if (message.leaderName != null && $Object.hasOwnProperty.call(message, "leaderName"))
+                if (!$util.isString(message.leaderName))
+                    return "leaderName: string expected";
             if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount"))
                 if (!$util.isInteger(message.memberCount))
                     return "memberCount: integer expected";
             if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
                 if (!$util.isInteger(message.maxPlayers))
                     return "maxPlayers: integer expected";
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                if (!$util.isString(message.location))
+                    return "location: string expected";
             return null;
         };
 
@@ -25380,15 +25433,18 @@ export const game = $root.game = (() => {
             if (object.name != null)
                 if (typeof object.name !== "string" || object.name.length)
                     message.name = $String(object.name);
-            if (object.leaderId != null)
-                if (typeof object.leaderId !== "string" || object.leaderId.length)
-                    message.leaderId = $String(object.leaderId);
+            if (object.leaderName != null)
+                if (typeof object.leaderName !== "string" || object.leaderName.length)
+                    message.leaderName = $String(object.leaderName);
             if (object.memberCount != null)
                 if ($Number(object.memberCount) !== 0)
                     message.memberCount = object.memberCount | 0;
             if (object.maxPlayers != null)
                 if ($Number(object.maxPlayers) !== 0)
                     message.maxPlayers = object.maxPlayers | 0;
+            if (object.location != null)
+                if (typeof object.location !== "string" || object.location.length)
+                    message.location = $String(object.location);
             return message;
         };
 
@@ -25412,20 +25468,23 @@ export const game = $root.game = (() => {
             if (options.defaults) {
                 object.id = "";
                 object.name = "";
-                object.leaderId = "";
+                object.leaderName = "";
                 object.memberCount = 0;
                 object.maxPlayers = 0;
+                object.location = "";
             }
             if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
                 object.id = message.id;
             if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
                 object.name = message.name;
-            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
-                object.leaderId = message.leaderId;
+            if (message.leaderName != null && $Object.hasOwnProperty.call(message, "leaderName"))
+                object.leaderName = message.leaderName;
             if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount"))
                 object.memberCount = message.memberCount;
             if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
                 object.maxPlayers = message.maxPlayers;
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                object.location = message.location;
             return object;
         };
 
@@ -25464,10 +25523,11 @@ export const game = $root.game = (() => {
          * @typedef {Object} game.PartyStateMsg.$Properties
          * @property {string|null} [id] PartyStateMsg id
          * @property {string|null} [name] PartyStateMsg name
-         * @property {string|null} [leaderId] PartyStateMsg leaderId
+         * @property {string|null} [leaderName] PartyStateMsg leaderName
          * @property {Array.<game.PartyMember.$Properties>|null} [members] PartyStateMsg members
          * @property {number|null} [memberCount] PartyStateMsg memberCount
          * @property {number|null} [maxPlayers] PartyStateMsg maxPlayers
+         * @property {string|null} [location] PartyStateMsg location
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -25517,12 +25577,12 @@ export const game = $root.game = (() => {
         PartyStateMsg.prototype.name = "";
 
         /**
-         * PartyStateMsg leaderId.
-         * @member {string} leaderId
+         * PartyStateMsg leaderName.
+         * @member {string} leaderName
          * @memberof game.PartyStateMsg
          * @instance
          */
-        PartyStateMsg.prototype.leaderId = "";
+        PartyStateMsg.prototype.leaderName = "";
 
         /**
          * PartyStateMsg members.
@@ -25547,6 +25607,14 @@ export const game = $root.game = (() => {
          * @instance
          */
         PartyStateMsg.prototype.maxPlayers = 0;
+
+        /**
+         * PartyStateMsg location.
+         * @member {string} location
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.location = "";
 
         /**
          * Creates a new PartyStateMsg instance using the specified properties.
@@ -25584,8 +25652,8 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId") && message.leaderId !== "")
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.leaderId);
+            if (message.leaderName != null && $Object.hasOwnProperty.call(message, "leaderName") && message.leaderName !== "")
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.leaderName);
             if (message.members != null && message.members.length)
                 for (let i = 0; i < message.members.length; ++i)
                     $root.game.PartyMember.encode(message.members[i], writer.uint32(/* id 4, wireType 2 =*/34).fork(), _depth + 1).ldelim();
@@ -25593,6 +25661,8 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 5, wireType 0 =*/40).int32(message.memberCount);
             if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers") && message.maxPlayers !== 0)
                 writer.uint32(/* id 6, wireType 0 =*/48).int32(message.maxPlayers);
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location") && message.location !== "")
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.location);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -25662,9 +25732,9 @@ export const game = $root.game = (() => {
                         if (wireType !== 2)
                             break;
                         if ((value = reader.stringVerify()).length)
-                            message.leaderId = value;
+                            message.leaderName = value;
                         else
-                            delete message.leaderId;
+                            delete message.leaderName;
                         continue;
                     }
                 case 4: {
@@ -25691,6 +25761,15 @@ export const game = $root.game = (() => {
                             message.maxPlayers = value;
                         else
                             delete message.maxPlayers;
+                        continue;
+                    }
+                case 7: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.location = value;
+                        else
+                            delete message.location;
                         continue;
                     }
                 }
@@ -25742,9 +25821,9 @@ export const game = $root.game = (() => {
             if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
                 if (!$util.isString(message.name))
                     return "name: string expected";
-            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
-                if (!$util.isString(message.leaderId))
-                    return "leaderId: string expected";
+            if (message.leaderName != null && $Object.hasOwnProperty.call(message, "leaderName"))
+                if (!$util.isString(message.leaderName))
+                    return "leaderName: string expected";
             if (message.members != null && $Object.hasOwnProperty.call(message, "members")) {
                 if (!$Array.isArray(message.members))
                     return "members: array expected";
@@ -25760,6 +25839,9 @@ export const game = $root.game = (() => {
             if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
                 if (!$util.isInteger(message.maxPlayers))
                     return "maxPlayers: integer expected";
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                if (!$util.isString(message.location))
+                    return "location: string expected";
             return null;
         };
 
@@ -25787,9 +25869,9 @@ export const game = $root.game = (() => {
             if (object.name != null)
                 if (typeof object.name !== "string" || object.name.length)
                     message.name = $String(object.name);
-            if (object.leaderId != null)
-                if (typeof object.leaderId !== "string" || object.leaderId.length)
-                    message.leaderId = $String(object.leaderId);
+            if (object.leaderName != null)
+                if (typeof object.leaderName !== "string" || object.leaderName.length)
+                    message.leaderName = $String(object.leaderName);
             if (object.members) {
                 if (!$Array.isArray(object.members))
                     throw $TypeError(".game.PartyStateMsg.members: array expected");
@@ -25806,6 +25888,9 @@ export const game = $root.game = (() => {
             if (object.maxPlayers != null)
                 if ($Number(object.maxPlayers) !== 0)
                     message.maxPlayers = object.maxPlayers | 0;
+            if (object.location != null)
+                if (typeof object.location !== "string" || object.location.length)
+                    message.location = $String(object.location);
             return message;
         };
 
@@ -25831,16 +25916,17 @@ export const game = $root.game = (() => {
             if (options.defaults) {
                 object.id = "";
                 object.name = "";
-                object.leaderId = "";
+                object.leaderName = "";
                 object.memberCount = 0;
                 object.maxPlayers = 0;
+                object.location = "";
             }
             if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
                 object.id = message.id;
             if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
                 object.name = message.name;
-            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
-                object.leaderId = message.leaderId;
+            if (message.leaderName != null && $Object.hasOwnProperty.call(message, "leaderName"))
+                object.leaderName = message.leaderName;
             if (message.members && message.members.length) {
                 object.members = $Array(message.members.length);
                 for (let j = 0; j < message.members.length; ++j)
@@ -25850,6 +25936,8 @@ export const game = $root.game = (() => {
                 object.memberCount = message.memberCount;
             if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
                 object.maxPlayers = message.maxPlayers;
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                object.location = message.location;
             return object;
         };
 

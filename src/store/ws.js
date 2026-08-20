@@ -51,8 +51,8 @@ export function poke(targetNickname) {
 	sendWsMessage({ type: "POKE", targetNickname });
 }
 
-export function createParty(name) {
-	sendWsMessage({ type: "CREATE_PARTY", name });
+export function createParty(name, location) {
+	sendWsMessage({ type: "CREATE_PARTY", name, location });
 }
 
 export function joinParty(partyId) {

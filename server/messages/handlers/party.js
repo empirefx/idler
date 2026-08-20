@@ -6,7 +6,7 @@ export const partyHandlers = [
       const { sessionId, partyService, presenceService } = ctx;
       const entry = presenceService.get(sessionId);
       const nickname = entry?.nickname || "Unknown";
-      await partyService.createParty(sessionId, msg.name, nickname);
+      await partyService.createParty(sessionId, msg.name, nickname, msg.location);
     },
   },
   {

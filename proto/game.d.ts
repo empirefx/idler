@@ -6461,6 +6461,9 @@ export namespace game {
         /** CreatePartyRequest name. */
         name: string;
 
+        /** CreatePartyRequest location. */
+        location: string;
+
         /**
          * Creates a new CreatePartyRequest instance using the specified properties.
          * @param [properties] Properties to set
@@ -9225,14 +9228,17 @@ export namespace game {
         /** PartyInfo name. */
         name: string;
 
-        /** PartyInfo leaderId. */
-        leaderId: string;
+        /** PartyInfo leaderName. */
+        leaderName: string;
 
         /** PartyInfo memberCount. */
         memberCount: number;
 
         /** PartyInfo maxPlayers. */
         maxPlayers: number;
+
+        /** PartyInfo location. */
+        location: string;
 
         /**
          * Creates a new PartyInfo instance using the specified properties.
@@ -9366,8 +9372,8 @@ export namespace game {
         /** PartyStateMsg name. */
         name: string;
 
-        /** PartyStateMsg leaderId. */
-        leaderId: string;
+        /** PartyStateMsg leaderName. */
+        leaderName: string;
 
         /** PartyStateMsg members. */
         members: game.PartyMember.$Properties[];
@@ -9377,6 +9383,9 @@ export namespace game {
 
         /** PartyStateMsg maxPlayers. */
         maxPlayers: number;
+
+        /** PartyStateMsg location. */
+        location: string;
 
         /**
          * Creates a new PartyStateMsg instance using the specified properties.

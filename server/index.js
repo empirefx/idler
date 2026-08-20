@@ -52,6 +52,8 @@ async function main() {
   const questState = new QuestState(redis);
   const enemyState = new EnemyState(redis);
   const partyState = new PartyState(redis);
+  await partyState.flushAll();
+  logger.log("Party data flushed", "BOOT");
 
   const queues = createQueues(config.redis);
   const broadcaster = createBroadcaster();

@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   present: [],
@@ -22,11 +22,5 @@ const playersSlice = createSlice({
 export const { setPresent, setPokedBy } = playersSlice.actions;
 export default playersSlice.reducer;
 
-export const selectPresentPlayers = createSelector(
-  (state) => state.players.present,
-  (present) => present,
-);
-export const selectPokedBy = createSelector(
-  (state) => state.players.pokedBy,
-  (pokedBy) => pokedBy,
-);
+export const selectPresentPlayers = (state) => state.players.present;
+export const selectPokedBy = (state) => state.players.pokedBy;
