@@ -136,7 +136,7 @@ describe("SpawnService", () => {
     const enemy = ss._createEnemy("deep_woods", "woodland_predator");
     expect(enemy).not.toBeNull();
     expect(enemy.name).toBe("Woodland Predator");
-    expect(enemy.avatar).toBe("2.png");
+    expect(enemy.avatar).toBe("2");
     expect(enemy.hp).toBe(80);
     expect(enemy.maxHp).toBe(80);
     expect(enemy.strength).toBe(12);

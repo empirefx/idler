@@ -100,7 +100,7 @@ export class SpawnService {
       placeId,
       type,
       name: def.name || "Unknown",
-      avatar: def.avatar || "1.png",
+      avatar: def.avatar || "1",
       hp: def.baseHealth || 50,
       maxHp: def.baseHealth || 50,
       strength: def.baseAttack || 5,

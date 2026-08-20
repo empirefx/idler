@@ -2,7 +2,7 @@ export const enemyCatalog = {
 	forest_beast: {
 		id: "forest_beast",
 		name: "Forest Beast",
-		avatar: "1.png",
+		avatar: "1",
 		baseHealth: 50,
 		baseAttack: 8,
 		health: 50,
@@ -17,7 +17,7 @@ export const enemyCatalog = {
 	woodland_predator: {
 		id: "woodland_predator",
 		name: "Woodland Predator",
-		avatar: "2.png",
+		avatar: "2",
 		baseHealth: 80,
 		baseAttack: 12,
 		health: 80,
@@ -32,7 +32,7 @@ export const enemyCatalog = {
 	trained_hunters: {
 		id: "trained_hunters",
 		name: "Trained Hunters",
-		avatar: "3.png",
+		avatar: "3",
 		baseHealth: 60,
 		baseAttack: 10,
 		health: 60,
@@ -47,7 +47,7 @@ export const enemyCatalog = {
 	ruins_undead: {
 		id: "ruins_undead",
 		name: "Ruins Undead",
-		avatar: "4.png",
+		avatar: "4",
 		baseHealth: 90,
 		baseAttack: 20,
 		health: 90,
