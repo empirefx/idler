@@ -14,6 +14,11 @@ export class PartyState {
   }
 
   async create({ name, leaderId, leaderNickname }) {
+    const trimmed = name.trim();
+    if (!trimmed || trimmed.length > 30) {
+      throw new Error("INVALID_PARTY_NAME");
+    }
+
     const partyId = randomUUID();
     const memberIds = JSON.stringify([leaderId]);
     const members = JSON.stringify([
@@ -22,7 +27,7 @@ export class PartyState {
 
     await this.redis.hset(this._partyKey(partyId), {
       id: partyId,
-      name,
+      name: trimmed,
       leaderId,
       memberIds,
       members,
@@ -32,7 +37,7 @@ export class PartyState {
 
     return {
       id: partyId,
-      name,
+      name: trimmed,
       leaderId,
       members: [{ sessionId: leaderId, nickname: leaderNickname, isLeader: true }],
       memberCount: 1,
