@@ -8,6 +8,7 @@ import logReducer from "./slices/logSlice";
 import notificationReducer from "./slices/notificationSlice";
 import npcReducer from "./slices/npcSlice";
 import placesReducer from "./slices/placesSlice";
+import partiesReducer from "./slices/partiesSlice";
 import playersReducer from "./slices/playersSlice";
 import playerReducer from "./slices/playerSlice";
 import questsReducer from "./slices/questSlice";
@@ -72,6 +73,7 @@ export const store = configureStore({
     inventory: inventoryReducer,
     npcs: npcReducer,
     players: playersReducer,
+    parties: partiesReducer,
     enemies: enemiesReducer,
     combat: combatReducer,
     logs: logReducer,

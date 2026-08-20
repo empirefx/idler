@@ -50,3 +50,15 @@ export function levelUp(bonuses) {
 export function poke(targetNickname) {
 	sendWsMessage({ type: "POKE", targetNickname });
 }
+
+export function createParty(name) {
+	sendWsMessage({ type: "CREATE_PARTY", name });
+}
+
+export function joinParty(partyId) {
+	sendWsMessage({ type: "JOIN_PARTY", partyId });
+}
+
+export function leaveParty() {
+	sendWsMessage({ type: "LEAVE_PARTY" });
+}
