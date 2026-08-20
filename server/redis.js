@@ -69,9 +69,13 @@ export class RedisClient {
 		return this.client.smembers(key);
 	}
 
-	async sadd(key, value) {
-		return this.client.sadd(key, value);
-	}
+  async sadd(key, value) {
+    return this.client.sadd(key, value);
+  }
+
+  async srem(key, value) {
+    return this.client.srem(key, value);
+  }
 
 	async disconnect() {
 		if (this.client) {

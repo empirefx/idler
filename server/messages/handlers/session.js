@@ -5,7 +5,7 @@ export const sessionHandlers = [
   {
     type: "JOIN",
     async handler(ctx, msg) {
-      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService, presenceService, broadcaster } = ctx;
+      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService, presenceService, broadcaster, partyService } = ctx;
       if (msg.protocolVersion !== PROTOCOL_VERSION) {
         send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
         logger.log(`JOIN: ${msg.nickname} protocol mismatch`, "WS");
@@ -30,6 +30,7 @@ export const sessionHandlers = [
         }
         await combatService.computeAndBroadcastDerivedStats(connection.sessionId);
         await productionService.resumeAll(connection.sessionId);
+        await partyService.broadcastPartyList();
       } else {
         send(ws, "ERROR", { message: result.error === "NICKNAME_TAKEN" ? "Nickname already taken" : "Join failed" });
       }
@@ -39,7 +40,7 @@ export const sessionHandlers = [
   {
     type: "RESUME",
     async handler(ctx, msg) {
-      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService, presenceService, broadcaster } = ctx;
+      const { ws, connection, send, clients, logger, sessionManager, playerState, spawnService, combatService, productionService, presenceService, broadcaster, partyService } = ctx;
       if (msg.protocolVersion !== PROTOCOL_VERSION) {
         send(ws, "ERROR", { code: "PROTOCOL_MISMATCH", message: "Protocol version not supported" });
         logger.log(`RESUME: ${msg.nickname} protocol mismatch`, "WS");
@@ -67,6 +68,7 @@ export const sessionHandlers = [
         }
         await combatService.computeAndBroadcastDerivedStats(connection.sessionId);
         await productionService.resumeAll(connection.sessionId);
+        await partyService.broadcastPartyList();
         logger.log(`RESUME: ${msg.nickname} session restored`, "WS");
       } else {
         send(ws, "ERROR", { message: "Session expired" });
