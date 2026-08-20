@@ -55,7 +55,7 @@ export class PartyService {
       this._error(sessionId, PARTY_ERRORS.NAME_EMPTY, "Party name cannot be empty.");
       return;
     }
-    if (name.length > 30) {
+    if (name.trim().length > 30) {
       this._error(sessionId, PARTY_ERRORS.NAME_TOO_LONG, "Party name must be 30 characters or less.");
       return;
     }
@@ -93,7 +93,12 @@ export class PartyService {
     }
 
     const updated = await this.partyState.addMember(partyId, sessionId, nickname);
-    if (!updated || updated.alreadyMember) return;
+    if (!updated || updated.alreadyMember) {
+      if (!updated) {
+        this._error(sessionId, PARTY_ERRORS.PARTY_NOT_FOUND, "Party no longer exists.");
+      }
+      return;
+    }
 
     this._sendPartyState(updated);
     await this.broadcastPartyList();
