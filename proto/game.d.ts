@@ -9102,6 +9102,9 @@ export namespace game {
         /** PartyMember isLeader. */
         isLeader: boolean;
 
+        /** PartyMember location. */
+        location: string;
+
         /**
          * Creates a new PartyMember instance using the specified properties.
          * @param [properties] Properties to set
@@ -9194,6 +9197,9 @@ export namespace game {
 
             /** PartyMember isLeader */
             isLeader?: (boolean|null);
+
+            /** PartyMember location */
+            location?: (string|null);
 
             /** Unknown fields preserved while decoding when enabled */
             $unknowns?: Uint8Array[];

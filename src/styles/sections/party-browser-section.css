@@ -209,7 +209,6 @@
 .member-name {
   font-weight: 600;
   font-size: 0.9rem;
-  flex: 1;
 }
 
 .member-badge {
@@ -217,6 +216,12 @@
   color: rgba(80, 137, 255, 0.9);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.member-location {
+  font-size: 0.75rem;
+  color: var(--color-gray);
+  margin-left: auto;
 }
 
 .party-leave-btn {

@@ -24799,6 +24799,7 @@ export const game = $root.game = (() => {
          * @property {string|null} [sessionId] PartyMember sessionId
          * @property {string|null} [nickname] PartyMember nickname
          * @property {boolean|null} [isLeader] PartyMember isLeader
+         * @property {string|null} [location] PartyMember location
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -24855,6 +24856,14 @@ export const game = $root.game = (() => {
         PartyMember.prototype.isLeader = false;
 
         /**
+         * PartyMember location.
+         * @member {string} location
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.location = "";
+
+        /**
          * Creates a new PartyMember instance using the specified properties.
          * @function create
          * @memberof game.PartyMember
@@ -24892,6 +24901,8 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.nickname);
             if (message.isLeader != null && $Object.hasOwnProperty.call(message, "isLeader") && message.isLeader !== false)
                 writer.uint32(/* id 3, wireType 0 =*/24).bool(message.isLeader);
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location") && message.location !== "")
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.location);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -24966,6 +24977,15 @@ export const game = $root.game = (() => {
                             delete message.isLeader;
                         continue;
                     }
+                case 4: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.location = value;
+                        else
+                            delete message.location;
+                        continue;
+                    }
                 }
                 reader.skipType(wireType, _depth, tag);
                 if (!reader.discardUnknown) {
@@ -25018,6 +25038,9 @@ export const game = $root.game = (() => {
             if (message.isLeader != null && $Object.hasOwnProperty.call(message, "isLeader"))
                 if (typeof message.isLeader !== "boolean")
                     return "isLeader: boolean expected";
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                if (!$util.isString(message.location))
+                    return "location: string expected";
             return null;
         };
 
@@ -25048,6 +25071,9 @@ export const game = $root.game = (() => {
             if (object.isLeader != null)
                 if (object.isLeader)
                     message.isLeader = $Boolean(object.isLeader);
+            if (object.location != null)
+                if (typeof object.location !== "string" || object.location.length)
+                    message.location = $String(object.location);
             return message;
         };
 
@@ -25072,6 +25098,7 @@ export const game = $root.game = (() => {
                 object.sessionId = "";
                 object.nickname = "";
                 object.isLeader = false;
+                object.location = "";
             }
             if (message.sessionId != null && $Object.hasOwnProperty.call(message, "sessionId"))
                 object.sessionId = message.sessionId;
@@ -25079,6 +25106,8 @@ export const game = $root.game = (() => {
                 object.nickname = message.nickname;
             if (message.isLeader != null && $Object.hasOwnProperty.call(message, "isLeader"))
                 object.isLeader = message.isLeader;
+            if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
+                object.location = message.location;
             return object;
         };
 

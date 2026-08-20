@@ -61,15 +61,19 @@ const PartyBrowserSection = () => {
             )}
           </div>
           <div className="party-members-list">
-            {currentParty.members.map((member) => (
-              <div
-                key={member.sessionId}
-                className={`party-member-row ${member.isLeader ? "leader" : ""}`}
-              >
-                <span className="member-name">{member.nickname}</span>
-                {member.isLeader && <span className="member-badge">Leader</span>}
-              </div>
-            ))}
+            {currentParty.members.map((member) => {
+              const placeName = member.location ? placesData[member.location]?.name : null;
+              return (
+                <div
+                  key={member.sessionId}
+                  className={`party-member-row ${member.isLeader ? "leader" : ""}`}
+                >
+                  <span className="member-name">{member.nickname}</span>
+                  {member.isLeader && <span className="member-badge">Leader</span>}
+                  {placeName && <span className="member-location">{placeName}</span>}
+                </div>
+              );
+            })}
           </div>
           <div className="party-bottom-actions">
             <button className="party-leave-btn" onClick={handleLeave}>

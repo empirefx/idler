@@ -26,14 +26,18 @@ export class PartyService {
 
   _sendPartyState(party) {
     const leaderName = this._enrichLeader(party);
-    for (const member of party.members) {
+    const enrichedMembers = party.members.map((m) => {
+      const entry = this.presenceService.get(m.sessionId);
+      return { ...m, location: entry?.placeId || "" };
+    });
+    for (const member of enrichedMembers) {
       this.broadcaster.broadcast(member.sessionId, "PARTY_STATE", {
         id: party.id,
         name: party.name,
         leaderId: party.leaderId,
         leaderName,
         location: party.location,
-        members: party.members,
+        members: enrichedMembers,
         memberCount: party.memberCount,
         maxPlayers: party.maxPlayers,
       });
@@ -62,6 +66,12 @@ export class PartyService {
       ids.add(sessionId);
     }
     return ids;
+  }
+
+  async refreshMemberState(sessionId) {
+    const party = await this.partyState.findByMember(sessionId);
+    if (!party) return;
+    this._sendPartyState(party);
   }
 
   async createParty(sessionId, name, nickname, location) {

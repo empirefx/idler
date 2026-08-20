@@ -350,6 +350,7 @@ message PartyMember {
   string sessionId = 1;
   string nickname = 2;
   bool isLeader = 3;
+  string location = 4;
 }
 
 message PartyInfo {
