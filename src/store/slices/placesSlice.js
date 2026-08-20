@@ -36,9 +36,11 @@ export const selectCurrentPlace = (state) => {
 export const selectCurrentPlaceId = (state) => state.places.currentPlaceId;
 export const selectPreviousPlaceId = (state) => state.places.previousPlaceId;
 
+const EMPTY_SOCKETS = [];
+
 export const selectCurrentPlaceSockets = (state) => {
   const place = selectCurrentPlace(state);
-  return place?.sockets || [];
+  return place?.sockets || EMPTY_SOCKETS;
 };
 
 const selectPlacesState = (state) => state.places;
