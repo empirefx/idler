@@ -11,13 +11,13 @@ import NPCList from "../list/NPCList";
 const NPCSection = () => {
 	const npcs = useSelector(selectNPCsForCurrentPlace);
 	const _allNpcs = useSelector(selectAllNPCs);
-	const { openNPCDialog, npcSection } = useUIVisibility();
+	const { openNPCDialog } = useUIVisibility();
 
 	const handleNPCClick = (npcId) => {
 		openNPCDialog(npcId);
 	};
 
-	if (npcs.length === 0 || !npcSection) {
+	if (npcs.length === 0) {
 		return null;
 	}
 	return (

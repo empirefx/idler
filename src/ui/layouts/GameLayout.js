@@ -26,6 +26,7 @@ const GameLayout = ({ clearCache }) => {
 		toggleBuildingPanel,
 		showBuildingPanel,
 		hideBuildingPanel,
+		socialColumn,
 	} = useUIVisibility();
 
 	const styles = {
@@ -52,7 +53,7 @@ const GameLayout = ({ clearCache }) => {
 				<WorkersSection />
 				<BuildingSection />
 				<EnemySection />
-				<SocialColumnSection />
+				{socialColumn && <SocialColumnSection />}
 				<PlacesSection />
 				<LogSection />
 			</main>

@@ -9,7 +9,7 @@ export const UIVisibilityProvider = ({ children }) => {
 		playerCard: false,
 		workerCard: false,
 		buildingPanel: false,
-		npcSection: true,
+		socialColumn: true,
 		npcDialog: {
 			isOpen: false,
 			npcId: null,
@@ -28,9 +28,8 @@ export const UIVisibilityProvider = ({ children }) => {
 	const toggleWorkerCard = useCallback(() => {
 		setVisible((v) => {
 			const newWorkerCard = !v.workerCard;
-			// Auto-toggle NPC section: show NPC when worker is hidden
-			const newNpcSection = !newWorkerCard;
-			return { ...v, workerCard: newWorkerCard, npcSection: newNpcSection };
+			const newSocialColumn = !newWorkerCard;
+			return { ...v, workerCard: newWorkerCard, socialColumn: newSocialColumn };
 		});
 	}, []);
 
@@ -109,7 +108,7 @@ export const UIVisibilityProvider = ({ children }) => {
 	}, []);
 
 	const closeWorkerCard = useCallback(() => {
-		setVisible((v) => ({ ...v, workerCard: false, npcSection: true }));
+		setVisible((v) => ({ ...v, workerCard: false, socialColumn: true }));
 	}, []);
 
 	const closeCraftingWindow = useCallback(() => {
