@@ -34,10 +34,14 @@ export class PartyService {
 
   async broadcastPartyList() {
     const parties = await this.partyState.listAll();
-    // Broadcast to ALL connected clients
+    // Resolve leader nicknames
+    const enriched = parties.map((p) => {
+      const entry = this.presenceService.get(p.leaderId);
+      return { ...p, leaderNickname: entry?.nickname || "Unknown" };
+    });
     const allSessionIds = this._getAllSessionIds();
     for (const sessionId of allSessionIds) {
-      this.broadcaster.broadcast(sessionId, "PARTY_LIST_UPDATE", { parties });
+      this.broadcaster.broadcast(sessionId, "PARTY_LIST_UPDATE", { parties: enriched });
     }
   }
 
