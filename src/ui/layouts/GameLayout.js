@@ -13,6 +13,7 @@ import PlacesSection from "../components/sections/PlacesSection";
 import PlayerSection from "../components/sections/PlayerSection";
 import SocialColumnSection from "../components/sections/SocialColumnSection";
 import WorkerManagerSection from "../components/sections/WorkerManagerSection";
+import PartyBrowserSection from "../components/sections/PartyBrowserSection";
 import WorkersSection from "../components/sections/WorkersSection";
 import { useUIVisibility } from "../UIVisibilityContext";
 
@@ -71,8 +72,9 @@ const GameLayout = ({ clearCache }) => {
 				onOptionSelect={selectNPCOption}
 			/>
 			<CraftingSection />
-			<WorkerManagerSection />
-		</div>
+		<WorkerManagerSection />
+		<PartyBrowserSection />
+	</div>
 	);
 };
 

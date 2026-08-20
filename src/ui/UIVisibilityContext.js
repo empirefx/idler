@@ -17,6 +17,7 @@ export const UIVisibilityProvider = ({ children }) => {
 		},
 		craftingWindow: false,
 		workerManagerWindow: false,
+		partyBrowser: false,
 	});
 
 	// Toggle functions
@@ -91,6 +92,10 @@ export const UIVisibilityProvider = ({ children }) => {
 		setVisible((v) => ({ ...v, workerManagerWindow: !v.workerManagerWindow }));
 	}, []);
 
+	const togglePartyBrowser = useCallback(() => {
+		setVisible((v) => ({ ...v, partyBrowser: !v.partyBrowser }));
+	}, []);
+
 	const openWorkerManagerWindow = useCallback(() => {
 		setVisible((v) => ({ ...v, workerManagerWindow: true }));
 	}, []);
@@ -131,6 +136,7 @@ export const UIVisibilityProvider = ({ children }) => {
 				toggleWorkerManagerWindow,
 				openWorkerManagerWindow,
 				closeWorkerManagerWindow,
+				togglePartyBrowser,
 			}}
 		>
 			{children}

@@ -14,6 +14,7 @@ const InputManager = () => {
 		closeWorkerManagerWindow,
 		closeNPCDialog,
 		npcDialog,
+		togglePartyBrowser,
 	} = useUIVisibility();
 
 	const { getFrontWindow } = useWindowManager();
@@ -37,6 +38,8 @@ const InputManager = () => {
 				toggleBuildingPanel();
 			} else if (e.key === "l" || e.key === "L") {
 				toggleCraftingWindow();
+			} else if (e.key === "p") {
+				togglePartyBrowser();
 			} else if (e.key === "Escape") {
 				console.log("npcDialogRef.current:", npcDialogRef.current);
 				console.log("isOpen:", npcDialogRef.current?.isOpen);
@@ -47,8 +50,9 @@ const InputManager = () => {
 						player: closePlayerCard,
 						workers: closeWorkerCard,
 						"worker-manager": closeWorkerManagerWindow,
-						crafting: closeCraftingWindow,
-					};
+					crafting: closeCraftingWindow,
+					"party-browser": togglePartyBrowser,
+				};
 					closers[getFrontWindow()]?.();
 				}
 			}
@@ -66,6 +70,7 @@ const InputManager = () => {
 		closeCraftingWindow,
 		closeWorkerManagerWindow,
 		getFrontWindow,
+		togglePartyBrowser,
 		// npcDialog removed — read via ref instead
 	]);
 
