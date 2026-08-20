@@ -11,6 +11,7 @@ import { SocketsState } from "./state/SocketsState.js";
 import { WorkersState } from "./state/WorkersState.js";
 import { QuestState } from "./state/QuestState.js";
 import { EnemyState } from "./state/EnemyState.js";
+import { PartyState } from "./state/PartyState.js";
 import { createQueues } from "./queue.js";
 import { createBroadcaster } from "./broadcast.js";
 import { CombatService } from "./services/CombatService.js";
@@ -23,6 +24,7 @@ import { SkillsService } from "./services/SkillsService.js";
 import { SpawnService } from "./services/SpawnService.js";
 import { NavigationService } from "./services/NavigationService.js";
 import { PresenceService } from "./services/PresenceService.js";
+import { PartyService } from "./services/PartyService.js";
 import { createCombatEventBus } from "./game/combat/combatEvents.js";
 import { InventoryHandler } from "./inventory.js";
 import { createProductionWorker } from "./processors/productionProcessor.js";
@@ -49,6 +51,7 @@ async function main() {
   const workersState = new WorkersState(redis);
   const questState = new QuestState(redis);
   const enemyState = new EnemyState(redis);
+  const partyState = new PartyState(redis);
 
   const queues = createQueues(config.redis);
   const broadcaster = createBroadcaster();
@@ -65,6 +68,7 @@ async function main() {
   const spawnService = new SpawnService(redis, enemyState, queues.spawnQueue, queues.enemyAttackQueue, queues.playerAttackQueue, playerState, broadcaster);
   const navigationService = new NavigationService(redis);
   const presenceService = new PresenceService();
+  const partyService = new PartyService({ partyState, broadcaster, presenceService });
   const inventoryHandler = new InventoryHandler(redis, logger);
 
   createProductionWorker(productionService, config.redis);
@@ -90,6 +94,7 @@ async function main() {
     inventoryState,
     enemyState,
     presenceService,
+    partyService,
     broadcaster,
     logger,
   });

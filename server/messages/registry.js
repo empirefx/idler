@@ -8,6 +8,7 @@ import { tradeHandlers } from "./handlers/trade.js";
 import { questHandlers } from "./handlers/quests.js";
 import { inventoryHandlers } from "./handlers/inventory.js";
 import { presenceHandlers } from "./handlers/presence.js";
+import { partyHandlers } from "./handlers/party.js";
 
 export function createMessageRegistry() {
   const handlers = new Map();
@@ -37,6 +38,7 @@ for (const { type, handler } of [
   ...questHandlers,
   ...inventoryHandlers,
   ...presenceHandlers,
+  ...partyHandlers,
 ]) {
   messageRegistry.register(type, handler);
 }
