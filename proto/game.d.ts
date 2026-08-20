@@ -1118,6 +1118,9 @@ export namespace game {
         /** Player skills. */
         skills: { [k: string]: number };
 
+        /** Player targetEnemyId. */
+        targetEnemyId: string;
+
         /**
          * Creates a new Player instance using the specified properties.
          * @param [properties] Properties to set
@@ -1264,6 +1267,9 @@ export namespace game {
 
             /** Player skills */
             skills?: ({ [k: string]: number }|null);
+
+            /** Player targetEnemyId */
+            targetEnemyId?: (string|null);
 
             /** Unknown fields preserved while decoding when enabled */
             $unknowns?: Uint8Array[];
@@ -1988,6 +1994,12 @@ export namespace game {
         /** Enemy isDead. */
         isDead: boolean;
 
+        /** Enemy nextAttackAt. */
+        nextAttackAt: (number|Long);
+
+        /** Enemy nextAttackDelay. */
+        nextAttackDelay: (number|Long);
+
         /**
          * Creates a new Enemy instance using the specified properties.
          * @param [properties] Properties to set
@@ -2131,6 +2143,12 @@ export namespace game {
 
             /** Enemy isDead */
             isDead?: (boolean|null);
+
+            /** Enemy nextAttackAt */
+            nextAttackAt?: (number|Long|null);
+
+            /** Enemy nextAttackDelay */
+            nextAttackDelay?: (number|Long|null);
 
             /** Unknown fields preserved while decoding when enabled */
             $unknowns?: Uint8Array[];
@@ -6188,6 +6206,585 @@ export namespace game {
     }
 
     /**
+     * Properties of a SetTargetRequest.
+     * @deprecated Use game.SetTargetRequest.$Properties instead.
+     */
+    interface ISetTargetRequest extends game.SetTargetRequest.$Properties {
+    }
+
+    /** Represents a SetTargetRequest. */
+    class SetTargetRequest {
+
+        /**
+         * Constructs a new SetTargetRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.SetTargetRequest.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** SetTargetRequest enemyId. */
+        enemyId: string;
+
+        /**
+         * Creates a new SetTargetRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SetTargetRequest instance
+         */
+        static create(properties: game.SetTargetRequest.$Shape): game.SetTargetRequest & game.SetTargetRequest.$Shape;
+        static create(properties?: game.SetTargetRequest.$Properties): game.SetTargetRequest;
+
+        /**
+         * Encodes the specified SetTargetRequest message. Does not implicitly {@link game.SetTargetRequest.verify|verify} messages.
+         * @param message SetTargetRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.SetTargetRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SetTargetRequest message, length delimited. Does not implicitly {@link game.SetTargetRequest.verify|verify} messages.
+         * @param message SetTargetRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.SetTargetRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SetTargetRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.SetTargetRequest & game.SetTargetRequest.$Shape} SetTargetRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.SetTargetRequest & game.SetTargetRequest.$Shape;
+
+        /**
+         * Decodes a SetTargetRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.SetTargetRequest & game.SetTargetRequest.$Shape} SetTargetRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.SetTargetRequest & game.SetTargetRequest.$Shape;
+
+        /**
+         * Verifies a SetTargetRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SetTargetRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SetTargetRequest
+         */
+        static fromObject(object: { [k: string]: any }): game.SetTargetRequest;
+
+        /**
+         * Creates a plain object from a SetTargetRequest message. Also converts values to other types if specified.
+         * @param message SetTargetRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.SetTargetRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SetTargetRequest to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for SetTargetRequest
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace SetTargetRequest {
+
+        /** Properties of a SetTargetRequest. */
+        interface $Properties {
+
+            /** SetTargetRequest enemyId */
+            enemyId?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a SetTargetRequest. */
+        type $Shape = game.SetTargetRequest.$Properties;
+    }
+
+    /**
+     * Properties of a PokeRequest.
+     * @deprecated Use game.PokeRequest.$Properties instead.
+     */
+    interface IPokeRequest extends game.PokeRequest.$Properties {
+    }
+
+    /** Represents a PokeRequest. */
+    class PokeRequest {
+
+        /**
+         * Constructs a new PokeRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PokeRequest.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PokeRequest targetNickname. */
+        targetNickname: string;
+
+        /**
+         * Creates a new PokeRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PokeRequest instance
+         */
+        static create(properties: game.PokeRequest.$Shape): game.PokeRequest & game.PokeRequest.$Shape;
+        static create(properties?: game.PokeRequest.$Properties): game.PokeRequest;
+
+        /**
+         * Encodes the specified PokeRequest message. Does not implicitly {@link game.PokeRequest.verify|verify} messages.
+         * @param message PokeRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PokeRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PokeRequest message, length delimited. Does not implicitly {@link game.PokeRequest.verify|verify} messages.
+         * @param message PokeRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PokeRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PokeRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PokeRequest & game.PokeRequest.$Shape} PokeRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PokeRequest & game.PokeRequest.$Shape;
+
+        /**
+         * Decodes a PokeRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PokeRequest & game.PokeRequest.$Shape} PokeRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PokeRequest & game.PokeRequest.$Shape;
+
+        /**
+         * Verifies a PokeRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PokeRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PokeRequest
+         */
+        static fromObject(object: { [k: string]: any }): game.PokeRequest;
+
+        /**
+         * Creates a plain object from a PokeRequest message. Also converts values to other types if specified.
+         * @param message PokeRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PokeRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PokeRequest to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PokeRequest
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PokeRequest {
+
+        /** Properties of a PokeRequest. */
+        interface $Properties {
+
+            /** PokeRequest targetNickname */
+            targetNickname?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PokeRequest. */
+        type $Shape = game.PokeRequest.$Properties;
+    }
+
+    /**
+     * Properties of a CreatePartyRequest.
+     * @deprecated Use game.CreatePartyRequest.$Properties instead.
+     */
+    interface ICreatePartyRequest extends game.CreatePartyRequest.$Properties {
+    }
+
+    /** Represents a CreatePartyRequest. */
+    class CreatePartyRequest {
+
+        /**
+         * Constructs a new CreatePartyRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.CreatePartyRequest.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** CreatePartyRequest name. */
+        name: string;
+
+        /**
+         * Creates a new CreatePartyRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns CreatePartyRequest instance
+         */
+        static create(properties: game.CreatePartyRequest.$Shape): game.CreatePartyRequest & game.CreatePartyRequest.$Shape;
+        static create(properties?: game.CreatePartyRequest.$Properties): game.CreatePartyRequest;
+
+        /**
+         * Encodes the specified CreatePartyRequest message. Does not implicitly {@link game.CreatePartyRequest.verify|verify} messages.
+         * @param message CreatePartyRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.CreatePartyRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified CreatePartyRequest message, length delimited. Does not implicitly {@link game.CreatePartyRequest.verify|verify} messages.
+         * @param message CreatePartyRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.CreatePartyRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a CreatePartyRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.CreatePartyRequest & game.CreatePartyRequest.$Shape} CreatePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.CreatePartyRequest & game.CreatePartyRequest.$Shape;
+
+        /**
+         * Decodes a CreatePartyRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.CreatePartyRequest & game.CreatePartyRequest.$Shape} CreatePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.CreatePartyRequest & game.CreatePartyRequest.$Shape;
+
+        /**
+         * Verifies a CreatePartyRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a CreatePartyRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns CreatePartyRequest
+         */
+        static fromObject(object: { [k: string]: any }): game.CreatePartyRequest;
+
+        /**
+         * Creates a plain object from a CreatePartyRequest message. Also converts values to other types if specified.
+         * @param message CreatePartyRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.CreatePartyRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this CreatePartyRequest to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for CreatePartyRequest
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace CreatePartyRequest {
+
+        /** Properties of a CreatePartyRequest. */
+        interface $Properties {
+
+            /** CreatePartyRequest name */
+            name?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a CreatePartyRequest. */
+        type $Shape = game.CreatePartyRequest.$Properties;
+    }
+
+    /**
+     * Properties of a JoinPartyRequest.
+     * @deprecated Use game.JoinPartyRequest.$Properties instead.
+     */
+    interface IJoinPartyRequest extends game.JoinPartyRequest.$Properties {
+    }
+
+    /** Represents a JoinPartyRequest. */
+    class JoinPartyRequest {
+
+        /**
+         * Constructs a new JoinPartyRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.JoinPartyRequest.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** JoinPartyRequest partyId. */
+        partyId: string;
+
+        /**
+         * Creates a new JoinPartyRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns JoinPartyRequest instance
+         */
+        static create(properties: game.JoinPartyRequest.$Shape): game.JoinPartyRequest & game.JoinPartyRequest.$Shape;
+        static create(properties?: game.JoinPartyRequest.$Properties): game.JoinPartyRequest;
+
+        /**
+         * Encodes the specified JoinPartyRequest message. Does not implicitly {@link game.JoinPartyRequest.verify|verify} messages.
+         * @param message JoinPartyRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.JoinPartyRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified JoinPartyRequest message, length delimited. Does not implicitly {@link game.JoinPartyRequest.verify|verify} messages.
+         * @param message JoinPartyRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.JoinPartyRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a JoinPartyRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.JoinPartyRequest & game.JoinPartyRequest.$Shape} JoinPartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.JoinPartyRequest & game.JoinPartyRequest.$Shape;
+
+        /**
+         * Decodes a JoinPartyRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.JoinPartyRequest & game.JoinPartyRequest.$Shape} JoinPartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.JoinPartyRequest & game.JoinPartyRequest.$Shape;
+
+        /**
+         * Verifies a JoinPartyRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a JoinPartyRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns JoinPartyRequest
+         */
+        static fromObject(object: { [k: string]: any }): game.JoinPartyRequest;
+
+        /**
+         * Creates a plain object from a JoinPartyRequest message. Also converts values to other types if specified.
+         * @param message JoinPartyRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.JoinPartyRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this JoinPartyRequest to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for JoinPartyRequest
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace JoinPartyRequest {
+
+        /** Properties of a JoinPartyRequest. */
+        interface $Properties {
+
+            /** JoinPartyRequest partyId */
+            partyId?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a JoinPartyRequest. */
+        type $Shape = game.JoinPartyRequest.$Properties;
+    }
+
+    /**
+     * Properties of a LeavePartyRequest.
+     * @deprecated Use game.LeavePartyRequest.$Properties instead.
+     */
+    interface ILeavePartyRequest extends game.LeavePartyRequest.$Properties {
+    }
+
+    /** Represents a LeavePartyRequest. */
+    class LeavePartyRequest {
+
+        /**
+         * Constructs a new LeavePartyRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.LeavePartyRequest.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /**
+         * Creates a new LeavePartyRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns LeavePartyRequest instance
+         */
+        static create(properties: game.LeavePartyRequest.$Shape): game.LeavePartyRequest & game.LeavePartyRequest.$Shape;
+        static create(properties?: game.LeavePartyRequest.$Properties): game.LeavePartyRequest;
+
+        /**
+         * Encodes the specified LeavePartyRequest message. Does not implicitly {@link game.LeavePartyRequest.verify|verify} messages.
+         * @param message LeavePartyRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.LeavePartyRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified LeavePartyRequest message, length delimited. Does not implicitly {@link game.LeavePartyRequest.verify|verify} messages.
+         * @param message LeavePartyRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.LeavePartyRequest.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a LeavePartyRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.LeavePartyRequest & game.LeavePartyRequest.$Shape} LeavePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.LeavePartyRequest & game.LeavePartyRequest.$Shape;
+
+        /**
+         * Decodes a LeavePartyRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.LeavePartyRequest & game.LeavePartyRequest.$Shape} LeavePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.LeavePartyRequest & game.LeavePartyRequest.$Shape;
+
+        /**
+         * Verifies a LeavePartyRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a LeavePartyRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns LeavePartyRequest
+         */
+        static fromObject(object: { [k: string]: any }): game.LeavePartyRequest;
+
+        /**
+         * Creates a plain object from a LeavePartyRequest message. Also converts values to other types if specified.
+         * @param message LeavePartyRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.LeavePartyRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this LeavePartyRequest to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for LeavePartyRequest
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace LeavePartyRequest {
+
+        /** Properties of a LeavePartyRequest. */
+        interface $Properties {
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a LeavePartyRequest. */
+        type $Shape = game.LeavePartyRequest.$Properties;
+    }
+
+    /**
      * Properties of a StateSync.
      * @deprecated Use game.StateSync.$Properties instead.
      */
@@ -6936,6 +7533,12 @@ export namespace game {
         /** EnemyAttack playerDead. */
         playerDead: boolean;
 
+        /** EnemyAttack nextAttackAt. */
+        nextAttackAt: (number|Long);
+
+        /** EnemyAttack nextAttackDelay. */
+        nextAttackDelay: (number|Long);
+
         /**
          * Creates a new EnemyAttack instance using the specified properties.
          * @param [properties] Properties to set
@@ -7040,6 +7643,12 @@ export namespace game {
 
             /** EnemyAttack playerDead */
             playerDead?: (boolean|null);
+
+            /** EnemyAttack nextAttackAt */
+            nextAttackAt?: (number|Long|null);
+
+            /** EnemyAttack nextAttackDelay */
+            nextAttackDelay?: (number|Long|null);
 
             /** Unknown fields preserved while decoding when enabled */
             $unknowns?: Uint8Array[];
@@ -7950,5 +8559,1295 @@ export namespace game {
 
         /** Shape of a UseResult. */
         type $Shape = game.UseResult.$Properties;
+    }
+
+    /**
+     * Properties of a PresencePlayer.
+     * @deprecated Use game.PresencePlayer.$Properties instead.
+     */
+    interface IPresencePlayer extends game.PresencePlayer.$Properties {
+    }
+
+    /** Represents a PresencePlayer. */
+    class PresencePlayer {
+
+        /**
+         * Constructs a new PresencePlayer.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PresencePlayer.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PresencePlayer nickname. */
+        nickname: string;
+
+        /** PresencePlayer level. */
+        level: number;
+
+        /** PresencePlayer avatar. */
+        avatar: string;
+
+        /** PresencePlayer enteredAt. */
+        enteredAt: (number|Long);
+
+        /**
+         * Creates a new PresencePlayer instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PresencePlayer instance
+         */
+        static create(properties: game.PresencePlayer.$Shape): game.PresencePlayer & game.PresencePlayer.$Shape;
+        static create(properties?: game.PresencePlayer.$Properties): game.PresencePlayer;
+
+        /**
+         * Encodes the specified PresencePlayer message. Does not implicitly {@link game.PresencePlayer.verify|verify} messages.
+         * @param message PresencePlayer message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PresencePlayer.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PresencePlayer message, length delimited. Does not implicitly {@link game.PresencePlayer.verify|verify} messages.
+         * @param message PresencePlayer message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PresencePlayer.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PresencePlayer message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PresencePlayer & game.PresencePlayer.$Shape} PresencePlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PresencePlayer & game.PresencePlayer.$Shape;
+
+        /**
+         * Decodes a PresencePlayer message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PresencePlayer & game.PresencePlayer.$Shape} PresencePlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PresencePlayer & game.PresencePlayer.$Shape;
+
+        /**
+         * Verifies a PresencePlayer message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PresencePlayer message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PresencePlayer
+         */
+        static fromObject(object: { [k: string]: any }): game.PresencePlayer;
+
+        /**
+         * Creates a plain object from a PresencePlayer message. Also converts values to other types if specified.
+         * @param message PresencePlayer
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PresencePlayer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PresencePlayer to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PresencePlayer
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PresencePlayer {
+
+        /** Properties of a PresencePlayer. */
+        interface $Properties {
+
+            /** PresencePlayer nickname */
+            nickname?: (string|null);
+
+            /** PresencePlayer level */
+            level?: (number|null);
+
+            /** PresencePlayer avatar */
+            avatar?: (string|null);
+
+            /** PresencePlayer enteredAt */
+            enteredAt?: (number|Long|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PresencePlayer. */
+        type $Shape = game.PresencePlayer.$Properties;
+    }
+
+    /**
+     * Properties of a PresenceUpdate.
+     * @deprecated Use game.PresenceUpdate.$Properties instead.
+     */
+    interface IPresenceUpdate extends game.PresenceUpdate.$Properties {
+    }
+
+    /** Represents a PresenceUpdate. */
+    class PresenceUpdate {
+
+        /**
+         * Constructs a new PresenceUpdate.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PresenceUpdate.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PresenceUpdate placeId. */
+        placeId: string;
+
+        /** PresenceUpdate players. */
+        players: game.PresencePlayer.$Properties[];
+
+        /**
+         * Creates a new PresenceUpdate instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PresenceUpdate instance
+         */
+        static create(properties: game.PresenceUpdate.$Shape): game.PresenceUpdate & game.PresenceUpdate.$Shape;
+        static create(properties?: game.PresenceUpdate.$Properties): game.PresenceUpdate;
+
+        /**
+         * Encodes the specified PresenceUpdate message. Does not implicitly {@link game.PresenceUpdate.verify|verify} messages.
+         * @param message PresenceUpdate message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PresenceUpdate.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PresenceUpdate message, length delimited. Does not implicitly {@link game.PresenceUpdate.verify|verify} messages.
+         * @param message PresenceUpdate message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PresenceUpdate.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PresenceUpdate message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PresenceUpdate & game.PresenceUpdate.$Shape} PresenceUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PresenceUpdate & game.PresenceUpdate.$Shape;
+
+        /**
+         * Decodes a PresenceUpdate message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PresenceUpdate & game.PresenceUpdate.$Shape} PresenceUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PresenceUpdate & game.PresenceUpdate.$Shape;
+
+        /**
+         * Verifies a PresenceUpdate message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PresenceUpdate message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PresenceUpdate
+         */
+        static fromObject(object: { [k: string]: any }): game.PresenceUpdate;
+
+        /**
+         * Creates a plain object from a PresenceUpdate message. Also converts values to other types if specified.
+         * @param message PresenceUpdate
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PresenceUpdate, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PresenceUpdate to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PresenceUpdate
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PresenceUpdate {
+
+        /** Properties of a PresenceUpdate. */
+        interface $Properties {
+
+            /** PresenceUpdate placeId */
+            placeId?: (string|null);
+
+            /** PresenceUpdate players */
+            players?: (game.PresencePlayer.$Properties[]|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PresenceUpdate. */
+        type $Shape = game.PresenceUpdate.$Properties;
+    }
+
+    /**
+     * Properties of a Poked.
+     * @deprecated Use game.Poked.$Properties instead.
+     */
+    interface IPoked extends game.Poked.$Properties {
+    }
+
+    /** Represents a Poked. */
+    class Poked {
+
+        /**
+         * Constructs a new Poked.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.Poked.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** Poked fromNickname. */
+        fromNickname: string;
+
+        /** Poked fromAvatar. */
+        fromAvatar: string;
+
+        /**
+         * Creates a new Poked instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Poked instance
+         */
+        static create(properties: game.Poked.$Shape): game.Poked & game.Poked.$Shape;
+        static create(properties?: game.Poked.$Properties): game.Poked;
+
+        /**
+         * Encodes the specified Poked message. Does not implicitly {@link game.Poked.verify|verify} messages.
+         * @param message Poked message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.Poked.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Poked message, length delimited. Does not implicitly {@link game.Poked.verify|verify} messages.
+         * @param message Poked message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.Poked.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Poked message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.Poked & game.Poked.$Shape} Poked
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.Poked & game.Poked.$Shape;
+
+        /**
+         * Decodes a Poked message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.Poked & game.Poked.$Shape} Poked
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.Poked & game.Poked.$Shape;
+
+        /**
+         * Verifies a Poked message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Poked message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Poked
+         */
+        static fromObject(object: { [k: string]: any }): game.Poked;
+
+        /**
+         * Creates a plain object from a Poked message. Also converts values to other types if specified.
+         * @param message Poked
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.Poked, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Poked to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for Poked
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace Poked {
+
+        /** Properties of a Poked. */
+        interface $Properties {
+
+            /** Poked fromNickname */
+            fromNickname?: (string|null);
+
+            /** Poked fromAvatar */
+            fromAvatar?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a Poked. */
+        type $Shape = game.Poked.$Properties;
+    }
+
+    /**
+     * Properties of a PokeAck.
+     * @deprecated Use game.PokeAck.$Properties instead.
+     */
+    interface IPokeAck extends game.PokeAck.$Properties {
+    }
+
+    /** Represents a PokeAck. */
+    class PokeAck {
+
+        /**
+         * Constructs a new PokeAck.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PokeAck.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PokeAck ok. */
+        ok: boolean;
+
+        /** PokeAck targetNickname. */
+        targetNickname: string;
+
+        /** PokeAck reason. */
+        reason: string;
+
+        /**
+         * Creates a new PokeAck instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PokeAck instance
+         */
+        static create(properties: game.PokeAck.$Shape): game.PokeAck & game.PokeAck.$Shape;
+        static create(properties?: game.PokeAck.$Properties): game.PokeAck;
+
+        /**
+         * Encodes the specified PokeAck message. Does not implicitly {@link game.PokeAck.verify|verify} messages.
+         * @param message PokeAck message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PokeAck.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PokeAck message, length delimited. Does not implicitly {@link game.PokeAck.verify|verify} messages.
+         * @param message PokeAck message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PokeAck.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PokeAck message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PokeAck & game.PokeAck.$Shape} PokeAck
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PokeAck & game.PokeAck.$Shape;
+
+        /**
+         * Decodes a PokeAck message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PokeAck & game.PokeAck.$Shape} PokeAck
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PokeAck & game.PokeAck.$Shape;
+
+        /**
+         * Verifies a PokeAck message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PokeAck message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PokeAck
+         */
+        static fromObject(object: { [k: string]: any }): game.PokeAck;
+
+        /**
+         * Creates a plain object from a PokeAck message. Also converts values to other types if specified.
+         * @param message PokeAck
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PokeAck, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PokeAck to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PokeAck
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PokeAck {
+
+        /** Properties of a PokeAck. */
+        interface $Properties {
+
+            /** PokeAck ok */
+            ok?: (boolean|null);
+
+            /** PokeAck targetNickname */
+            targetNickname?: (string|null);
+
+            /** PokeAck reason */
+            reason?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PokeAck. */
+        type $Shape = game.PokeAck.$Properties;
+    }
+
+    /**
+     * Properties of a PartyMember.
+     * @deprecated Use game.PartyMember.$Properties instead.
+     */
+    interface IPartyMember extends game.PartyMember.$Properties {
+    }
+
+    /** Represents a PartyMember. */
+    class PartyMember {
+
+        /**
+         * Constructs a new PartyMember.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PartyMember.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PartyMember sessionId. */
+        sessionId: string;
+
+        /** PartyMember nickname. */
+        nickname: string;
+
+        /** PartyMember isLeader. */
+        isLeader: boolean;
+
+        /**
+         * Creates a new PartyMember instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PartyMember instance
+         */
+        static create(properties: game.PartyMember.$Shape): game.PartyMember & game.PartyMember.$Shape;
+        static create(properties?: game.PartyMember.$Properties): game.PartyMember;
+
+        /**
+         * Encodes the specified PartyMember message. Does not implicitly {@link game.PartyMember.verify|verify} messages.
+         * @param message PartyMember message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PartyMember.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PartyMember message, length delimited. Does not implicitly {@link game.PartyMember.verify|verify} messages.
+         * @param message PartyMember message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PartyMember.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PartyMember message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PartyMember & game.PartyMember.$Shape} PartyMember
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PartyMember & game.PartyMember.$Shape;
+
+        /**
+         * Decodes a PartyMember message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PartyMember & game.PartyMember.$Shape} PartyMember
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PartyMember & game.PartyMember.$Shape;
+
+        /**
+         * Verifies a PartyMember message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PartyMember message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PartyMember
+         */
+        static fromObject(object: { [k: string]: any }): game.PartyMember;
+
+        /**
+         * Creates a plain object from a PartyMember message. Also converts values to other types if specified.
+         * @param message PartyMember
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PartyMember, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PartyMember to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PartyMember
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PartyMember {
+
+        /** Properties of a PartyMember. */
+        interface $Properties {
+
+            /** PartyMember sessionId */
+            sessionId?: (string|null);
+
+            /** PartyMember nickname */
+            nickname?: (string|null);
+
+            /** PartyMember isLeader */
+            isLeader?: (boolean|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PartyMember. */
+        type $Shape = game.PartyMember.$Properties;
+    }
+
+    /**
+     * Properties of a PartyInfo.
+     * @deprecated Use game.PartyInfo.$Properties instead.
+     */
+    interface IPartyInfo extends game.PartyInfo.$Properties {
+    }
+
+    /** Represents a PartyInfo. */
+    class PartyInfo {
+
+        /**
+         * Constructs a new PartyInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PartyInfo.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PartyInfo id. */
+        id: string;
+
+        /** PartyInfo name. */
+        name: string;
+
+        /** PartyInfo leaderId. */
+        leaderId: string;
+
+        /** PartyInfo memberCount. */
+        memberCount: number;
+
+        /** PartyInfo maxPlayers. */
+        maxPlayers: number;
+
+        /**
+         * Creates a new PartyInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PartyInfo instance
+         */
+        static create(properties: game.PartyInfo.$Shape): game.PartyInfo & game.PartyInfo.$Shape;
+        static create(properties?: game.PartyInfo.$Properties): game.PartyInfo;
+
+        /**
+         * Encodes the specified PartyInfo message. Does not implicitly {@link game.PartyInfo.verify|verify} messages.
+         * @param message PartyInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PartyInfo.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PartyInfo message, length delimited. Does not implicitly {@link game.PartyInfo.verify|verify} messages.
+         * @param message PartyInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PartyInfo.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PartyInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PartyInfo & game.PartyInfo.$Shape} PartyInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PartyInfo & game.PartyInfo.$Shape;
+
+        /**
+         * Decodes a PartyInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PartyInfo & game.PartyInfo.$Shape} PartyInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PartyInfo & game.PartyInfo.$Shape;
+
+        /**
+         * Verifies a PartyInfo message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PartyInfo message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PartyInfo
+         */
+        static fromObject(object: { [k: string]: any }): game.PartyInfo;
+
+        /**
+         * Creates a plain object from a PartyInfo message. Also converts values to other types if specified.
+         * @param message PartyInfo
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PartyInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PartyInfo to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PartyInfo
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PartyInfo {
+
+        /** Properties of a PartyInfo. */
+        interface $Properties {
+
+            /** PartyInfo id */
+            id?: (string|null);
+
+            /** PartyInfo name */
+            name?: (string|null);
+
+            /** PartyInfo leaderId */
+            leaderId?: (string|null);
+
+            /** PartyInfo memberCount */
+            memberCount?: (number|null);
+
+            /** PartyInfo maxPlayers */
+            maxPlayers?: (number|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PartyInfo. */
+        type $Shape = game.PartyInfo.$Properties;
+    }
+
+    /**
+     * Properties of a PartyStateMsg.
+     * @deprecated Use game.PartyStateMsg.$Properties instead.
+     */
+    interface IPartyStateMsg extends game.PartyStateMsg.$Properties {
+    }
+
+    /** Represents a PartyStateMsg. */
+    class PartyStateMsg {
+
+        /**
+         * Constructs a new PartyStateMsg.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PartyStateMsg.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PartyStateMsg id. */
+        id: string;
+
+        /** PartyStateMsg name. */
+        name: string;
+
+        /** PartyStateMsg leaderId. */
+        leaderId: string;
+
+        /** PartyStateMsg members. */
+        members: game.PartyMember.$Properties[];
+
+        /** PartyStateMsg memberCount. */
+        memberCount: number;
+
+        /** PartyStateMsg maxPlayers. */
+        maxPlayers: number;
+
+        /**
+         * Creates a new PartyStateMsg instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PartyStateMsg instance
+         */
+        static create(properties: game.PartyStateMsg.$Shape): game.PartyStateMsg & game.PartyStateMsg.$Shape;
+        static create(properties?: game.PartyStateMsg.$Properties): game.PartyStateMsg;
+
+        /**
+         * Encodes the specified PartyStateMsg message. Does not implicitly {@link game.PartyStateMsg.verify|verify} messages.
+         * @param message PartyStateMsg message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PartyStateMsg.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PartyStateMsg message, length delimited. Does not implicitly {@link game.PartyStateMsg.verify|verify} messages.
+         * @param message PartyStateMsg message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PartyStateMsg.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PartyStateMsg message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PartyStateMsg & game.PartyStateMsg.$Shape} PartyStateMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PartyStateMsg & game.PartyStateMsg.$Shape;
+
+        /**
+         * Decodes a PartyStateMsg message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PartyStateMsg & game.PartyStateMsg.$Shape} PartyStateMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PartyStateMsg & game.PartyStateMsg.$Shape;
+
+        /**
+         * Verifies a PartyStateMsg message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PartyStateMsg message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PartyStateMsg
+         */
+        static fromObject(object: { [k: string]: any }): game.PartyStateMsg;
+
+        /**
+         * Creates a plain object from a PartyStateMsg message. Also converts values to other types if specified.
+         * @param message PartyStateMsg
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PartyStateMsg, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PartyStateMsg to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PartyStateMsg
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PartyStateMsg {
+
+        /** Properties of a PartyStateMsg. */
+        interface $Properties {
+
+            /** PartyStateMsg id */
+            id?: (string|null);
+
+            /** PartyStateMsg name */
+            name?: (string|null);
+
+            /** PartyStateMsg leaderId */
+            leaderId?: (string|null);
+
+            /** PartyStateMsg members */
+            members?: (game.PartyMember.$Properties[]|null);
+
+            /** PartyStateMsg memberCount */
+            memberCount?: (number|null);
+
+            /** PartyStateMsg maxPlayers */
+            maxPlayers?: (number|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PartyStateMsg. */
+        type $Shape = game.PartyStateMsg.$Properties;
+    }
+
+    /**
+     * Properties of a PartyListUpdate.
+     * @deprecated Use game.PartyListUpdate.$Properties instead.
+     */
+    interface IPartyListUpdate extends game.PartyListUpdate.$Properties {
+    }
+
+    /** Represents a PartyListUpdate. */
+    class PartyListUpdate {
+
+        /**
+         * Constructs a new PartyListUpdate.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PartyListUpdate.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PartyListUpdate parties. */
+        parties: game.PartyInfo.$Properties[];
+
+        /**
+         * Creates a new PartyListUpdate instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PartyListUpdate instance
+         */
+        static create(properties: game.PartyListUpdate.$Shape): game.PartyListUpdate & game.PartyListUpdate.$Shape;
+        static create(properties?: game.PartyListUpdate.$Properties): game.PartyListUpdate;
+
+        /**
+         * Encodes the specified PartyListUpdate message. Does not implicitly {@link game.PartyListUpdate.verify|verify} messages.
+         * @param message PartyListUpdate message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PartyListUpdate.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PartyListUpdate message, length delimited. Does not implicitly {@link game.PartyListUpdate.verify|verify} messages.
+         * @param message PartyListUpdate message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PartyListUpdate.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PartyListUpdate message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PartyListUpdate & game.PartyListUpdate.$Shape} PartyListUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PartyListUpdate & game.PartyListUpdate.$Shape;
+
+        /**
+         * Decodes a PartyListUpdate message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PartyListUpdate & game.PartyListUpdate.$Shape} PartyListUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PartyListUpdate & game.PartyListUpdate.$Shape;
+
+        /**
+         * Verifies a PartyListUpdate message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PartyListUpdate message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PartyListUpdate
+         */
+        static fromObject(object: { [k: string]: any }): game.PartyListUpdate;
+
+        /**
+         * Creates a plain object from a PartyListUpdate message. Also converts values to other types if specified.
+         * @param message PartyListUpdate
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PartyListUpdate, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PartyListUpdate to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PartyListUpdate
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PartyListUpdate {
+
+        /** Properties of a PartyListUpdate. */
+        interface $Properties {
+
+            /** PartyListUpdate parties */
+            parties?: (game.PartyInfo.$Properties[]|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PartyListUpdate. */
+        type $Shape = game.PartyListUpdate.$Properties;
+    }
+
+    /**
+     * Properties of a PartyDissolved.
+     * @deprecated Use game.PartyDissolved.$Properties instead.
+     */
+    interface IPartyDissolved extends game.PartyDissolved.$Properties {
+    }
+
+    /** Represents a PartyDissolved. */
+    class PartyDissolved {
+
+        /**
+         * Constructs a new PartyDissolved.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PartyDissolved.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PartyDissolved partyId. */
+        partyId: string;
+
+        /** PartyDissolved reason. */
+        reason: string;
+
+        /**
+         * Creates a new PartyDissolved instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PartyDissolved instance
+         */
+        static create(properties: game.PartyDissolved.$Shape): game.PartyDissolved & game.PartyDissolved.$Shape;
+        static create(properties?: game.PartyDissolved.$Properties): game.PartyDissolved;
+
+        /**
+         * Encodes the specified PartyDissolved message. Does not implicitly {@link game.PartyDissolved.verify|verify} messages.
+         * @param message PartyDissolved message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PartyDissolved.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PartyDissolved message, length delimited. Does not implicitly {@link game.PartyDissolved.verify|verify} messages.
+         * @param message PartyDissolved message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PartyDissolved.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PartyDissolved message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PartyDissolved & game.PartyDissolved.$Shape} PartyDissolved
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PartyDissolved & game.PartyDissolved.$Shape;
+
+        /**
+         * Decodes a PartyDissolved message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PartyDissolved & game.PartyDissolved.$Shape} PartyDissolved
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PartyDissolved & game.PartyDissolved.$Shape;
+
+        /**
+         * Verifies a PartyDissolved message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PartyDissolved message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PartyDissolved
+         */
+        static fromObject(object: { [k: string]: any }): game.PartyDissolved;
+
+        /**
+         * Creates a plain object from a PartyDissolved message. Also converts values to other types if specified.
+         * @param message PartyDissolved
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PartyDissolved, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PartyDissolved to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PartyDissolved
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PartyDissolved {
+
+        /** Properties of a PartyDissolved. */
+        interface $Properties {
+
+            /** PartyDissolved partyId */
+            partyId?: (string|null);
+
+            /** PartyDissolved reason */
+            reason?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PartyDissolved. */
+        type $Shape = game.PartyDissolved.$Properties;
+    }
+
+    /**
+     * Properties of a PartyErrorResponse.
+     * @deprecated Use game.PartyErrorResponse.$Properties instead.
+     */
+    interface IPartyErrorResponse extends game.PartyErrorResponse.$Properties {
+    }
+
+    /** Represents a PartyErrorResponse. */
+    class PartyErrorResponse {
+
+        /**
+         * Constructs a new PartyErrorResponse.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: game.PartyErrorResponse.$Properties);
+
+        /** Unknown fields preserved while decoding when enabled */
+        $unknowns?: Uint8Array[];
+
+        /** PartyErrorResponse code. */
+        code: string;
+
+        /** PartyErrorResponse message. */
+        message: string;
+
+        /**
+         * Creates a new PartyErrorResponse instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PartyErrorResponse instance
+         */
+        static create(properties: game.PartyErrorResponse.$Shape): game.PartyErrorResponse & game.PartyErrorResponse.$Shape;
+        static create(properties?: game.PartyErrorResponse.$Properties): game.PartyErrorResponse;
+
+        /**
+         * Encodes the specified PartyErrorResponse message. Does not implicitly {@link game.PartyErrorResponse.verify|verify} messages.
+         * @param message PartyErrorResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encode(message: game.PartyErrorResponse.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PartyErrorResponse message, length delimited. Does not implicitly {@link game.PartyErrorResponse.verify|verify} messages.
+         * @param message PartyErrorResponse message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        static encodeDelimited(message: game.PartyErrorResponse.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PartyErrorResponse message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns {game.PartyErrorResponse & game.PartyErrorResponse.$Shape} PartyErrorResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): game.PartyErrorResponse & game.PartyErrorResponse.$Shape;
+
+        /**
+         * Decodes a PartyErrorResponse message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns {game.PartyErrorResponse & game.PartyErrorResponse.$Shape} PartyErrorResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): game.PartyErrorResponse & game.PartyErrorResponse.$Shape;
+
+        /**
+         * Verifies a PartyErrorResponse message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PartyErrorResponse message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PartyErrorResponse
+         */
+        static fromObject(object: { [k: string]: any }): game.PartyErrorResponse;
+
+        /**
+         * Creates a plain object from a PartyErrorResponse message. Also converts values to other types if specified.
+         * @param message PartyErrorResponse
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        static toObject(message: game.PartyErrorResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PartyErrorResponse to JSON.
+         * @returns JSON object
+         */
+        toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the type url for PartyErrorResponse
+         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns The type url
+         */
+        static getTypeUrl(prefix?: string): string;
+    }
+
+    namespace PartyErrorResponse {
+
+        /** Properties of a PartyErrorResponse. */
+        interface $Properties {
+
+            /** PartyErrorResponse code */
+            code?: (string|null);
+
+            /** PartyErrorResponse message */
+            message?: (string|null);
+
+            /** Unknown fields preserved while decoding when enabled */
+            $unknowns?: Uint8Array[];
+        }
+
+        /** Shape of a PartyErrorResponse. */
+        type $Shape = game.PartyErrorResponse.$Properties;
     }
 }

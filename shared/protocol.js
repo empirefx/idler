@@ -9,6 +9,8 @@ import {
 	UnequipItem, UseItemRequest, StateSync, Diff, PlayerStats, CombatDiff, EnemyAttack,
 	EnemySpawn, ProductionTick, QuestUpdate, InventoryUpdate, Notification, TradeResult, UseResult,
 	PresenceUpdate, PokeRequest, Poked, PokeAck,
+	CreatePartyRequest, JoinPartyRequest, LeavePartyRequest,
+	PartyInfo, PartyStateMsg, PartyListUpdate, PartyDissolved, PartyErrorResponse,
 } from "../proto/game.mjs";
 
 export const PROTOCOL_VERSION = 1;
@@ -144,6 +146,10 @@ const codecs = {
 	UNEQUIP_ITEM: simple(UnequipItem),
 	USE_ITEM: simple(UseItemRequest, { encode: encodeWithStringItemId(UseItemRequest) }),
 	POKE: simple(PokeRequest),
+	// client -> server (party)
+	CREATE_PARTY: simple(CreatePartyRequest),
+	JOIN_PARTY: simple(JoinPartyRequest),
+	LEAVE_PARTY: simple(LeavePartyRequest),
 	// server -> client
 	STATE_SYNC: { encode: encodeStateSync, decode: decodeStateSync },
 	DIFF: { encode: encodeDiff, decode: decodeDiff },
@@ -159,6 +165,11 @@ const codecs = {
 	PRESENCE_UPDATE: simple(PresenceUpdate),
 	POKED: simple(Poked),
 	POKE_ACK: simple(PokeAck),
+	// server -> client (party)
+	PARTY_STATE: simple(PartyStateMsg),
+	PARTY_LIST_UPDATE: simple(PartyListUpdate),
+	PARTY_DISSOLVED: simple(PartyDissolved),
+	PARTY_ERROR: simple(PartyErrorResponse),
 	ERROR: simple(ErrorResponse),
 };
 
@@ -167,13 +178,14 @@ export const CLIENT_MESSAGES = Object.freeze([
 	"BUY_SOCKET", "BUILD", "UPGRADE_BUILDING", "DEMOLISH", "ASSIGN_WORKER", "UNASSIGN_WORKER",
 	"FIRE_WORKER", "CRAFT", "HIRE_WORKER", "REROLL_WORKERS", "BUY_WORKER_SLOT", "BUY_ITEM",
 	"SELL_ITEM", "ACCEPT_QUEST", "COMPLETE_QUEST", "MOVE_ITEM", "EQUIP_ITEM", "UNEQUIP_ITEM", "USE_ITEM",
-	"POKE",
+	"POKE", "CREATE_PARTY", "JOIN_PARTY", "LEAVE_PARTY",
 ]);
 
 export const SERVER_MESSAGES = Object.freeze([
 	"STATE_SYNC", "DIFF", "COMBAT_DIFF", "ENEMY_ATTACK", "ENEMY_SPAWN", "INVENTORY_UPDATE",
 	"PRODUCTION_TICK", "QUEST_UPDATE", "NOTIFICATION", "TRADE_RESULT", "USE_RESULT", "ERROR",
 	"PRESENCE_UPDATE", "POKED", "POKE_ACK",
+	"PARTY_STATE", "PARTY_LIST_UPDATE", "PARTY_DISSOLVED", "PARTY_ERROR",
 ]);
 
 export function encode(type, payload = {}) {

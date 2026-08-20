@@ -214,6 +214,9 @@ message UnequipItem { string inventoryId = 1; string slot = 2; }
 message UseItemRequest { string itemId = 1; }
 message SetTargetRequest { string enemyId = 1; }
 message PokeRequest { string targetNickname = 1; }
+message CreatePartyRequest { string name = 1; }
+message JoinPartyRequest { string partyId = 1; }
+message LeavePartyRequest {}
 
 // ===== Server -> Client =====
 
@@ -341,4 +344,41 @@ message PokeAck {
   bool ok = 1;
   string targetNickname = 2;
   string reason = 3;
+}
+
+message PartyMember {
+  string sessionId = 1;
+  string nickname = 2;
+  bool isLeader = 3;
+}
+
+message PartyInfo {
+  string id = 1;
+  string name = 2;
+  string leaderId = 3;
+  int32 memberCount = 4;
+  int32 maxPlayers = 5;
+}
+
+message PartyStateMsg {
+  string id = 1;
+  string name = 2;
+  string leaderId = 3;
+  repeated PartyMember members = 4;
+  int32 memberCount = 5;
+  int32 maxPlayers = 6;
+}
+
+message PartyListUpdate {
+  repeated PartyInfo parties = 1;
+}
+
+message PartyDissolved {
+  string partyId = 1;
+  string reason = 2;
+}
+
+message PartyErrorResponse {
+  string code = 1;
+  string message = 2;
 }

@@ -17337,6 +17337,745 @@ export const game = $root.game = (() => {
         return PokeRequest;
     })();
 
+    game.CreatePartyRequest = (function() {
+
+        /**
+         * Properties of a CreatePartyRequest.
+         * @typedef {Object} game.CreatePartyRequest.$Properties
+         * @property {string|null} [name] CreatePartyRequest name
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a CreatePartyRequest.
+         * @memberof game
+         * @interface ICreatePartyRequest
+         * @augments game.CreatePartyRequest.$Properties
+         * @deprecated Use game.CreatePartyRequest.$Properties instead.
+         */
+
+        /**
+         * Shape of a CreatePartyRequest.
+         * @typedef {game.CreatePartyRequest.$Properties} game.CreatePartyRequest.$Shape
+         */
+
+        /**
+         * Constructs a new CreatePartyRequest.
+         * @memberof game
+         * @classdesc Represents a CreatePartyRequest.
+         * @constructor
+         * @param {game.CreatePartyRequest.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const CreatePartyRequest = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * CreatePartyRequest name.
+         * @member {string} name
+         * @memberof game.CreatePartyRequest
+         * @instance
+         */
+        CreatePartyRequest.prototype.name = "";
+
+        /**
+         * Creates a new CreatePartyRequest instance using the specified properties.
+         * @function create
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {game.CreatePartyRequest.$Properties=} [properties] Properties to set
+         * @returns {game.CreatePartyRequest} CreatePartyRequest instance
+         * @type {{
+         *   (properties: game.CreatePartyRequest.$Shape): game.CreatePartyRequest & game.CreatePartyRequest.$Shape;
+         *   (properties?: game.CreatePartyRequest.$Properties): game.CreatePartyRequest;
+         * }}
+         */
+        CreatePartyRequest.create = function(properties) {
+            return new CreatePartyRequest(properties);
+        };
+
+        /**
+         * Encodes the specified CreatePartyRequest message. Does not implicitly {@link game.CreatePartyRequest.verify|verify} messages.
+         * @function encode
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {game.CreatePartyRequest.$Properties} message CreatePartyRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        CreatePartyRequest.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified CreatePartyRequest message, length delimited. Does not implicitly {@link game.CreatePartyRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {game.CreatePartyRequest.$Properties} message CreatePartyRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        CreatePartyRequest.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a CreatePartyRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.CreatePartyRequest & game.CreatePartyRequest.$Shape} CreatePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        CreatePartyRequest.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.CreatePartyRequest(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.name = value;
+                        else
+                            delete message.name;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a CreatePartyRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.CreatePartyRequest & game.CreatePartyRequest.$Shape} CreatePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        CreatePartyRequest.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a CreatePartyRequest message.
+         * @function verify
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        CreatePartyRequest.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a CreatePartyRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.CreatePartyRequest} CreatePartyRequest
+         */
+        CreatePartyRequest.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.CreatePartyRequest)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.CreatePartyRequest: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.CreatePartyRequest();
+            if (object.name != null)
+                if (typeof object.name !== "string" || object.name.length)
+                    message.name = $String(object.name);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a CreatePartyRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {game.CreatePartyRequest} message CreatePartyRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        CreatePartyRequest.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults)
+                object.name = "";
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+                object.name = message.name;
+            return object;
+        };
+
+        /**
+         * Converts this CreatePartyRequest to JSON.
+         * @function toJSON
+         * @memberof game.CreatePartyRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        CreatePartyRequest.prototype.toJSON = function() {
+            return CreatePartyRequest.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for CreatePartyRequest
+         * @function getTypeUrl
+         * @memberof game.CreatePartyRequest
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        CreatePartyRequest.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.CreatePartyRequest";
+        };
+
+        return CreatePartyRequest;
+    })();
+
+    game.JoinPartyRequest = (function() {
+
+        /**
+         * Properties of a JoinPartyRequest.
+         * @typedef {Object} game.JoinPartyRequest.$Properties
+         * @property {string|null} [partyId] JoinPartyRequest partyId
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a JoinPartyRequest.
+         * @memberof game
+         * @interface IJoinPartyRequest
+         * @augments game.JoinPartyRequest.$Properties
+         * @deprecated Use game.JoinPartyRequest.$Properties instead.
+         */
+
+        /**
+         * Shape of a JoinPartyRequest.
+         * @typedef {game.JoinPartyRequest.$Properties} game.JoinPartyRequest.$Shape
+         */
+
+        /**
+         * Constructs a new JoinPartyRequest.
+         * @memberof game
+         * @classdesc Represents a JoinPartyRequest.
+         * @constructor
+         * @param {game.JoinPartyRequest.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const JoinPartyRequest = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * JoinPartyRequest partyId.
+         * @member {string} partyId
+         * @memberof game.JoinPartyRequest
+         * @instance
+         */
+        JoinPartyRequest.prototype.partyId = "";
+
+        /**
+         * Creates a new JoinPartyRequest instance using the specified properties.
+         * @function create
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {game.JoinPartyRequest.$Properties=} [properties] Properties to set
+         * @returns {game.JoinPartyRequest} JoinPartyRequest instance
+         * @type {{
+         *   (properties: game.JoinPartyRequest.$Shape): game.JoinPartyRequest & game.JoinPartyRequest.$Shape;
+         *   (properties?: game.JoinPartyRequest.$Properties): game.JoinPartyRequest;
+         * }}
+         */
+        JoinPartyRequest.create = function(properties) {
+            return new JoinPartyRequest(properties);
+        };
+
+        /**
+         * Encodes the specified JoinPartyRequest message. Does not implicitly {@link game.JoinPartyRequest.verify|verify} messages.
+         * @function encode
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {game.JoinPartyRequest.$Properties} message JoinPartyRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        JoinPartyRequest.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.partyId != null && $Object.hasOwnProperty.call(message, "partyId") && message.partyId !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.partyId);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified JoinPartyRequest message, length delimited. Does not implicitly {@link game.JoinPartyRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {game.JoinPartyRequest.$Properties} message JoinPartyRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        JoinPartyRequest.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a JoinPartyRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.JoinPartyRequest & game.JoinPartyRequest.$Shape} JoinPartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        JoinPartyRequest.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.JoinPartyRequest(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.partyId = value;
+                        else
+                            delete message.partyId;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a JoinPartyRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.JoinPartyRequest & game.JoinPartyRequest.$Shape} JoinPartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        JoinPartyRequest.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a JoinPartyRequest message.
+         * @function verify
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        JoinPartyRequest.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.partyId != null && $Object.hasOwnProperty.call(message, "partyId"))
+                if (!$util.isString(message.partyId))
+                    return "partyId: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a JoinPartyRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.JoinPartyRequest} JoinPartyRequest
+         */
+        JoinPartyRequest.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.JoinPartyRequest)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.JoinPartyRequest: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.JoinPartyRequest();
+            if (object.partyId != null)
+                if (typeof object.partyId !== "string" || object.partyId.length)
+                    message.partyId = $String(object.partyId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a JoinPartyRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {game.JoinPartyRequest} message JoinPartyRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        JoinPartyRequest.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults)
+                object.partyId = "";
+            if (message.partyId != null && $Object.hasOwnProperty.call(message, "partyId"))
+                object.partyId = message.partyId;
+            return object;
+        };
+
+        /**
+         * Converts this JoinPartyRequest to JSON.
+         * @function toJSON
+         * @memberof game.JoinPartyRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        JoinPartyRequest.prototype.toJSON = function() {
+            return JoinPartyRequest.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for JoinPartyRequest
+         * @function getTypeUrl
+         * @memberof game.JoinPartyRequest
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        JoinPartyRequest.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.JoinPartyRequest";
+        };
+
+        return JoinPartyRequest;
+    })();
+
+    game.LeavePartyRequest = (function() {
+
+        /**
+         * Properties of a LeavePartyRequest.
+         * @typedef {Object} game.LeavePartyRequest.$Properties
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a LeavePartyRequest.
+         * @memberof game
+         * @interface ILeavePartyRequest
+         * @augments game.LeavePartyRequest.$Properties
+         * @deprecated Use game.LeavePartyRequest.$Properties instead.
+         */
+
+        /**
+         * Shape of a LeavePartyRequest.
+         * @typedef {game.LeavePartyRequest.$Properties} game.LeavePartyRequest.$Shape
+         */
+
+        /**
+         * Constructs a new LeavePartyRequest.
+         * @memberof game
+         * @classdesc Represents a LeavePartyRequest.
+         * @constructor
+         * @param {game.LeavePartyRequest.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const LeavePartyRequest = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * Creates a new LeavePartyRequest instance using the specified properties.
+         * @function create
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {game.LeavePartyRequest.$Properties=} [properties] Properties to set
+         * @returns {game.LeavePartyRequest} LeavePartyRequest instance
+         * @type {{
+         *   (properties: game.LeavePartyRequest.$Shape): game.LeavePartyRequest & game.LeavePartyRequest.$Shape;
+         *   (properties?: game.LeavePartyRequest.$Properties): game.LeavePartyRequest;
+         * }}
+         */
+        LeavePartyRequest.create = function(properties) {
+            return new LeavePartyRequest(properties);
+        };
+
+        /**
+         * Encodes the specified LeavePartyRequest message. Does not implicitly {@link game.LeavePartyRequest.verify|verify} messages.
+         * @function encode
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {game.LeavePartyRequest.$Properties} message LeavePartyRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LeavePartyRequest.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified LeavePartyRequest message, length delimited. Does not implicitly {@link game.LeavePartyRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {game.LeavePartyRequest.$Properties} message LeavePartyRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LeavePartyRequest.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a LeavePartyRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.LeavePartyRequest & game.LeavePartyRequest.$Shape} LeavePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LeavePartyRequest.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.LeavePartyRequest();
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                reader.skipType(tag & 7, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a LeavePartyRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.LeavePartyRequest & game.LeavePartyRequest.$Shape} LeavePartyRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LeavePartyRequest.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a LeavePartyRequest message.
+         * @function verify
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        LeavePartyRequest.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            return null;
+        };
+
+        /**
+         * Creates a LeavePartyRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.LeavePartyRequest} LeavePartyRequest
+         */
+        LeavePartyRequest.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.LeavePartyRequest)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.LeavePartyRequest: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            return new $root.game.LeavePartyRequest();
+        };
+
+        /**
+         * Creates a plain object from a LeavePartyRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {game.LeavePartyRequest} message LeavePartyRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        LeavePartyRequest.toObject = function () {
+            return {};
+        };
+
+        /**
+         * Converts this LeavePartyRequest to JSON.
+         * @function toJSON
+         * @memberof game.LeavePartyRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        LeavePartyRequest.prototype.toJSON = function() {
+            return LeavePartyRequest.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for LeavePartyRequest
+         * @function getTypeUrl
+         * @memberof game.LeavePartyRequest
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        LeavePartyRequest.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.LeavePartyRequest";
+        };
+
+        return LeavePartyRequest;
+    })();
+
     game.StateSync = (function() {
 
         /**
@@ -24020,6 +24759,1983 @@ export const game = $root.game = (() => {
         };
 
         return PokeAck;
+    })();
+
+    game.PartyMember = (function() {
+
+        /**
+         * Properties of a PartyMember.
+         * @typedef {Object} game.PartyMember.$Properties
+         * @property {string|null} [sessionId] PartyMember sessionId
+         * @property {string|null} [nickname] PartyMember nickname
+         * @property {boolean|null} [isLeader] PartyMember isLeader
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PartyMember.
+         * @memberof game
+         * @interface IPartyMember
+         * @augments game.PartyMember.$Properties
+         * @deprecated Use game.PartyMember.$Properties instead.
+         */
+
+        /**
+         * Shape of a PartyMember.
+         * @typedef {game.PartyMember.$Properties} game.PartyMember.$Shape
+         */
+
+        /**
+         * Constructs a new PartyMember.
+         * @memberof game
+         * @classdesc Represents a PartyMember.
+         * @constructor
+         * @param {game.PartyMember.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PartyMember = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PartyMember sessionId.
+         * @member {string} sessionId
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.sessionId = "";
+
+        /**
+         * PartyMember nickname.
+         * @member {string} nickname
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.nickname = "";
+
+        /**
+         * PartyMember isLeader.
+         * @member {boolean} isLeader
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.isLeader = false;
+
+        /**
+         * Creates a new PartyMember instance using the specified properties.
+         * @function create
+         * @memberof game.PartyMember
+         * @static
+         * @param {game.PartyMember.$Properties=} [properties] Properties to set
+         * @returns {game.PartyMember} PartyMember instance
+         * @type {{
+         *   (properties: game.PartyMember.$Shape): game.PartyMember & game.PartyMember.$Shape;
+         *   (properties?: game.PartyMember.$Properties): game.PartyMember;
+         * }}
+         */
+        PartyMember.create = function(properties) {
+            return new PartyMember(properties);
+        };
+
+        /**
+         * Encodes the specified PartyMember message. Does not implicitly {@link game.PartyMember.verify|verify} messages.
+         * @function encode
+         * @memberof game.PartyMember
+         * @static
+         * @param {game.PartyMember.$Properties} message PartyMember message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyMember.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.sessionId != null && $Object.hasOwnProperty.call(message, "sessionId") && message.sessionId !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.sessionId);
+            if (message.nickname != null && $Object.hasOwnProperty.call(message, "nickname") && message.nickname !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.nickname);
+            if (message.isLeader != null && $Object.hasOwnProperty.call(message, "isLeader") && message.isLeader !== false)
+                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.isLeader);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PartyMember message, length delimited. Does not implicitly {@link game.PartyMember.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PartyMember
+         * @static
+         * @param {game.PartyMember.$Properties} message PartyMember message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyMember.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PartyMember message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PartyMember
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PartyMember & game.PartyMember.$Shape} PartyMember
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyMember.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PartyMember(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.sessionId = value;
+                        else
+                            delete message.sessionId;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.nickname = value;
+                        else
+                            delete message.nickname;
+                        continue;
+                    }
+                case 3: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.bool())
+                            message.isLeader = value;
+                        else
+                            delete message.isLeader;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PartyMember message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PartyMember
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PartyMember & game.PartyMember.$Shape} PartyMember
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyMember.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PartyMember message.
+         * @function verify
+         * @memberof game.PartyMember
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PartyMember.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.sessionId != null && $Object.hasOwnProperty.call(message, "sessionId"))
+                if (!$util.isString(message.sessionId))
+                    return "sessionId: string expected";
+            if (message.nickname != null && $Object.hasOwnProperty.call(message, "nickname"))
+                if (!$util.isString(message.nickname))
+                    return "nickname: string expected";
+            if (message.isLeader != null && $Object.hasOwnProperty.call(message, "isLeader"))
+                if (typeof message.isLeader !== "boolean")
+                    return "isLeader: boolean expected";
+            return null;
+        };
+
+        /**
+         * Creates a PartyMember message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PartyMember
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PartyMember} PartyMember
+         */
+        PartyMember.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PartyMember)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PartyMember: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PartyMember();
+            if (object.sessionId != null)
+                if (typeof object.sessionId !== "string" || object.sessionId.length)
+                    message.sessionId = $String(object.sessionId);
+            if (object.nickname != null)
+                if (typeof object.nickname !== "string" || object.nickname.length)
+                    message.nickname = $String(object.nickname);
+            if (object.isLeader != null)
+                if (object.isLeader)
+                    message.isLeader = $Boolean(object.isLeader);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PartyMember message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PartyMember
+         * @static
+         * @param {game.PartyMember} message PartyMember
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PartyMember.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.sessionId = "";
+                object.nickname = "";
+                object.isLeader = false;
+            }
+            if (message.sessionId != null && $Object.hasOwnProperty.call(message, "sessionId"))
+                object.sessionId = message.sessionId;
+            if (message.nickname != null && $Object.hasOwnProperty.call(message, "nickname"))
+                object.nickname = message.nickname;
+            if (message.isLeader != null && $Object.hasOwnProperty.call(message, "isLeader"))
+                object.isLeader = message.isLeader;
+            return object;
+        };
+
+        /**
+         * Converts this PartyMember to JSON.
+         * @function toJSON
+         * @memberof game.PartyMember
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PartyMember.prototype.toJSON = function() {
+            return PartyMember.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PartyMember
+         * @function getTypeUrl
+         * @memberof game.PartyMember
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PartyMember.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PartyMember";
+        };
+
+        return PartyMember;
+    })();
+
+    game.PartyInfo = (function() {
+
+        /**
+         * Properties of a PartyInfo.
+         * @typedef {Object} game.PartyInfo.$Properties
+         * @property {string|null} [id] PartyInfo id
+         * @property {string|null} [name] PartyInfo name
+         * @property {string|null} [leaderId] PartyInfo leaderId
+         * @property {number|null} [memberCount] PartyInfo memberCount
+         * @property {number|null} [maxPlayers] PartyInfo maxPlayers
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PartyInfo.
+         * @memberof game
+         * @interface IPartyInfo
+         * @augments game.PartyInfo.$Properties
+         * @deprecated Use game.PartyInfo.$Properties instead.
+         */
+
+        /**
+         * Shape of a PartyInfo.
+         * @typedef {game.PartyInfo.$Properties} game.PartyInfo.$Shape
+         */
+
+        /**
+         * Constructs a new PartyInfo.
+         * @memberof game
+         * @classdesc Represents a PartyInfo.
+         * @constructor
+         * @param {game.PartyInfo.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PartyInfo = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PartyInfo id.
+         * @member {string} id
+         * @memberof game.PartyInfo
+         * @instance
+         */
+        PartyInfo.prototype.id = "";
+
+        /**
+         * PartyInfo name.
+         * @member {string} name
+         * @memberof game.PartyInfo
+         * @instance
+         */
+        PartyInfo.prototype.name = "";
+
+        /**
+         * PartyInfo leaderId.
+         * @member {string} leaderId
+         * @memberof game.PartyInfo
+         * @instance
+         */
+        PartyInfo.prototype.leaderId = "";
+
+        /**
+         * PartyInfo memberCount.
+         * @member {number} memberCount
+         * @memberof game.PartyInfo
+         * @instance
+         */
+        PartyInfo.prototype.memberCount = 0;
+
+        /**
+         * PartyInfo maxPlayers.
+         * @member {number} maxPlayers
+         * @memberof game.PartyInfo
+         * @instance
+         */
+        PartyInfo.prototype.maxPlayers = 0;
+
+        /**
+         * Creates a new PartyInfo instance using the specified properties.
+         * @function create
+         * @memberof game.PartyInfo
+         * @static
+         * @param {game.PartyInfo.$Properties=} [properties] Properties to set
+         * @returns {game.PartyInfo} PartyInfo instance
+         * @type {{
+         *   (properties: game.PartyInfo.$Shape): game.PartyInfo & game.PartyInfo.$Shape;
+         *   (properties?: game.PartyInfo.$Properties): game.PartyInfo;
+         * }}
+         */
+        PartyInfo.create = function(properties) {
+            return new PartyInfo(properties);
+        };
+
+        /**
+         * Encodes the specified PartyInfo message. Does not implicitly {@link game.PartyInfo.verify|verify} messages.
+         * @function encode
+         * @memberof game.PartyInfo
+         * @static
+         * @param {game.PartyInfo.$Properties} message PartyInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyInfo.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.id != null && $Object.hasOwnProperty.call(message, "id") && message.id !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId") && message.leaderId !== "")
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.leaderId);
+            if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount") && message.memberCount !== 0)
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.memberCount);
+            if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers") && message.maxPlayers !== 0)
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.maxPlayers);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PartyInfo message, length delimited. Does not implicitly {@link game.PartyInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PartyInfo
+         * @static
+         * @param {game.PartyInfo.$Properties} message PartyInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyInfo.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PartyInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PartyInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PartyInfo & game.PartyInfo.$Shape} PartyInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyInfo.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PartyInfo(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.id = value;
+                        else
+                            delete message.id;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.name = value;
+                        else
+                            delete message.name;
+                        continue;
+                    }
+                case 3: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.leaderId = value;
+                        else
+                            delete message.leaderId;
+                        continue;
+                    }
+                case 4: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.memberCount = value;
+                        else
+                            delete message.memberCount;
+                        continue;
+                    }
+                case 5: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.maxPlayers = value;
+                        else
+                            delete message.maxPlayers;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PartyInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PartyInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PartyInfo & game.PartyInfo.$Shape} PartyInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyInfo.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PartyInfo message.
+         * @function verify
+         * @memberof game.PartyInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PartyInfo.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
+                if (!$util.isString(message.id))
+                    return "id: string expected";
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
+                if (!$util.isString(message.leaderId))
+                    return "leaderId: string expected";
+            if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount"))
+                if (!$util.isInteger(message.memberCount))
+                    return "memberCount: integer expected";
+            if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
+                if (!$util.isInteger(message.maxPlayers))
+                    return "maxPlayers: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a PartyInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PartyInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PartyInfo} PartyInfo
+         */
+        PartyInfo.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PartyInfo)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PartyInfo: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PartyInfo();
+            if (object.id != null)
+                if (typeof object.id !== "string" || object.id.length)
+                    message.id = $String(object.id);
+            if (object.name != null)
+                if (typeof object.name !== "string" || object.name.length)
+                    message.name = $String(object.name);
+            if (object.leaderId != null)
+                if (typeof object.leaderId !== "string" || object.leaderId.length)
+                    message.leaderId = $String(object.leaderId);
+            if (object.memberCount != null)
+                if ($Number(object.memberCount) !== 0)
+                    message.memberCount = object.memberCount | 0;
+            if (object.maxPlayers != null)
+                if ($Number(object.maxPlayers) !== 0)
+                    message.maxPlayers = object.maxPlayers | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PartyInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PartyInfo
+         * @static
+         * @param {game.PartyInfo} message PartyInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PartyInfo.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.leaderId = "";
+                object.memberCount = 0;
+                object.maxPlayers = 0;
+            }
+            if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
+                object.id = message.id;
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+                object.name = message.name;
+            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
+                object.leaderId = message.leaderId;
+            if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount"))
+                object.memberCount = message.memberCount;
+            if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
+                object.maxPlayers = message.maxPlayers;
+            return object;
+        };
+
+        /**
+         * Converts this PartyInfo to JSON.
+         * @function toJSON
+         * @memberof game.PartyInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PartyInfo.prototype.toJSON = function() {
+            return PartyInfo.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PartyInfo
+         * @function getTypeUrl
+         * @memberof game.PartyInfo
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PartyInfo.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PartyInfo";
+        };
+
+        return PartyInfo;
+    })();
+
+    game.PartyStateMsg = (function() {
+
+        /**
+         * Properties of a PartyStateMsg.
+         * @typedef {Object} game.PartyStateMsg.$Properties
+         * @property {string|null} [id] PartyStateMsg id
+         * @property {string|null} [name] PartyStateMsg name
+         * @property {string|null} [leaderId] PartyStateMsg leaderId
+         * @property {Array.<game.PartyMember.$Properties>|null} [members] PartyStateMsg members
+         * @property {number|null} [memberCount] PartyStateMsg memberCount
+         * @property {number|null} [maxPlayers] PartyStateMsg maxPlayers
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PartyStateMsg.
+         * @memberof game
+         * @interface IPartyStateMsg
+         * @augments game.PartyStateMsg.$Properties
+         * @deprecated Use game.PartyStateMsg.$Properties instead.
+         */
+
+        /**
+         * Shape of a PartyStateMsg.
+         * @typedef {game.PartyStateMsg.$Properties} game.PartyStateMsg.$Shape
+         */
+
+        /**
+         * Constructs a new PartyStateMsg.
+         * @memberof game
+         * @classdesc Represents a PartyStateMsg.
+         * @constructor
+         * @param {game.PartyStateMsg.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PartyStateMsg = function (properties) {
+            this.members = [];
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PartyStateMsg id.
+         * @member {string} id
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.id = "";
+
+        /**
+         * PartyStateMsg name.
+         * @member {string} name
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.name = "";
+
+        /**
+         * PartyStateMsg leaderId.
+         * @member {string} leaderId
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.leaderId = "";
+
+        /**
+         * PartyStateMsg members.
+         * @member {Array.<game.PartyMember.$Properties>} members
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.members = $util.emptyArray;
+
+        /**
+         * PartyStateMsg memberCount.
+         * @member {number} memberCount
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.memberCount = 0;
+
+        /**
+         * PartyStateMsg maxPlayers.
+         * @member {number} maxPlayers
+         * @memberof game.PartyStateMsg
+         * @instance
+         */
+        PartyStateMsg.prototype.maxPlayers = 0;
+
+        /**
+         * Creates a new PartyStateMsg instance using the specified properties.
+         * @function create
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {game.PartyStateMsg.$Properties=} [properties] Properties to set
+         * @returns {game.PartyStateMsg} PartyStateMsg instance
+         * @type {{
+         *   (properties: game.PartyStateMsg.$Shape): game.PartyStateMsg & game.PartyStateMsg.$Shape;
+         *   (properties?: game.PartyStateMsg.$Properties): game.PartyStateMsg;
+         * }}
+         */
+        PartyStateMsg.create = function(properties) {
+            return new PartyStateMsg(properties);
+        };
+
+        /**
+         * Encodes the specified PartyStateMsg message. Does not implicitly {@link game.PartyStateMsg.verify|verify} messages.
+         * @function encode
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {game.PartyStateMsg.$Properties} message PartyStateMsg message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyStateMsg.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.id != null && $Object.hasOwnProperty.call(message, "id") && message.id !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId") && message.leaderId !== "")
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.leaderId);
+            if (message.members != null && message.members.length)
+                for (let i = 0; i < message.members.length; ++i)
+                    $root.game.PartyMember.encode(message.members[i], writer.uint32(/* id 4, wireType 2 =*/34).fork(), _depth + 1).ldelim();
+            if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount") && message.memberCount !== 0)
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.memberCount);
+            if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers") && message.maxPlayers !== 0)
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.maxPlayers);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PartyStateMsg message, length delimited. Does not implicitly {@link game.PartyStateMsg.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {game.PartyStateMsg.$Properties} message PartyStateMsg message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyStateMsg.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PartyStateMsg message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PartyStateMsg & game.PartyStateMsg.$Shape} PartyStateMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyStateMsg.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PartyStateMsg(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.id = value;
+                        else
+                            delete message.id;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.name = value;
+                        else
+                            delete message.name;
+                        continue;
+                    }
+                case 3: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.leaderId = value;
+                        else
+                            delete message.leaderId;
+                        continue;
+                    }
+                case 4: {
+                        if (wireType !== 2)
+                            break;
+                        if (!(message.members && message.members.length))
+                            message.members = [];
+                        message.members.push($root.game.PartyMember.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                        continue;
+                    }
+                case 5: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.memberCount = value;
+                        else
+                            delete message.memberCount;
+                        continue;
+                    }
+                case 6: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.maxPlayers = value;
+                        else
+                            delete message.maxPlayers;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PartyStateMsg message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PartyStateMsg & game.PartyStateMsg.$Shape} PartyStateMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyStateMsg.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PartyStateMsg message.
+         * @function verify
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PartyStateMsg.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
+                if (!$util.isString(message.id))
+                    return "id: string expected";
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
+                if (!$util.isString(message.leaderId))
+                    return "leaderId: string expected";
+            if (message.members != null && $Object.hasOwnProperty.call(message, "members")) {
+                if (!$Array.isArray(message.members))
+                    return "members: array expected";
+                for (let i = 0; i < message.members.length; ++i) {
+                    let error = $root.game.PartyMember.verify(message.members[i], _depth + 1);
+                    if (error)
+                        return "members." + error;
+                }
+            }
+            if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount"))
+                if (!$util.isInteger(message.memberCount))
+                    return "memberCount: integer expected";
+            if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
+                if (!$util.isInteger(message.maxPlayers))
+                    return "maxPlayers: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a PartyStateMsg message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PartyStateMsg} PartyStateMsg
+         */
+        PartyStateMsg.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PartyStateMsg)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PartyStateMsg: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PartyStateMsg();
+            if (object.id != null)
+                if (typeof object.id !== "string" || object.id.length)
+                    message.id = $String(object.id);
+            if (object.name != null)
+                if (typeof object.name !== "string" || object.name.length)
+                    message.name = $String(object.name);
+            if (object.leaderId != null)
+                if (typeof object.leaderId !== "string" || object.leaderId.length)
+                    message.leaderId = $String(object.leaderId);
+            if (object.members) {
+                if (!$Array.isArray(object.members))
+                    throw $TypeError(".game.PartyStateMsg.members: array expected");
+                message.members = $Array(object.members.length);
+                for (let i = 0; i < object.members.length; ++i) {
+                    if (!$util.isObject(object.members[i]))
+                        throw $TypeError(".game.PartyStateMsg.members: object expected");
+                    message.members[i] = $root.game.PartyMember.fromObject(object.members[i], _depth + 1);
+                }
+            }
+            if (object.memberCount != null)
+                if ($Number(object.memberCount) !== 0)
+                    message.memberCount = object.memberCount | 0;
+            if (object.maxPlayers != null)
+                if ($Number(object.maxPlayers) !== 0)
+                    message.maxPlayers = object.maxPlayers | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PartyStateMsg message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {game.PartyStateMsg} message PartyStateMsg
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PartyStateMsg.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.members = [];
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.leaderId = "";
+                object.memberCount = 0;
+                object.maxPlayers = 0;
+            }
+            if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
+                object.id = message.id;
+            if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+                object.name = message.name;
+            if (message.leaderId != null && $Object.hasOwnProperty.call(message, "leaderId"))
+                object.leaderId = message.leaderId;
+            if (message.members && message.members.length) {
+                object.members = $Array(message.members.length);
+                for (let j = 0; j < message.members.length; ++j)
+                    object.members[j] = $root.game.PartyMember.toObject(message.members[j], options, _depth + 1);
+            }
+            if (message.memberCount != null && $Object.hasOwnProperty.call(message, "memberCount"))
+                object.memberCount = message.memberCount;
+            if (message.maxPlayers != null && $Object.hasOwnProperty.call(message, "maxPlayers"))
+                object.maxPlayers = message.maxPlayers;
+            return object;
+        };
+
+        /**
+         * Converts this PartyStateMsg to JSON.
+         * @function toJSON
+         * @memberof game.PartyStateMsg
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PartyStateMsg.prototype.toJSON = function() {
+            return PartyStateMsg.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PartyStateMsg
+         * @function getTypeUrl
+         * @memberof game.PartyStateMsg
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PartyStateMsg.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PartyStateMsg";
+        };
+
+        return PartyStateMsg;
+    })();
+
+    game.PartyListUpdate = (function() {
+
+        /**
+         * Properties of a PartyListUpdate.
+         * @typedef {Object} game.PartyListUpdate.$Properties
+         * @property {Array.<game.PartyInfo.$Properties>|null} [parties] PartyListUpdate parties
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PartyListUpdate.
+         * @memberof game
+         * @interface IPartyListUpdate
+         * @augments game.PartyListUpdate.$Properties
+         * @deprecated Use game.PartyListUpdate.$Properties instead.
+         */
+
+        /**
+         * Shape of a PartyListUpdate.
+         * @typedef {game.PartyListUpdate.$Properties} game.PartyListUpdate.$Shape
+         */
+
+        /**
+         * Constructs a new PartyListUpdate.
+         * @memberof game
+         * @classdesc Represents a PartyListUpdate.
+         * @constructor
+         * @param {game.PartyListUpdate.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PartyListUpdate = function (properties) {
+            this.parties = [];
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PartyListUpdate parties.
+         * @member {Array.<game.PartyInfo.$Properties>} parties
+         * @memberof game.PartyListUpdate
+         * @instance
+         */
+        PartyListUpdate.prototype.parties = $util.emptyArray;
+
+        /**
+         * Creates a new PartyListUpdate instance using the specified properties.
+         * @function create
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {game.PartyListUpdate.$Properties=} [properties] Properties to set
+         * @returns {game.PartyListUpdate} PartyListUpdate instance
+         * @type {{
+         *   (properties: game.PartyListUpdate.$Shape): game.PartyListUpdate & game.PartyListUpdate.$Shape;
+         *   (properties?: game.PartyListUpdate.$Properties): game.PartyListUpdate;
+         * }}
+         */
+        PartyListUpdate.create = function(properties) {
+            return new PartyListUpdate(properties);
+        };
+
+        /**
+         * Encodes the specified PartyListUpdate message. Does not implicitly {@link game.PartyListUpdate.verify|verify} messages.
+         * @function encode
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {game.PartyListUpdate.$Properties} message PartyListUpdate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyListUpdate.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.parties != null && message.parties.length)
+                for (let i = 0; i < message.parties.length; ++i)
+                    $root.game.PartyInfo.encode(message.parties[i], writer.uint32(/* id 1, wireType 2 =*/10).fork(), _depth + 1).ldelim();
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PartyListUpdate message, length delimited. Does not implicitly {@link game.PartyListUpdate.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {game.PartyListUpdate.$Properties} message PartyListUpdate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyListUpdate.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PartyListUpdate message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PartyListUpdate & game.PartyListUpdate.$Shape} PartyListUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyListUpdate.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PartyListUpdate();
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if (!(message.parties && message.parties.length))
+                            message.parties = [];
+                        message.parties.push($root.game.PartyInfo.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PartyListUpdate message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PartyListUpdate & game.PartyListUpdate.$Shape} PartyListUpdate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyListUpdate.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PartyListUpdate message.
+         * @function verify
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PartyListUpdate.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.parties != null && $Object.hasOwnProperty.call(message, "parties")) {
+                if (!$Array.isArray(message.parties))
+                    return "parties: array expected";
+                for (let i = 0; i < message.parties.length; ++i) {
+                    let error = $root.game.PartyInfo.verify(message.parties[i], _depth + 1);
+                    if (error)
+                        return "parties." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a PartyListUpdate message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PartyListUpdate} PartyListUpdate
+         */
+        PartyListUpdate.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PartyListUpdate)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PartyListUpdate: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PartyListUpdate();
+            if (object.parties) {
+                if (!$Array.isArray(object.parties))
+                    throw $TypeError(".game.PartyListUpdate.parties: array expected");
+                message.parties = $Array(object.parties.length);
+                for (let i = 0; i < object.parties.length; ++i) {
+                    if (!$util.isObject(object.parties[i]))
+                        throw $TypeError(".game.PartyListUpdate.parties: object expected");
+                    message.parties[i] = $root.game.PartyInfo.fromObject(object.parties[i], _depth + 1);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PartyListUpdate message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {game.PartyListUpdate} message PartyListUpdate
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PartyListUpdate.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.parties = [];
+            if (message.parties && message.parties.length) {
+                object.parties = $Array(message.parties.length);
+                for (let j = 0; j < message.parties.length; ++j)
+                    object.parties[j] = $root.game.PartyInfo.toObject(message.parties[j], options, _depth + 1);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this PartyListUpdate to JSON.
+         * @function toJSON
+         * @memberof game.PartyListUpdate
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PartyListUpdate.prototype.toJSON = function() {
+            return PartyListUpdate.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PartyListUpdate
+         * @function getTypeUrl
+         * @memberof game.PartyListUpdate
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PartyListUpdate.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PartyListUpdate";
+        };
+
+        return PartyListUpdate;
+    })();
+
+    game.PartyDissolved = (function() {
+
+        /**
+         * Properties of a PartyDissolved.
+         * @typedef {Object} game.PartyDissolved.$Properties
+         * @property {string|null} [partyId] PartyDissolved partyId
+         * @property {string|null} [reason] PartyDissolved reason
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PartyDissolved.
+         * @memberof game
+         * @interface IPartyDissolved
+         * @augments game.PartyDissolved.$Properties
+         * @deprecated Use game.PartyDissolved.$Properties instead.
+         */
+
+        /**
+         * Shape of a PartyDissolved.
+         * @typedef {game.PartyDissolved.$Properties} game.PartyDissolved.$Shape
+         */
+
+        /**
+         * Constructs a new PartyDissolved.
+         * @memberof game
+         * @classdesc Represents a PartyDissolved.
+         * @constructor
+         * @param {game.PartyDissolved.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PartyDissolved = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PartyDissolved partyId.
+         * @member {string} partyId
+         * @memberof game.PartyDissolved
+         * @instance
+         */
+        PartyDissolved.prototype.partyId = "";
+
+        /**
+         * PartyDissolved reason.
+         * @member {string} reason
+         * @memberof game.PartyDissolved
+         * @instance
+         */
+        PartyDissolved.prototype.reason = "";
+
+        /**
+         * Creates a new PartyDissolved instance using the specified properties.
+         * @function create
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {game.PartyDissolved.$Properties=} [properties] Properties to set
+         * @returns {game.PartyDissolved} PartyDissolved instance
+         * @type {{
+         *   (properties: game.PartyDissolved.$Shape): game.PartyDissolved & game.PartyDissolved.$Shape;
+         *   (properties?: game.PartyDissolved.$Properties): game.PartyDissolved;
+         * }}
+         */
+        PartyDissolved.create = function(properties) {
+            return new PartyDissolved(properties);
+        };
+
+        /**
+         * Encodes the specified PartyDissolved message. Does not implicitly {@link game.PartyDissolved.verify|verify} messages.
+         * @function encode
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {game.PartyDissolved.$Properties} message PartyDissolved message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyDissolved.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.partyId != null && $Object.hasOwnProperty.call(message, "partyId") && message.partyId !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.partyId);
+            if (message.reason != null && $Object.hasOwnProperty.call(message, "reason") && message.reason !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.reason);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PartyDissolved message, length delimited. Does not implicitly {@link game.PartyDissolved.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {game.PartyDissolved.$Properties} message PartyDissolved message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyDissolved.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PartyDissolved message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PartyDissolved & game.PartyDissolved.$Shape} PartyDissolved
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyDissolved.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PartyDissolved(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.partyId = value;
+                        else
+                            delete message.partyId;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.reason = value;
+                        else
+                            delete message.reason;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PartyDissolved message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PartyDissolved & game.PartyDissolved.$Shape} PartyDissolved
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyDissolved.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PartyDissolved message.
+         * @function verify
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PartyDissolved.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.partyId != null && $Object.hasOwnProperty.call(message, "partyId"))
+                if (!$util.isString(message.partyId))
+                    return "partyId: string expected";
+            if (message.reason != null && $Object.hasOwnProperty.call(message, "reason"))
+                if (!$util.isString(message.reason))
+                    return "reason: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a PartyDissolved message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PartyDissolved} PartyDissolved
+         */
+        PartyDissolved.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PartyDissolved)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PartyDissolved: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PartyDissolved();
+            if (object.partyId != null)
+                if (typeof object.partyId !== "string" || object.partyId.length)
+                    message.partyId = $String(object.partyId);
+            if (object.reason != null)
+                if (typeof object.reason !== "string" || object.reason.length)
+                    message.reason = $String(object.reason);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PartyDissolved message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {game.PartyDissolved} message PartyDissolved
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PartyDissolved.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.partyId = "";
+                object.reason = "";
+            }
+            if (message.partyId != null && $Object.hasOwnProperty.call(message, "partyId"))
+                object.partyId = message.partyId;
+            if (message.reason != null && $Object.hasOwnProperty.call(message, "reason"))
+                object.reason = message.reason;
+            return object;
+        };
+
+        /**
+         * Converts this PartyDissolved to JSON.
+         * @function toJSON
+         * @memberof game.PartyDissolved
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PartyDissolved.prototype.toJSON = function() {
+            return PartyDissolved.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PartyDissolved
+         * @function getTypeUrl
+         * @memberof game.PartyDissolved
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PartyDissolved.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PartyDissolved";
+        };
+
+        return PartyDissolved;
+    })();
+
+    game.PartyErrorResponse = (function() {
+
+        /**
+         * Properties of a PartyErrorResponse.
+         * @typedef {Object} game.PartyErrorResponse.$Properties
+         * @property {string|null} [code] PartyErrorResponse code
+         * @property {string|null} [message] PartyErrorResponse message
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+
+        /**
+         * Properties of a PartyErrorResponse.
+         * @memberof game
+         * @interface IPartyErrorResponse
+         * @augments game.PartyErrorResponse.$Properties
+         * @deprecated Use game.PartyErrorResponse.$Properties instead.
+         */
+
+        /**
+         * Shape of a PartyErrorResponse.
+         * @typedef {game.PartyErrorResponse.$Properties} game.PartyErrorResponse.$Shape
+         */
+
+        /**
+         * Constructs a new PartyErrorResponse.
+         * @memberof game
+         * @classdesc Represents a PartyErrorResponse.
+         * @constructor
+         * @param {game.PartyErrorResponse.$Properties=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
+         */
+        const PartyErrorResponse = function (properties) {
+            if (properties)
+                for (let keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                        this[keys[i]] = properties[keys[i]];
+        };
+
+        /**
+         * PartyErrorResponse code.
+         * @member {string} code
+         * @memberof game.PartyErrorResponse
+         * @instance
+         */
+        PartyErrorResponse.prototype.code = "";
+
+        /**
+         * PartyErrorResponse message.
+         * @member {string} message
+         * @memberof game.PartyErrorResponse
+         * @instance
+         */
+        PartyErrorResponse.prototype.message = "";
+
+        /**
+         * Creates a new PartyErrorResponse instance using the specified properties.
+         * @function create
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {game.PartyErrorResponse.$Properties=} [properties] Properties to set
+         * @returns {game.PartyErrorResponse} PartyErrorResponse instance
+         * @type {{
+         *   (properties: game.PartyErrorResponse.$Shape): game.PartyErrorResponse & game.PartyErrorResponse.$Shape;
+         *   (properties?: game.PartyErrorResponse.$Properties): game.PartyErrorResponse;
+         * }}
+         */
+        PartyErrorResponse.create = function(properties) {
+            return new PartyErrorResponse(properties);
+        };
+
+        /**
+         * Encodes the specified PartyErrorResponse message. Does not implicitly {@link game.PartyErrorResponse.verify|verify} messages.
+         * @function encode
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {game.PartyErrorResponse.$Properties} message PartyErrorResponse message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyErrorResponse.encode = function (message, writer, _depth) {
+            if (!writer)
+                writer = $Writer.create();
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            if (message.code != null && $Object.hasOwnProperty.call(message, "code") && message.code !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
+            if (message.message != null && $Object.hasOwnProperty.call(message, "message") && message.message !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.message);
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
+                for (let i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified PartyErrorResponse message, length delimited. Does not implicitly {@link game.PartyErrorResponse.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {game.PartyErrorResponse.$Properties} message PartyErrorResponse message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        PartyErrorResponse.encodeDelimited = function(message, writer) {
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
+        };
+
+        /**
+         * Decodes a PartyErrorResponse message from the specified reader or buffer.
+         * @function decode
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {game.PartyErrorResponse & game.PartyErrorResponse.$Shape} PartyErrorResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyErrorResponse.decode = function (reader, length, _end, _depth, _target) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw $Error("max depth exceeded");
+            let end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.game.PartyErrorResponse(), value;
+            while (reader.pos < end) {
+                let start = reader.pos;
+                let tag = reader.tag();
+                if (tag === _end) {
+                    _end = $undefined;
+                    break;
+                }
+                let wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.code = value;
+                        else
+                            delete message.code;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.message = value;
+                        else
+                            delete message.message;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
+            }
+            if (_end !== $undefined)
+                throw $Error("missing end group");
+            return message;
+        };
+
+        /**
+         * Decodes a PartyErrorResponse message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {game.PartyErrorResponse & game.PartyErrorResponse.$Shape} PartyErrorResponse
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        PartyErrorResponse.decodeDelimited = function(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a PartyErrorResponse message.
+         * @function verify
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        PartyErrorResponse.verify = function (message, _depth) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
+            if (message.code != null && $Object.hasOwnProperty.call(message, "code"))
+                if (!$util.isString(message.code))
+                    return "code: string expected";
+            if (message.message != null && $Object.hasOwnProperty.call(message, "message"))
+                if (!$util.isString(message.message))
+                    return "message: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a PartyErrorResponse message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {game.PartyErrorResponse} PartyErrorResponse
+         */
+        PartyErrorResponse.fromObject = function (object, _depth) {
+            if (object instanceof $root.game.PartyErrorResponse)
+                return object;
+            if (!$util.isObject(object))
+                throw $TypeError(".game.PartyErrorResponse: object expected");
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let message = new $root.game.PartyErrorResponse();
+            if (object.code != null)
+                if (typeof object.code !== "string" || object.code.length)
+                    message.code = $String(object.code);
+            if (object.message != null)
+                if (typeof object.message !== "string" || object.message.length)
+                    message.message = $String(object.message);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a PartyErrorResponse message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {game.PartyErrorResponse} message PartyErrorResponse
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        PartyErrorResponse.toObject = function (message, options, _depth) {
+            if (!options)
+                options = {};
+            if (_depth === $undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw $Error("max depth exceeded");
+            let object = {};
+            if (options.defaults) {
+                object.code = "";
+                object.message = "";
+            }
+            if (message.code != null && $Object.hasOwnProperty.call(message, "code"))
+                object.code = message.code;
+            if (message.message != null && $Object.hasOwnProperty.call(message, "message"))
+                object.message = message.message;
+            return object;
+        };
+
+        /**
+         * Converts this PartyErrorResponse to JSON.
+         * @function toJSON
+         * @memberof game.PartyErrorResponse
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        PartyErrorResponse.prototype.toJSON = function() {
+            return PartyErrorResponse.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the type url for PartyErrorResponse
+         * @function getTypeUrl
+         * @memberof game.PartyErrorResponse
+         * @static
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
+         */
+        PartyErrorResponse.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/game.PartyErrorResponse";
+        };
+
+        return PartyErrorResponse;
     })();
 
     return game;
