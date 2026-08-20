@@ -61,7 +61,7 @@
 
 .player-avatar {
 	position: absolute;
-	background-image: url("../../assets/avatars/players/1.png");
+	background-image: var(--player-avatar-url, url("../../assets/avatars/players/1.png"));
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;

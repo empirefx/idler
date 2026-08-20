@@ -17,14 +17,14 @@ describe("PresenceService", () => {
   });
 
   it("register adds a player to a place", async () => {
-    playerState.load.mockResolvedValue({ level: 5, avatar: "1.png" });
+    playerState.load.mockResolvedValue({ level: 5, avatar: "1" });
     presence.register("s1", "Hero", "village_center");
     const list = await presence.listFor("village_center", playerState);
-    expect(list).toEqual([{ nickname: "Hero", level: 5, avatar: "1.png", enteredAt: 1000 }]);
+    expect(list).toEqual([{ nickname: "Hero", level: 5, avatar: "1", enteredAt: 1000 }]);
   });
 
   it("listFor orders players newest-first", async () => {
-    playerState.load.mockResolvedValue({ level: 1, avatar: "1.png" });
+    playerState.load.mockResolvedValue({ level: 1, avatar: "1" });
     presence.register("s1", "Alpha", "village_center");
     clock.t = 2000;
     presence.register("s2", "Beta", "village_center");
@@ -84,7 +84,7 @@ describe("PresenceService", () => {
   });
 
   it("broadcastPlace excludes each recipient from their own list", async () => {
-    playerState.load.mockResolvedValue({ level: 3, avatar: "1.png" });
+    playerState.load.mockResolvedValue({ level: 3, avatar: "1" });
     presence.register("s1", "Alpha", "village_center");
     clock.t = 2000;
     presence.register("s2", "Beta", "village_center");
@@ -93,16 +93,16 @@ describe("PresenceService", () => {
     expect(broadcaster.broadcast).toHaveBeenCalledTimes(2);
     expect(broadcaster.broadcast).toHaveBeenCalledWith("s1", "PRESENCE_UPDATE", {
       placeId: "village_center",
-      players: [{ nickname: "Beta", level: 3, avatar: "1.png", enteredAt: 2000 }],
+      players: [{ nickname: "Beta", level: 3, avatar: "1", enteredAt: 2000 }],
     });
     expect(broadcaster.broadcast).toHaveBeenCalledWith("s2", "PRESENCE_UPDATE", {
       placeId: "village_center",
-      players: [{ nickname: "Alpha", level: 3, avatar: "1.png", enteredAt: 1000 }],
+      players: [{ nickname: "Alpha", level: 3, avatar: "1", enteredAt: 1000 }],
     });
   });
 
   it("broadcastPlace caps each list at MAX_VISIBLE_PLAYERS others", async () => {
-    playerState.load.mockResolvedValue({ level: 1, avatar: "1.png" });
+    playerState.load.mockResolvedValue({ level: 1, avatar: "1" });
     const names = Array.from({ length: MAX_VISIBLE_PLAYERS + 3 }, (_, i) => `P${i}`);
     names.forEach((name, i) => presence.register(`s${i}`, name, "village_center"));
     const broadcaster = { broadcast: vi.fn() };

@@ -2,7 +2,7 @@ export const playerData = {
 	id: 1,
 	name: "John Doe",
 	MAX_WORKERS: 5,
-	avatar: "1.png",
+	avatar: "1",
 	health: 120,
 	attackCooldown: 2000,
 	lastAttackTime: 0,

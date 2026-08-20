@@ -94,7 +94,7 @@ describe("Multiplayer Integration: Presence + Poke", () => {
 		},
 	};
 	const playerState = {
-		load: vi.fn(async () => ({ avatar: "1.png" })),
+		load: vi.fn(async () => ({ avatar: "1" })),
 	};
 	const pokeHandler = presenceHandlers.find((h) => h.type === "POKE").handler;
 
@@ -109,7 +109,7 @@ describe("Multiplayer Integration: Presence + Poke", () => {
 
 		await pokeHandler({ sessionId: "s1", broadcaster, presenceService, playerState }, { targetNickname: "Mage" });
 
-		expect(sent.s2).toEqual([{ type: "POKED", payload: { fromNickname: "Hero", fromAvatar: "1.png" } }]);
+		expect(sent.s2).toEqual([{ type: "POKED", payload: { fromNickname: "Hero", fromAvatar: "1" } }]);
 		expect(sent.s1).toEqual([{ type: "POKE_ACK", payload: { ok: true, targetNickname: "Mage" } }]);
 	});
 

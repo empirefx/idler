@@ -96,18 +96,18 @@ describe("server -> client round trips", () => {
 	it("PRESENCE_UPDATE", () => {
 		const data = roundTrip("PRESENCE_UPDATE", {
 			placeId: "village_center",
-			players: [{ nickname: "Hero", level: 1, avatar: "1.png", enteredAt: 1234 }],
+			players: [{ nickname: "Hero", level: 1, avatar: "1", enteredAt: 1234 }],
 		});
 		expect(data.placeId).toBe("village_center");
-		expect(data.players[0]).toMatchObject({ nickname: "Hero", level: 1, avatar: "1.png", enteredAt: 1234 });
+		expect(data.players[0]).toMatchObject({ nickname: "Hero", level: 1, avatar: "1", enteredAt: 1234 });
 	});
 	it("PRESENCE_UPDATE empty players", () => {
 		expect(roundTrip("PRESENCE_UPDATE", { placeId: "village_center", players: [] }).players).toEqual([]);
 	});
 	it("POKED", () => {
-		expect(roundTrip("POKED", { fromNickname: "Hero", fromAvatar: "1.png" })).toMatchObject({
+		expect(roundTrip("POKED", { fromNickname: "Hero", fromAvatar: "1" })).toMatchObject({
 			fromNickname: "Hero",
-			fromAvatar: "1.png",
+			fromAvatar: "1",
 		});
 	});
 	it("POKE_ACK success", () => {
@@ -228,7 +228,7 @@ describe("server -> client round trips", () => {
 				expToNext: 100,
 				hp: 50,
 				maxHp: 50,
-				avatar: "1.png",
+				avatar: "1",
 				stats: { strength: 10, defense: 0, agility: 10, vitality: 10, intelligence: 10, wisdom: 0 },
 				skillPoints: 0,
 				currentPlaceId: "village_center",

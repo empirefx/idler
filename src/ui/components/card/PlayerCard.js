@@ -23,7 +23,10 @@ const PlayerCard = ({ player, vaultId }) => {
 		<div className="player-card">
 			<div className="player-grid">
 				<div className="player-display">
-					<div className="player-avatar"></div>
+					<div
+						className="player-avatar"
+						style={{ "--player-avatar-url": `url(assets/avatars/players/${player.avatar || "1"}.png)` }}
+					></div>
 					<h1>{player.level}</h1>
 					<h1>{player.name}</h1>
 					<div className="player-options">

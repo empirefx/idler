@@ -17,7 +17,7 @@ function makeCtx(overrides = {}) {
   return {
     sessionId: "s1",
     broadcaster: { broadcast: vi.fn() },
-    playerState: { load: vi.fn().mockResolvedValue({ avatar: "1.png" }) },
+    playerState: { load: vi.fn().mockResolvedValue({ avatar: "1" }) },
     presenceService: makePresence(),
     ...overrides,
   };
@@ -36,7 +36,7 @@ describe("POKE handler", () => {
 
     expect(ctx.broadcaster.broadcast).toHaveBeenCalledWith("s2", "POKED", {
       fromNickname: "Hero",
-      fromAvatar: "1.png",
+      fromAvatar: "1",
     });
     expect(ctx.broadcaster.broadcast).toHaveBeenCalledWith("s1", "POKE_ACK", {
       ok: true,

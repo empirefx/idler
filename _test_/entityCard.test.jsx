@@ -23,12 +23,12 @@ const renderCard = (enemy) => {
 
 describe("EntityCard target highlight", () => {
 	it("applies the targeted class to the locked, alive enemy", () => {
-		const { container } = renderCard({ id: "e1", hp: 50, maxHp: 50, name: "Beast", avatar: "1.png" });
+		const { container } = renderCard({ id: "e1", hp: 50, maxHp: 50, name: "Beast", avatar: "1" });
 		expect(container.querySelector(".entity-card")).toHaveClass("targeted");
 	});
 
 	it("removes the targeted class from a dead locked enemy", () => {
-		const { container } = renderCard({ id: "e1", hp: 0, maxHp: 50, name: "Beast", avatar: "1.png" });
+		const { container } = renderCard({ id: "e1", hp: 0, maxHp: 50, name: "Beast", avatar: "1" });
 		const card = container.querySelector(".entity-card");
 		expect(card).toHaveClass("dead");
 		expect(card).not.toHaveClass("targeted");

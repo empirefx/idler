@@ -1,9 +1,7 @@
 import { poke } from "../../../store/ws";
 
-const AVATAR_PLACEHOLDER = "https://placehold.net/avatar.svg";
-
 const PlayerPresenceCard = ({ player, poked, animKey }) => {
-	const { nickname, level } = player;
+	const { nickname, level, avatar = "1" } = player;
 
 	const handlePoke = (event) => {
 		event.stopPropagation();
@@ -15,7 +13,7 @@ const PlayerPresenceCard = ({ player, poked, animKey }) => {
 			<img
 				className="player-presence-avatar"
 				key={poked ? animKey : "avatar"}
-				src={AVATAR_PLACEHOLDER}
+				src={`assets/avatars/players/${avatar}-avatar.png`}
 				alt={nickname}
 			/>
 			<div className="player-presence-info">

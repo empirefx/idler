@@ -10,7 +10,7 @@ const NPCDialogProfile = ({
 		<div
 			className="player-profile"
 			style={{
-				"--player-avatar-url": `url(./assets/avatars/players/${player.avatar || "default-avatar.png"})`,
+				"--player-avatar-url": `url(./assets/avatars/players/${player.avatar || "1"}.png)`,
 			}}
 		>
 			<div className="player-background-image"></div>

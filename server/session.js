@@ -93,7 +93,7 @@ export class SessionManager {
 		await this.playerState.save(sessionId, {
 			level: 1, gold: 0, exp: 0, expToNext: 100,
 			hp: getMaxHealth(10), maxHp: getMaxHealth(10),
-			avatar: "1.png",
+			avatar: "1",
 			stats: { strength: 10, defense: 0, agility: 10, vitality: 10, intelligence: 10, wisdom: 0 },
 			skillPoints: 0,
 			currentPlaceId: "village_center",

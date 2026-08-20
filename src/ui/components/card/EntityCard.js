@@ -38,7 +38,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 	const maxHp = entity.maxHp ?? entity.maxHealth ?? 100;
 	const {
 		name,
-		avatar = "1.png",
+		avatar = "1",
 		attackPattern,
 	} = entity;
 
@@ -66,7 +66,7 @@ const EntityCard = ({ entity, avatarFolder = "enemies" }) => {
 		>
 			<div className="block-gradient"></div>
 			<img
-				src={`assets/avatars/${avatarFolder}/${avatar}`}
+				src={`assets/avatars/${avatarFolder}/${avatar}.png`}
 				alt={name}
 				draggable="false"
 			/>

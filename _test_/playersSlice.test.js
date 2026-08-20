@@ -14,8 +14,8 @@ describe("playersSlice", () => {
 
   it("setPresent replaces the presence list", () => {
     let state = playersReducer(undefined, setPresent([
-      { nickname: "Beta", level: 1, avatar: "1.png", enteredAt: 2000 },
-      { nickname: "Alpha", level: 3, avatar: "1.png", enteredAt: 1000 },
+      { nickname: "Beta", level: 1, avatar: "1", enteredAt: 2000 },
+      { nickname: "Alpha", level: 3, avatar: "1", enteredAt: 1000 },
     ]));
     expect(selectPresentPlayers({ players: state })).toHaveLength(2);
 
