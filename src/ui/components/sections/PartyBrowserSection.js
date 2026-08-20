@@ -92,8 +92,8 @@ const PartyBrowserSection = () => {
                 <tr>
                   <th>Name</th>
                   <th>Place</th>
-                  <th>Leader</th>
-                  <th>Players</th>
+                  <th className="fit-column">Leader</th>
+                  <th className="fit-column">Players</th>
                 </tr>
               </thead>
               <tbody>

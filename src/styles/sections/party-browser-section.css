@@ -239,3 +239,8 @@
 .party-leave-btn:hover {
   background: rgba(255, 107, 107, 0.85);
 }
+
+.fit-column {
+    width: 1%;
+    white-space: nowrap;
+}
