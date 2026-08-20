@@ -25,14 +25,12 @@ export class PartyState {
       { sessionId: leaderId, nickname: leaderNickname, isLeader: true },
     ]);
 
-    await this.redis.hset(this._partyKey(partyId), {
-      id: partyId,
-      name: trimmed,
-      leaderId,
-      memberIds,
-      members,
-      createdAt: String(Date.now()),
-    });
+    await this.redis.hset(this._partyKey(partyId), "id", partyId);
+    await this.redis.hset(this._partyKey(partyId), "name", trimmed);
+    await this.redis.hset(this._partyKey(partyId), "leaderId", leaderId);
+    await this.redis.hset(this._partyKey(partyId), "memberIds", memberIds);
+    await this.redis.hset(this._partyKey(partyId), "members", members);
+    await this.redis.hset(this._partyKey(partyId), "createdAt", String(Date.now()));
     await this.redis.sadd(ALL_PARTIES_KEY, partyId);
 
     return {
@@ -71,10 +69,8 @@ export class PartyState {
     memberIds.push(sessionId);
     members.push({ sessionId, nickname, isLeader: false });
 
-    await this.redis.hset(this._partyKey(partyId), {
-      memberIds: JSON.stringify(memberIds),
-      members: JSON.stringify(members),
-    });
+    await this.redis.hset(this._partyKey(partyId), "memberIds", JSON.stringify(memberIds));
+    await this.redis.hset(this._partyKey(partyId), "members", JSON.stringify(members));
 
     return {
       id: raw.id,
@@ -99,10 +95,8 @@ export class PartyState {
     memberIds.splice(idx, 1);
     members.splice(idx, 1);
 
-    await this.redis.hset(this._partyKey(partyId), {
-      memberIds: JSON.stringify(memberIds),
-      members: JSON.stringify(members),
-    });
+    await this.redis.hset(this._partyKey(partyId), "memberIds", JSON.stringify(memberIds));
+    await this.redis.hset(this._partyKey(partyId), "members", JSON.stringify(members));
 
     return {
       id: raw.id,

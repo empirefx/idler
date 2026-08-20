@@ -40,6 +40,7 @@ export class PartyService {
       return { ...p, leaderNickname: entry?.nickname || "Unknown" };
     });
     const allSessionIds = this._getAllSessionIds();
+    console.log(`[PARTY_DEBUG] broadcasting ${enriched.length} parties to ${allSessionIds.size} sessions`);
     for (const sessionId of allSessionIds) {
       this.broadcaster.broadcast(sessionId, "PARTY_LIST_UPDATE", { parties: enriched });
     }
