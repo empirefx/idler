@@ -9,10 +9,11 @@ export const PARTY_ERRORS = {
 };
 
 export class PartyService {
-  constructor({ partyState, broadcaster, presenceService }) {
+  constructor({ partyState, broadcaster, presenceService, playerState }) {
     this.partyState = partyState;
     this.broadcaster = broadcaster;
     this.presenceService = presenceService;
+    this.playerState = playerState;
   }
 
   _error(sessionId, code, message) {
@@ -24,12 +25,19 @@ export class PartyService {
     return entry?.nickname || "Unknown";
   }
 
-  _sendPartyState(party) {
+  async _sendPartyState(party) {
     const leaderName = this._enrichLeader(party);
-    const enrichedMembers = party.members.map((m) => {
+    const enrichedMembers = await Promise.all(party.members.map(async (m) => {
       const entry = this.presenceService.get(m.sessionId);
-      return { ...m, location: entry?.placeId || "" };
-    });
+      const player = await this.playerState.load(m.sessionId);
+      return {
+        ...m,
+        location: entry?.placeId || "",
+        avatar: player?.avatar || "1",
+        hp: player?.hp ?? 0,
+        maxHp: player?.maxHp ?? 0,
+      };
+    }));
     for (const member of enrichedMembers) {
       this.broadcaster.broadcast(member.sessionId, "PARTY_STATE", {
         id: party.id,

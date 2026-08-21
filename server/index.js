@@ -70,7 +70,7 @@ async function main() {
   const spawnService = new SpawnService(redis, enemyState, queues.spawnQueue, queues.enemyAttackQueue, queues.playerAttackQueue, playerState, broadcaster);
   const navigationService = new NavigationService(redis);
   const presenceService = new PresenceService();
-  const partyService = new PartyService({ partyState, broadcaster, presenceService });
+  const partyService = new PartyService({ partyState, broadcaster, presenceService, playerState });
   const inventoryHandler = new InventoryHandler(redis, logger);
 
   createProductionWorker(productionService, config.redis);

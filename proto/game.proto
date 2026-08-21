@@ -351,6 +351,9 @@ message PartyMember {
   string nickname = 2;
   bool isLeader = 3;
   string location = 4;
+  string avatar = 5;
+  int32 hp = 6;
+  int32 maxHp = 7;
 }
 
 message PartyInfo {

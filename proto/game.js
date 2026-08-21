@@ -24800,6 +24800,9 @@ export const game = $root.game = (() => {
          * @property {string|null} [nickname] PartyMember nickname
          * @property {boolean|null} [isLeader] PartyMember isLeader
          * @property {string|null} [location] PartyMember location
+         * @property {string|null} [avatar] PartyMember avatar
+         * @property {number|null} [hp] PartyMember hp
+         * @property {number|null} [maxHp] PartyMember maxHp
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
@@ -24864,6 +24867,30 @@ export const game = $root.game = (() => {
         PartyMember.prototype.location = "";
 
         /**
+         * PartyMember avatar.
+         * @member {string} avatar
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.avatar = "";
+
+        /**
+         * PartyMember hp.
+         * @member {number} hp
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.hp = 0;
+
+        /**
+         * PartyMember maxHp.
+         * @member {number} maxHp
+         * @memberof game.PartyMember
+         * @instance
+         */
+        PartyMember.prototype.maxHp = 0;
+
+        /**
          * Creates a new PartyMember instance using the specified properties.
          * @function create
          * @memberof game.PartyMember
@@ -24903,6 +24930,12 @@ export const game = $root.game = (() => {
                 writer.uint32(/* id 3, wireType 0 =*/24).bool(message.isLeader);
             if (message.location != null && $Object.hasOwnProperty.call(message, "location") && message.location !== "")
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.location);
+            if (message.avatar != null && $Object.hasOwnProperty.call(message, "avatar") && message.avatar !== "")
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.avatar);
+            if (message.hp != null && $Object.hasOwnProperty.call(message, "hp") && message.hp !== 0)
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.hp);
+            if (message.maxHp != null && $Object.hasOwnProperty.call(message, "maxHp") && message.maxHp !== 0)
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.maxHp);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (let i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -24986,6 +25019,33 @@ export const game = $root.game = (() => {
                             delete message.location;
                         continue;
                     }
+                case 5: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.stringVerify()).length)
+                            message.avatar = value;
+                        else
+                            delete message.avatar;
+                        continue;
+                    }
+                case 6: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.hp = value;
+                        else
+                            delete message.hp;
+                        continue;
+                    }
+                case 7: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.maxHp = value;
+                        else
+                            delete message.maxHp;
+                        continue;
+                    }
                 }
                 reader.skipType(wireType, _depth, tag);
                 if (!reader.discardUnknown) {
@@ -25041,6 +25101,15 @@ export const game = $root.game = (() => {
             if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
                 if (!$util.isString(message.location))
                     return "location: string expected";
+            if (message.avatar != null && $Object.hasOwnProperty.call(message, "avatar"))
+                if (!$util.isString(message.avatar))
+                    return "avatar: string expected";
+            if (message.hp != null && $Object.hasOwnProperty.call(message, "hp"))
+                if (!$util.isInteger(message.hp))
+                    return "hp: integer expected";
+            if (message.maxHp != null && $Object.hasOwnProperty.call(message, "maxHp"))
+                if (!$util.isInteger(message.maxHp))
+                    return "maxHp: integer expected";
             return null;
         };
 
@@ -25074,6 +25143,15 @@ export const game = $root.game = (() => {
             if (object.location != null)
                 if (typeof object.location !== "string" || object.location.length)
                     message.location = $String(object.location);
+            if (object.avatar != null)
+                if (typeof object.avatar !== "string" || object.avatar.length)
+                    message.avatar = $String(object.avatar);
+            if (object.hp != null)
+                if ($Number(object.hp) !== 0)
+                    message.hp = object.hp | 0;
+            if (object.maxHp != null)
+                if ($Number(object.maxHp) !== 0)
+                    message.maxHp = object.maxHp | 0;
             return message;
         };
 
@@ -25099,6 +25177,9 @@ export const game = $root.game = (() => {
                 object.nickname = "";
                 object.isLeader = false;
                 object.location = "";
+                object.avatar = "";
+                object.hp = 0;
+                object.maxHp = 0;
             }
             if (message.sessionId != null && $Object.hasOwnProperty.call(message, "sessionId"))
                 object.sessionId = message.sessionId;
@@ -25108,6 +25189,12 @@ export const game = $root.game = (() => {
                 object.isLeader = message.isLeader;
             if (message.location != null && $Object.hasOwnProperty.call(message, "location"))
                 object.location = message.location;
+            if (message.avatar != null && $Object.hasOwnProperty.call(message, "avatar"))
+                object.avatar = message.avatar;
+            if (message.hp != null && $Object.hasOwnProperty.call(message, "hp"))
+                object.hp = message.hp;
+            if (message.maxHp != null && $Object.hasOwnProperty.call(message, "maxHp"))
+                object.maxHp = message.maxHp;
             return object;
         };
 

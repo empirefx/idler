@@ -12,6 +12,7 @@ import {
 import { toggleAutoCombat } from "../../../store/ws";
 import KeyBind from "../common/KeyBind";
 import ControlDisplay from "../display/ControlDisplay";
+import PartyMemberCard from "../card/PartyMemberCard";
 
 // selectors
 const selectMaxWorkers = (state) => state.player.workerSlots || 0;
@@ -29,6 +30,8 @@ const ControlSection = ({ clearCache }) => {
 	const currentPlace = useSelector(selectCurrentPlace);
 	const autoCombat = useSelector(selectAutoCombat);
 	const isDead = useSelector(selectIsDead);
+	const currentParty = useSelector((state) => state.parties.currentParty);
+	const sessionId = useSelector((state) => state.player.sessionId);
 
 	return (
 		<section className="control-section">
@@ -39,6 +42,16 @@ const ControlSection = ({ clearCache }) => {
 						disabled={isDead}
 						onToggleCombat={toggleAutoCombat}
 					/>
+				)}
+
+				{currentParty && currentParty.members && (
+					<div className="party-members-bar">
+						{currentParty.members
+							.filter((m) => m.sessionId !== sessionId)
+							.map((member) => (
+								<PartyMemberCard key={member.sessionId} member={member} />
+							))}
+					</div>
 				)}
 
 				<div className="cache">

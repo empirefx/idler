@@ -251,7 +251,7 @@ const joinGame = () => {
 			const { sessionId, player, inventory, buildings, workers, quests, enemies } = data.data;
 			sessionStorage.setItem("sessionId", sessionId);
 			sessionStorage.setItem("nickname", nickname);
-			if (player) store.dispatch(setPlayerState({ ...player, name: nickname }));
+			if (player) store.dispatch(setPlayerState({ ...player, name: nickname, sessionId }));
 			if (data.data.skills) store.dispatch(setPlayerState({ skills: data.data.skills }));
 			if (inventory) store.dispatch(setInventory(inventory));
 			if (buildings) store.dispatch(setBuildings(buildings));
@@ -307,7 +307,7 @@ if (cachedSessionId && cachedNickname) {
 		const data = decode(event.data);
 		if (data.type === "STATE_SYNC") {
 			const { sessionId, player, inventory, buildings, workers, quests, enemies } = data.data;
-			if (player) store.dispatch(setPlayerState({ ...player, name: cachedNickname || player.name }));
+			if (player) store.dispatch(setPlayerState({ ...player, name: cachedNickname || player.name, sessionId }));
 			if (data.data.skills) store.dispatch(setPlayerState({ skills: data.data.skills }));
 			if (inventory) store.dispatch(setInventory(inventory));
 			if (buildings) store.dispatch(setBuildings(buildings));

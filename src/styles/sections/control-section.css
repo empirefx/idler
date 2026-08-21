@@ -79,3 +79,82 @@
 .combat-btn.stop:hover {
 	cursor: pointer;
 }
+
+.party-members-bar {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+
+.party-member-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	padding: 4px 8px;
+	min-width: 0;
+	gap: 6px;
+	background: #404859d4;
+	border: 1px solid #6375974f;
+	border-radius: var(--border-radius-md);
+}
+
+.party-member-card__avatar {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	flex-shrink: 0;
+  -webkit-mask-image:
+    linear-gradient(to top, #0000 1%, #000 35%),
+    radial-gradient(circle at bottom right, #0000 10%, #000 30%),
+    radial-gradient(circle at bottom left,  #0000 10%, #000 30%);
+  -webkit-mask-composite: source-in, source-in;
+
+  mask-image:
+    linear-gradient(to top, #0000 1%, #000 35%),
+    radial-gradient(circle at bottom right, #0000 10%, #000 30%),
+    radial-gradient(circle at bottom left,  #0000 10%, #000 30%);
+  mask-composite: intersect, intersect;
+}
+
+.party-member-card__info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.party-member-card__name {
+	font-size: 18px;
+	color: rgba(255, 255, 255, 0.85);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 80px;
+	text-align: center;
+}
+
+.party-member-card__hp {
+	width: 80px;
+	height: 4px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.party-member-card__hp-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #4caf50, #66bb6a);
+	border-radius: 2px;
+	transition: width 0.3s ease;
+}
+
+.party-member-card__crown {
+	position: absolute;
+	left: 5px;
+  top: 5px;
+	font-size: 18px;
+	line-height: 1;
+}
